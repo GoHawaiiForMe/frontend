@@ -1,20 +1,61 @@
-name: Slack Notification
- 
+name: Assign Random Reviewers
 on:
   pull_request:
-    branches: [ "dev" ]
- 
+    types: [opened, reopened]
 jobs:
-  build:
+  assign-reviewers:
     runs-on: ubuntu-latest
+
     steps:
-    - name: action-slack
-      uses: 8398a7/action-slack@v3
-      with:
-        status: ${{ job.status }}
-        author_name: 새로운 PR이 도착했습니다!
-        fields: author,pullRequest
-        if_mention: failure,cancelled
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_FE }}
-      if: always()
+      # 1
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # 2
+      - name: Assign Random Reviewers
+        id: assign-reviewers 
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const reviewers = ["gahyeon-yang", "kirinkiri", "bangsinchur", "junbaehyun"];
+
+            const selectedReviewers = reviewers
+              .sort(() => Math.random() - 0.5)
+              .slice(0, 2);
+
+            await github.rest.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              reviewers: selectedReviewers,
+            });
+
+            console.log(`선택된 리뷰어: ${selectedReviewers.join(", ")}`);
+            
+            return selectedReviewers.join(", ");
+          result-encoding: string
+
+      # 3
+      - name: Send Slack Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: "🚀 새로운 PR이 도착했습니다!"
+          fields: author,pullRequest
+          custom_payload: |
+            {
+              "text": "🚀 *새로운 PR이 생성되었습니다!*",
+              "attachments": [
+                {
+                  "color": "#36a64f",
+                  "fields": [
+                    { "title": "PR 제목", "value": "${{ github.event.pull_request.title }}", "short": false },
+                    { "title": "PR URL", "value": "${{ github.event.pull_request.html_url }}", "short": false },
+                    { "title": "리뷰어", "value": "${{ steps.assign-reviewers.outputs.result }}", "short": false }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_FE }}
+        if: always()
