@@ -18,8 +18,11 @@ jobs:
         with:
           script: |
             const reviewers = ["gahyeon-yang", "kirinkiri", "bangsinchur", "junbaehyun"];
+            const prAuthor = context.payload.pull_request.user.login;
 
-            const selectedReviewers = reviewers
+            const filteredReviewers = reviewers.filter(r => r !== prAuthor);
+
+            const selectedReviewers = filteredReviewers
               .sort(() => Math.random() - 0.5)
               .slice(0, 2);
 
