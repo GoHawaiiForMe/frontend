@@ -17,6 +17,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            const core = require('@actions/core');
             const reviewers = ["gahyeon-yang", "kirinkiri", "bangsinchur", "junbaehyun"];
             const prAuthor = context.payload.pull_request.user.login;
 
@@ -43,11 +44,17 @@ jobs:
         with:
           status: ${{ job.status }}
           author_name: "🚀 새로운 PR이 도착했습니다!"
-          fields: pullRequest,reviewers
-          custom_payload: |
-            {
-              "text": ":rocket: 새로운 PR이 도착했습니다!\n*PR:* <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }}>\n*리뷰어:* ${{ steps.assign-reviewers.outputs.reviewers }}"
-            }
+          fields: >
+            [
+              {
+                "title": "Pull Request",
+                "value": "<${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }}>"
+              },
+              {
+                "title": "Reviewers",
+                "value": "${{ steps.assign-reviewers.outputs.reviewers }}"
+              }
+            ]
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_FE }}
         if: always()
