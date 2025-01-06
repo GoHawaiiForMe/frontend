@@ -35,20 +35,19 @@ jobs:
 
             console.log(`선택된 리뷰어: ${selectedReviewers.join(", ")}`);
             
-            return selectedReviewers;
+            core.setOutput("reviewers", selectedReviewers.join(", "));
 
-      # 3
-      - name: Set output for selected reviewers
-        run: echo "::set-output name=reviewers::${{ steps.assign-reviewers.outputs.result }}"
-
-      # 4
+     # 3
       - name: Send Slack Notification
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
           author_name: "🚀 새로운 PR이 도착했습니다!"
           fields: pullRequest,reviewers
-          reviewers: ${{ steps.assign-reviewers.outputs.reviewers }}
+          custom_payload: |
+            {
+              "text": ":rocket: 새로운 PR이 도착했습니다!\n*PR:* <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }}>\n*리뷰어:* ${{ steps.assign-reviewers.outputs.reviewers }}"
+            }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_FE }}
         if: always()
