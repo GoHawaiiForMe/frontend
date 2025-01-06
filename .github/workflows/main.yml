@@ -45,6 +45,7 @@ jobs:
           status: ${{ job.status }}
           author_name: "🚀 새로운 PR이 도착했습니다!"
           fields: author,pullRequest,reviewers
+          reviewers: ${{ steps.assign-reviewers.outputs.result }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_FE }}
         if: always()
