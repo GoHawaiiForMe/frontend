@@ -35,8 +35,8 @@ jobs:
 
             console.log(`선택된 리뷰어: ${selectedReviewers.join(", ")}`);
             
-            return selectedReviewers.join(", ");
-          result-encoding: string
+             return selectedReviewers;
+            result-encoding: json
 
       # 3
       - name: Send Slack Notification
