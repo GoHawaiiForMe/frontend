@@ -17,7 +17,6 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const core = require('@actions/core');
             const reviewers = ["gahyeon-yang", "kirinkiri", "bangsinchur", "junbaehyun"];
             const prAuthor = context.payload.pull_request.user.login;
 
@@ -35,7 +34,6 @@ jobs:
             });
 
             console.log(`선택된 리뷰어: ${selectedReviewers.join(", ")}`);
-            
             core.setOutput("reviewers", selectedReviewers.join(", "));
 
      # 3
