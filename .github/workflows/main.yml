@@ -34,7 +34,8 @@ jobs:
             });
 
             console.log(`선택된 리뷰어: ${selectedReviewers.join(", ")}`);
-            core.setOutput("reviewers", selectedReviewers.join(", "));
+            return selectedReviewers.join(", ");
+          result-encoding: string
 
      # 3
       - name: Send Slack Notification
@@ -42,17 +43,8 @@ jobs:
         with:
           status: ${{ job.status }}
           author_name: "🚀 새로운 PR이 도착했습니다!"
-          fields: >
-            [
-              {
-                "title": "Pull Request",
-                "value": "<${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }}>"
-              },
-              {
-                "title": "Reviewers",
-                "value": "${{ steps.assign-reviewers.outputs.reviewers }}"
-              }
-            ]
+          fields: author,pullRequest,reviewers
+          reviewers: ${{ steps.assign-reviewers.outputs.result }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_FE }}
         if: always()
