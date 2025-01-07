@@ -1,17 +1,36 @@
 import { useState } from "react";
 import Selector from "@/components/Common/Selector";
 import Image from "next/image";
-import profileImg from "@public/assets/icon_default_profile.svg";
+import profileImgDefault from "@public/assets/icon_default_profile.svg";
 import Button from "@/components/Common/Button";
+import ImageModal from "@/components/Common/ImageModal";
 
 export default function ProfileDreamer() {
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [isOpenImageModal, setIsOpenImageModal] = useState(false);
+  const [profileImg, setProfileImg] = useState<string | null>(null);
 
-  const handleSelection = (type: string) => {
-    setSelectedTypes((prev) =>
+  const handleImageSelect = (imageSrc: string) => {
+    setProfileImg(imageSrc);
+    setIsOpenImageModal(false);
+  };
+
+  const handleServiceSelection = (type: string) => {
+    setSelectedServices((prev) =>
       prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
     );
   };
+
+  const handleLocationSelection = (type: string) => {
+    setSelectedLocations((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
+    );
+  };
+
+  const isButtonDisabled =
+    selectedServices.length === 0 || selectedLocations.length === 0 || !profileImg;
+
   return (
     <div className="flex justify-center mb-20">
       <div className="flex flex-col gap-5 pc:w-[640px] mobile-tablet:w-[372px]">
@@ -25,8 +44,20 @@ export default function ProfileDreamer() {
         <div className="flex flex-col gap-8">
           <div>
             <p className="text-xl semibold mb-3 mobile-tablet:text-lg">프로필 이미지</p>
-            <Image src={profileImg} alt="프로필 이미지" width={100} height={100} />
+            <div onClick={() => setIsOpenImageModal(true)} className="cursor-pointer w-30">
+              {profileImg ? (
+                <Image src={profileImg} alt="프로필 이미지" width={100} height={100} />
+              ) : (
+                <Image src={profileImgDefault} alt="프로필 이미지" width={100} height={100} />
+              )}
+            </div>
           </div>
+          {isOpenImageModal && (
+            <ImageModal
+              onSelectImage={handleImageSelect}
+              onClose={() => setIsOpenImageModal(false)}
+            />
+          )}
           <div className="h-0.5 bg-color-line-100 my-2"></div>
 
           <div>
@@ -36,8 +67,8 @@ export default function ProfileDreamer() {
             </p>
             <Selector
               category="services"
-              selectedTypes={selectedTypes}
-              toggleSelection={handleSelection}
+              selectedTypes={selectedServices}
+              toggleSelection={handleServiceSelection}
             />
           </div>
           <div className="h-0.5 bg-color-line-100 my-2"></div>
@@ -49,15 +80,15 @@ export default function ProfileDreamer() {
             </p>
             <Selector
               category="locations"
-              selectedTypes={selectedTypes}
-              toggleSelection={handleSelection}
+              selectedTypes={selectedLocations}
+              toggleSelection={handleLocationSelection}
             />
           </div>
         </div>
         <Button
           label="시작하기"
-          onClick={() => console.log("시작하기 클릭")}
-          disabled={true}
+          onClick={() => console.log("시작하기 클릭")} //API 연결 후 작업 예정
+          disabled={isButtonDisabled}
           type="submit"
         />
       </div>
