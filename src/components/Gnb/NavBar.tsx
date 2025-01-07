@@ -58,7 +58,7 @@ const NavBar = () => {
   };
 
   return (
-    <div className="flex items-center justify-between py-6 bg-color-background-200 px-32 tablet:px-5 mobile:px-4">
+    <div className="flex items-center justify-between py-6 bg-color-background-200 px-32 tablet:px-5 mobile:px-4 mobile-tablet:py-3">
       <div className="flex items-center">
         <div className="text-2xl font-bold mr-16 mobile-tablet:mr-0">
           <Link href="/">
@@ -113,7 +113,7 @@ const NavBar = () => {
         ) : (
           <>
             <Link href="/login">
-              <button className="px-6 py-3 bg-color-blue-300 rounded-2xl hover:bg-color-blue-200 text-white text-2lg semibold mobile-tablet:text-md mobile-tablet:px-4 mobile-tablet:py-2)">
+              <button className="px-10 py-3 bg-color-blue-300 rounded-2xl hover:bg-color-blue-200 text-white text-2lg semibold mobile-tablet:text-md mobile-tablet:px-4 mobile-tablet:py-2)">
                 로그인
               </button>
             </Link>

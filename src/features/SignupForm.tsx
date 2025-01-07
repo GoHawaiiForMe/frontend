@@ -32,7 +32,7 @@ export default function SignUpForm() {
 
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col items-center justify-center gap-8 pc:w-[640px] mobile-tablet:w-full">
+      <div className="flex flex-col items-center justify-center gap-8 pc:w-[640px] mobile-tablet:w-[372px]">
         <Image src={logo} alt="로고" />
 
         <form onSubmit={handleSubmit(onSubmit)} className="w-full gap-8 flex flex-col relative">
