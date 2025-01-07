@@ -58,7 +58,7 @@ const NavBar = () => {
   };
 
   return (
-    <div className="flex items-center justify-between py-6 bg-color-background-200 px-32 tablet:px-5 mobile:px-4 mobile-tablet:py-3">
+    <div className="flex items-center justify-between py-6 bg-color-background-100 border-b-2 border-color-line-100 px-32 tablet:px-5 mobile:px-4 mobile-tablet:py-3">
       <div className="flex items-center">
         <div className="text-2xl font-bold mr-16 mobile-tablet:mr-0">
           <Link href="/">
