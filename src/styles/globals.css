@@ -29,7 +29,6 @@ a {
 
 button {
   cursor: pointer;
-  border: none;
 }
 .bold {
   font-weight: var(--font-weight-bold);
