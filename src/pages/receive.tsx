@@ -5,8 +5,11 @@ import FastDropdown from "@/components/Receive/FastDropdown";
 import RequestDetails from "@/components/Receive/RequestDetails";
 import writing from "@public/assets/icon_writing.png";
 import mobilefilter from "@public/assets/icon_filterbutton.png";
+import ModalFilter from "@/components/Receive/ModalFilter";
+import { useState } from "react";
 
 export default function Receive() {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <div className="mt-[88px]">
       <p className="font-semibold text-[24px] py-[32px] ">받은 요청</p>
@@ -24,6 +27,7 @@ export default function Receive() {
                 alt="filter"
                 width={32}
                 height={32}
+                onClick={() => setIsOpen(true)}
               />
             </div>
           </div>
@@ -41,6 +45,7 @@ export default function Receive() {
           </div>
         </div>
       </div>
+      {isOpen && <ModalFilter closeModal={() => setIsOpen(false)} />}
     </div>
   );
 }
