@@ -7,7 +7,7 @@ import logo from "@public/assets/icon_logo_img.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LoginFormData, loginSchema } from "@/utils/validate";
-import google_icon from "@public/assets/icon__google.svg";
+import google_icon from "@public/assets/icon_google.svg";
 import kakao_icon from "@public/assets/icon_kakao.svg";
 import naver_icon from "@public/assets/icon_naver.svg";
 
@@ -20,8 +20,7 @@ export default function LoginForm() {
     // router.push("/");
   };
   /* TODO (로그인, 회원가입 공통)
-   * 1. PC버전일 때 Padding 값 조절
-   * 2. 소셜로그인
+   * 소셜로그인
    * */
 
   const {
@@ -48,7 +47,7 @@ export default function LoginForm() {
 
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col items-center gap-8 pc:w-[640px] mobile-tablet:w-full">
+      <div className="flex flex-col items-center gap-8 pc:w-[640px] mobile-tablet:w-[372px]">
         <Image src={logo} alt="로고" />
         <form className="w-full gap-8 flex flex-col relative" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-2">
