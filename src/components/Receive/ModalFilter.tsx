@@ -10,9 +10,8 @@ interface TypeCheckboxState {
   culture: boolean;
   activity: boolean;
   festival: boolean;
-  service_area: boolean;
-  quote_request: boolean;
 }
+
 interface FilterCheckboxState {
   all: boolean;
   service_area: boolean;
@@ -33,8 +32,6 @@ export default function ModalFilter({ closeModal }: ModalFilterProps) {
     culture: false,
     activity: false,
     festival: false,
-    service_area: false,
-    quote_request: false,
   });
 
   const [filterCheckboxes, setFilterCheckboxes] = useState<FilterCheckboxState>({
@@ -43,7 +40,7 @@ export default function ModalFilter({ closeModal }: ModalFilterProps) {
     quote_request: false,
   });
 
-  const handleAllCheck = (checked: boolean): void => {
+  const handleTypeAllCheck = (checked: boolean): void => {
     setTypeCheckboxes({
       all: checked,
       taste: checked,
@@ -51,9 +48,7 @@ export default function ModalFilter({ closeModal }: ModalFilterProps) {
       rest: checked,
       culture: checked,
       activity: checked,
-      festival: false,
-      service_area: false,
-      quote_request: false,
+      festival: checked,
     });
   };
 
@@ -65,7 +60,7 @@ export default function ModalFilter({ closeModal }: ModalFilterProps) {
     });
   };
 
-  const handleSingleCheck = (id: keyof Omit<TypeCheckboxState, "all">, checked: boolean): void => {
+  const handleTypeSingleCheck = (id: keyof Omit<TypeCheckboxState, "all">, checked: boolean): void => {
     const newCheckboxes = {
       ...typeCheckboxes,
       [id]: checked,
@@ -81,16 +76,21 @@ export default function ModalFilter({ closeModal }: ModalFilterProps) {
     });
   };
 
-const handleFilterSingleCheck = (id: keyof Omit<FilterCheckboxState,"all">,checked:boolean):void => {
-  const newCheckboxes = {
-    ...filterCheckboxes,
-    [id]:checked,
-  };
+  const handleFilterSingleCheck = (id: keyof Omit<FilterCheckboxState, "all">, checked: boolean): void => {
+    const newCheckboxes = {
+      ...filterCheckboxes,
+      [id]: checked,
+    };
 
-  const allChecked = Object.keys(newCheckboxes)
-  .filter((key):key is keyof Omit<FilterCheckboxState,'all'> => key !== 'all')
-  .every((key) => newCheckboxes[key]);
-}
+    const allChecked = Object.keys(newCheckboxes)
+      .filter((key): key is keyof Omit<FilterCheckboxState, "all"> => key !== "all")
+      .every((key) => newCheckboxes[key]);
+
+    setFilterCheckboxes({
+      ...newCheckboxes,
+      all: allChecked,
+    });
+  };
 
   const mainTabs = [
     { id: "type", label: "여행 유형" },
@@ -134,7 +134,7 @@ const handleFilterSingleCheck = (id: keyof Omit<FilterCheckboxState,"all">,check
                   type="checkbox"
                   id="all"
                   checked={typeCheckboxes.all}
-                  onChange={(e) => handleAllCheck(e.target.checked)}
+                  onChange={(e) => handleTypeAllCheck(e.target.checked)}
                 />
               </div>
               <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]">
@@ -143,7 +143,7 @@ const handleFilterSingleCheck = (id: keyof Omit<FilterCheckboxState,"all">,check
                   type="checkbox"
                   id="taste"
                   checked={typeCheckboxes.taste}
-                  onChange={(e) => handleSingleCheck("taste", e.target.checked)}
+                  onChange={(e) => handleTypeSingleCheck("taste", e.target.checked)}
                 />
               </div>
               <div className="flex justify-between  items-center gap-2 border-b border-color-line-200 pb-[16px]">
@@ -152,7 +152,7 @@ const handleFilterSingleCheck = (id: keyof Omit<FilterCheckboxState,"all">,check
                   type="checkbox"
                   id="shopping"
                   checked={typeCheckboxes.shopping}
-                  onChange={(e) => handleSingleCheck("shopping", e.target.checked)}
+                  onChange={(e) => handleTypeSingleCheck("shopping", e.target.checked)}
                 />
               </div>
               <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]">
@@ -161,7 +161,7 @@ const handleFilterSingleCheck = (id: keyof Omit<FilterCheckboxState,"all">,check
                   type="checkbox"
                   id="rest"
                   checked={typeCheckboxes.rest}
-                  onChange={(e) => handleSingleCheck("rest", e.target.checked)}
+                  onChange={(e) => handleTypeSingleCheck("rest", e.target.checked)}
                 />
               </div>
               <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]">
@@ -170,7 +170,7 @@ const handleFilterSingleCheck = (id: keyof Omit<FilterCheckboxState,"all">,check
                   type="checkbox"
                   id="culture"
                   checked={typeCheckboxes.culture}
-                  onChange={(e) => handleSingleCheck("culture", e.target.checked)}
+                  onChange={(e) => handleTypeSingleCheck("culture", e.target.checked)}
                 />
               </div>
               <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]  ">
@@ -179,7 +179,7 @@ const handleFilterSingleCheck = (id: keyof Omit<FilterCheckboxState,"all">,check
                   type="checkbox"
                   id="activity"
                   checked={typeCheckboxes.activity}
-                  onChange={(e) => handleSingleCheck("activity", e.target.checked)}
+                  onChange={(e) => handleTypeSingleCheck("activity", e.target.checked)}
                 />
               </div>
               <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]  ">
@@ -188,40 +188,38 @@ const handleFilterSingleCheck = (id: keyof Omit<FilterCheckboxState,"all">,check
                   type="checkbox"
                   id="festival"
                   checked={typeCheckboxes.festival}
-                  onChange={(e) => handleSingleCheck("festival", e.target.checked)}
+                  onChange={(e) => handleTypeSingleCheck("festival", e.target.checked)}
                 />
               </div>
             </div>
           ) : (
-            <div>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]">
-                  <label htmlFor="all">전체선택 (totalCount)</label>
-                  <input
-                    type="checkbox"
-                    id="all"
-                    checked={typeCheckboxes.all}
-                    onChange={(e) => handleAllCheck(e.target.checked)}
-                  />
-                </div>
-                <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]">
-                  <label htmlFor="service_area">서비스 가능 지역 (count)</label>
-                  <input
-                    type="checkbox"
-                    id="service_area"
-                    checked={typeCheckboxes.service_area}
-                    onChange={(e) => handleSingleCheck("service_area", e.target.checked)}
-                  />
-                </div>
-                <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]">
-                  <label htmlFor="quote_request">지정 견적 요청 (count)</label>
-                  <input
-                    type="checkbox"
-                    id="quote_request"
-                    checked={typeCheckboxes.quote_request}
-                    onChange={(e) => handleSingleCheck("quote_request", e.target.checked)}
-                  />
-                </div>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]">
+                <label htmlFor="filter-all">전체선택 (totalCount)</label>
+                <input
+                  type="checkbox"
+                  id="filter-all"
+                  checked={filterCheckboxes.all}
+                  onChange={(e) => handleFilterAllCheck(e.target.checked)}
+                />
+              </div>
+              <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]">
+                <label htmlFor="service_area">서비스 가능 지역 (count)</label>
+                <input
+                  type="checkbox"
+                  id="service_area"
+                  checked={filterCheckboxes.service_area}
+                  onChange={(e) => handleFilterSingleCheck("service_area", e.target.checked)}
+                />
+              </div>
+              <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]">
+                <label htmlFor="quote_request">지정 견적 요청 (count)</label>
+                <input
+                  type="checkbox"
+                  id="quote_request"
+                  checked={filterCheckboxes.quote_request}
+                  onChange={(e) => handleFilterSingleCheck("quote_request", e.target.checked)}
+                />
               </div>
             </div>
           )}
