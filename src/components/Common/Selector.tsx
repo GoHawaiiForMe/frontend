@@ -7,7 +7,14 @@ export default function Selector({
   selectedTypes: string[];
   toggleSelection: (type: string) => void;
 }) {
-  const services = ["기념품형", "액티비티형", "맛집형", "전시회형"];
+  const services = [
+    "맛집 탐방형",
+    "기념품/쇼핑형",
+    "휴양형",
+    "문화/역사탐방형",
+    "액티비티/탐험형",
+    "축제참여형",
+  ];
   const locations = [
     "서울",
     "경기",
@@ -26,24 +33,22 @@ export default function Selector({
     "울산",
     "부산",
     "제주",
-    "해외",
   ];
 
   return (
     <>
       {category === "services" && (
-        <div className="flex gap-3">
+        <div className="grid grid-cols-3 gap-3">
           {services.map((service) => (
             <div
-              className={` border text-2lg rounded-3xl px-3 py-2 medium ${
+              onClick={() => toggleSelection(service)}
+              className={`border text-2lg rounded-3xl px-3 py-2 medium flex justify-center cursor-pointer ${
                 selectedTypes.includes(service)
                   ? "bg-color-blue-50 border-color-blue-300 text-color-blue-300 bold"
                   : "bg-color-background-100 border-color-gray-100"
               } mobile-tablet:px-2 mobile-tablet:py-1 mobile-tablet:text-md`}
             >
-              <button key={service} onClick={() => toggleSelection(service)}>
-                {service}
-              </button>
+              <button key={service}>{service}</button>
             </div>
           ))}
         </div>

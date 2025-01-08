@@ -8,8 +8,7 @@ export default function Bubble({ type = "left", children }: BubbleProps) {
   if (type === "left") {
     bubbleStyle = "bg-color-gray-50 rounded-r-3xl rounded-bl-3xl";
   } else if (type === "right") {
-    bubbleStyle =
-      "bg-color-blue-300 rounded-l-3xl rounded-br-3xl text-color-gray-50 flex justify-end";
+    bubbleStyle = "bg-color-blue-300 rounded-l-3xl rounded-br-3xl text-color-gray-50";
   } else if (type === "right_select") {
     bubbleStyle = "bg-color-gray-50 rounded-l-3xl rounded-br-3xl ";
   }
