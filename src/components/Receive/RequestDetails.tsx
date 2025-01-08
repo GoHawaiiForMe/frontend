@@ -23,10 +23,10 @@ export default function RequestDetails() {
         <div className="">1 시간전</div>
       </div>
       <div>
-        <p className="text-[20px] font-semibold leading-[32px] pb-[18px] border-b border-color-line-200 mb-[18px] mobile:border-0">
+        <p className="text-[20px] font-semibold leading-[32px] pb-[18px] border-b border-color-line-200 mb-[18px] ">
           김인서 고객님
         </p>
-        <div className="flex items-center gap-[12px] mobile:grid mobile:grid-cols-2 mobile:gap-4">
+        <div className="flex items-center gap-[12px] mobile:grid mobile:grid-cols-2 mobile:gap-[0px]">
           <div className="flex items-center gap-[4px] mobile:col-span-2 mobile:mb-2">
             <p className="text-[18px] font-normal leading-[26px] text-color-gray-500 bg-color-background-400 rounded-[4px] px-[6px] py-[4px] whitespace-nowrap mobile:text-md">
               이사일
@@ -36,7 +36,7 @@ export default function RequestDetails() {
             </p>
           </div>
           <p className="text-color-line-200 mobile:hidden">ㅣ</p>
-          <div className="flex items-center gap-[12px]">
+          <div className="flex items-center gap-[12px] mobile:border-r mobile:border-color-line-200 mobile:pr-[2px]">
             <p className="text-[18px] font-normal leading-[26px] text-color-gray-500 bg-color-background-400 rounded-[4px] px-[6px] py-[4px] whitespace-nowrap mobile:text-md">
               출발
             </p>
@@ -45,7 +45,7 @@ export default function RequestDetails() {
             </p>
           </div>
           <p className="text-color-line-200 mobile:hidden">ㅣ</p>
-          <div className="flex items-center gap-[12px]">
+          <div className="flex items-center gap-[12px] mobile:pl-[7px]">
             <p className="text-[18px] font-normal leading-[26px] text-color-gray-500 bg-color-background-400 rounded-[4px] px-[6px] py-[4px] whitespace-nowrap mobile:text-md">
               도착
             </p>
