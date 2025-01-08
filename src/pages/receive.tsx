@@ -27,14 +27,14 @@ export default function Receive() {
               />
             </div>
           </div>
-          <div className="border border-color-line-100 rounded-[16px] pt-[20px] pb-[12px] px-[24px] ">
+          <div className="border border-color-line-100 rounded-[16px] pt-[20px] pb-[12px] px-[24px] shadow-md mobile:w-[328px] mobile:mx-[auto]">
             <RequestDetails />
             <div className="flex justify-between items-center gap-[11px] mobile-tablet:gap-[8px] mobile:flex-col mobile:justify-normal">
-              <button className="flex justify-center items-center gap-[10px] bg-color-blue-300 rounded-[16px] w-[448px] h-[64px] mobile:w-[280px] tablet:w-[300px]">
-                <p className="text-white font-semibold text-[20px] leading-[32px]">견적 보내기</p>
+              <button className="flex justify-center items-center gap-[10px] bg-color-blue-300 rounded-[16px] w-[448px] h-[64px] mobile:w-[300px] mobile:h-[48px] tablet:w-[280px] tablet:h-[48px]">
+                <p className="text-white font-semibold text-[20px] leading-[32px] whitespace-nowrap">견적 보내기</p>
                 <Image src={writing} alt="send" width={24} height={24} />
               </button>
-              <button className="bg-white rounded-[16px] border border-color-blue-300 w-[448px] h-[64px] text-color-blue-300 font-semibold text-[20px] leading-[32px] mobile:w-[280px] tablet:w-[300px]">
+              <button className="bg-white rounded-[16px] border border-color-blue-300 w-[448px] h-[64px] text-color-blue-300 font-semibold text-[20px] leading-[32px] mobile:w-[300px] mobile:h-[48px] tablet:w-[280px] tablet:h-[48px]">
                 반려
               </button>
             </div>
