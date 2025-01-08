@@ -22,10 +22,18 @@ jobs:
 
             const filteredReviewers = reviewers.filter(r => r !== prAuthor);
 
-            const selectedReviewers = filteredReviewers
-              .sort(() => Math.random() - 0.5)
-              .slice(0, 2);
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+            
+            const shuffledReviewers = shuffleArray(filteredReviewers);
 
+            const selectedReviewers = shuffledReviewers.slice(0, 2);
+            
             await github.rest.pulls.requestReviewers({
               owner: context.repo.owner,
               repo: context.repo.repo,
