@@ -32,7 +32,7 @@ export default function Selector({
   return (
     <>
       {category === "services" && (
-        <div className="flex justify-center gap-3">
+        <div className="flex gap-3">
           {services.map((service) => (
             <div
               className={` border text-2lg rounded-3xl px-3 py-2 medium ${
@@ -49,10 +49,10 @@ export default function Selector({
         </div>
       )}
       {category === "locations" && (
-        <div className="grid grid-cols-5 gap-3">
+        <div className="grid grid-cols-5 gap-3 w-[416px] mobile-tablet:w-[280px] mobile-tablet:gap-2">
           {locations.map((location) => (
             <div
-              className={`bg-color-background-100 border border-color-gray-100 text-2lg rounded-3xl px-3 py-2 medium ${
+              className={`bg-color-background-100 border border-color-gray-100 text-2lg rounded-3xl px-3 py-2 medium flex items-center justify-center ${
                 selectedTypes.includes(location)
                   ? "bg-color-blue-50 border-color-blue-300 text-color-blue-300 bold"
                   : "bg-color-background-100 border-color-gray-100"
