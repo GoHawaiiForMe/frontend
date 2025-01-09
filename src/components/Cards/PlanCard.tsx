@@ -49,7 +49,7 @@ export default function PlanCard({ planData }: PlanCardProps) {
   };
 
   return (
-    <div className="flex">
+    <div className="flex w-1400 h-338">
       <div className="flex">
         <div className="planTitle">{selectedPlan ? selectedPlan.name : "플랜 선택"}</div>
         <button className="">플랜 취소</button>
