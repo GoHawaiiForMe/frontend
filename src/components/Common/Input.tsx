@@ -44,7 +44,7 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className={`w-full border rounded-xl p-4  ${className}`}
+          className={`w-full border rounded-xl p-4 bg-color-gray-50 resize-none h-40 mb-4 ${className}`}
           {...rest}
         />
       ) : type === "password" ? (
