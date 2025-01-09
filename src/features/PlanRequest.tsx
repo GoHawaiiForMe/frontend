@@ -18,6 +18,7 @@ export default function PlanRequest() {
   const [showStep1Summary, setShowStep1Summary] = useState(false);
   const [showStep2Summary, setShowStep2Summary] = useState(false);
   const [showStep3Summary, setShowStep3Summary] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -61,7 +62,7 @@ export default function PlanRequest() {
     (selectedServices.includes("기념품/쇼핑형")
       ? address && detailAddress
       : selectedServices.length > 0);
-  //   const isStep3Complete = selectedDate.length > 0;
+  const isStep3Complete = selectedDate !== null;
 
   const handleCompleteStep1Selection = () => {
     if (isStep1Complete) {
@@ -77,10 +78,14 @@ export default function PlanRequest() {
   };
 
   const handleCompleteStep3Selection = () => {
-    if (isStep2Complete) {
-      setShowStep2Summary(true);
+    if (isStep3Complete) {
+      setShowStep3Summary(true);
       updateProgress();
     }
+  };
+
+  const handleDateChange = (date: Date) => {
+    setSelectedDate(date);
   };
 
   return (
@@ -222,7 +227,7 @@ export default function PlanRequest() {
             )}
           </Bubble>
           <p
-            className="underline flex justify-end cursor-pointer -mt-7"
+            className="underline flex justify-end cursor-pointer -mt-7 mb-8"
             onClick={() => setShowStep2Summary(false)}
           >
             수정하기
@@ -236,18 +241,25 @@ export default function PlanRequest() {
           <Bubble type="left">여행할 날짜를 선택해 주세요.</Bubble>
           <div>
             <Bubble type="right_select">
-              {/* <>달력 API</> */}
-              <Calendar />
+              <Calendar onDateChange={handleDateChange} />
+              <Button
+                label="선택완료"
+                className="mt-8"
+                disabled={!isStep3Complete}
+                onClick={handleCompleteStep3Selection}
+              />
             </Bubble>
           </div>
         </>
       )}
-      {showStep3Summary && (
+      {showStep1Summary && showStep2Summary && showStep3Summary && (
         <div>
           <Bubble type="right">
             <div>
               <p>[여행할 날짜]</p>
-              <div>{selectedLocations.join(", ")}</div>
+              <div>
+                {selectedDate ? selectedDate.toLocaleDateString("ko-KR") : "날짜 선택 안됨"}
+              </div>
             </div>
           </Bubble>
           <p
@@ -256,6 +268,17 @@ export default function PlanRequest() {
           >
             수정하기
           </p>
+          <Bubble type="right">
+            <div className="px-4">
+              <p className="mb-2">플랜을 확정하시겠습니까?</p>
+
+              <Button
+                label="플랜 확정하기"
+                type="submit"
+                className="border border-color-black-100 bg-color-red-100 text-color-black-500"
+              ></Button>
+            </div>
+          </Bubble>
         </div>
       )}
     </>

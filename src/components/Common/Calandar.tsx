@@ -110,12 +110,13 @@ const CustomCalendar = styled(ReactCalendar)`
   }
 `;
 
-export default function Calendar() {
+export default function Calendar({ onDateChange }: { onDateChange: (date: Date) => void }) {
   const [date, setDate] = useState<Date | null>(new Date());
 
   const handleDateChange: CalendarProps["onChange"] = (value) => {
     if (value instanceof Date) {
       setDate(value);
+      onDateChange(value);
     }
   };
 
