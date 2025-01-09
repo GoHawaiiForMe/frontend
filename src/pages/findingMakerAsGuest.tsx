@@ -16,6 +16,9 @@ export default function findingMakerAsGuest() {
           <Label type="gift" />
           <Label type="food" />
           <Label type="activity" />
+          <Label type="box" />
+          <Label type="home" />
+          <Label type="relaxation" />
         </div>
         </>
       </main>
