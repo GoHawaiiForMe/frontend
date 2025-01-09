@@ -7,7 +7,7 @@ import ModalLayout from "@/components/Common/ModalLayout";
 import Button from "@/components/Common/Button";
 import Calendar from "@/components/Common/Calandar";
 
-export default function PlanRequest() {
+export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
   const [textValue, setTextValue] = useState<string>("");
   const [textareaValue, setTextareaValue] = useState<string>("");
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
@@ -88,6 +88,11 @@ export default function PlanRequest() {
     setSelectedDate(date);
   };
 
+  const handlePlanConfirm = () => {
+    console.log("플랜 확정하기 버튼");
+    onConfirm();
+  };
+
   return (
     <>
       <div className="mb-8 w-[312px]">
@@ -142,7 +147,6 @@ export default function PlanRequest() {
       )}
 
       {/* step 2 */}
-
       {showStep1Summary && !showStep2Summary && (
         <>
           <Bubble type="left">여행 종류를 선택해 주세요.</Bubble>
@@ -209,6 +213,10 @@ export default function PlanRequest() {
         <div>
           <Bubble type="right">
             <div>
+              <p>[제목]</p>
+              <div>{textValue}</div>
+            </div>
+            <div>
               <p>[요청사항]</p>
               <div>{textareaValue}</div>
             </div>
@@ -226,6 +234,7 @@ export default function PlanRequest() {
               </>
             )}
           </Bubble>
+
           <p
             className="underline flex justify-end cursor-pointer -mt-7 mb-8"
             onClick={() => setShowStep2Summary(false)}
@@ -274,8 +283,9 @@ export default function PlanRequest() {
 
               <Button
                 label="플랜 확정하기"
+                onClick={handlePlanConfirm}
                 type="submit"
-                className="border border-color-black-100 bg-color-red-100 text-color-black-500"
+                className="border border-color-black-100 bg-color-red-100 text-color-black-200"
               ></Button>
             </div>
           </Bubble>

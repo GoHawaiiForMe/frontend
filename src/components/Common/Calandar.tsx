@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Calendar as ReactCalendar, CalendarProps } from "react-calendar";
 import styled from "styled-components";
+import dayjs from "dayjs";
 
 const CustomCalendar = styled(ReactCalendar)`
   width: 350px;
@@ -122,7 +123,13 @@ export default function Calendar({ onDateChange }: { onDateChange: (date: Date) 
 
   return (
     <div>
-      <CustomCalendar onChange={handleDateChange} value={date} locale="ko-KR" selectRange={false} />
+      <CustomCalendar
+        onChange={handleDateChange}
+        value={date}
+        locale="ko-KR"
+        selectRange={false}
+        formatDay={(locale, date) => dayjs(date).format("DD")}
+      />
     </div>
   );
 }

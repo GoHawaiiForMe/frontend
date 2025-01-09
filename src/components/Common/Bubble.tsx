@@ -17,7 +17,7 @@ export default function Bubble({ type = "left", children }: BubbleProps) {
 
   return (
     <>
-      <div className={`${containerStyle} mb-8`}>
+      <div className={`${containerStyle} pb-8`}>
         <div className={`${bubbleStyle} max-w-full w-fit bold py-3 px-5`}>{children}</div>
       </div>
     </>
