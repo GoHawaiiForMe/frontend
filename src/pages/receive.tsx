@@ -7,6 +7,7 @@ import writing from "@public/assets/icon_writing.png";
 import mobilefilter from "@public/assets/icon_filterbutton.png";
 import ModalFilter from "@/components/Receive/ModalFilter";
 import { useState } from "react";
+import CheckFilter2 from "@/components/Receive/CheckFilter2";
 
 export default function Receive() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -14,7 +15,7 @@ export default function Receive() {
     <div className="mt-[88px]">
       <p className="font-semibold text-[24px] py-[32px] ">받은 요청</p>
       <div className="flex gap-[107px] ">
-        <CheckFilter />
+        <CheckFilter2 />
         <div className="w-full">
           <CustomerInput />
           <div className="flex justify-between items-center mt-[24px] mb-[32px]">

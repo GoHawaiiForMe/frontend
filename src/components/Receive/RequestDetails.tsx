@@ -14,16 +14,23 @@ export default function RequestDetails() {
             </p>
           </div>
           <div className="flex items-center gap-[4px] bg-color-red-100 rounded-[4px] p-[4px]">
-            <Image src={iconDocument} alt="document" width={24} height={24} className="w-[20px] h-[20px]" />
+            <Image
+              src={iconDocument}
+              alt="document"
+              width={24}
+              height={24}
+              className="w-[20px] h-[20px]"
+            />
             <p className="text-[16px] font-semibold leading-[26px] text-color-red-200 mobile:text-sm">
               지정 견적 요청
             </p>
-          </div>                                                                                                       
+          </div>
         </div>
         <div className="">1 시간전</div>
       </div>
       <div>
-        <p className="text-[20px] font-semibold leading-[32px] pb-[18px] border-b border-color-line-200 mb-[18px] ">
+        <p className="text-xl font-semibold">일본도쿄여행 혼자서 외롭게 다녀오실분~</p>
+        <p className="text-md font-medium pb-[18px] border-b border-color-line-200 mb-[18px] ">
           김인서 고객님
         </p>
         <div className="flex items-center gap-[12px] mobile:grid mobile:grid-cols-2 mobile:gap-[0px]">
@@ -31,7 +38,7 @@ export default function RequestDetails() {
             <p className="text-[18px] font-normal leading-[26px] text-color-gray-500 bg-color-background-400 rounded-[4px] px-[6px] py-[4px] whitespace-nowrap mobile:text-md">
               이사일
             </p>
-            <p className="text-[18px] font-medium leading-[26px] text-color-black-300 mobile:text-md">
+            <p className="text-[18px] medium leading-[26px] text-color-black-300 mobile:text-md">
               2024.07.01(월)
             </p>
           </div>
@@ -41,7 +48,7 @@ export default function RequestDetails() {
               출발
             </p>
             <p className="text-[18px] font-medium leading-[26px] whitespace-nowrap text-color-black-300 mobile:text-md">
-              서울 강남구{" "}
+              서울 강남구
             </p>
           </div>
           <p className="text-color-line-200 mobile:hidden">ㅣ</p>

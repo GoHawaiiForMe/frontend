@@ -4,12 +4,12 @@ import { useState } from "react";
 
 interface TypeCheckboxState {
   all: boolean;
-  taste: boolean;
-  shopping: boolean;
-  rest: boolean;
-  culture: boolean;
-  activity: boolean;
-  festival: boolean;
+  FOOD_TOUR: boolean;
+  SHOPPING: boolean;
+  RELAXATION: boolean;
+  CULTURE: boolean;
+  ACTIVITY: boolean;
+  FESTIVAL: boolean;
 }
 
 interface FilterCheckboxState {
@@ -26,12 +26,12 @@ export default function ModalFilter({ closeModal }: ModalFilterProps) {
   const [activeTab, setActiveTab] = useState<"type" | "filter">("type");
   const [typeCheckboxes, setTypeCheckboxes] = useState<TypeCheckboxState>({
     all: false,
-    taste: false,
-    shopping: false,
-    rest: false,
-    culture: false,
-    activity: false,
-    festival: false,
+    FOOD_TOUR: false,
+    SHOPPING: false,
+    RELAXATION: false,
+    CULTURE: false,
+    ACTIVITY: false,
+    FESTIVAL: false,
   });
 
   const [filterCheckboxes, setFilterCheckboxes] = useState<FilterCheckboxState>({
@@ -43,12 +43,12 @@ export default function ModalFilter({ closeModal }: ModalFilterProps) {
   const handleTypeAllCheck = (checked: boolean): void => {
     setTypeCheckboxes({
       all: checked,
-      taste: checked,
-      shopping: checked,
-      rest: checked,
-      culture: checked,
-      activity: checked,
-      festival: checked,
+      FOOD_TOUR: checked,
+      SHOPPING: checked,
+      RELAXATION: checked,
+      CULTURE: checked,
+      ACTIVITY: checked,
+      FESTIVAL: checked,
     });
   };
 
@@ -60,7 +60,10 @@ export default function ModalFilter({ closeModal }: ModalFilterProps) {
     });
   };
 
-  const handleTypeSingleCheck = (id: keyof Omit<TypeCheckboxState, "all">, checked: boolean): void => {
+  const handleTypeSingleCheck = (
+    id: keyof Omit<TypeCheckboxState, "all">,
+    checked: boolean,
+  ): void => {
     const newCheckboxes = {
       ...typeCheckboxes,
       [id]: checked,
@@ -76,7 +79,10 @@ export default function ModalFilter({ closeModal }: ModalFilterProps) {
     });
   };
 
-  const handleFilterSingleCheck = (id: keyof Omit<FilterCheckboxState, "all">, checked: boolean): void => {
+  const handleFilterSingleCheck = (
+    id: keyof Omit<FilterCheckboxState, "all">,
+    checked: boolean,
+  ): void => {
     const newCheckboxes = {
       ...filterCheckboxes,
       [id]: checked,
@@ -95,6 +101,15 @@ export default function ModalFilter({ closeModal }: ModalFilterProps) {
   const mainTabs = [
     { id: "type", label: "여행 유형" },
     { id: "filter", label: "필터" },
+  ];
+
+  const typeOptions = [
+    { id: "FOOD_TOUR", label: "맛집 탐방형" },
+    { id: "SHOPPING", label: "기념품/쇼핑형" },
+    { id: "RELAXATION", label: "휴양형" },
+    { id: "CULTURE", label: "문화/역사탐방형" },
+    { id: "ACTIVITY", label: "액티비티/탐험형" },
+    { id: "FESTIVAL", label: "축제 참여형" },
   ];
 
   return (
@@ -137,60 +152,25 @@ export default function ModalFilter({ closeModal }: ModalFilterProps) {
                   onChange={(e) => handleTypeAllCheck(e.target.checked)}
                 />
               </div>
-              <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]">
-                <label htmlFor="taste">맛집 탐방형 (count)</label>
-                <input
-                  type="checkbox"
-                  id="taste"
-                  checked={typeCheckboxes.taste}
-                  onChange={(e) => handleTypeSingleCheck("taste", e.target.checked)}
-                />
-              </div>
-              <div className="flex justify-between  items-center gap-2 border-b border-color-line-200 pb-[16px]">
-                <label htmlFor="shopping">기념품/쇼핑형 (count)</label>
-                <input
-                  type="checkbox"
-                  id="shopping"
-                  checked={typeCheckboxes.shopping}
-                  onChange={(e) => handleTypeSingleCheck("shopping", e.target.checked)}
-                />
-              </div>
-              <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]">
-                <label htmlFor="rest">휴양형 (count)</label>
-                <input
-                  type="checkbox"
-                  id="rest"
-                  checked={typeCheckboxes.rest}
-                  onChange={(e) => handleTypeSingleCheck("rest", e.target.checked)}
-                />
-              </div>
-              <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]">
-                <label htmlFor="culture">문화/역사탐방형 (count)</label>
-                <input
-                  type="checkbox"
-                  id="culture"
-                  checked={typeCheckboxes.culture}
-                  onChange={(e) => handleTypeSingleCheck("culture", e.target.checked)}
-                />
-              </div>
-              <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]  ">
-                <label htmlFor="activity">액티비티/탐험형 (count)</label>
-                <input
-                  type="checkbox"
-                  id="activity"
-                  checked={typeCheckboxes.activity}
-                  onChange={(e) => handleTypeSingleCheck("activity", e.target.checked)}
-                />
-              </div>
-              <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]  ">
-                <label htmlFor="festival">축제 참여형 (count)</label>
-                <input
-                  type="checkbox"
-                  id="festival"
-                  checked={typeCheckboxes.festival}
-                  onChange={(e) => handleTypeSingleCheck("festival", e.target.checked)}
-                />
-              </div>
+              {typeOptions.map((option) => (
+                <div
+                  key={option.id}
+                  className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]"
+                >
+                  <label htmlFor={option.id}>{option.label} (count)</label>
+                  <input
+                    type="checkbox"
+                    id={option.id}
+                    checked={typeCheckboxes[option.id as keyof TypeCheckboxState]}
+                    onChange={(e) =>
+                      handleTypeSingleCheck(
+                        option.id as keyof Omit<TypeCheckboxState, "all">,
+                        e.target.checked,
+                      )
+                    }
+                  />
+                </div>
+              ))}
             </div>
           ) : (
             <div className="space-y-3">
