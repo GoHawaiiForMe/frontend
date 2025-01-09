@@ -1,4 +1,5 @@
 import PlanCard from "@/components/Cards/PlanCard";
+import Layout from "@/components/Common/Layout";
 
 export default function ongoingTrip() {
   // 테스트용 데이터
@@ -7,37 +8,46 @@ export default function ongoingTrip() {
     plans: [
       {
         id: 1,
-        name: "플랜이름1",
+        name: "플랜이름몇자까지되나요",
         requestDate: "2025-01-01",
-        travelType: "휴양지",
-        travelSpot: "서울",
+        tripType: "휴양지",
+        tripSpot: "서울",
+        tripPeriod: "2025-01-10 ~ 2025-01-15", // 여행 시작일 ~ 여행 종료일
         specialRequests: "특별 요청 사항 없음",
       },
       {
         id: 2,
-        name: "플랜이름2",
+        name: "플랜이름더더더더더더더길어져도되나요",
         requestDate: "2025-02-01",
-        travelType: "모험 여행",
-        travelSpot: "부산",
+        tripType: "모험 여행",
+        tripSpot: "부산",
+        tripPeriod: "2025-02-10 ~ 2025-02-17", // 여행 시작일 ~ 여행 종료일
         specialRequests: "특별 요청 없음",
       },
       {
         id: 3,
-        name: "플랜이름3",
+        name: "안신나는 제주도 출장",
         requestDate: "2025-03-01",
-        travelType: "비즈니스",
-        travelSpot: "제주도",
+        tripType: "비즈니스",
+        tripSpot: "제주도",
+        tripPeriod: "2025-03-05 ~ 2025-03-07", // 여행 시작일 ~ 여행 종료일
         specialRequests: "업무 일정 조정 필요",
       },
       {
         id: 4,
-        name: "플랜이름4",
+        name: "경주에도 바닷가가 있나요?",
         requestDate: "2025-04-01",
-        travelType: "휴양지",
-        travelSpot: "경주",
+        tripType: "휴양지",
+        tripSpot: "경주",
+        tripPeriod: "2025-04-05 ~ 2025-04-10", // 여행 시작일 ~ 여행 종료일
         specialRequests: "해변 근처 숙소",
       },
     ],
   };
-  return <PlanCard planData={planData} />;
+
+  return (
+    <Layout bodyClass="bg-gray">
+      <PlanCard planData={planData} />
+    </Layout>
+  );
 }
