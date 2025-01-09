@@ -55,7 +55,7 @@ export default function PlanCard({ planData }: PlanCardProps) {
         <div className="text-color-black-400 word-break semibold text-2xl content-center mobile:text-lg">
           {selectedPlan ? selectedPlan.name : "플랜 선택"}
         </div>
-        <div className="flex content-between gap-x-[16px] mobile:w-full mobile:whitespace-nowrap mobile: justify-end">
+        <div className="flex content-between gap-x-[16px] mobile:w-full mobile:whitespace-nowrap mobile-tablet:justify-end">
           <div className="flex content-between gap-[11px]">
             <button
               className="relative text-nowrap min-w-[152px] py-[16px] px-[32.5px] bg-color-blue-300 text-white semibold rounded-2xl  text-xl tablet:text-lg mobile:text-md mobile-tablet:py-[6px] mobile-tablet:px-[16px]"
@@ -63,12 +63,12 @@ export default function PlanCard({ planData }: PlanCardProps) {
             >
               플랜 목록
               {isOpen && (
-                <ul className="absolute top-[75px] right-0 text-left p-[16px] bg-gray-50  normal text-color-black-500 rounded-2xl mobile-tablet:top-[40px] mobile-tablet:p-[16px]">
+                <ul className="absolute top-[75px] right-0 text-left p-[16px] max-h-[200px] overflow-y-auto overflow-x-hidden bg-gray-50 normal text-color-black-500 rounded-2xl sm:w-auto mobile-tablet:top-[40px] mobile-tablet:p-[16px] mobile-tablet:max-w-[95%]">
                   {sortedPlans.map((plan) => (
                     <li
                       key={plan.id}
                       onClick={() => handlePlanSelect(plan.id)}
-                      className="p-[8px] truncate"
+                      className="p-[8px] pointer hover:bg-color-blue-100 px-2 py-1 rounded-lg mobile:truncate"
                     >
                       {plan.name}
                     </li>
