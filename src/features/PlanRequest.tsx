@@ -1,4 +1,3 @@
-import Layout from "@/components/Common/Layout";
 import Bubble from "@/components/Common/Bubble";
 import Selector from "@/components/Common/Selector";
 import Input from "@/components/Common/Input";
@@ -6,8 +5,10 @@ import { useState, useEffect } from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import ModalLayout from "@/components/Common/ModalLayout";
 import Button from "@/components/Common/Button";
+import Calendar from "@/components/Common/Calandar";
 
 export default function PlanRequest() {
+  const [textValue, setTextValue] = useState<string>("");
   const [textareaValue, setTextareaValue] = useState<string>("");
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
@@ -20,23 +21,12 @@ export default function PlanRequest() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (showStep1Summary && !showStep2Summary) {
-      setProgress(50);
-    } else if (showStep2Summary) {
-      setProgress(100);
-    } else {
-      setProgress(25);
-    }
-  }, [showStep1Summary, showStep2Summary]);
+    updateProgress();
+  }, [showStep1Summary, showStep2Summary, showStep3Summary]);
 
   const updateProgress = () => {
-    if (showStep1Summary && !showStep2Summary) {
-      setProgress(50);
-    } else if (showStep2Summary) {
-      setProgress(100);
-    } else {
-      setProgress(25);
-    }
+    const newProgress = showStep3Summary ? 100 : showStep2Summary ? 75 : showStep1Summary ? 50 : 25;
+    setProgress(newProgress);
   };
 
   const handleLocationSelection = (type: string) => {
@@ -63,14 +53,14 @@ export default function PlanRequest() {
     setAddress(data.address);
     setIsOpenAddressAPI(false);
   };
-  const isStep1Complete = selectedLocations.length > 0;
 
+  const isStep1Complete = selectedLocations.length > 0;
   const isStep2Complete =
     textareaValue.trim().length > 0 &&
+    textValue.length > 0 &&
     (selectedServices.includes("기념품/쇼핑형")
       ? address && detailAddress
       : selectedServices.length > 0);
-
   //   const isStep3Complete = selectedDate.length > 0;
 
   const handleCompleteStep1Selection = () => {
@@ -79,12 +69,6 @@ export default function PlanRequest() {
       updateProgress();
     }
   };
-
-  const handleEditStep1Summary = () => {
-    setShowStep1Summary(false);
-    setProgress(25);
-  };
-
   const handleCompleteStep2Selection = () => {
     if (isStep2Complete) {
       setShowStep2Summary(true);
@@ -92,21 +76,11 @@ export default function PlanRequest() {
     }
   };
 
-  const handleEditStep2Summary = () => {
-    setShowStep2Summary(false);
-    setProgress(50);
-  };
-
   const handleCompleteStep3Selection = () => {
     if (isStep2Complete) {
       setShowStep2Summary(true);
       updateProgress();
     }
-  };
-
-  const handleEditStep3Summary = () => {
-    setShowStep2Summary(false);
-    setProgress(75);
   };
 
   return (
@@ -128,24 +102,22 @@ export default function PlanRequest() {
       <Bubble type="left">여행 지역을 선택해 주세요.</Bubble>
       {/* step 1 */}
       {!showStep1Summary && (
-        <>
-          <div>
-            <Bubble type="right_select">
-              <Selector
-                category="locations"
-                selectedTypes={selectedLocations}
-                toggleSelection={handleLocationSelection}
-              />
+        <div>
+          <Bubble type="right_select">
+            <Selector
+              category="locations"
+              selectedTypes={selectedLocations}
+              toggleSelection={handleLocationSelection}
+            />
 
-              <Button
-                label="선택완료"
-                className="mt-8"
-                disabled={!isStep1Complete}
-                onClick={handleCompleteStep1Selection}
-              />
-            </Bubble>
-          </div>
-        </>
+            <Button
+              label="선택완료"
+              className="mt-8"
+              disabled={!isStep1Complete}
+              onClick={handleCompleteStep1Selection}
+            />
+          </Bubble>
+        </div>
       )}
       {showStep1Summary && (
         <div>
@@ -157,7 +129,7 @@ export default function PlanRequest() {
           </Bubble>
           <p
             className="underline flex justify-end cursor-pointer -mt-7 mb-8"
-            onClick={handleEditStep1Summary}
+            onClick={() => setShowStep1Summary(false)}
           >
             수정하기
           </p>
@@ -171,6 +143,14 @@ export default function PlanRequest() {
           <Bubble type="left">여행 종류를 선택해 주세요.</Bubble>
           <div>
             <Bubble type="right_select">
+              <div className="mb-4">
+                <Input
+                  type="text"
+                  onChange={(e) => setTextValue(e.target.value)}
+                  value={textValue}
+                  placeholder="제목을 작성해주세요."
+                />
+              </div>
               <Input
                 type="textarea"
                 onChange={(e) => setTextareaValue(e.target.value)}
@@ -243,7 +223,7 @@ export default function PlanRequest() {
           </Bubble>
           <p
             className="underline flex justify-end cursor-pointer -mt-7"
-            onClick={handleEditStep2Summary}
+            onClick={() => setShowStep2Summary(false)}
           >
             수정하기
           </p>
@@ -257,12 +237,7 @@ export default function PlanRequest() {
           <div>
             <Bubble type="right_select">
               {/* <>달력 API</> */}
-              <Button
-                label="달력 넣어야함"
-                className="mt-8"
-                // disabled={!isStep3Complete}
-                onClick={handleCompleteStep3Selection}
-              />
+              <Calendar />
             </Bubble>
           </div>
         </>
@@ -277,7 +252,7 @@ export default function PlanRequest() {
           </Bubble>
           <p
             className="underline flex justify-end cursor-pointer -mt-7 mb-8"
-            onClick={handleEditStep3Summary}
+            onClick={() => setShowStep3Summary(false)}
           >
             수정하기
           </p>
