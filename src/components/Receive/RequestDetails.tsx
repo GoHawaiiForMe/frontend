@@ -10,7 +10,7 @@ export default function RequestDetails() {
           <div className="flex items-center gap-[4px] bg-color-blue-100 rounded-[4px] p-[4px]">
             <Image src={iconBox} alt="box" width={24} height={24} className="w-[20px] h-[20px]" />
             <p className="text-[16px] font-semibold leading-[26px] text-color-blue-300 mobile:text-sm">
-              소형 이사
+              축제 참여형
             </p>
           </div>
           <div className="flex items-center gap-[4px] bg-color-red-100 rounded-[4px] p-[4px]">
