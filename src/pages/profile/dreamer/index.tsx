@@ -1,5 +1,5 @@
 import ProfileDreamer from "@/features/ProfileDreamer";
 
-export default function LoginPage() {
+export default function ProfileDreamerPage() {
   return <ProfileDreamer />;
 }
