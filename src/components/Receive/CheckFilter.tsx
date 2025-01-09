@@ -110,7 +110,7 @@ export default function CheckFilter() {
     { id: "quote_request", label: "지정 견적 요청" },
   ];
   return (
-    <div className="w-[328px]  ">
+    <div className="w-[328px] hidden pc:block  ">
       <div className="mb-[24px]">
         <div className="flex justify-between items-center border-b border-color-line-200 px-[13.5px] py-[16px] my-[24px]">
           <p className="text-[20px] font-medium leading-8 whitespace-nowrap">여행 유형</p>

@@ -112,6 +112,11 @@ export default function ModalFilter({ closeModal }: ModalFilterProps) {
     { id: "FESTIVAL", label: "축제 참여형" },
   ];
 
+  const filterOptions = [
+    { id: "service_area", label: "서비스 가능 지역" },
+    { id: "quote_request", label: "지정 견적 요청" },
+  ];
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center mobile:items-end ">
       <div className="bg-white rounded-2xl px-[24px] py-[16px] w-[375px] mobile:rounded-b-none mobile:pb-[32px]">
@@ -183,24 +188,25 @@ export default function ModalFilter({ closeModal }: ModalFilterProps) {
                   onChange={(e) => handleFilterAllCheck(e.target.checked)}
                 />
               </div>
-              <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]">
-                <label htmlFor="service_area">서비스 가능 지역 (count)</label>
-                <input
-                  type="checkbox"
-                  id="service_area"
-                  checked={filterCheckboxes.service_area}
-                  onChange={(e) => handleFilterSingleCheck("service_area", e.target.checked)}
-                />
-              </div>
-              <div className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]">
-                <label htmlFor="quote_request">지정 견적 요청 (count)</label>
-                <input
-                  type="checkbox"
-                  id="quote_request"
-                  checked={filterCheckboxes.quote_request}
-                  onChange={(e) => handleFilterSingleCheck("quote_request", e.target.checked)}
-                />
-              </div>
+              {filterOptions.map((option) => (
+                <div
+                  key={option.id}
+                  className="flex justify-between items-center gap-2 border-b border-color-line-200 pb-[16px]"
+                >
+                  <label htmlFor={option.id}>{option.label} (count)</label>
+                  <input
+                    type="checkbox"
+                    id={option.id}
+                    checked={filterCheckboxes[option.id as keyof FilterCheckboxState]}
+                    onChange={(e) =>
+                      handleFilterSingleCheck(
+                        option.id as keyof Omit<FilterCheckboxState, "all">,
+                        e.target.checked,
+                      )
+                    }
+                  />
+                </div>
+              ))}
             </div>
           )}
         </div>
