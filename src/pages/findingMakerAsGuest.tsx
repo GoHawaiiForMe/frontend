@@ -13,12 +13,12 @@ export default function findingMakerAsGuest() {
         <h1 className="text-4xl">Finding Maker As A Guest</h1>
         <p className="mt-4 text-lg">This is the &quot;Finding Maker As A Guest&quot; page of our website.</p>
         <div className="flex space-x-4 mt-4">
-          <Label type="gift" />
-          <Label type="food" />
-          <Label type="activity" />
-          <Label type="box" />
-          <Label type="home" />
-          <Label type="relaxation" />
+          <Label type="SHOPPING" />
+          <Label type="FOOD_TOUR" />
+          <Label type="ACTIVITY" />
+          <Label type="CULTURE" />
+          <Label type="FESTIVAL" />
+          <Label type="RELAXATION" />
         </div>
         </>
       </main>
