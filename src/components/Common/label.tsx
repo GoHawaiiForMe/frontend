@@ -51,12 +51,12 @@ const Label: React.FC<LabelProps> = ({ type }) => {
       break;
     case 'PENDING':
       labelText = '견적 대기';
-      containerClass = 'bg-color-gray-100';
+      containerClass = 'bg-color-gray-100 pr-2 pl-2';
       textClass = 'text-color-blue-400';
       break;
     case 'CONFIRMED':
       labelText = '견적 확정';
-      containerClass = 'bg-color-gray-100';
+      containerClass = 'bg-color-gray-100 pr-2 pl-2';
       textClass = 'text-color-blue-400';
       break;
   
