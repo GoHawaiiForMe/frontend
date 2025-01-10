@@ -1,4 +1,3 @@
-import Layout from "@/components/Common/Layout";
 import Bubble from "@/components/Common/Bubble";
 import Selector from "@/components/Common/Selector";
 import Input from "@/components/Common/Input";
@@ -6,8 +5,10 @@ import { useState, useEffect } from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import ModalLayout from "@/components/Common/ModalLayout";
 import Button from "@/components/Common/Button";
+import Calendar from "@/components/Common/Calandar";
 
-export default function PlanRequest() {
+export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
+  const [textValue, setTextValue] = useState<string>("");
   const [textareaValue, setTextareaValue] = useState<string>("");
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
@@ -17,26 +18,16 @@ export default function PlanRequest() {
   const [showStep1Summary, setShowStep1Summary] = useState(false);
   const [showStep2Summary, setShowStep2Summary] = useState(false);
   const [showStep3Summary, setShowStep3Summary] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (showStep1Summary && !showStep2Summary) {
-      setProgress(50);
-    } else if (showStep2Summary) {
-      setProgress(100);
-    } else {
-      setProgress(25);
-    }
-  }, [showStep1Summary, showStep2Summary]);
+    updateProgress();
+  }, [showStep1Summary, showStep2Summary, showStep3Summary]);
 
   const updateProgress = () => {
-    if (showStep1Summary && !showStep2Summary) {
-      setProgress(50);
-    } else if (showStep2Summary) {
-      setProgress(100);
-    } else {
-      setProgress(25);
-    }
+    const newProgress = showStep3Summary ? 100 : showStep2Summary ? 75 : showStep1Summary ? 50 : 25;
+    setProgress(newProgress);
   };
 
   const handleLocationSelection = (type: string) => {
@@ -63,15 +54,15 @@ export default function PlanRequest() {
     setAddress(data.address);
     setIsOpenAddressAPI(false);
   };
-  const isStep1Complete = selectedLocations.length > 0;
 
+  const isStep1Complete = selectedLocations.length > 0;
   const isStep2Complete =
     textareaValue.trim().length > 0 &&
+    textValue.length > 0 &&
     (selectedServices.includes("기념품/쇼핑형")
       ? address && detailAddress
       : selectedServices.length > 0);
-
-  //   const isStep3Complete = selectedDate.length > 0;
+  const isStep3Complete = selectedDate !== null;
 
   const handleCompleteStep1Selection = () => {
     if (isStep1Complete) {
@@ -79,12 +70,6 @@ export default function PlanRequest() {
       updateProgress();
     }
   };
-
-  const handleEditStep1Summary = () => {
-    setShowStep1Summary(false);
-    setProgress(25);
-  };
-
   const handleCompleteStep2Selection = () => {
     if (isStep2Complete) {
       setShowStep2Summary(true);
@@ -92,21 +77,20 @@ export default function PlanRequest() {
     }
   };
 
-  const handleEditStep2Summary = () => {
-    setShowStep2Summary(false);
-    setProgress(50);
-  };
-
   const handleCompleteStep3Selection = () => {
-    if (isStep2Complete) {
-      setShowStep2Summary(true);
+    if (isStep3Complete) {
+      setShowStep3Summary(true);
       updateProgress();
     }
   };
 
-  const handleEditStep3Summary = () => {
-    setShowStep2Summary(false);
-    setProgress(75);
+  const handleDateChange = (date: Date) => {
+    setSelectedDate(date);
+  };
+
+  const handlePlanConfirm = () => {
+    console.log("플랜 확정하기 버튼");
+    onConfirm();
   };
 
   return (
@@ -128,24 +112,22 @@ export default function PlanRequest() {
       <Bubble type="left">여행 지역을 선택해 주세요.</Bubble>
       {/* step 1 */}
       {!showStep1Summary && (
-        <>
-          <div>
-            <Bubble type="right_select">
-              <Selector
-                category="locations"
-                selectedTypes={selectedLocations}
-                toggleSelection={handleLocationSelection}
-              />
+        <div>
+          <Bubble type="right_select">
+            <Selector
+              category="locations"
+              selectedTypes={selectedLocations}
+              toggleSelection={handleLocationSelection}
+            />
 
-              <Button
-                label="선택완료"
-                className="mt-8"
-                disabled={!isStep1Complete}
-                onClick={handleCompleteStep1Selection}
-              />
-            </Bubble>
-          </div>
-        </>
+            <Button
+              label="선택완료"
+              className="mt-8"
+              disabled={!isStep1Complete}
+              onClick={handleCompleteStep1Selection}
+            />
+          </Bubble>
+        </div>
       )}
       {showStep1Summary && (
         <div>
@@ -157,7 +139,7 @@ export default function PlanRequest() {
           </Bubble>
           <p
             className="underline flex justify-end cursor-pointer -mt-7 mb-8"
-            onClick={handleEditStep1Summary}
+            onClick={() => setShowStep1Summary(false)}
           >
             수정하기
           </p>
@@ -165,12 +147,19 @@ export default function PlanRequest() {
       )}
 
       {/* step 2 */}
-
       {showStep1Summary && !showStep2Summary && (
         <>
           <Bubble type="left">여행 종류를 선택해 주세요.</Bubble>
           <div>
             <Bubble type="right_select">
+              <div className="mb-4">
+                <Input
+                  type="text"
+                  onChange={(e) => setTextValue(e.target.value)}
+                  value={textValue}
+                  placeholder="제목을 작성해주세요."
+                />
+              </div>
               <Input
                 type="textarea"
                 onChange={(e) => setTextareaValue(e.target.value)}
@@ -224,6 +213,10 @@ export default function PlanRequest() {
         <div>
           <Bubble type="right">
             <div>
+              <p>[제목]</p>
+              <div>{textValue}</div>
+            </div>
+            <div>
               <p>[요청사항]</p>
               <div>{textareaValue}</div>
             </div>
@@ -241,9 +234,10 @@ export default function PlanRequest() {
               </>
             )}
           </Bubble>
+
           <p
-            className="underline flex justify-end cursor-pointer -mt-7"
-            onClick={handleEditStep2Summary}
+            className="underline flex justify-end cursor-pointer -mt-7 mb-8"
+            onClick={() => setShowStep2Summary(false)}
           >
             수정하기
           </p>
@@ -256,31 +250,45 @@ export default function PlanRequest() {
           <Bubble type="left">여행할 날짜를 선택해 주세요.</Bubble>
           <div>
             <Bubble type="right_select">
-              {/* <>달력 API</> */}
+              <Calendar onDateChange={handleDateChange} />
               <Button
-                label="달력 넣어야함"
+                label="선택완료"
                 className="mt-8"
-                // disabled={!isStep3Complete}
+                disabled={!isStep3Complete}
                 onClick={handleCompleteStep3Selection}
               />
             </Bubble>
           </div>
         </>
       )}
-      {showStep3Summary && (
+      {showStep1Summary && showStep2Summary && showStep3Summary && (
         <div>
           <Bubble type="right">
             <div>
               <p>[여행할 날짜]</p>
-              <div>{selectedLocations.join(", ")}</div>
+              <div>
+                {selectedDate ? selectedDate.toLocaleDateString("ko-KR") : "날짜 선택 안됨"}
+              </div>
             </div>
           </Bubble>
           <p
             className="underline flex justify-end cursor-pointer -mt-7 mb-8"
-            onClick={handleEditStep3Summary}
+            onClick={() => setShowStep3Summary(false)}
           >
             수정하기
           </p>
+          <Bubble type="right">
+            <div className="px-4">
+              <p className="mb-2">플랜을 확정하시겠습니까?</p>
+
+              <Button
+                label="플랜 확정하기"
+                onClick={handlePlanConfirm}
+                type="submit"
+                className="border border-color-black-100 bg-color-red-100 text-color-black-200"
+              ></Button>
+            </div>
+          </Bubble>
         </div>
       )}
     </>
