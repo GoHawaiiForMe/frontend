@@ -22,7 +22,13 @@ interface PlanCardProps {
 export default function PlanCard({ planData }: PlanCardProps) {
   // planData.plans가 비어있는 경우를 대비한 예외 처리
   if (!planData || !planData.plans || planData.plans.length === 0) {
-    return <div>플랜 데이터가 없습니다.</div>;
+    return (
+      <div className="flex w-full justify-center text-center text-2xl bold">
+        플랜 데이터가 없습니다.
+        <br />
+        새로운 꿈을 찾아 가보세요!
+      </div>
+    );
   }
 
   // 플랜을 요청일 기준으로 내림차순으로 정렬
