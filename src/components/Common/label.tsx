@@ -6,14 +6,18 @@ import activityIcon from '@public/assets/label_activity.svg';
 import cultureIcon from '@public/assets/label_culture.svg';
 import festivalIcon from '@public/assets/label_festival.svg';
 import relaxationIcon from '@public/assets/label_relaxation.svg';
+import fileIcon from '@public/assets/label_File_dock.svg';
 
 interface LabelProps {
-  type: 'SHOPPING' | 'FOOD_TOUR' | 'ACTIVITY' | 'CULTURE' | 'FESTIVAL' | 'RELAXATION';
+  type: 'SHOPPING' | 'FOOD_TOUR' | 'ACTIVITY' | 'CULTURE' | 'FESTIVAL' | 'RELAXATION' | 'ASKING' | 'PENDING' | 'NONE';
+  hidden?: boolean;
 }
 
-const Label: React.FC<LabelProps> = ({ type }) => {
+const Label: React.FC<LabelProps> = ({ type, hidden = false }) => {
   let labelSrc;
   let labelText;
+  let containerClass = 'bg-color-blue-100';
+  let textClass = 'text-color-blue-300';
 
   switch (type) {
     case 'SHOPPING':
@@ -40,18 +44,33 @@ const Label: React.FC<LabelProps> = ({ type }) => {
       labelSrc = relaxationIcon;
       labelText = '휴양형';
       break;
+    case 'ASKING':
+      labelSrc = fileIcon;
+      labelText = '지정 견적 요청';
+      containerClass = 'bg-color-red-100';
+      textClass = 'text-color-red-200';
+      break;
+    case 'PENDING':
+      labelText = '견적 대기';
+      containerClass = 'bg-color-gray-100';
+      textClass = 'text-color-blue-400';
+      break;
+    case 'NONE':
     default:
-      labelSrc = shoppingIcon;
-      labelText = '기념품/쇼핑형';
+      labelText = '지정 라벨 없음';
+      break;
+  }
+
+  if (type === 'NONE') {
+    return null;
   }
 
   return (
-    <div className='bg-color-blue-100 rounded-[4px] flex items-center pt-[4px] pr-[5px] pb-[4px] pl-[3px] mobile-tablet:pt-[2px] mobile-tablet:pr-[4px] mobile-tablet:pb-[2px] mobile-tablet:pl-[2px] gap-[4px] mobile-tablet:gap-[2px]'
-    >
-      <Image src={labelSrc} alt={`${type} label`} width={24} height={24} />
-      <p className='text-color-blue-300 text-[16px] font-semibold leading-[24px] mobile-tablet:text-[13px] mobile-tablet:leading-[22px]'
-       
-      >{labelText}</p>
+    <div className={`${containerClass} rounded-[4px] flex items-center pt-[4px] pr-[5px] pb-[4px] pl-[3px] mobile-tablet:pt-[2px] mobile-tablet:pr-[4px] mobile-tablet:pb-[2px] mobile-tablet:pl-[2px] gap-[4px] mobile-tablet:gap-[2px] ${hidden ? 'hidden' : ''}`}>
+      {labelSrc && <Image src={labelSrc} alt={`${type} label`} width={24} height={24} />}
+      <p className={`${textClass} text-[16px] font-semibold leading-[24px] mobile-tablet:text-[13px] mobile-tablet:leading-[22px]`}>
+        {labelText}
+      </p>
     </div>
   );
 };
