@@ -9,11 +9,10 @@ import relaxationIcon from '@public/assets/label_relaxation.svg';
 import fileIcon from '@public/assets/label_File_dock.svg';
 
 interface LabelProps {
-  type: 'SHOPPING' | 'FOOD_TOUR' | 'ACTIVITY' | 'CULTURE' | 'FESTIVAL' | 'RELAXATION' | 'ASKING' | 'PENDING' | 'NONE';
-  hidden?: boolean;
+  type?: 'SHOPPING' | 'FOOD_TOUR' | 'ACTIVITY' | 'CULTURE' | 'FESTIVAL' | 'RELAXATION' | 'REQUEST' | 'PENDING' | 'CONFIRMED';
 }
 
-const Label: React.FC<LabelProps> = ({ type, hidden = false }) => {
+const Label: React.FC<LabelProps> = ({ type }) => {
   let labelSrc;
   let labelText;
   let containerClass = 'bg-color-blue-100';
@@ -44,9 +43,9 @@ const Label: React.FC<LabelProps> = ({ type, hidden = false }) => {
       labelSrc = relaxationIcon;
       labelText = '휴양형';
       break;
-    case 'ASKING':
+    case 'REQUEST':
       labelSrc = fileIcon;
-      labelText = '지정 견적 요청';
+      labelText = '지정 견적';
       containerClass = 'bg-color-red-100';
       textClass = 'text-color-red-200';
       break;
@@ -55,18 +54,19 @@ const Label: React.FC<LabelProps> = ({ type, hidden = false }) => {
       containerClass = 'bg-color-gray-100';
       textClass = 'text-color-blue-400';
       break;
-    case 'NONE':
+    case 'CONFIRMED':
+      labelText = '견적 확정';
+      containerClass = 'bg-color-gray-100';
+      textClass = 'text-color-blue-400';
+      break;
+  
     default:
       labelText = '지정 라벨 없음';
       break;
   }
 
-  if (type === 'NONE') {
-    return null;
-  }
-
   return (
-    <div className={`${containerClass} rounded-[4px] flex items-center pt-[4px] pr-[5px] pb-[4px] pl-[3px] mobile-tablet:pt-[2px] mobile-tablet:pr-[4px] mobile-tablet:pb-[2px] mobile-tablet:pl-[2px] gap-[4px] mobile-tablet:gap-[2px] ${hidden ? 'hidden' : ''}`}>
+    <div className={`${containerClass} rounded-[4px] flex items-center pt-[4px] pr-[5px] pb-[4px] pl-[3px] mobile-tablet:pt-[2px] mobile-tablet:pr-[4px] mobile-tablet:pb-[2px] mobile-tablet:pl-[2px] gap-[4px] mobile-tablet:gap-[2px] `}>
       {labelSrc && <Image src={labelSrc} alt={`${type} label`} width={24} height={24} />}
       <p className={`${textClass} text-[16px] font-semibold leading-[24px] mobile-tablet:text-[13px] mobile-tablet:leading-[22px]`}>
         {labelText}

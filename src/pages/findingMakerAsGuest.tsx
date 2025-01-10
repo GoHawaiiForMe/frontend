@@ -18,9 +18,9 @@ export default function findingMakerAsGuest() {
           <Label type="CULTURE" />
           <Label type="FESTIVAL" />
           <Label type="RELAXATION" />
-          <Label type="ASKING" />
+          <Label type="REQUEST" />
           <Label type="PENDING" />
-          <Label type="NONE" />
+          <Label type="CONFIRMED" />
         </div>
         </>
       </main>
