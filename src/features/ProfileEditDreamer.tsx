@@ -69,8 +69,7 @@ export default function ProfileEditDreamer() {
       <h1 className="text-3xl semibold mt-16">프로필 수정</h1>
       <div className="h-0.5 bg-color-line-100 my-8"></div>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-        <div className="grid grid-cols-2 gap-16 w-full">
-          {/* 왼쪽 폼 */}
+        <div className="grid pc:grid-cols-2 gap-16 w-full mobile-tablet:flex mobile-tablet:flex-col">
           <div className="flex flex-col gap-4">
             <div>
               <Input
@@ -128,12 +127,12 @@ export default function ProfileEditDreamer() {
               {errors.password && <ErrorMessage message={errors.password.message} />}
             </div>
             <div className="h-0.5 bg-color-line-100 my-4"></div>
-            <div>
+            <div className="pc:mb-8">
               <Input
                 type="password"
                 label="새 비밀번호 확인"
                 placeholder="비밀번호를 다시 한번 입력해 주세요"
-                className="bg-color-background-200 border-0 text-color-gray-300 mb-8"
+                className="bg-color-background-200 border-0 text-color-gray-300"
                 {...register("confirmPassword")}
                 error={!!errors.confirmPassword}
               />
@@ -187,13 +186,18 @@ export default function ProfileEditDreamer() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-8 pb-16">
+        <div className="grid pc:grid-cols-2 gap-8 pb-16 mobile-tablet:flex mobile-tablet:flex-col mobile-tablet:gap-4">
           <Button
             type="button"
             label="취소"
-            className="bg-color-gray-50 border border-color-gray-200 text-color-black-100 bold"
+            className="bg-color-gray-50 border border-color-gray-200 text-color-black-300 bold mobile-tablet:order-2"
           />
-          <Button type="submit" label="수정하기" disabled={!isFormValid} />
+          <Button
+            type="submit"
+            label="수정하기"
+            disabled={!isFormValid}
+            className="mobile-tablet:order-1"
+          />
         </div>
       </form>
     </>
