@@ -1,4 +1,5 @@
-import PlanCard from "@/components/Cards/PlanCard";
+import PlanCard from "@/components/MyPlans/Cards/PlanCard";
+import MyNav from "@/components/MyPlans/MyNav";
 import Layout from "@/components/Common/Layout";
 
 export default function ongoingTrip() {
@@ -64,8 +65,11 @@ export default function ongoingTrip() {
   };
 
   return (
-    <Layout bodyClass="bg-gray">
-      <PlanCard planData={planData} />
-    </Layout>
+    <>
+      <MyNav />
+      <Layout bodyClass="bg-gray">
+        <PlanCard planData={planData} />
+      </Layout>
+    </>
   );
 }
