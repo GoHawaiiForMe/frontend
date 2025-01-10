@@ -14,13 +14,13 @@ export default function Receive() {
   const [filterIsOpen, setFilterIsOpen] = useState<boolean>(false);
   const [quotationIsOpen, setQuotationIsOpen] = useState<boolean>(false);
   return (
-    <div className="mt-[88px] ">
+    <div >
       <div className=" mx-[auto] mobile:w-[327px] mobile:mx-[auto] tablet:w-[600px] tablet:mx-[auto] ">
       <p className="font-semibold text-[24px] py-[32px] ">받은 요청</p>
       </div>
       <div className="flex gap-[107px] ">
         <CheckFilter />
-        <div className="w-full">
+        <div className="w-full ">
           <CustomerInput />
           <div className="flex justify-between items-center w-[955px] mt-[24px] mb-[32px] tablet:w-[600px] tablet:mx-[auto] mobile:w-[327px] mobile:mx-[auto]">
             <p>전체 (totalcount)건</p>
