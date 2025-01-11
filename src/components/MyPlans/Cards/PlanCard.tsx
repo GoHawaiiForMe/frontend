@@ -6,8 +6,8 @@ interface Plan {
   requestDate: string;
   tripType: string;
   tripPeriod: string;
-  tripSpot: string;
-  specialRequests: string;
+  serviceArea: string;
+  details: string;
 }
 
 interface PlanData {
