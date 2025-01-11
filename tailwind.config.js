@@ -55,6 +55,7 @@ module.exports = {
         md: ["14px", "24px"],
         sm: ["13px", "22px"],
         xs: ["12px", "20px"],
+        "2xs": ["10px", "18px"],
       },
     },
   },
