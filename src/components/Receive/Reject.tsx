@@ -3,36 +3,32 @@ import iconBox from "@public/assets/icon_boximg.png";
 import iconDocument from "@public/assets/icon_document.png";
 import { useState } from "react";
 
-export default function Quotation() {
-  const [price, setPrice] = useState<string>("");
-  const [comment, setComment] = useState<string>("");
-
-  const isButtonEnabled = price !== "" && comment.length >= 10;
-
+export default function Reject() {
+    const [comment, setComment] = useState<string>("");
+    const isButtonEnabled = comment.length >= 10;
   return (
-    <>
-      <div>
-        <div className="flex  items-center gap-[12px] ">
-          <div className="flex items-center gap-[4px] bg-color-blue-100 rounded-[4px] p-[4px]">
-            <Image src={iconBox} alt="box" width={24} height={24} className="w-[20px] h-[20px]" />
-            <p className="text-[16px] font-semibold leading-[26px] text-color-blue-300 mobile:text-sm">
-              축제 참여형
-            </p>
-          </div>
-          <div className="flex items-center gap-[4px] bg-color-red-100 rounded-[4px] p-[4px]">
-            <Image
-              src={iconDocument}
-              alt="document"
-              width={24}
-              height={24}
-              className="w-[20px] h-[20px]"
-            />
-            <p className="text-[16px] font-semibold leading-[26px] text-color-red-200 mobile:text-sm">
-              지정 견적 요청
-            </p>
-          </div>
+    <div>
+      <div className="flex  items-center gap-[12px] ">
+        <div className="flex items-center gap-[4px] bg-color-blue-100 rounded-[4px] p-[4px]">
+          <Image src={iconBox} alt="box" width={24} height={24} className="w-[20px] h-[20px]" />
+          <p className="text-[16px] font-semibold leading-[26px] text-color-blue-300 mobile:text-sm">
+            축제 참여형
+          </p>
         </div>
-        <div className="mt-[24px] py-[24px] border border-color-line-200 rounded-[8px] mb-[32px] w-[560px] tablet:border-none tablet:mt-[24px] tablet:py-[10px] tablet:w-[327px] mobile:mt-[24px] mobile:py-[10px] mobile:w-[327px] mobile:border-none">
+        <div className="flex items-center gap-[4px] bg-color-red-100 rounded-[4px] p-[4px]">
+          <Image
+            src={iconDocument}
+            alt="document"
+            width={24}
+            height={24}
+            className="w-[20px] h-[20px]"
+          />
+          <p className="text-[16px] font-semibold leading-[26px] text-color-red-200 mobile:text-sm">
+            지정 견적 요청
+          </p>
+        </div>
+      </div>
+      <div className="mt-[24px] py-[24px] border border-color-line-200 rounded-[8px] mb-[32px] w-[560px] tablet:border-none tablet:mt-[24px] tablet:py-[10px] tablet:w-[327px] mobile:mt-[24px] mobile:py-[10px] mobile:w-[327px] mobile:border-none">
           <p className="text-2xl px-[18px] font-semibold tablet:text-2lg mb-[8px] tablet:pl-0 mobile:px-0 mobile:text-2lg">
             일본도쿄여행 진짜 축제 제대로 즐기다 오실분! 우당탕탕 축제 참여형
           </p>
@@ -66,19 +62,8 @@ export default function Quotation() {
             </div>
           </div>
         </div>
-      </div>
-      <div className="mb-[64px] tablet:mb-[40px] mobile:mb-[40px]">
-        <p className="text-2xl font-semibold">견적가를 입력해 주세요</p>
-        <input
-          type="number"
-          placeholder="견적가 입력"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          className="w-[560px] h-[64x] bg-color-background-200 rounded-[16px] p-[14px] mt-[16px] text-xl tablet:w-[327px] tablet:h-[54px] tablet:text-lg mobile:w-[327px] mobile:h-[48px] mobile:text-lg"
-        />
-      </div>
-      <div className="mb-[40px] tablet:mb-[24px] mobile:mb-[24px]">
-        <p className="text-2xl font-semibold tablet:text-2lg mobile:text-2lg">코멘트를 입력해 주세요</p>
+        <div className="mb-[40px] tablet:mb-[24px] mobile:mb-[24px]">
+        <p className="text-2xl font-semibold tablet:text-2lg mobile:text-2lg">반려 사유를 입력해 주세요</p>
         <textarea
           placeholder="최소 10글자 이상 입력해 주세요"
           value={comment}
@@ -92,8 +77,8 @@ export default function Quotation() {
         } tablet:w-[327px] tablet:h-[54px] tablet:text-lg mobile:w-[327px] mobile:h-[48px] mobile:text-lg`}
         disabled={!isButtonEnabled}
       >
-        견적 보내기
+        반려 하기
       </button>
-    </>
+    </div>
   );
 }

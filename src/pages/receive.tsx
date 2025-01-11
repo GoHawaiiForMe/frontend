@@ -9,13 +9,17 @@ import ModalFilter from "@/components/Receive/ModalFilter";
 import { useState } from "react";
 import Quotation from "@/components/Receive/Quotation";
 import ReceiveModalLayout from "@/components/Receive/ReceiveModalLayout";
+import Reject from "@/components/Receive/Reject";
+
+
 
 export default function Receive() {
   const [filterIsOpen, setFilterIsOpen] = useState<boolean>(false);
   const [quotationIsOpen, setQuotationIsOpen] = useState<boolean>(false);
+  const [rejectIsOpen, setRejectIsOpen] = useState<boolean>(false);
   return (
     <div >
-      <div className=" mx-[auto] mobile:w-[327px] mobile:mx-[auto] tablet:w-[600px] tablet:mx-[auto] ">
+      <div className=" mx-[auto] mobile:w-[327px] mobile:mx-[auto] tablet:w-[600px] tablet:mx-[auto] overflow-hidden ">
       <p className="font-semibold text-[24px] py-[32px] ">받은 요청</p>
       </div>
       <div className="flex gap-[107px] ">
@@ -48,7 +52,7 @@ export default function Receive() {
                 </p>
                 <Image src={writing} alt="send" width={24} height={24} />
               </button>
-              <button className="bg-white rounded-[16px] border border-color-blue-300 w-[448px] h-[64px] text-color-blue-300 font-semibold text-[20px] leading-[32px] mobile:w-[300px] mobile:h-[48px] tablet:w-[280px] tablet:h-[48px]">
+              <button onClick={() => setRejectIsOpen(true)} className="bg-white rounded-[16px] border border-color-blue-300 w-[448px] h-[64px] text-color-blue-300 font-semibold text-[20px] leading-[32px] mobile:w-[300px] mobile:h-[48px] tablet:w-[280px] tablet:h-[48px]">
                 반려
               </button>
             </div>
@@ -59,6 +63,11 @@ export default function Receive() {
       {quotationIsOpen && (
         <ReceiveModalLayout label="견적 보내기" closeModal={() => setQuotationIsOpen(false)}>
           <Quotation />
+        </ReceiveModalLayout>
+      )}
+      {rejectIsOpen && (
+        <ReceiveModalLayout label="요청 반려하기" closeModal={() => setRejectIsOpen(false)}>
+          <Reject />
         </ReceiveModalLayout>
       )}
     </div>
