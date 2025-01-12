@@ -1,5 +1,6 @@
 import PlanCard from "@/components/MyPlans/Cards/PlanCard";
 import MyPlanNav from "@/components/MyPlans/MyPlanNav";
+import RequestCard from "@/components/MyPlans/Cards/RequestCard";
 import Layout from "@/components/Common/Layout";
 
 export default function ongoingPlan() {
@@ -69,6 +70,7 @@ export default function ongoingPlan() {
       <MyPlanNav />
       <Layout bodyClass="bg-gray">
         <PlanCard planData={planData} />
+        <RequestCard />
       </Layout>
     </>
   );
