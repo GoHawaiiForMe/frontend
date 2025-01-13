@@ -56,25 +56,25 @@ export default function PlanCard({ planData }: PlanCardProps) {
   };
 
   return (
-    <div className="flex h-96 flex-col gap-y-[32px] my-[46px] mobile:gap-y-[16px]">
-      <div className="flex place-content-between mobile-tablet:flex-col-reverse mobile-tablet:gap-y-[8px]">
+    <div className="flex h-96 flex-col gap-y-[32px] my-[46px] mobile:gap-y-4">
+      <div className="flex place-content-between mobile-tablet:flex-col-reverse mobile-tablet:gap-y-2">
         <div className="text-color-black-400 word-break semibold text-2xl content-center mobile:text-lg">
           {selectedPlan ? selectedPlan.name : "플랜 선택"}
         </div>
-        <div className="flex content-between gap-x-[16px] mobile:w-full mobile:whitespace-nowrap mobile-tablet:justify-end">
+        <div className="flex content-between gap-x-4 mobile:w-full mobile:whitespace-nowrap mobile-tablet:justify-end">
           <div className="flex content-between gap-[11px]">
             <button
-              className="relative text-nowrap min-w-[152px] py-[16px] px-[32.5px] bg-color-blue-300 text-white semibold rounded-2xl  text-xl tablet:text-lg mobile:text-md mobile-tablet:py-[6px] mobile-tablet:px-[16px]"
+              className="relative text-nowrap min-w-38 py-4 px-[32.5px] bg-color-blue-300 text-gray-50 semibold rounded-2xl  text-xl tablet:text-lg mobile:text-md mobile-tablet:py-[6px] mobile-tablet:px-[16px]"
               onClick={() => setIsOpen(!isOpen)}
             >
               플랜 목록
               {isOpen && (
-                <ul className="absolute top-[75px] right-0 text-left p-[16px] max-h-[200px] overflow-y-auto overflow-x-hidden bg-gray-50 normal text-color-black-500 rounded-2xl sm:w-auto mobile-tablet:top-[40px] mobile-tablet:p-[16px] mobile-tablet:max-w-[95%]">
+                <ul className="absolute top-[75px] right-0 text-left p-4 max-h-50 overflow-y-auto overflow-x-hidden bg-gray-50 normal text-color-black-500 rounded-2xl sm:w-auto mobile-tablet:top-[40px] mobile-tablet:p-[16px] mobile-tablet:max-w-[95%]">
                   {sortedPlans.map((plan) => (
                     <li
                       key={plan.id}
                       onClick={() => handlePlanSelect(plan.id)}
-                      className="p-[8px] pointer hover:bg-color-blue-100 px-2 py-1 rounded-lg mobile:truncate"
+                      className="p-2 pointer hover:bg-color-blue-100 px-2 py-1 rounded-lg mobile:truncate"
                     >
                       {plan.name}
                     </li>
@@ -83,13 +83,13 @@ export default function PlanCard({ planData }: PlanCardProps) {
               )}
             </button>
 
-            <button className="py-[16px] px-[32.5px] text-nowrap min-w-[152px] bg-color-blue-50 border-color-blue-300 border-solid border-[1px]  text-color-blue-300 semibold rounded-2xl  text-xl tablet:text-lg  mobile:text-md mobile-tablet:py-[6px] mobile-tablet:px-[16px]">
+            <button className="py-4 px-[32.5px] text-nowrap min-w-38 bg-color-blue-50 border-color-blue-300 border-solid border-[1px]  text-color-blue-300 semibold rounded-2xl  text-xl tablet:text-lg  mobile:text-md mobile-tablet:py-[6px] mobile-tablet:px-[16px]">
               플랜 취소
             </button>
           </div>
         </div>
       </div>
-      <div className="flex w-fill px-[40px] py-[32px] flex-col gap-y-1 border-color border-[1px] bg-body.bg-gray rounded-2xl text-xl semibol mobile-tablet:text-md mobile:px-[16px] mobile:py-[16px]">
+      <div className="flex w-fill px-10 py-8 flex-col gap-y-1 border-color border-[1px] bg-body.bg-gray rounded-2xl text-xl semibol mobile-tablet:text-md mobile:px-[16px] mobile:py-[16px]">
         <div className="flex">
           <label className="text-color-gray-300 w-[150px]" htmlFor="requestDate">
             플랜요청일
@@ -116,15 +116,15 @@ export default function PlanCard({ planData }: PlanCardProps) {
           <label className="text-color-gray-300 w-[150px] flex-shrink-0" htmlFor="travelSpot">
             여행지
           </label>
-          <div className="text-color-black-400">{selectedPlan ? selectedPlan.tripSpot : "-"}</div>
+          <div className="text-color-black-400">
+            {selectedPlan ? selectedPlan.serviceArea : "-"}
+          </div>
         </div>
         <div className="flex">
           <label className="text-color-gray-300 w-[150px]" htmlFor="planTravelSpecialRequests">
             세부 요청 사항
           </label>
-          <div className="text-color-black-400">
-            {selectedPlan ? selectedPlan.specialRequests : "-"}
-          </div>
+          <div className="text-color-black-400">{selectedPlan ? selectedPlan.details : "-"}</div>
         </div>
       </div>
     </div>
