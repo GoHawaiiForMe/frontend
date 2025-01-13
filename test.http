@@ -1,0 +1,24 @@
+### 회원가입 요청 테스트
+
+POST https://go-for-me.onrender.com/user/signup
+Content-Type: application/json
+
+{
+  "user": {
+    "role": "DREAMER",
+    "nickName": "testUser",
+    "email": "testuser@example.com",
+    "password": "password123",
+    "phoneNumber": "01012345678"
+  },
+  "profile": {
+    "image": "DEFAULT_1",
+    "tripTypes": [
+      "FOOD_TOUR"
+    ],
+    "serviceArea": [
+      "SEOUL",
+      "INCHEON"
+    ]
+  }
+}

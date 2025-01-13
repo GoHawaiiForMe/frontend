@@ -34,9 +34,9 @@ export default function ProfileDreamer() {
 
   const handleSubmit = async () => {
     const profileData = {
-      services: selectedServices,
-      locations: selectedLocations,
-      profileImage: profileImg || undefined,
+      image: profileImg || undefined,
+      tripTypes: selectedServices,
+      serviceArea: selectedLocations,
     };
 
     setProfileData(profileData);

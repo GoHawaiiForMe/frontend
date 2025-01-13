@@ -9,9 +9,9 @@ interface SignUpState {
         phoneNumber?: string;
     };
     profileData: {
-        services: string[];
-        locations: string[];
-        profileImage?: string;
+        image?: string;
+        tripTypes: string[];
+        serviceArea: string[];
     };
     setUserData: (data: Partial<SignUpState["userData"]>) => void;
     setProfileData: (data: Partial<SignUpState["profileData"]>) => void;
@@ -27,9 +27,9 @@ export const useSignUp = create<SignUpState>((set) => ({
         phoneNumber: "",
     },
     profileData: {
-        services: [],
-        locations: [],
-        profileImage: "",
+        image: "",
+        tripTypes: [],
+        serviceArea: [],
     },
     setUserData: (data) =>
         set((state) => ({ userData: { ...state.userData, ...data } })),

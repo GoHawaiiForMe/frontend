@@ -30,7 +30,7 @@ export default function SignUpForm() {
       nickName: data.nickName,
       email: data.email,
       password: data.password,
-      phoneNumber: data.phone,
+      phoneNumber: data.phoneNumber,
     });
     router.push('/profile/dreamer');
   };
@@ -75,10 +75,10 @@ export default function SignUpForm() {
               type="text"
               label="전화번호"
               placeholder="숫자만 입력해주세요"
-              {...register("phone")}
-              error={!!errors.phone}
+              {...register("phoneNumber")}
+              error={!!errors.phoneNumber}
             />
-            {errors.phone && <ErrorMessage message={errors.phone.message} />}
+            {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
           </div>
 
           <div>
