@@ -29,10 +29,14 @@ export default function RequestCard() {
         </div>
       </div>
       <div className="flex my-6 gap-6 border-color border-[1px] bg-body.bg-gray rounded-md py-4 px-[18px] mobile-tablet:gap-3 mobile-tablet:px-[10px] mobile-tablet:my-[14px]">
-        <div className="w-14 h-14 border-2 border-color-blue-400 rounded-full overflow-hidden mobile-tablet:w-11 mobile-tablet:h-11">
-          <div className="relative w-full h-full aspect-square">
-            <Image src={img_avatar1} alt="프로필사진" layout="fill" objectFit="cover" />
-          </div>
+        <div className="flex items-center min-w-20 min-h-20">
+          <Image
+            src={img_avatar1}
+            alt="프로필사진"
+            width={80}
+            height={80}
+            className="border-2 border-color-blue-400 rounded-full"
+          />
         </div>
         <div className="flex w-full">
           <div className="w-full flex-col justify-between items-center text-xs text-color-black-500">
