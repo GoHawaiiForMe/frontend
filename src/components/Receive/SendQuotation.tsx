@@ -1,11 +1,14 @@
 import Image from "next/image";
 import iconBox from "@public/assets/icon_boximg.png";
 import iconDocument from "@public/assets/icon_document.png";
+import { useState } from "react";
 
 export default function SendQuotation() {
+  const [isRejected, setIsRejected] = useState<boolean>(false);
+  
   return (
     <>
-      <div className="flex flex-col mb-8 border px-6 pt-5 pb-3 rounded-[16px] border-color-line-100 shadow-md">
+      <div className="flex flex-col mb-8 border px-6 pt-5 pb-3 rounded-[16px] border-color-line-100 shadow-md relative">
         <div className="flex justify-between items-center text-xs text-color-gray-500 mb-4">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1 bg-color-blue-100 rounded-[4px] p-1">
@@ -48,6 +51,9 @@ export default function SendQuotation() {
             <p className="text-2xl font-bold ">1,000,000원</p>
           </div>
         </div>
+       {isRejected && (<div className="text-white rounded-[16px] top-0 left-0 absolute w-full h-full  bg-color-black-400 opacity-50 flex items-center justify-center">
+          반려된 요청이에요
+        </div>)}
       </div>
     </>
   );
