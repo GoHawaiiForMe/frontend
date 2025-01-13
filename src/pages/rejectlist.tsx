@@ -11,10 +11,7 @@ export default function RejectList() {
       </div>
       <div className="h-0.5 pc:-mx-[260px] tablet:-mx-[72px] mobile:-mx-[24px] bg-color-line-200"></div>
       <div className="pc:grid pc:grid-cols-2 pc:gap-2 pt-10 mobile-tablet:grid-cols-none mobiel-tablet:felx mobile-tablet:flex-col mobiel-tablet:justify-center mobile-tablet:items-center ">
-        <div className="relative ">
-          <SendQuotation />
-          
-        </div>
+        <SendQuotation />
         <SendQuotation />
         <SendQuotation />
         <SendQuotation />
