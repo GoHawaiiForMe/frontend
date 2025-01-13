@@ -5,7 +5,6 @@ import { useState } from "react";
 
 export default function SendQuotation() {
   const [isRejected, setIsRejected] = useState<boolean>(false);
-  
   return (
     <>
       <div className="flex flex-col mb-8 border px-6 pt-5 pb-3 rounded-[16px] border-color-line-100 shadow-md relative">
