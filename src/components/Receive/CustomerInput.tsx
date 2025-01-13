@@ -3,7 +3,7 @@ import searchIcon from "@public/assets/icon_search.png";
 
 export default function CustomerInput() {
   return (
-    <div className="flex w-full items-center relative ">
+    <div className="flex w-[955px] items-center relative tablet:w-[600px] tablet:px-[10px] tablet:py-[12px] tablet:mx-[auto] mobile:w-[327px] mobile:mx-[auto] ">
       <Image
         className="absolute left-[18px]"
         width={36}

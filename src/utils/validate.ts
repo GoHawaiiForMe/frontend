@@ -29,7 +29,7 @@ export const signUpSchema = z
 
 export type SignUpFormData = z.infer<typeof signUpSchema>;
 
-export const EditDreamerSchema = z
+export const editDreamerSchema = z
   .object({
     nickname: z.string().min(1, { message: "닉네임을 입력해 주세요." }),
     phone: z.string().regex(/^010\d{8}$/, { message: "010으로 시작하고 숫자만 입력해 주세요." }),
@@ -41,4 +41,4 @@ export const EditDreamerSchema = z
     message: "비밀번호가 일치하지 않습니다.",
   });
 
-export type EditDreamerData = z.infer<typeof EditDreamerSchema>;
+export type EditDreamerData = z.infer<typeof editDreamerSchema>;
