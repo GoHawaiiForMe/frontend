@@ -6,6 +6,7 @@ import DaumPostcodeEmbed from "react-daum-postcode";
 import ModalLayout from "@/components/Common/ModalLayout";
 import Button from "@/components/Common/Button";
 import Calendar from "@/components/Common/Calandar";
+import planData from "@/types/planData";
 
 export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
   const [textValue, setTextValue] = useState<string>("");
@@ -59,7 +60,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
   const isStep2Complete =
     textareaValue.trim().length > 0 &&
     textValue.length > 0 &&
-    (selectedServices.includes("기념품/쇼핑형")
+    (selectedServices.includes("SHOPPING")
       ? address && detailAddress
       : selectedServices.length > 0);
   const isStep3Complete = selectedDate !== null;
@@ -116,7 +117,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
           <Bubble type="right_select">
             <Selector
               category="locations"
-              selectedTypes={selectedLocations}
+              selectedTypes={selectedLocations.map(location => planData.locations.find(loc => loc.mapping === location)?.name || location)}
               toggleSelection={handleLocationSelection}
             />
 
@@ -134,7 +135,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
           <Bubble type="right">
             <div>
               <p>[여행할 지역]</p>
-              <div>{selectedLocations.join(", ")}</div>
+              <div>{selectedLocations.map(loc => planData.locations.find(l => l.mapping === loc)?.name).join(", ")}</div>
             </div>
           </Bubble>
           <p
@@ -170,10 +171,10 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
 
               <Selector
                 category="services"
-                selectedTypes={selectedServices}
+                selectedTypes={selectedServices.map(service => planData.services.find(ser => ser.mapping === service)?.name || service)}
                 toggleSelection={handleServiceSelection}
               />
-              {selectedServices.includes("기념품/쇼핑형") && (
+              {selectedServices.includes("SHOPPING") && (
                 <div className="mt-4">
                   <button
                     className="border px-4 flex flex-start w-full h-16 items-center border-color-blue-300 text-color-blue-300 bold rounded-2xl"
@@ -188,7 +189,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
                   )}
                 </div>
               )}
-              {address && selectedServices.includes("기념품/쇼핑형") && (
+              {address && selectedServices.includes("SHOPPING") && (
                 <div className="mt-4">
                   <Input
                     type="text"
@@ -221,9 +222,9 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
               <div>{textareaValue}</div>
             </div>
             <div>
-              <p>[선택된 서비스]</p> <div>{selectedServices.join(", ")}</div>
+              <p>[선택된 서비스]</p> <div>{selectedServices.map(service => planData.services.find(ser => ser.mapping === service)?.name).join(", ")}</div>
             </div>
-            {selectedServices.includes("기념품/쇼핑형") && (
+            {selectedServices.includes("SHOPPING") && (
               <>
                 <div>
                   <p>[주소]</p> <div>{address}</div>

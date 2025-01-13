@@ -76,11 +76,11 @@ export default function ProfileEditDreamer() {
                 type="text"
                 label="닉네임"
                 placeholder="기존 닉네임"
-                {...register("nickname")}
-                error={!!errors.nickname}
+                {...register("nickName")}
+                error={!!errors.nickName}
                 className="bg-color-background-200 border-0 text-color-gray-300"
               />
-              {errors.nickname && <ErrorMessage message={errors.nickname.message} />}
+              {errors.nickName && <ErrorMessage message={errors.nickName.message} />}
             </div>
             <div className="h-0.5 bg-color-line-100 my-4"></div>
 

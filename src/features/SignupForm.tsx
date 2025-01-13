@@ -7,8 +7,11 @@ import logo from "@public/assets/icon_logo_img.svg";
 import Image from "next/image";
 import Button from "@/components/Common/Button";
 import Link from "next/link";
+import { useSignUp } from "@/stores/SignUpContext";
+import { useRouter } from "next/router";
 
 export default function SignUpForm() {
+  const { setUserData } = useSignUp();
   const {
     register,
     handleSubmit,
@@ -19,8 +22,17 @@ export default function SignUpForm() {
     mode: "onBlur",
   });
 
+  const router = useRouter();
+
   const onSubmit = (data: SignUpFormData) => {
-    console.log(data); // 테스트용
+    setUserData({
+      role: data.role,
+      nickName: data.nickName,
+      email: data.email,
+      password: data.password,
+      phoneNumber: data.phone,
+    });
+    router.push('/profile/dreamer');
   };
 
   const watchFields = watch();
@@ -41,10 +53,10 @@ export default function SignUpForm() {
               type="text"
               label="닉네임"
               placeholder="닉네임을 입력해주세요"
-              {...register("nickname")}
-              error={!!errors.nickname}
+              {...register("nickName")}
+              error={!!errors.nickName}
             />
-            {errors.nickname && <ErrorMessage message={errors.nickname.message} />}
+            {errors.nickName && <ErrorMessage message={errors.nickName.message} />}
           </div>
 
           <div>
