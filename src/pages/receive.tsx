@@ -40,7 +40,7 @@ export default function Receive() {
           </div>
           <div className="border border-color-line-100 w-[955px] rounded-[16px] pt-[20px] pb-[12px] px-4 shadow-md tablet:w-[600px] tablet:mx-[auto] mobile:w-[328px] mobile:mx-[auto] mobile:px-[14px] mobile:py-[16px]">
             <RequestDetails />
-            <div className="flex justify-between items-center gap-[11px] mobile-tablet:gap-[8px] mobile:flex-col mobile:justify-normal">
+            <div className="flex justify-between items-center gap-[11px] mobile-tablet:gap-[8px] mobile:flex-col mobile:justify-normal mt-8 mobile:mt-5">
               <button
                 onClick={() => setQuotationIsOpen(true)}
                 className="flex justify-center items-center gap-[10px] bg-color-blue-300 rounded-[16px] w-[448px] h-[64px] mobile:w-[300px] mobile:h-[48px]  tablet:w-[280px] tablet:h-[48px]"

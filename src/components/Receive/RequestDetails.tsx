@@ -4,7 +4,7 @@ import iconDocument from "@public/assets/icon_document.png";
 
 export default function RequestDetails() {
   return (
-    <div className="flex flex-col mb-8 mobile:mb-5">
+    <div className="flex flex-col ">
       <div className="flex justify-between items-center text-xs text-color-gray-500 mb-4">
         <div className="flex justify-center items-center gap-3">
           <div className="flex items-center gap-1 bg-color-blue-100 rounded-1 p-1">
