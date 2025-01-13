@@ -1,7 +1,7 @@
 import PlanCard from "@/components/MyPlans/Cards/PlanCard";
 import MyPlanNav from "@/components/MyPlans/MyPlanNav";
-import RequestCard from "@/components/MyPlans/Cards/RequestCard";
 import Layout from "@/components/Common/Layout";
+import RequestCardList from "@/components/MyPlans/RequestCardList";
 
 export default function ongoingPlan() {
   // 테스트용 데이터
@@ -70,7 +70,7 @@ export default function ongoingPlan() {
       <MyPlanNav />
       <Layout bodyClass="bg-gray">
         <PlanCard planData={planData} />
-        <RequestCard />
+        <RequestCardList />
       </Layout>
     </>
   );
