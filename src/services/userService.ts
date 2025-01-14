@@ -1,13 +1,14 @@
 import { api } from "./api"
 
 interface LoginResponse {
-  token: string;
+  accessToken: string;
 }
 
 interface UserInfo {
-  email: string;
+  id: string;
   role: string;
   nickName: string;
+  email: string;
   phoneNumber: string;
   coconut: number;
 }
@@ -29,6 +30,8 @@ const userService = {
     try {
       const response = await api.post<LoginResponse, { email: string; password: string }>("/user/login", data);
       console.log("로그인 성공:", response);
+      localStorage.setItem("token", response.accessToken);
+      console.log(response.accessToken)
       return response;
     } catch (error) {
       console.error("로그인 실패:", error);
@@ -38,7 +41,7 @@ const userService = {
 
   getUserInfo: async (): Promise<UserInfo> => {
     try {
-      const response = await api.get<UserInfo>("/user/");
+      const response = await api.get<UserInfo, {}>("/user/");
       console.log("유저 정보 조회 성공", response);
       return response;
     } catch (error) {

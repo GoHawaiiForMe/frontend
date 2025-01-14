@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type Role = "Dreamer" | "Maker" | "guest";
+type Role = "DREAMER" | "MAKER" | "guest";
 
 interface AuthState {
   isLoggedIn: boolean;

@@ -105,12 +105,12 @@ export default function SignUpForm() {
           <div className="mb-2">
             <p>역할</p>
             <div className="flex justify-around">
-              <label htmlFor="dreamer" className="flex gap-2">
-                <input type="radio" value="dreamer" {...register("role")} />
+              <label htmlFor="DREAMER" className="flex gap-2">
+                <input type="radio" value="DREAMER" {...register("role")} />
                 Dreamer
               </label>
-              <label htmlFor="maker" className="flex gap-2">
-                <input type="radio" value="maker" {...register("role")} />
+              <label htmlFor="MAEKR" className="flex gap-2">
+                <input type="radio" value="MAKER" {...register("role")} />
                 Maker
               </label>
             </div>

@@ -11,18 +11,23 @@ import google_icon from "@public/assets/icon_google.svg";
 import kakao_icon from "@public/assets/icon_kakao.svg";
 import naver_icon from "@public/assets/icon_naver.svg";
 import userService from "@/services/userService";
+import { useRouter } from "next/router";
 
 export default function LoginForm() {
+  const router = useRouter();
   const { setLogin } = useAuthStore();
 
   const handleLogin = async (data: LoginFormData) => {
     try {
       const response = await userService.login(data);
-      localStorage.setItem("token", response.token);
+      localStorage.setItem("token", response.accessToken);
 
+      // 유저 정보 요청
       const userInfo = await userService.getUserInfo();
-      setLogin(userInfo.nickName, userInfo.role as "Dreamer" | "Maker");
-      // router.push("/")
+      setLogin(userInfo.nickName, userInfo.role as "DREAMER" | "MAKER");
+
+      router.push("/");
+
     } catch (error) {
       console.error("로그인 중 오류 발생", error);
     }
