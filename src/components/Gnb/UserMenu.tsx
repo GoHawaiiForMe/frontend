@@ -16,6 +16,8 @@ export default function Notification() {
       MAKER: [{ href: "/", label: "마이페이지" }],
     };
 
+
+
     return (
       <>
         {menuItems[role ? role : "DREAMER"].map((link, index) => (
@@ -26,6 +28,13 @@ export default function Notification() {
       </>
     );
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken")
+    localStorage.removeItem("userInfo")
+
+    setLogout();
+  }
 
   return (
     <>
@@ -43,7 +52,7 @@ export default function Notification() {
             </ul>
           </div>
           <div className="h-[1px] w-full bg-color-line-100"></div>
-          <div className="flex justify-center text-color-gray-500 pb-4 mobile-tablet:text-xs">
+          <div className="flex justify-center text-color-gray-500 pb-4 mobile-tablet:text-xs cursor-pointer" onClick={handleLogout}>
             로그아웃
           </div>
         </div>
