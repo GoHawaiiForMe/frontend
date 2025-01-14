@@ -4,8 +4,11 @@ import Image from "next/image";
 import profileImgDefault from "@public/assets/icon_default_profile.svg";
 import Button from "@/components/Common/Button";
 import ImageModal from "@/components/Common/ImageModal";
+import { useSignUp } from "@/stores/SignUpContext";
+import userService from "@/services/userService";
 
 export default function ProfileDreamer() {
+  const { userData, setProfileData } = useSignUp();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [isOpenImageModal, setIsOpenImageModal] = useState(false);
@@ -17,9 +20,10 @@ export default function ProfileDreamer() {
   };
 
   const handleServiceSelection = (type: string) => {
-    setSelectedServices((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
-    );
+    setSelectedServices((prev) => {
+      const updated = prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type];
+      return updated;
+    });
   };
 
   const handleLocationSelection = (type: string) => {
@@ -28,8 +32,26 @@ export default function ProfileDreamer() {
     );
   };
 
+  const handleSubmit = async () => {
+    const profileData = {
+      image: profileImg || undefined,
+      tripTypes: selectedServices,
+      serviceArea: selectedLocations,
+    };
+
+    setProfileData(profileData);
+
+    try {
+      const payload = { ...userData, ...profileData };
+      await userService.signUp(payload);
+      console.log("회원가입 성공");
+    } catch (error) {
+      console.error("회원가입 실패", error);
+    }
+  };
+
   const isButtonDisabled =
-    selectedServices.length === 0 || selectedLocations.length === 0 || !profileImg;
+    selectedServices.length === 0 || selectedLocations.length === 0 || !profileImg || !userData;
 
   return (
     <div className="flex justify-center mb-20">
@@ -87,7 +109,7 @@ export default function ProfileDreamer() {
         </div>
         <Button
           label="시작하기"
-          onClick={() => console.log("시작하기 클릭")} //API 연결 후 작업 예정
+          onClick={handleSubmit}
           disabled={isButtonDisabled}
           type="submit"
         />

@@ -1,50 +1,23 @@
-const services = [
-  "맛집 탐방형",
-  "기념품/쇼핑형",
-  "휴양형",
-  "문화/역사탐방형",
-  "액티비티/탐험형",
-  "축제참여형",
-];
-
-const locations = [
-  "서울",
-  "경기",
-  "인천",
-  "강원",
-  "충북",
-  "충남",
-  "세종",
-  "대전",
-  "전북",
-  "전남",
-  "광주",
-  "경북",
-  "경남",
-  "대구",
-  "울산",
-  "부산",
-  "제주",
-];
+import planData from "@/types/planData";
 
 const Services = ({
   selectedTypes,
   toggleSelection,
+
 }: {
   selectedTypes: string[];
   toggleSelection: (type: string) => void;
+
 }) => (
   <div className="grid grid-cols-3 gap-3">
-    {services.map((service) => (
+    {planData.services.map((service) => (
       <div
-        onClick={() => toggleSelection(service)}
-        className={`border text-2lg rounded-3xl px-3 py-2 medium flex justify-center cursor-pointer ${
-          selectedTypes.includes(service)
-            ? "bg-color-blue-50 border-color-blue-300 text-color-blue-300 bold"
-            : "bg-color-background-100 border-color-gray-100"
-        } mobile-tablet:px-2 mobile-tablet:py-1 mobile-tablet:text-md`}
+        className={`border text-2lg rounded-3xl px-3 py-2 medium flex justify-center cursor-pointer ${selectedTypes.includes(service.name)
+          ? "bg-color-blue-50 border-color-blue-300 text-color-blue-300 bold"
+          : "bg-color-background-100 border-color-gray-100"
+          } mobile-tablet:px-2 mobile-tablet:py-1 mobile-tablet:text-md`}
       >
-        <button key={service}>{service}</button>
+        <button onClick={() => toggleSelection(service.mapping)}>{service.name}</button>
       </div>
     ))}
   </div>
@@ -58,16 +31,15 @@ const Locations = ({
   toggleSelection: (type: string) => void;
 }) => (
   <div className="grid grid-cols-5 gap-3 w-[416px] mobile-tablet:w-[280px] mobile-tablet:gap-2">
-    {locations.map((location) => (
+    {planData.locations.map((location) => (
       <div
-        className={`bg-color-background-100 border border-color-gray-100 text-2lg rounded-3xl px-3 py-2 medium flex items-center justify-center ${
-          selectedTypes.includes(location)
-            ? "bg-color-blue-50 border-color-blue-300 text-color-blue-300 bold"
-            : "bg-color-background-100 border-color-gray-100"
-        } mobile-tablet:px-2 mobile-tablet:py-1 mobile-tablet:text-md`}
+        className={`bg-color-background-100 border border-color-gray-100 text-2lg rounded-3xl px-3 py-2 medium flex items-center justify-center ${selectedTypes.includes(location.name)
+          ? "bg-color-blue-50 border-color-blue-300 text-color-blue-300 bold"
+          : "bg-color-background-100 border-color-gray-100"
+          } mobile-tablet:px-2 mobile-tablet:py-1 mobile-tablet:text-md`}
       >
-        <button key={location} onClick={() => toggleSelection(location)}>
-          {location}
+        <button onClick={() => toggleSelection(location.mapping)}>
+          {location.name}
         </button>
       </div>
     ))}

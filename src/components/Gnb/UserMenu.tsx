@@ -2,23 +2,23 @@ import useAuthStore from "@/stores/useAuthStore";
 import Link from "next/link";
 
 export default function Notification() {
-  const { nickname, role, setLogout } = useAuthStore();
+  const { nickName, role, setLogout } = useAuthStore();
 
   if (role === "guest") return null;
 
   const renderMenus = () => {
     const menuItems = {
-      Dreamer: [
+      DREAMER: [
         { href: "/", label: "프로필 수정" },
         { href: "/", label: "찜한 Maker" },
         { href: "/", label: "여행 리뷰" },
       ],
-      Maker: [{ href: "/", label: "마이페이지" }],
+      MAKER: [{ href: "/", label: "마이페이지" }],
     };
 
     return (
       <>
-        {menuItems[role ? role : "Dreamer"].map((link, index) => (
+        {menuItems[role ? role : "DREAMER"].map((link, index) => (
           <li key={index}>
             <Link href={link.href}>{link.label}</Link>
           </li>
@@ -33,7 +33,7 @@ export default function Notification() {
         <div className=" bg-color-gray-50 rounded-2xl shadow-lg px-2 pt-6 flex flex-col gap-6 w-[248px] border mobile-tablet:w-[152px] ">
           <div className="flex justify-between items-center px-6 mobile-tablet:pl-2">
             <span className="text-2lg bold mobile-tablet:text-lg">
-              {nickname}
+              {nickName}
               {role}
             </span>
           </div>

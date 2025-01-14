@@ -10,18 +10,29 @@ import { LoginFormData, loginSchema } from "@/utils/validate";
 import google_icon from "@public/assets/icon_google.svg";
 import kakao_icon from "@public/assets/icon_kakao.svg";
 import naver_icon from "@public/assets/icon_naver.svg";
+import userService from "@/services/userService";
+import { useRouter } from "next/router";
 
 export default function LoginForm() {
+  const router = useRouter();
   const { setLogin } = useAuthStore();
 
-  const handleLogin = () => {
-    setLogin("드리머닉", "Dreamer");
-    // setLogin("테스트용 메이커", "Maker");
-    // router.push("/");
+  const handleLogin = async (data: LoginFormData) => {
+    try {
+      const response = await userService.login(data);
+      localStorage.setItem("token", response.accessToken);
+
+      // 유저 정보 요청
+      const userInfo = await userService.getUserInfo();
+      setLogin(userInfo.nickName, userInfo.role as "DREAMER" | "MAKER");
+
+      router.push("/");
+
+    } catch (error) {
+      console.error("로그인 중 오류 발생", error);
+    }
   };
-  /* TODO (로그인, 회원가입 공통)
-   * 소셜로그인
-   * */
+
 
   const {
     register,
@@ -34,8 +45,7 @@ export default function LoginForm() {
   });
 
   const onSubmit = (data: LoginFormData) => {
-    // setLogin(data.email, data.role);
-    // router.push("/");
+    handleLogin(data);
   };
 
   const watchFields = watch();
@@ -71,7 +81,7 @@ export default function LoginForm() {
             {errors.password && <ErrorMessage message={errors.password.message} />}
           </div>
           <div className="flex justify-center">
-            <Button label="로그인" onClick={handleLogin} disabled={!isFormValid} />
+            <Button label="로그인" type="submit" disabled={!isFormValid} />
           </div>
         </form>
         <div className="flex justify-center mb-10 pc:text-xl ">

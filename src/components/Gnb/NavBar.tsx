@@ -13,7 +13,7 @@ import Notification from "./Notification";
 import UserMenu from "./UserMenu";
 
 const NavBar = () => {
-  const { isLoggedIn, nickname, role, setLogout } = useAuthStore();
+  const { isLoggedIn, nickName, role, setLogout } = useAuthStore();
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
@@ -35,12 +35,12 @@ const NavBar = () => {
   const renderLinks = () => {
     const linkItems = {
       guest: [{ href: "/", label: "Maker 찾기" }],
-      Dreamer: [
+      DREAMER: [
         { href: "/", label: "여행 요청" },
         { href: "/", label: "Maker 찾기" },
         { href: "/", label: "내 여행 관리" },
       ],
-      Maker: [
+      MAKER: [
         { href: "/", label: "받은 요청" },
         { href: "/", label: "내 여행 관리" },
       ],
@@ -106,7 +106,7 @@ const NavBar = () => {
               onClick={handleOpenUserMenu}
             >
               <Image src={user_img} alt="유저이미지" width={36} height={36} />
-              <span className="text-2lg medium hidden pc:block">{nickname}</span>
+              <span className="text-2lg medium hidden pc:block">{nickName}</span>
             </div>
             {isOpenUserMenu && <UserMenu />}
           </>

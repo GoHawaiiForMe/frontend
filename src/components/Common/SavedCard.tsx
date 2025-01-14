@@ -9,8 +9,8 @@ export default function SavedCard() {
   return (
     <>
       <div className="flex flex-col gap-5 rounded-2xl border border-color-line-100 p-5 w-full shadow-md">
-        {/* width 문제 */}
-        <div className="w-36">
+        <div className="flex flex-row gap-2">
+          <Label type="SHOPPING" />
           <Label type="SHOPPING" />
         </div>
         <div className="flex rounded-md border border-color-line-100 p-4">
