@@ -10,6 +10,7 @@ import Selector from "@/components/Common/Selector";
 import { useState } from "react";
 import profileImgDefault from "@public/assets/icon_default_profile.svg";
 import ImageModal from "@/components/Common/ImageModal";
+import planData from "@/types/planData";
 
 export default function ProfileEditDreamer() {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
@@ -61,7 +62,7 @@ export default function ProfileEditDreamer() {
   const isFormValid = Object.values(watchFields).every((value) => value?.toString().trim() !== "");
 
   const ErrorMessage = ({ message }: { message: string | undefined }) => (
-    <p className="text-color-red-200 mt-1 absolute right-0">{message}</p>
+    <p className="text-color-red-200 mt-2">{message}</p>
   );
 
   return (
@@ -99,11 +100,11 @@ export default function ProfileEditDreamer() {
                 type="text"
                 label="전화번호"
                 placeholder="숫자만 입력해주세요"
-                {...register("phone")}
-                error={!!errors.phone}
+                {...register("phoneNumber")}
+                error={!!errors.phoneNumber}
                 className="bg-color-background-200 border-0 text-color-gray-300"
               />
-              {errors.phone && <ErrorMessage message={errors.phone.message} />}
+              {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
             </div>
             <div className="h-0.5 bg-color-line-100 my-4"></div>
             <div>
@@ -121,23 +122,25 @@ export default function ProfileEditDreamer() {
                 label="새 비밀번호"
                 placeholder="비밀번호를 입력해 주세요"
                 className="bg-color-background-200 border-0 text-color-gray-300"
-                {...register("password")}
-                error={!!errors.password}
+                {...register("newPassword")}
+                error={!!errors.newPassword}
               />
-              {errors.password && <ErrorMessage message={errors.password.message} />}
+              {errors.newPassword && <ErrorMessage message={errors.newPassword.message} />}
             </div>
             <div className="h-0.5 bg-color-line-100 my-4"></div>
-            <div className="pc:mb-8">
+            <div >
               <Input
                 type="password"
                 label="새 비밀번호 확인"
                 placeholder="비밀번호를 다시 한번 입력해 주세요"
                 className="bg-color-background-200 border-0 text-color-gray-300"
-                {...register("confirmPassword")}
-                error={!!errors.confirmPassword}
+                {...register("newConfirmPassword")}
+                error={!!errors.newConfirmPassword}
               />
             </div>
-            {errors.confirmPassword && <ErrorMessage message={errors.confirmPassword.message} />}
+            <div className="mb-8">
+              {errors.newConfirmPassword && <ErrorMessage message={errors.newConfirmPassword.message} />}
+            </div>
           </div>
 
           {/* 오른쪽 폼 */}
@@ -147,7 +150,7 @@ export default function ProfileEditDreamer() {
                 <p className="text-xl semibold mb-3 mobile-tablet:text-lg">프로필 이미지</p>
                 <div onClick={() => setIsOpenImageModal(true)} className="cursor-pointer w-30">
                   {profileImg ? (
-                    <Image src={profileImg} alt="프로필 이미지" width={100} height={100} />
+                    <Image src={`/assets/img_avatar${profileImg.split("_")[1]}.svg`} alt="프로필 이미지" width={100} height={100} />
                   ) : (
                     <Image src={profileImgDefault} alt="프로필 이미지" width={150} height={150} />
                   )}
@@ -167,7 +170,7 @@ export default function ProfileEditDreamer() {
                 </p>
                 <Selector
                   category="services"
-                  selectedTypes={selectedServices}
+                  selectedTypes={selectedServices.map(service => planData.services.find(ser => ser.mapping === service)?.name || service)}
                   toggleSelection={handleServiceSelection}
                 />
               </div>
@@ -179,7 +182,7 @@ export default function ProfileEditDreamer() {
                 </p>
                 <Selector
                   category="locations"
-                  selectedTypes={selectedLocations}
+                  selectedTypes={selectedLocations.map(location => planData.locations.find(loc => loc.mapping === location)?.name || location)}
                   toggleSelection={handleLocationSelection}
                 />
               </div>
@@ -196,7 +199,7 @@ export default function ProfileEditDreamer() {
             type="submit"
             label="수정하기"
             disabled={!isFormValid}
-            className="mobile-tablet:order-1"
+            className="mobile-tablet:order-1 text-color-gray-50"
           />
         </div>
       </form>
