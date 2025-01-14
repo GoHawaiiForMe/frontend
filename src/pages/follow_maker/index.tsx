@@ -1,5 +1,5 @@
-import SavedMaker from "@/features/SavedMaker";
+import FollowedMaker from "@/features/FollowedMaker";
 
-export default function SavedMakerPage() {
-    return <SavedMaker />;
+export default function FollowedMakerPage() {
+    return <FollowedMaker />;
 }
