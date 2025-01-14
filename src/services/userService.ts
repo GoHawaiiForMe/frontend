@@ -29,9 +29,7 @@ const userService = {
   login: async (data: { email: string; password: string }): Promise<LoginResponse> => {
     try {
       const response = await api.post<LoginResponse, { email: string; password: string }>("/user/login", data);
-      console.log("로그인 성공:", response);
-      localStorage.setItem("token", response.accessToken);
-      console.log(response.accessToken)
+      localStorage.setItem("accessToken", response.accessToken);
       return response;
     } catch (error) {
       console.error("로그인 실패:", error);

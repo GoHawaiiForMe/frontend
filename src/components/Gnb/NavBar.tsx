@@ -3,7 +3,7 @@ import useAuthStore from "@/stores/useAuthStore";
 import Image from "next/image";
 import logo from "@public/assets/icon_logo_img.svg";
 import menu from "@public/assets/icon_menu.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import closeIcon from "@public/assets/icon_X.svg";
 import alarm_icon from "@public/assets/icon_alarm.svg";
 import user_img from "@public/assets/icon_default.svg";
@@ -13,10 +13,21 @@ import Notification from "./Notification";
 import UserMenu from "./UserMenu";
 
 const NavBar = () => {
-  const { isLoggedIn, nickName, role, setLogout } = useAuthStore();
+  const { isLoggedIn, nickName, role, coconut, setLogin, setLogout } = useAuthStore();
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    const userInfo = localStorage.getItem("userInfo");
+
+    if (accessToken && userInfo) {
+      const parsedUserInfo = JSON.parse(userInfo);
+      console.log(parsedUserInfo);
+      setLogin(parsedUserInfo.nickName, parsedUserInfo.role, parsedUserInfo.coconut);
+    }
+  }, [setLogin]);
 
   const handleOpenSidebar = () => {
     setIsOpenSidebar(true);
@@ -73,7 +84,7 @@ const NavBar = () => {
           <>
             <div className="flex items-center space-x-2 cursor-pointer">
               <Image src={coconut_icon} alt="코코넛" width={24} height={24} />
-              <p className="regular">50p</p>
+              <p className="regular">{coconut}p</p>
             </div>
             <div className="relative">
               <Image
@@ -106,7 +117,7 @@ const NavBar = () => {
               onClick={handleOpenUserMenu}
             >
               <Image src={user_img} alt="유저이미지" width={36} height={36} />
-              <span className="text-2lg medium hidden pc:block">{nickName}</span>
+              <span className="text-2lg medium hidden pc:block">{nickName} {role}</span>
             </div>
             {isOpenUserMenu && <UserMenu />}
           </>
