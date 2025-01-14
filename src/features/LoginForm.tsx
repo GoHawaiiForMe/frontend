@@ -81,7 +81,7 @@ export default function LoginForm() {
             {errors.password && <ErrorMessage message={errors.password.message} />}
           </div>
           <div className="flex justify-center">
-            <Button label="로그인" type="submit" disabled={!isFormValid} />
+            <Button label="로그인" type="submit" disabled={!isFormValid} className="text-color-gray-50" />
           </div>
         </form>
         <div className="flex justify-center mb-10 pc:text-xl ">
