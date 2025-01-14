@@ -4,18 +4,18 @@ type Role = "Dreamer" | "Maker" | "guest";
 
 interface AuthState {
   isLoggedIn: boolean;
-  nickname: string | null;
+  nickName: string | null;
   role: Role;
-  setLogin: (username: string, role: Role) => void;
+  setLogin: (userName: string, role: Role) => void;
   setLogout: () => void;
 }
 
 const useAuthStore = create<AuthState>((set) => ({
   isLoggedIn: false,
-  nickname: null,
+  nickName: null,
   role: "guest",
-  setLogin: (nickname: string, role: Role) => set({ isLoggedIn: true, nickname, role }),
-  setLogout: () => set({ isLoggedIn: false, nickname: null, role: "guest" }),
+  setLogin: (nickName: string, role: Role) => set({ isLoggedIn: true, nickName, role }),
+  setLogout: () => set({ isLoggedIn: false, nickName: null, role: "guest" }),
 }));
 
 export default useAuthStore;
