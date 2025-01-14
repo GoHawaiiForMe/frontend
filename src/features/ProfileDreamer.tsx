@@ -6,6 +6,7 @@ import Button from "@/components/Common/Button";
 import ImageModal from "@/components/Common/ImageModal";
 import { useSignUp } from "@/stores/SignUpContext";
 import userService from "@/services/userService";
+import planData from "@/types/planData";
 
 export default function ProfileDreamer() {
   const { userData, setProfileData } = useSignUp();
@@ -14,16 +15,15 @@ export default function ProfileDreamer() {
   const [isOpenImageModal, setIsOpenImageModal] = useState(false);
   const [profileImg, setProfileImg] = useState<string | null>(null);
 
-  const handleImageSelect = (imageSrc: string) => {
-    setProfileImg(imageSrc);
+  const handleImageSelect = (imageKey: string) => {
+    setProfileImg(imageKey);
     setIsOpenImageModal(false);
   };
 
   const handleServiceSelection = (type: string) => {
-    setSelectedServices((prev) => {
-      const updated = prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type];
-      return updated;
-    });
+    setSelectedServices((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
+    );
   };
 
   const handleLocationSelection = (type: string) => {
@@ -68,7 +68,7 @@ export default function ProfileDreamer() {
             <p className="text-xl semibold mb-3 mobile-tablet:text-lg">프로필 이미지</p>
             <div onClick={() => setIsOpenImageModal(true)} className="cursor-pointer w-30">
               {profileImg ? (
-                <Image src={profileImg} alt="프로필 이미지" width={100} height={100} />
+                <Image src={`/assets/img_avatar${profileImg.split("_")[1]}.svg`} alt="프로필 이미지" width={100} height={100} />
               ) : (
                 <Image src={profileImgDefault} alt="프로필 이미지" width={100} height={100} />
               )}
@@ -89,7 +89,7 @@ export default function ProfileDreamer() {
             </p>
             <Selector
               category="services"
-              selectedTypes={selectedServices}
+              selectedTypes={selectedServices.map(service => planData.services.find(ser => ser.mapping === service)?.name || service)}
               toggleSelection={handleServiceSelection}
             />
           </div>
@@ -102,7 +102,7 @@ export default function ProfileDreamer() {
             </p>
             <Selector
               category="locations"
-              selectedTypes={selectedLocations}
+              selectedTypes={selectedLocations.map(location => planData.locations.find(loc => loc.mapping === location)?.name || location)}
               toggleSelection={handleLocationSelection}
             />
           </div>
@@ -112,6 +112,7 @@ export default function ProfileDreamer() {
           onClick={handleSubmit}
           disabled={isButtonDisabled}
           type="submit"
+          className="text-color-gray-50"
         />
       </div>
     </div>

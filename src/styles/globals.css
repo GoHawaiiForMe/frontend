@@ -36,9 +36,11 @@ a {
 button {
   cursor: pointer;
 }
+
 .bold {
   font-weight: var(--font-weight-bold);
 }
+
 .semibold {
   font-weight: var(--font-weight-semibold);
 }

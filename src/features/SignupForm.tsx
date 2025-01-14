@@ -36,11 +36,12 @@ export default function SignUpForm() {
   };
 
   const watchFields = watch();
-  const isFormValid = Object.values(watchFields).every((value) => value?.toString().trim() !== "");
+  const isFormValid = Object.keys(errors).length === 0 && Object.values(watchFields).every((value) => value?.toString().trim() !== "");
 
-  const ErrorMessage = ({ message }: { message: string | undefined }) => (
-    <p className="text-color-red-200 mt-1 absolute right-0">{message}</p>
-  );
+  const ErrorMessage = ({ message }: { message: string | undefined }) => {
+    console.log("ErrorMessage:", message);
+    return <p className="text-color-red-200 mt-1 absolute right-0">{message}</p>
+  };
 
   return (
     <div className="flex justify-center">
@@ -116,9 +117,9 @@ export default function SignUpForm() {
             </div>
             {errors.role && <ErrorMessage message={errors.role.message} />}
           </div>
-          <Button type="submit" label="회원가입" disabled={!isFormValid} />
+          <Button type="submit" label="회원가입" disabled={!isFormValid} className="text-color-gray-50" />
         </form>
-        <div className="flex justify-center">
+        <div className="flex justify-center mb-40">
           <p className="mr-2">이미 니가가라하와이 회원이신가요?</p>
           <Link href="/login" className="text-color-blue-300 underline">
             로그인

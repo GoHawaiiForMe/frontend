@@ -11,6 +11,7 @@ module.exports = {
       tablet: { min: "744px", max: "1023px" },
       pc: { min: "1024px" },
       "mobile-tablet": { max: "1023px" },
+      card: { min: "1024px", max: "1460px" }
     },
     extend: {
       colors: {

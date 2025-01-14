@@ -5,10 +5,10 @@ export default function ConfirmedPlan() {
     <>
       <div className="flex gap-2">
         <div>
-          <Button label="새로운 여행 계획하기" />
+          <Button label="새로운 여행 계획하기" className="text-color-gray-50" />
         </div>
         <div>
-          <Button label="신청한 여행 보러가기기" />
+          <Button label="신청한 여행 보러가기" className="text-color-gray-50" />
         </div>
       </div>
     </>

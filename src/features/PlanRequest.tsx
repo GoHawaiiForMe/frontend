@@ -123,7 +123,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
 
             <Button
               label="선택완료"
-              className="mt-8"
+              className="mt-8 text-color-gray-50"
               disabled={!isStep1Complete}
               onClick={handleCompleteStep1Selection}
             />
@@ -202,7 +202,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
               )}
               <Button
                 label="선택완료"
-                className="mt-8"
+                className="mt-8 text-color-gray-50"
                 disabled={!isStep2Complete}
                 onClick={handleCompleteStep2Selection}
               ></Button>
@@ -254,7 +254,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
               <Calendar onDateChange={handleDateChange} />
               <Button
                 label="선택완료"
-                className="mt-8"
+                className="mt-8 text-color-gray-50"
                 disabled={!isStep3Complete}
                 onClick={handleCompleteStep3Selection}
               />
@@ -286,7 +286,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
                 label="플랜 확정하기"
                 onClick={handlePlanConfirm}
                 type="submit"
-                className="border border-color-black-100 bg-color-red-100 text-color-black-200"
+                className="border border-color-black-100 bg-color-red-100 text-color-black-300"
               ></Button>
             </div>
           </Bubble>
