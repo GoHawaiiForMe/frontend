@@ -6,7 +6,8 @@ interface AuthState {
   isLoggedIn: boolean;
   nickName: string | null;
   role: Role;
-  setLogin: (userName: string, role: Role) => void;
+  coconut: number;
+  setLogin: (userName: string, role: Role, coconut: number) => void;
   setLogout: () => void;
 }
 
@@ -14,8 +15,9 @@ const useAuthStore = create<AuthState>((set) => ({
   isLoggedIn: false,
   nickName: null,
   role: "guest",
-  setLogin: (nickName: string, role: Role) => set({ isLoggedIn: true, nickName, role }),
-  setLogout: () => set({ isLoggedIn: false, nickName: null, role: "guest" }),
+  coconut: 0,
+  setLogin: (nickName: string, role: Role, coconut: number) => set({ isLoggedIn: true, nickName, role, coconut }),
+  setLogout: () => set({ isLoggedIn: false, nickName: null, role: "guest", coconut: 0 }),
 }));
 
 export default useAuthStore;

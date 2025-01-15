@@ -1,7 +1,11 @@
 import useAuthStore from "@/stores/useAuthStore";
 import Link from "next/link";
 
-export default function Notification() {
+interface UserMenuProps {
+  userId: string;
+}
+
+export default function Notification({ userId }: UserMenuProps) {
   const { nickName, role, setLogout } = useAuthStore();
 
   if (role === "guest") return null;
@@ -9,12 +13,14 @@ export default function Notification() {
   const renderMenus = () => {
     const menuItems = {
       DREAMER: [
-        { href: "/", label: "프로필 수정" },
+        { href: userId ? `/profile/dreamer/edit/${userId}` : "", label: "프로필 수정" },
         { href: "/", label: "찜한 Maker" },
         { href: "/", label: "여행 리뷰" },
       ],
       MAKER: [{ href: "/", label: "마이페이지" }],
     };
+
+
 
     return (
       <>
@@ -26,6 +32,13 @@ export default function Notification() {
       </>
     );
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken")
+    localStorage.removeItem("userInfo")
+
+    setLogout();
+  }
 
   return (
     <>
@@ -43,7 +56,7 @@ export default function Notification() {
             </ul>
           </div>
           <div className="h-[1px] w-full bg-color-line-100"></div>
-          <div className="flex justify-center text-color-gray-500 pb-4 mobile-tablet:text-xs">
+          <div className="flex justify-center text-color-gray-500 pb-4 mobile-tablet:text-xs cursor-pointer" onClick={handleLogout}>
             로그아웃
           </div>
         </div>

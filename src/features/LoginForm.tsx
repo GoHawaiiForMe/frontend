@@ -20,11 +20,11 @@ export default function LoginForm() {
   const handleLogin = async (data: LoginFormData) => {
     try {
       const response = await userService.login(data);
-      localStorage.setItem("token", response.accessToken);
+      localStorage.setItem("accessToken", response.accessToken);
 
       // 유저 정보 요청
       const userInfo = await userService.getUserInfo();
-      setLogin(userInfo.nickName, userInfo.role as "DREAMER" | "MAKER");
+      setLogin(userInfo.nickName, userInfo.role as "DREAMER" | "MAKER", userInfo.coconut);
 
       router.push("/");
 
