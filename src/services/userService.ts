@@ -1,12 +1,14 @@
 import { api } from "./api"
 
+type Role = "DREAMER" | "MAKER";
+
 interface LoginResponse {
   accessToken: string;
 }
 
 interface UserInfo {
   id: string;
-  role: string;
+  role: Role;
   nickName: string;
   email: string;
   phoneNumber: string;
@@ -40,7 +42,7 @@ const userService = {
   getUserInfo: async (): Promise<UserInfo> => {
     try {
       const response = await api.get<UserInfo, {}>("/user/");
-      console.log("유저 정보 조회 성공", response);
+      console.log("유저 정보 조회 성공", response); //삭제
       return response;
     } catch (error) {
       console.error("유저 정보 조회 실패", error);

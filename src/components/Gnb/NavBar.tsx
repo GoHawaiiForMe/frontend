@@ -11,23 +11,33 @@ import chatting_icon from "@public/assets/icon_chatting.svg";
 import coconut_icon from "@public/assets/icon_coconut.svg";
 import Notification from "./Notification";
 import UserMenu from "./UserMenu";
+import userService from "@/services/userService";
 
 const NavBar = () => {
   const { isLoggedIn, nickName, role, coconut, setLogin, setLogout } = useAuthStore();
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState<any>(null);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
-    const userInfo = localStorage.getItem("userInfo");
 
-    if (accessToken && userInfo) {
-      const parsedUserInfo = JSON.parse(userInfo);
-      console.log(parsedUserInfo);
-      setLogin(parsedUserInfo.nickName, parsedUserInfo.role, parsedUserInfo.coconut);
+    if (accessToken) {
+      const fetchUserInfo = async () => {
+        try {
+          const userData = await userService.getUserInfo();
+          setUserInfo(userData);
+          setLogin(userData.nickName, userData.role, userData.coconut);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      fetchUserInfo();
     }
   }, [setLogin]);
+
 
   const handleOpenSidebar = () => {
     setIsOpenSidebar(true);
@@ -119,7 +129,7 @@ const NavBar = () => {
               <Image src={user_img} alt="유저이미지" width={36} height={36} />
               <span className="text-2lg medium hidden pc:block">{nickName} {role}</span>
             </div>
-            {isOpenUserMenu && <UserMenu />}
+            {isOpenUserMenu && <UserMenu userId={userInfo?.id} />}
           </>
         ) : (
           <>

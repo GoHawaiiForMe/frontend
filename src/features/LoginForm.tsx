@@ -24,7 +24,6 @@ export default function LoginForm() {
 
       // 유저 정보 요청
       const userInfo = await userService.getUserInfo();
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
       setLogin(userInfo.nickName, userInfo.role as "DREAMER" | "MAKER", userInfo.coconut);
 
       router.push("/");

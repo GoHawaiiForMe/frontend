@@ -1,7 +1,11 @@
 import useAuthStore from "@/stores/useAuthStore";
 import Link from "next/link";
 
-export default function Notification() {
+interface UserMenuProps {
+  userId: string;
+}
+
+export default function Notification({ userId }: UserMenuProps) {
   const { nickName, role, setLogout } = useAuthStore();
 
   if (role === "guest") return null;
@@ -9,7 +13,7 @@ export default function Notification() {
   const renderMenus = () => {
     const menuItems = {
       DREAMER: [
-        { href: "/", label: "프로필 수정" },
+        { href: userId ? `/profile/dreamer/edit/${userId}` : "", label: "프로필 수정" },
         { href: "/", label: "찜한 Maker" },
         { href: "/", label: "여행 리뷰" },
       ],
