@@ -32,7 +32,13 @@ export default function SignUpForm() {
       password: data.password,
       phoneNumber: data.phoneNumber,
     });
-    router.push('/profile/dreamer');
+    if (data.role === "DREAMER") {
+      router.push('/profile/dreamer');
+    }
+
+    if (data.role === "MAKER") {
+      router.push('/profile/maker/informEdit'); //임시 url
+    }
   };
 
   const watchFields = watch();
@@ -49,15 +55,18 @@ export default function SignUpForm() {
         <Image src={logo} alt="로고" />
 
         <form onSubmit={handleSubmit(onSubmit)} className="w-full gap-8 flex flex-col relative">
-          <div>
+          <div >
             <Input
               type="text"
               label="닉네임"
               placeholder="닉네임을 입력해주세요"
               {...register("nickName")}
               error={!!errors.nickName}
+              className="relative"
             />
+            <button type="button" className="absolute right-2 top-[60px] bg-color-blue-300 text-lg bold px-2 py-2 rounded-lg text-color-gray-50 mobile-tablet:top-[53px]">닉네임 확인</button>
             {errors.nickName && <ErrorMessage message={errors.nickName.message} />}
+
           </div>
 
           <div>
@@ -67,7 +76,9 @@ export default function SignUpForm() {
               placeholder="이메일을 입력해 주세요"
               {...register("email")}
               error={!!errors.email}
+              className="relative"
             />
+            <button type="button" className="absolute right-2 top-[203px] bg-color-blue-300 text-lg bold px-2 py-2 rounded-lg text-color-gray-50 mobile-tablet:top-[191px]">이메일 확인</button>
             {errors.email && <ErrorMessage message={errors.email.message} />}
           </div>
 
