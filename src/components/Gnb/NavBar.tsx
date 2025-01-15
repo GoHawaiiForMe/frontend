@@ -14,7 +14,7 @@ import UserMenu from "./UserMenu";
 import userService from "@/services/userService";
 
 const NavBar = () => {
-  const { isLoggedIn, nickName, role, coconut, setLogin, setLogout } = useAuthStore();
+  const { isLoggedIn, nickName, role, coconut, setLogin } = useAuthStore();
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
