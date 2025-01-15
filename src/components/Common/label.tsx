@@ -25,11 +25,11 @@ const Label: React.FC<LabelProps> = ({ type }) => {
       break;
     case 'FOOD_TOUR':
       labelSrc = foodTourIcon;
-      labelText = '맛집탐방형';
+      labelText = '맛집 탐방형';
       break;
     case 'ACTIVITY':
       labelSrc = activityIcon;
-      labelText = '액티비티형';
+      labelText = '액티비티/탐험형';
       break;
     case 'CULTURE':
       labelSrc = cultureIcon;
@@ -40,7 +40,7 @@ const Label: React.FC<LabelProps> = ({ type }) => {
       labelText = '축제참여형';
       break;
     case 'RELAXATION':
-      labelSrc = relaxationIcon;
+      labelSrc = relaxationIcon; 
       labelText = '휴양형';
       break;
     case 'REQUEST':
