@@ -15,7 +15,6 @@ interface SignUpState {
     };
     setUserData: (data: Partial<SignUpState["userData"]>) => void;
     setProfileData: (data: Partial<SignUpState["profileData"]>) => void;
-
 }
 
 export const useSignUp = create<SignUpState>((set) => ({
@@ -35,4 +34,6 @@ export const useSignUp = create<SignUpState>((set) => ({
         set((state) => ({ userData: { ...state.userData, ...data } })),
     setProfileData: (data) =>
         set((state) => ({ profileData: { ...state.profileData, ...data } })),
+
 }));
+
