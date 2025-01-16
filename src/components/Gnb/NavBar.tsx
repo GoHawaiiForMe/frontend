@@ -20,25 +20,6 @@ const NavBar = () => {
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<any>(null);
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-
-    if (accessToken) {
-      const fetchUserInfo = async () => {
-        try {
-          const userData = await userService.getUserInfo();
-          setUserInfo(userData);
-          setLogin(userData.nickName, userData.role, userData.coconut);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
-      fetchUserInfo();
-    }
-  }, [setLogin]);
-
-
   const handleOpenSidebar = () => {
     setIsOpenSidebar(true);
   };
@@ -77,6 +58,24 @@ const NavBar = () => {
       </>
     );
   };
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+      const fetchUserInfo = async () => {
+        try {
+          const userData = await userService.getUserInfo();
+          setUserInfo(userData);
+          setLogin(userData.nickName, userData.role, userData.coconut);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      fetchUserInfo();
+    }
+  }, [setLogin]);
 
   return (
     <div className="flex items-center justify-between py-6 bg-color-background-100 border-b-2 border-color-line-100 px-32 tablet:px-5 mobile:px-4 mobile-tablet:py-3">

@@ -56,9 +56,8 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className={`w-full border rounded-xl p-4 h-16 pc:text-xl mobile-tablet:text-lg ${
-              error ? "border-color-red-200" : "border-color-blue-300"
-            }  ${className}`}
+            className={`w-full border rounded-xl p-4 h-16 pc:text-xl mobile-tablet:text-lg ${error ? "border-color-red-200" : "border-color-blue-300"
+              }  ${className}`}
             {...rest}
           />
           <Image
@@ -73,9 +72,8 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
       ) : (
         <input
           ref={ref as React.Ref<HTMLInputElement>}
-          className={`w-full border rounded-xl p-4 h-16 pc:text-xl mobile-tablet:text-lg ${
-            error ? "border-color-red-200" : "border-color-blue-300"
-          } ${className}`}
+          className={`w-full border rounded-xl p-4 h-16 pc:text-xl mobile-tablet:text-lg ${error ? "border-color-red-200" : "border-color-blue-300"
+            } ${className}`}
           type={type}
           name={name}
           value={value}

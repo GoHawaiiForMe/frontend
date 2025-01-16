@@ -1,9 +1,10 @@
 import useAuthStore from "@/stores/useAuthStore";
 import Link from "next/link";
 
-interface UserMenuProps {
+export interface UserMenuProps {
   userId: string;
 }
+
 
 export default function Notification({ userId }: UserMenuProps) {
   const { nickName, role, setLogout } = useAuthStore();
@@ -20,8 +21,6 @@ export default function Notification({ userId }: UserMenuProps) {
       MAKER: [{ href: "/", label: "마이페이지" }],
     };
 
-
-
     return (
       <>
         {menuItems[role ? role : "DREAMER"].map((link, index) => (
@@ -35,7 +34,6 @@ export default function Notification({ userId }: UserMenuProps) {
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken")
-    localStorage.removeItem("userInfo")
 
     setLogout();
   }

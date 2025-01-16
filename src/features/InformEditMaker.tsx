@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Common/Input";
-import React from "react";
 import { editDreamerSchema, EditDreamerData } from "@/utils/validate";
 import Button from "@/components/Common/Button";
 // import useAuthStore from "@/stores/useAuthStore";
@@ -17,7 +16,7 @@ export default function InformEditMaker() {
     mode: "onBlur",
   });
   // zustand로 가져오기
-  // const { isLoggedIn, nickname, role } = useAuthStore();
+  // const { isLoggedIn, nickName, role } = useAuthStore();
   // const [userData, setUserData] = useState(null);
 
   // useEffect(() => {
@@ -50,11 +49,11 @@ export default function InformEditMaker() {
                 type="text"
                 label="닉네임"
                 placeholder="기존 닉네임"
-                {...register("nickname")}
-                error={!!errors.nickname}
+                {...register("nickName")}
+                error={!!errors.nickName}
                 className="bg-color-background-200 border-0 text-color-gray-300"
               />
-              {errors.nickname && <ErrorMessage message={errors.nickname.message} />}
+              {errors.nickName && <ErrorMessage message={errors.nickName.message} />}
             </div>
             <div className="h-0.5 bg-color-line-100 my-4"></div>
 
@@ -73,11 +72,11 @@ export default function InformEditMaker() {
                 type="text"
                 label="전화번호"
                 placeholder="숫자만 입력해주세요"
-                {...register("phone")}
-                error={!!errors.phone}
+                {...register("phoneNumber")}
+                error={!!errors.phoneNumber}
                 className="bg-color-background-200 border-0 text-color-gray-300"
               />
-              {errors.phone && <ErrorMessage message={errors.phone.message} />}
+              {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
             </div>
             <div className="h-0.5 bg-color-line-100"></div>
           </div>
@@ -109,11 +108,11 @@ export default function InformEditMaker() {
                 label="새 비밀번호 확인"
                 placeholder="비밀번호를 다시 한번 입력해 주세요"
                 className="bg-color-background-200 border-0 text-color-gray-300 "
-                {...register("confirmPassword")}
-                error={!!errors.confirmPassword}
+                {...register("newConfirmPassword")}
+                error={!!errors.newConfirmPassword}
               />
             </div>
-            {errors.confirmPassword && <ErrorMessage message={errors.confirmPassword.message} />}
+            {errors.newConfirmPassword && <ErrorMessage message={errors.newConfirmPassword.message} />}
           </div>
         </div>
         <div className="grid pc:grid-cols-2 gap-8 pb-16 mobile-tablet:flex mobile-tablet:flex-col mobile-tablet:gap-4">

@@ -7,6 +7,7 @@ import ImageModal from "@/components/Common/ImageModal";
 import { useSignUp } from "@/stores/SignUpContext";
 import userService from "@/services/userService";
 import planData from "@/types/planData";
+import { useRouter } from "next/router";
 
 export default function ProfileDreamer() {
   const { userData, setProfileData } = useSignUp();
@@ -14,6 +15,8 @@ export default function ProfileDreamer() {
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [isOpenImageModal, setIsOpenImageModal] = useState(false);
   const [profileImg, setProfileImg] = useState<string | null>(null);
+
+  const router = useRouter();
 
   const handleImageSelect = (imageKey: string) => {
     setProfileImg(imageKey);
@@ -42,9 +45,13 @@ export default function ProfileDreamer() {
     setProfileData(profileData);
 
     try {
-      const payload = { ...userData, ...profileData };
+      const payload = {
+        user: { ...userData },
+        profile: profileData,
+      };
       await userService.signUp(payload);
-      console.log("회원가입 성공");
+      router.push("/login");
+
     } catch (error) {
       console.error("회원가입 실패", error);
     }
@@ -66,7 +73,7 @@ export default function ProfileDreamer() {
         <div className="flex flex-col gap-8">
           <div>
             <p className="text-xl semibold mb-3 mobile-tablet:text-lg">프로필 이미지</p>
-            <div onClick={() => setIsOpenImageModal(true)} className="cursor-pointer w-30">
+            <div onClick={() => setIsOpenImageModal(true)} className="cursor-pointer w-[100px]">
               {profileImg ? (
                 <Image src={`/assets/img_avatar${profileImg.split("_")[1]}.svg`} alt="프로필 이미지" width={100} height={100} />
               ) : (
