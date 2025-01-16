@@ -80,7 +80,7 @@ export default function requestDetail_dreamer() {
   return (
     <div className="flex flex-col w-full relative">
       <div className="flex py-8 text-color-black-400 text-2xl semibold center">견적 상세</div>
-      <div className="flex gap-24 mobile-tablet:flex-col">
+      <div className="flex gap-24 mobile-tablet:flex-col mb:flex-col mobile-tablet:gap-0">
         <div className="flex flex-col flex-grow">
           <div className="flex">
             <div className="flex flex-col w-full bg-color-gray-50 py-7 px-6 rounded-2xl mobile-tablet:px-3 mobile-tablet:py-4">
@@ -183,8 +183,8 @@ export default function requestDetail_dreamer() {
             <PlanCard planData={{ selectedPlanId, plans }} />
           </div>
         </div>
-        <div className="flex flex-col mobile-tablet:w-full mobile-tablet:relative mobile-tablet:flex-grow">
-          <div className="flex mobile-tablet:flex-grow w-full mobile-tablet:py-[10px] mobile-tablet:gap-2 mobile-tablet:fixed mobile-tablet:bg-color-gray-50 mobile-tablet:bottom-0">
+        <div className="flex flex-nowrap flex-col mobile-tablet:w-full mobile-tablet:relative mobile-tablet:flex-grow">
+          <div className="flex mobile-tablet:flex-grow w-full mobile-tablet:py-[10px] mobile-tablet:gap-2 mobile-tablet:fixed mobile-tablet:bg-color-gray-50 mobile-tablet:bottom-0 mobile-tablet:inset-x-0 mobile-tablet:main-container">
             <button className="flex flex-shrink-0 p-2 border-[1px] bg-body.bg-gray rounded-2xl pc:hidden">
               <Image src={icon_like_black} alt="좋아요" width={32} height={32} />
             </button>
@@ -194,7 +194,7 @@ export default function requestDetail_dreamer() {
           </div>
           <hr className="border-Line-100 my-10 mobile-tablet:hidden" />
           <div className="flex flex-col gap-[22px] mobile-tablet:hidden">
-            <p className="text-xl semibold text-black-400">플랜 공유하기</p>
+            <p className="flex text-xl semibold text-black-400">플랜 공유하기</p>
             <div className="flex gap-4">
               <Image src={icon_outline} alt="링크복사" width={64} height={64} />
               <Image src={icon_kakao} alt="카카오톡 공유" width={64} height={64} />
