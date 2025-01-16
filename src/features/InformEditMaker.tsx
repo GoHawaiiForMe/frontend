@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Common/Input";
-import React from "react";
 import { editDreamerSchema, EditDreamerData } from "@/utils/validate";
 import Button from "@/components/Common/Button";
 // import useAuthStore from "@/stores/useAuthStore";

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Common/Input";
-import React, { useState } from "react";
+import { useState } from "react";
 import { signUpSchema, SignUpFormData } from "@/utils/validate";
 import logo from "@public/assets/icon_logo_img.svg";
 import Image from "next/image";
