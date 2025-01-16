@@ -77,7 +77,7 @@ export default function PlanCard({ planData }: PlanCardProps) {
           </div>
         </div>
         <div className="flex">
-          <label className="text-color-gray-300 w-[150px] flex-shrink-0" htmlFor="travelSpot">
+          <label className="text-color-gray-300 w-[150px]" htmlFor="travelSpot">
             여행지
           </label>
           <div className="text-color-black-400">
