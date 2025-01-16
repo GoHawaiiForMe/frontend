@@ -158,7 +158,6 @@ export default function requestDetail_dreamer() {
                   </div>
                 </div>
               </div>
-
               <div>
                 <p className="text-black-300 text-2xl semibold mobile-tablet:text-lg">
                   고객님의 꿈을 행복하게 이루어 드립니다.
@@ -166,12 +165,12 @@ export default function requestDetail_dreamer() {
               </div>
             </div>
           </div>
-          <hr className="border-Line-100 my-10" />
+          <hr className="border-Line-100 my-10 mobile-tablet:my-6" />
           <div className="flex flex-col gap-8 mobile-tablet:gap-4">
             <p className="text-2xl semibold text-color-black-400 mobile-tablet:text-lg">견적가</p>
             <p className="text-3xl bold text-color-black-400 mobile-tablet:text-xl">180,000원</p>
           </div>
-          <hr className="border-Line-100 my-10" />
+          <hr className="border-Line-100 my-10 mobile-tablet:my-6" />
           <div className="flex flex-col gap-[22px] pc:hidden">
             <p className="text-xl semibold text-black-400">플랜 공유하기</p>
             <div className="flex gap-4">
@@ -180,7 +179,7 @@ export default function requestDetail_dreamer() {
               <Image src={icon_facebook} alt="페이스북 공유" width={40} height={40} />
             </div>
           </div>
-          <hr className="border-Line-100 my-10 pc:hidden" />
+          <hr className="border-Line-100 my-6 pc:hidden" />
           <div>
             <p className="text-2xl semibold text-color-black-400">플랜 정보</p>
             <PlanCard planData={{ selectedPlanId, plans }} />
