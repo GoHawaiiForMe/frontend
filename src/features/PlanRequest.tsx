@@ -7,6 +7,7 @@ import ModalLayout from "@/components/Common/ModalLayout";
 import Button from "@/components/Common/Button";
 import Calendar from "@/components/Common/Calandar";
 import planData from "@/types/planData";
+import planService from "@/services/planService";
 
 export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
   const [textValue, setTextValue] = useState<string>("");
@@ -22,25 +23,17 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
-    updateProgress();
-  }, [showStep1Summary, showStep2Summary, showStep3Summary]);
-
   const updateProgress = () => {
     const newProgress = showStep3Summary ? 100 : showStep2Summary ? 75 : showStep1Summary ? 50 : 25;
     setProgress(newProgress);
   };
 
   const handleLocationSelection = (type: string) => {
-    setSelectedLocations((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
-    );
+    setSelectedLocations([type]);
   };
 
   const handleServiceSelection = (type: string) => {
-    setSelectedServices((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
-    );
+    setSelectedServices([type]);
   };
 
   const handleOpenAddress = () => {
@@ -90,9 +83,32 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
   };
 
   const handlePlanConfirm = () => {
-    console.log("플랜 확정하기 버튼");
+    const planData = {
+      title: textValue,
+      tripDate: selectedDate,
+      tripType: selectedServices,
+      serviceArea: selectedLocations,
+      details: textareaValue,
+      address: address + detailAddress,
+    };
+
+    handlePlanRequest(planData);
+
     onConfirm();
   };
+
+  const handlePlanRequest = async (data: any) => {
+    try {
+      const response = await planService.planRequest(data);
+      console.log("여행 요청 성공", response);
+    } catch (error) {
+      console.error("여행 요청 실패", error);
+    }
+  };
+
+  useEffect(() => {
+    updateProgress();
+  }, [updateProgress]);
 
   return (
     <>
@@ -114,7 +130,9 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
       {/* step 1 */}
       {!showStep1Summary && (
         <div>
+
           <Bubble type="right_select">
+            <p className="mb-4">한 지역만 선택 가능합니다!</p>
             <Selector
               category="locations"
               selectedTypes={selectedLocations.map(location => planData.locations.find(loc => loc.mapping === location)?.name || location)}
@@ -167,7 +185,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
                 value={textareaValue}
                 placeholder="Maker에게 부탁할 일을 자세하게 작성해주세요."
               />
-              <p className="mb-4">복수 선택 가능합니다!</p>
+              <p className="mb-4">한 서비스만 선택 가능합니다!</p>
 
               <Selector
                 category="services"
