@@ -25,7 +25,7 @@ export default function RequestCard() {
         </div>
       </div>
       <div className="flex my-6 gap-6 border-color border-[1px] bg-body.bg-gray rounded-md py-4 px-[18px] mobile-tablet:gap-3 mobile-tablet:px-[10px] mobile-tablet:my-[14px]">
-        <div className="flex items-center min-w-20 min-h-20">
+        <div className="flex flex-shrink-0 items-center w-20 h-20 mobile-tablet:w-[46px] mobile-tablet:h-[46px]">
           <Image
             src={img_avatar1}
             alt="프로필사진"

@@ -138,7 +138,6 @@ export default function ongoingPlan() {
                   </ul>
                 )}
               </button>
-
               <button className="py-4 px-[32.5px] text-nowrap min-w-38 bg-color-blue-50 border-color-blue-300 border-solid border-[1px]  text-color-blue-300 semibold rounded-2xl  text-xl tablet:text-lg  mobile:text-md mobile-tablet:py-[6px] mobile-tablet:px-[16px]">
                 플랜 취소
               </button>
