@@ -53,7 +53,7 @@ export default function PlanCard({ planData }: PlanCardProps) {
 
   return (
     <div className="flex h-96 flex-col gap-y-[32px] my-[46px] mobile:gap-y-4">
-      <div className="flex w-fill px-10 py-8 flex-col gap-y-1 border-color border-[1px] bg-body.bg-gray rounded-2xl text-xl semibol mobile-tablet:text-md mobile:px-[16px] mobile:py-[16px]">
+      <div className="flex w-fill px-10 py-8 flex-col gap-y-1 border-color border-[1px] bg-color-background-200 rounded-2xl text-xl semibol mobile-tablet:text-md mobile:px-[16px] mobile:py-[16px]">
         <div className="flex">
           <label className="text-color-gray-300 w-[150px]" htmlFor="requestDate">
             플랜요청일
