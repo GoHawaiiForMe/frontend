@@ -100,6 +100,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
   const handlePlanRequest = async (data: any) => {
     try {
       const response = await planService.planRequest(data);
+      console.log("여행 데이터", data);
       console.log("여행 요청 성공", response);
     } catch (error) {
       console.error("여행 요청 실패", error);
