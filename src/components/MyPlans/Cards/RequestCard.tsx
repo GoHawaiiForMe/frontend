@@ -11,9 +11,7 @@ export default function RequestCard() {
       <div className="flex justify-left items-center gap-[12px] mobile-tablet:mt-[6px]">
         <div className="flex items-center gap-[4px] bg-color-blue-100 rounded-[4px] p-[4px]">
           <Image src={iconBox} alt="box" width={24} height={24} className="w-[20px] h-[20px]" />
-          <p className="text-[16px] font-semibold leading-[26px] text-color-blue-300 mobile:text-sm">
-            소형 이사
-          </p>
+          <p className="text-2lg semibold text-color-blue-300 mobile:text-sm">소형 이사</p>
         </div>
         <div className="flex items-center gap-[4px] bg-color-red-100 rounded-[4px] p-[4px]">
           <Image
@@ -23,13 +21,11 @@ export default function RequestCard() {
             height={24}
             className="w-[20px] h-[20px]"
           />
-          <p className="text-[16px] semibold leading-[26px] text-color-red-200 mobile:text-sm">
-            지정 견적 요청
-          </p>
+          <p className="text-2lg semibold text-color-red-200 mobile:text-sm">지정 견적 요청</p>
         </div>
       </div>
       <div className="flex my-6 gap-6 border-color border-[1px] bg-body.bg-gray rounded-md py-4 px-[18px] mobile-tablet:gap-3 mobile-tablet:px-[10px] mobile-tablet:my-[14px]">
-        <div className="flex items-center min-w-20 min-h-20">
+        <div className="flex flex-shrink-0 items-center w-20 h-20 mobile-tablet:w-[46px] mobile-tablet:h-[46px]">
           <Image
             src={img_avatar1}
             alt="프로필사진"
@@ -87,19 +83,19 @@ export default function RequestCard() {
           </div>
           <p className="text-color-line-200 mobile-tablet:hidden">ㅣ</p>
           <div className="flex items-center gap-3 ">
-            <p className="text-[18px] font-normal leading-[26px] text-color-gray-500 bg-color-background-400 rounded-[4px] px-[6px] py-[4px] whitespace-nowrap mobile-tablet:text-md">
+            <p className="text-2lg font-normal leading-[26px] text-color-gray-500 bg-color-background-400 rounded-[4px] px-[6px] py-[4px] whitespace-nowrap mobile-tablet:text-md">
               여행지
             </p>
-            <p className="text-[18px] font-medium leading-[26px] whitespace-nowrap text-color-black-300 mobile-tablet:text-md">
+            <p className="text-2lg font-medium leading-[26px] whitespace-nowrap text-color-black-300 mobile-tablet:text-md">
               서울 강남구
             </p>
           </div>
           {/* <p className="text-color-line-200 mobile-tablet:hidden">ㅣ</p>
           <div className="flex items-center gap-3 mobile-tablet:pl-2">
-            <p className="text-[18px] font-normal leading-[26px] text-color-gray-500 bg-color-background-400 rounded-[4px] px-[6px] py-[4px] whitespace-nowrap mobile:text-md">
+            <p className="text-2lg font-normal leading-[26px] text-color-gray-500 bg-color-background-400 rounded-[4px] px-[6px] py-[4px] whitespace-nowrap mobile:text-md">
               도착
             </p>
-            <p className="text-[18px] font-medium leading-[26px] whitespace-nowrap text-color-black-300 mobile-tablet:text-md">
+            <p className="text-2lg font-medium leading-[26px] whitespace-nowrap text-color-black-300 mobile-tablet:text-md">
               경기도 수원시
             </p>
           </div> */}
@@ -113,9 +109,11 @@ export default function RequestCard() {
         <button className="text-nowrap w-full py-4 px-[32.5px] bg-color-blue-300 text-gray-50 semibold rounded-lg text-xl tablet:text-lg mobile:text-md mobile-tablet:py-[11px] mobile-tablet:px-[16px]">
           플랜 확정하기
         </button>
+        {/* <Link href={`requestDetail_dreamer/${selectedPlanId}`}> */}
         <button className="text-nowrap w-full py-4 px-[32.5px] border-color-blue-300 border-solid border-[1px] text-color-blue-300 semibold rounded-lg  text-xl tablet:text-lg  mobile:text-md mobile-tablet:py-[11px] mobile-tablet:px-[16px]">
           상세보기
         </button>
+        {/* </Link> */}
       </div>
     </div>
   );

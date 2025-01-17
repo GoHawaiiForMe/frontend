@@ -1,0 +1,43 @@
+// ClipboardCopy.js
+"use client"; // 클라이언트 사이드에서만 실행되도록 설정
+import { useState } from "react";
+import Image from "next/image"; // Image 컴포넌트 임포트
+
+const ClipboardCopy = ({ icon }) => {
+  const [isCopied, setIsCopied] = useState(false); // 복사 여부 상태
+  const [showPopup, setShowPopup] = useState(false); // 팝업 표시 상태
+
+  const copyUrl = async () => {
+    try {
+      const url = window.location.href; // 현재 페이지 URL을 가져옵니다.
+      await navigator.clipboard.writeText(url); // URL을 클립보드에 복사
+      setIsCopied(true); // 복사 성공 시 상태 업데이트
+      console.log("URL이 복사되었습니다! 복사된 URL:", url);
+      setTimeout(() => {
+        setShowPopup(false); // 2초 후 팝업 숨기기
+        setIsCopied(false); // 복사 상태 초기화
+      }, 2000); // 2초 후 팝업을 숨김
+    } catch (error) {
+      console.error("클립보드 복사 실패:", error); // 오류 처리
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={copyUrl} className="flex">
+        {/* 이미지 아이콘과 텍스트를 표시 */}
+        <Image src={icon} alt="링크 복사 아이콘" width={64} height={64} />
+      </button>
+      {showPopup && (
+        <div
+          className="fixed bottom-4 left-1/2 transform -translate-x-1/2 p-4 bg-white rounded-lg shadow-lg border"
+          style={{ zIndex: 999 }}
+        >
+          <p className="text-center text-black">URL이 복사되었습니다!</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ClipboardCopy;
