@@ -42,13 +42,11 @@ export default function SignUpForm() {
       password: data.password,
       phoneNumber: data.phoneNumber,
     });
-
     if (data.role === "DREAMER") {
       router.push('/profile/dreamer');
     }
-
     if (data.role === "MAKER") {
-      router.push('/profile/maker/informEdit'); //임시 url
+      router.push('/profile/maker'); //임시 url
     }
   };
 
