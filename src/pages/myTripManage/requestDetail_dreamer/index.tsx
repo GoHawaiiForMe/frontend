@@ -13,6 +13,7 @@ import icon_kakao from "@public/assets/icon_kakao.png";
 import icon_facebook from "@public/assets/icon_facebook.png";
 import PlanCard from "@/components/MyPlans/Cards/PlanCard";
 import { useEffect } from "react";
+import ClipboardCopy from "@/components/Common/ClipboardCopy";
 
 export default function RequestDetailDreamer() {
   /*eslint-disable*/
@@ -201,7 +202,9 @@ export default function RequestDetailDreamer() {
           <div className="flex flex-col gap-[22px] pc:hidden">
             <p className="text-xl semibold text-black-400">플랜 공유하기</p>
             <div className="flex gap-4">
-              <Image src={icon_outline} alt="링크복사" width={40} height={40} />
+              <div className="my-6 w-10 h-10">
+                <ClipboardCopy icon={icon_outline} /> {/*링크 복사 버튼*/}
+              </div>
               <button onClick={shareMessage}>
                 <Image src={icon_kakao} alt="카카오톡 공유" width={40} height={40} />
               </button>
@@ -229,7 +232,9 @@ export default function RequestDetailDreamer() {
           <div className="flex flex-col gap-[22px] mobile-tablet:hidden">
             <p className="flex text-xl semibold text-black-400">플랜 공유하기</p>
             <div className="flex gap-4">
-              <Image src={icon_outline} alt="링크복사" width={64} height={64} />
+              <div className="my-6">
+                <ClipboardCopy icon={icon_outline} /> {/*링크 복사 버튼*/}
+              </div>
               <button onClick={shareMessage}>
                 <Image src={icon_kakao} alt="카카오톡 공유" width={64} height={64} />
               </button>
