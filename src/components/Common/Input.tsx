@@ -44,7 +44,7 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className={`w-full border rounded-xl p-4 bg-color-gray-50 resize-none h-40 mb-4 ${className}`}
+          className={`mb-4 h-40 w-full resize-none rounded-xl border bg-color-gray-50 p-4 ${className}`}
           {...rest}
         />
       ) : type === "password" ? (
@@ -56,9 +56,9 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className={`w-full border rounded-xl p-4 h-16 pc:text-xl mobile-tablet:text-lg ${
+            className={`h-16 w-full rounded-xl border p-4 pc:text-xl mobile-tablet:text-lg ${
               error ? "border-color-red-200" : "border-color-blue-300"
-            }  ${className}`}
+            } ${className}`}
             {...rest}
           />
           <Image
@@ -67,13 +67,13 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
             width={24}
             height={24}
             alt={isPasswordVisible ? "비밀번호 보기" : "비밀번호 감추기"}
-            className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer"
+            className="absolute right-5 top-1/2 -translate-y-1/2 transform cursor-pointer"
           />
         </div>
       ) : (
         <input
           ref={ref as React.Ref<HTMLInputElement>}
-          className={`w-full border rounded-xl p-4 h-16 pc:text-xl mobile-tablet:text-lg ${
+          className={`h-16 w-full rounded-xl border p-4 pc:text-xl mobile-tablet:text-lg ${
             error ? "border-color-red-200" : "border-color-blue-300"
           } ${className}`}
           type={type}
@@ -88,7 +88,7 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
     return (
       <div>
         {label && (
-          <label className="block mb-4 pc:text-xl mobile-tablet:text-lg" htmlFor={name}>
+          <label className="semibold mb-4 block pc:text-xl mobile-tablet:text-lg" htmlFor={name}>
             {label}
           </label>
         )}

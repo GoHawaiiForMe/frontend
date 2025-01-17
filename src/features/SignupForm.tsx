@@ -32,7 +32,12 @@ export default function SignUpForm() {
       password: data.password,
       phoneNumber: data.phoneNumber,
     });
-    router.push('/profile/dreamer');
+    if (data.role === "DREAMER") {
+      router.push('/profile/dreamer');
+    }
+    if (data.role === "MAKER") {
+      router.push('/profile/maker'); //임시 url
+    }
   };
 
   const watchFields = watch();
