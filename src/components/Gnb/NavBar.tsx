@@ -38,7 +38,7 @@ const NavBar = () => {
     const linkItems = {
       guest: [{ href: "/", label: "Maker 찾기" }],
       DREAMER: [
-        { href: "/", label: "여행 요청" },
+        { href: "/plan_request", label: "여행 요청" },
         { href: "/", label: "Maker 찾기" },
         { href: "/", label: "내 여행 관리" },
       ],
