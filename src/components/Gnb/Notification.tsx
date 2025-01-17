@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { formatRelativeTime } from "@/utils/formatDate";
 
 export const commonTextStyle = "text-color-blue-300";
-export const textStylesKeywords = ["확정", "플랜", "테스트"];
+export const textStylesKeywords = ["확정", "플랜", "견적"];
 
+//서버 코드 변경 후 다시 작업할 예정
 export default function Notification({ closeModal }: { closeModal: () => void }) {
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
 
@@ -41,6 +42,38 @@ export default function Notification({ closeModal }: { closeModal: () => void })
       }
       return <span key={index}>{part}</span>;
     });
+  };
+
+  const highlightDynamicText = (content: string) => {
+    const parts = content.split(/(알림|중입니다!)/);
+
+    return parts.map((part, index) => {
+      if (part === "알림" || part === "중입니다!") {
+        return <span key={index}>{part}</span>;
+      }
+      // 나머지 텍스트는 하이라이트 적용
+      return (
+        <span key={index} className={commonTextStyle}>
+          {part}
+        </span>
+      );
+    });
+  };
+
+  const applyHighlights = (content: string) => {
+    let highlightedText = highlightKeywords(content);
+
+    highlightedText = highlightedText.reduce((acc: React.ReactElement[], part) => {
+      if (typeof part === 'string') {
+        // string이라면 하이라이트 적용
+        acc.push(...highlightDynamicText(part) as React.ReactElement[]); // 배열을 평탄화하여 추가
+      } else {
+        acc.push(part); // 이미 React Element라면 그대로 추가
+      }
+      return acc;
+    }, [] as React.ReactElement[]);
+
+    return highlightedText;
   };
 
   useEffect(() => {
@@ -82,7 +115,7 @@ export default function Notification({ closeModal }: { closeModal: () => void })
                   <div key={notification.id}>
                     <li onClick={() => handleRead(notification.id)} className={`pt-4 cursor-pointer ${notification.isRead ? "bg-[#f1f1f1]" : "bg-color-gray-50"}`}>
                       <p className="text-lg px-5">
-                        {highlightKeywords(notification.content)}
+                        {applyHighlights(notification.content)}
                       </p>
                       <p className="text-md text-color-gray-300 px-5 pb-4">{formatRelativeTime(notification.createdAt)}</p>
 
