@@ -1,34 +1,75 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Common/Input";
-import React from "react";
+import React, { useEffect } from "react";
 import { editDreamerSchema, EditDreamerData } from "@/utils/validate";
 import Image from "next/image";
 import Button from "@/components/Common/Button";
 import Selector from "@/components/Common/Selector";
-// import useAuthStore from "@/stores/useAuthStore";
 import { useState } from "react";
 import profileImgDefault from "@public/assets/icon_default_profile.svg";
 import ImageModal from "@/components/Common/ImageModal";
 import planData from "@/types/planData";
+import userService from "@/services/userService";
 
 export default function ProfileEditDreamer() {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [isOpenImageModal, setIsOpenImageModal] = useState(false);
   const [profileImg, setProfileImg] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState<any>(null);
+  const [profileInfo, setProfileInfo] = useState<any>(null);
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<EditDreamerData>({
     resolver: zodResolver(editDreamerSchema),
     mode: "onBlur",
   });
-  // zustand로 가져오기
-  // const { isLoggedIn, nickname } = useAuthStore();
-  // const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+      const fetchUserInfo = async () => {
+        try {
+          const userData = await userService.getUserInfo();
+          const profileData = await userService.getProfileInfo();
+          setUserInfo(userData);
+          setProfileInfo(profileData);
+
+          console.log(profileData);
+
+          if (profileData.image) {
+            let imgMapping = "default";
+            if (profileData.image === "DEFAULT_1") {
+              imgMapping = "1";
+            } else if (profileData.image === "DEFAULT_2") {
+              imgMapping = "2";
+            } else if (profileData.image === "DEFAULT_3") {
+              imgMapping = "3";
+            } else if (profileData.image === "DEFAULT_4") {
+              imgMapping = "4";
+            }
+            setProfileImg(`/assets/img_avatar${imgMapping}.svg`);
+          } else {
+            setProfileImg(null);
+          }
+          setValue("nickName", userData.nickName);
+          setValue("email", userData.email);
+          setValue("phoneNumber", userData.phoneNumber);
+          setSelectedServices(profileData.tripTypes || []);
+          setSelectedLocations(profileData.serviceArea || []);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchUserInfo();
+    }
+  }, []);
 
   const handleImageSelect = (imageSrc: string) => {
     setProfileImg(imageSrc);
@@ -46,13 +87,6 @@ export default function ProfileEditDreamer() {
       prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
     );
   };
-
-  // useEffect(() => {
-  // if (isLoggedIn) {
-  // 로그인된 사용자 정보로 API 호출
-  //   fetch(`/api/user/${id}`)
-  //   }
-  // }, [isLoggedIn]);
 
   const onSubmit = (data: EditDreamerData) => {
     console.log(data); // 테스트용
@@ -76,10 +110,11 @@ export default function ProfileEditDreamer() {
               <Input
                 type="text"
                 label="닉네임"
-                placeholder="기존 닉네임"
+                placeholder="닉네임을 입력해주세요"
+
                 {...register("nickName")}
                 error={!!errors.nickName}
-                className="bg-color-background-200 border-0 text-color-gray-300"
+                className="bg-color-background-200 border-0 "
               />
               {errors.nickName && <ErrorMessage message={errors.nickName.message} />}
             </div>
@@ -89,7 +124,9 @@ export default function ProfileEditDreamer() {
               <Input
                 type="text"
                 label="이메일"
-                placeholder="저장된 이메일 들어가야함"
+                value={userInfo?.email}
+                disabled={true}
+                placeholder="이메일을 입력해주세요"
                 className="bg-color-background-200 border-0 text-color-gray-300"
               />
             </div>
@@ -99,10 +136,11 @@ export default function ProfileEditDreamer() {
               <Input
                 type="text"
                 label="전화번호"
+                defaultValue={userInfo?.phoneNumber || ""}
                 placeholder="숫자만 입력해주세요"
                 {...register("phoneNumber")}
                 error={!!errors.phoneNumber}
-                className="bg-color-background-200 border-0 text-color-gray-300"
+                className="bg-color-background-200 border-0 "
               />
               {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
             </div>
@@ -112,7 +150,7 @@ export default function ProfileEditDreamer() {
                 type="password"
                 label="현재 비밀번호"
                 placeholder="현재 비밀번호를 입력해 주세요"
-                className="bg-color-background-200 border-0 text-color-gray-300"
+                className="bg-color-background-200 border-0 "
               />
             </div>
             <div className="h-0.5 bg-color-line-100 my-4"></div>
@@ -121,7 +159,7 @@ export default function ProfileEditDreamer() {
                 type="password"
                 label="새 비밀번호"
                 placeholder="비밀번호를 입력해 주세요"
-                className="bg-color-background-200 border-0 text-color-gray-300"
+                className="bg-color-background-200 border-0 "
                 {...register("newPassword")}
                 error={!!errors.newPassword}
               />
@@ -150,7 +188,7 @@ export default function ProfileEditDreamer() {
                 <p className="text-xl semibold mb-3 mobile-tablet:text-lg">프로필 이미지</p>
                 <div onClick={() => setIsOpenImageModal(true)} className="cursor-pointer w-30">
                   {profileImg ? (
-                    <Image src={`/assets/img_avatar${profileImg.split("_")[1]}.svg`} alt="프로필 이미지" width={100} height={100} />
+                    <Image src={profileImg} alt="프로필 이미지" width={100} height={100} />
                   ) : (
                     <Image src={profileImgDefault} alt="프로필 이미지" width={150} height={150} />
                   )}

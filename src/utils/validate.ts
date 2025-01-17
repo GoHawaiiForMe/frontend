@@ -32,6 +32,7 @@ export type SignUpFormData = z.infer<typeof signUpSchema>;
 export const editDreamerSchema = z
   .object({
     nickName: z.string().min(1, { message: "닉네임을 입력해 주세요." }),
+    email: z.string().min(1, { message: "이메일을 입력해 주세요." }),
     phoneNumber: z.string().regex(/^010\d{8}$/, { message: "010으로 시작하고 숫자만 입력해 주세요." }),
     password: z.string().min(6, "비밀번호는 최소 6자 이상이어야 합니다."),
     newPassword: z.string().min(6, "비밀번호는 최소 6자 이상이어야 합니다."),

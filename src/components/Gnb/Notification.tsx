@@ -76,7 +76,9 @@ export default function Notification({ closeModal }: { closeModal: () => void })
     return highlightedText;
   };
 
-  useEffect(() => {
+  const accessToken = localStorage.getItem("accessToken");
+
+  if (accessToken) {
     const fetchNotifications = async () => {
       try {
         const data = await notificationService.getNotification();
@@ -87,9 +89,8 @@ export default function Notification({ closeModal }: { closeModal: () => void })
         setNotifications([]);
       }
     };
+  }
 
-    fetchNotifications();
-  }, []);
 
 
   return (

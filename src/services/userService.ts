@@ -5,7 +5,6 @@ type Role = "DREAMER" | "MAKER";
 interface LoginResponse {
   accessToken: string;
 }
-
 interface UserInfo {
   id: string;
   role: Role;
@@ -14,6 +13,18 @@ interface UserInfo {
   phoneNumber: string;
   coconut: number;
 }
+interface ProfileInfo {
+  userId: string;
+  image: string;
+  serviceArea: string[];
+  serviceTypes: string[];
+  gallery?: string;
+  description?: string;
+  detailDescription?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 
 const userService = {
 
@@ -65,6 +76,15 @@ const userService = {
     }
   },
 
+  getProfileInfo: async (): Promise<ProfileInfo> => {
+    try {
+      const response = await api.get<ProfileInfo, {}>("/user/profile");
+      return response;
+    } catch (error) {
+      console.error("프로필 정보 조회 실패", error);
+      throw error;
+    }
+  },
 
 };
 
