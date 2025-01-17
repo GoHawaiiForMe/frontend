@@ -2,15 +2,20 @@ import PlanRequest from "@/features/PlanRequest";
 import Layout from "@/components/Common/Layout";
 import ConfirmedPlan from "@/components/Common/ConfirmedPlan";
 import { useState } from "react";
+import withAuthAccess from "@/stores/withAuthAccess";
 
-export default function ProRequestPage() {
+export default function PlanRequestPage() {
   const [isPlanConfirmed, setIsPlanConfirmed] = useState(false);
+
+  const handleResetPlan = () => {
+    setIsPlanConfirmed(false);
+  };
 
   return (
     <>
       <Layout bodyClass="bg-gray">
         {isPlanConfirmed ? (
-          <ConfirmedPlan />
+          <ConfirmedPlan onReset={handleResetPlan} />
         ) : (
           <PlanRequest onConfirm={() => setIsPlanConfirmed(true)} />
         )}
@@ -18,3 +23,5 @@ export default function ProRequestPage() {
     </>
   );
 }
+
+withAuthAccess(PlanRequestPage);
