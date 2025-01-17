@@ -1,3 +1,6 @@
+"use client";
+//useEffect, useState등을 사용할 수 있게 함(CSR로 전환)
+
 import Image from "next/image";
 import iconBox from "@public/assets/icon_boximg.png";
 import iconDocument from "@public/assets/icon_document.png";
@@ -9,9 +12,33 @@ import icon_outline from "@public/assets/icon_outline.png";
 import icon_kakao from "@public/assets/icon_kakao.png";
 import icon_facebook from "@public/assets/icon_facebook.png";
 import PlanCard from "@/components/MyPlans/Cards/PlanCard";
-import Layout from "@/components/Common/Layout";
+import { useEffect } from "react";
 
-export default function requestDetail_dreamer() {
+export default function RequestDetailDreamer() {
+  /*eslint-disable*/
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.Kakao) {
+      const Kakao = window.Kakao;
+      Kakao.init("0337a68dec8e9d5ebea78113c3b9fc62");
+    }
+  }, []);
+  //init괄호 안에는 카카오디벨로퍼스에서 받은 javascript키 입력
+
+  const shareMessage = () => {
+    if (typeof window !== "undefined" && window.Kakao) {
+      const Kakao = window.Kakao;
+      Kakao.Share.sendScrap({
+        requestUrl: "http://localhost:3000",
+      });
+    }
+  };
+  //requestUrl부분에 사용할 도메인 입력(현재 테스트중으로 로컬도메인)
+
+  const btnShareFb = () => {
+    const pageUrl = "http://localhost:3000";
+    window.open(`http://www.facebook.com/sharer/sharer.php?u=${pageUrl}`);
+  };
+
   const planData = {
     selectedPlanId: 2, // 기본으로 선택된 플랜의 ID
     plans: [
@@ -175,8 +202,12 @@ export default function requestDetail_dreamer() {
             <p className="text-xl semibold text-black-400">플랜 공유하기</p>
             <div className="flex gap-4">
               <Image src={icon_outline} alt="링크복사" width={40} height={40} />
-              <Image src={icon_kakao} alt="카카오톡 공유" width={40} height={40} />
-              <Image src={icon_facebook} alt="페이스북 공유" width={40} height={40} />
+              <button onClick={shareMessage}>
+                <Image src={icon_kakao} alt="카카오톡 공유" width={40} height={40} />
+              </button>
+              <button onClick={btnShareFb}>
+                <Image src={icon_facebook} alt="페이스북 공유" width={40} height={40} />
+              </button>
             </div>
           </div>
           <hr className="border-Line-100 my-6 pc:hidden" />
@@ -199,8 +230,12 @@ export default function requestDetail_dreamer() {
             <p className="flex text-xl semibold text-black-400">플랜 공유하기</p>
             <div className="flex gap-4">
               <Image src={icon_outline} alt="링크복사" width={64} height={64} />
-              <Image src={icon_kakao} alt="카카오톡 공유" width={64} height={64} />
-              <Image src={icon_facebook} alt="페이스북 공유" width={64} height={64} />
+              <button onClick={shareMessage}>
+                <Image src={icon_kakao} alt="카카오톡 공유" width={64} height={64} />
+              </button>
+              <button onClick={btnShareFb}>
+                <Image src={icon_facebook} alt="페이스북 공유" width={64} height={64} />
+              </button>
             </div>
           </div>
         </div>
