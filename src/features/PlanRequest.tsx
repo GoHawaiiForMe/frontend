@@ -29,11 +29,15 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
   };
 
   const handleLocationSelection = (type: string) => {
-    setSelectedLocations([type]);
+    setSelectedLocations((prev) =>
+      prev[0] === type ? [] : [type]
+    );
   };
 
   const handleServiceSelection = (type: string) => {
-    setSelectedServices([type]);
+    setSelectedServices((prev) =>
+      prev[0] === type ? [] : [type]
+    );
   };
 
   const handleOpenAddress = () => {
@@ -86,10 +90,10 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
     const planData = {
       title: textValue,
       tripDate: selectedDate,
-      tripType: selectedServices,
-      serviceArea: selectedLocations,
+      tripType: selectedServices[0] || "",
+      serviceArea: selectedLocations[0] || "",
       details: textareaValue,
-      address: address + detailAddress,
+      address: address + ", " + detailAddress,
     };
 
     handlePlanRequest(planData);
@@ -99,9 +103,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
 
   const handlePlanRequest = async (data: any) => {
     try {
-      const response = await planService.planRequest(data);
-      console.log("여행 데이터", data);
-      console.log("여행 요청 성공", response);
+      await planService.planRequest(data);
     } catch (error) {
       console.error("여행 요청 실패", error);
     }

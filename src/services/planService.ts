@@ -1,17 +1,7 @@
 import { api } from "./api"
 
-interface PlanRequestProps {
-    "title": string;
-    "tripDate": string;
-    "tripType": string;
-    "serviceArea": string;
-    "details": string;
-    "address": string;
-    [key: string]: unknown;
-}
-
 const planService = {
-    planRequest: async (data: PlanRequestProps) => {
+    planRequest: async (data: any) => {
         try {
             const response = await api.post("/plans", data);
             return response;
