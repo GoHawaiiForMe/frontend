@@ -19,8 +19,7 @@ export default function LoginForm() {
 
   const handleLogin = async (data: LoginFormData) => {
     try {
-      const response = await userService.login(data);
-      localStorage.setItem("accessToken", response.accessToken);
+      await userService.login(data);
 
       // 유저 정보 요청
       const userInfo = await userService.getUserInfo();
@@ -28,11 +27,12 @@ export default function LoginForm() {
 
       router.push("/");
 
-    } catch (error) {
-      console.error("로그인 중 오류 발생", error);
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        alert("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");
+      }
     }
   };
-
 
   const {
     register,

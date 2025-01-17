@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Calendar as ReactCalendar, CalendarProps } from "react-calendar";
 import styled from "styled-components";
 import dayjs from "dayjs";

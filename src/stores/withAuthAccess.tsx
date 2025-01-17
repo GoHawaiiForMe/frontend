@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useAuthStore from './useAuthStore';
 
-const AuthAccess = (WrappedComponent: React.ComponentType) => {
+const withAuthAccess = (WrappedComponent: React.ComponentType) => {
   const AuthComponent = (props: any) => {
     const router = useRouter();
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -23,4 +23,4 @@ const AuthAccess = (WrappedComponent: React.ComponentType) => {
   return AuthComponent;
 };
 
-export default AuthAccess;
+export default withAuthAccess;
