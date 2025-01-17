@@ -12,7 +12,7 @@ import coconut_icon from "@public/assets/icon_coconut.svg";
 import Notification from "./Notification";
 import UserMenu from "./UserMenu";
 import userService from "@/services/userService";
-import NotificationService, { NotificationProps } from "@/services/NotificationService";
+import notificationService, { NotificationProps } from "@/services/NotificationService";
 
 const NavBar = () => {
   const { isLoggedIn, nickName, role, coconut, setLogin } = useAuthStore();
@@ -82,7 +82,7 @@ const NavBar = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const data = await NotificationService.Notification();
+        const data = await notificationService.Notification();
         setNotifications(data);
       } catch (error) {
         console.error("알림 데이터를 가져오는데 실패했습니다.", error);

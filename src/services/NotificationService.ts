@@ -8,7 +8,7 @@ export interface NotificationProps {
     updatedAt: string;
 }
 
-const NotificationService = {
+const notificationService = {
     Notification: async (): Promise<NotificationProps[]> => {
         try {
             const response = await api.get<NotificationProps[], {}>("/notifications");
@@ -20,4 +20,4 @@ const NotificationService = {
     },
 };
 
-export default NotificationService;
+export default notificationService;

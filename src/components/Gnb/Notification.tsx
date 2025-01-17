@@ -1,8 +1,8 @@
 import Image from "next/image";
 import closeIcon from "@public/assets/icon_X.svg";
-import NotificationService from "@/services/NotificationService";
+import NotificationService from "@/services/notificationService";
 import { useEffect, useState } from "react";
-import { NotificationProps } from "@/services/NotificationService";
+import { NotificationProps } from "@/services/notificationService";
 import { formatRelativeTime } from "@/utils/formatDate";
 
 export default function Notification({ closeModal }: { closeModal: () => void }) {
