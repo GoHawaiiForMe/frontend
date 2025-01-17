@@ -4,6 +4,9 @@ import notificationService, { NotificationProps } from "@/services/notificationS
 import { useEffect, useState } from "react";
 import { formatRelativeTime } from "@/utils/formatDate";
 
+export const commonTextStyle = "text-color-blue-300";
+export const textStylesKeywords = ["확정", "플랜", "테스트"];
+
 export default function Notification({ closeModal }: { closeModal: () => void }) {
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
 
@@ -25,6 +28,21 @@ export default function Notification({ closeModal }: { closeModal: () => void })
     }
   }
 
+  const highlightKeywords = (content: string) => {
+    const regex = new RegExp(`(${textStylesKeywords.join("|")})`, "g");
+
+    return content.split(regex).map((part, index) => {
+      if (textStylesKeywords.includes(part)) {
+        return (
+          <span key={index} className={commonTextStyle}>
+            {part}
+          </span>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  };
+
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
@@ -39,6 +57,7 @@ export default function Notification({ closeModal }: { closeModal: () => void })
 
     fetchNotifications();
   }, []);
+
 
   return (
     <>
@@ -59,21 +78,24 @@ export default function Notification({ closeModal }: { closeModal: () => void })
             {notifications.length > 0 ? (
               <ul >
                 {notifications.map((notification, index) => (
-                  <div className="">
-                    <li key={notification.id} onClick={() => handleRead(notification.id)} className={`pt-4 cursor-pointer ${notification.isRead ? "bg-color-gray-100" : "bg-color-gray-50"}`}>
-                      <p className="text-lg px-5 ">{notification.content}</p>
+
+                  <div key={notification.id}>
+                    <li onClick={() => handleRead(notification.id)} className={`pt-4 cursor-pointer ${notification.isRead ? "bg-[#f1f1f1]" : "bg-color-gray-50"}`}>
+                      <p className="text-lg px-5">
+                        {highlightKeywords(notification.content)}
+                      </p>
                       <p className="text-md text-color-gray-300 px-5 pb-4">{formatRelativeTime(notification.createdAt)}</p>
 
                       {index < notifications.length - 1 && (
                         <div className="h-0.5 bg-color-line-100"></div>
                       )}
                     </li>
-
                   </div>
+
                 ))}
               </ul>
             ) : (
-              <p className="text-lg mb-8">새로운 알림이 없습니다.</p>
+              <p className="text-lg mb-8 px-5">새로운 알림이 없습니다.</p>
             )}
 
           </div>

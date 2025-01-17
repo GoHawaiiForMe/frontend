@@ -93,6 +93,9 @@ const NavBar = () => {
     fetchNotifications();
   }, []);
 
+  const hasUnreadNotifications = notifications.some((notification) => !notification.isRead);
+
+
   return (
     <div className="flex items-center justify-between py-6 bg-color-background-100 border-b-2 border-color-line-100 px-32 tablet:px-5 mobile:px-4 mobile-tablet:py-3">
       <div className="flex items-center">
@@ -119,12 +122,11 @@ const NavBar = () => {
                 height={36}
                 className="cursor-pointer"
               />
-              {notifications && (
-                <>
-                  <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200 animate-ping"></span>
-                  <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200"></span>
-                </>
-              )}
+
+              <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200 animate-ping"></span>
+              <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200"></span>
+
+
             </div>
             <div className="relative">
               <Image
@@ -135,9 +137,12 @@ const NavBar = () => {
                 onClick={handleOpenNotification}
                 className="cursor-pointer"
               />
-              {/* 알림 있다면 */}
-              <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200 animate-ping"></span>
-              <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200"></span>
+              {hasUnreadNotifications && (
+                <>
+                  <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200 animate-ping"></span>
+                  <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200"></span>
+                </>
+              )}
             </div>
 
             {isOpenNotification && <Notification closeModal={handleCloseNotification} />}
