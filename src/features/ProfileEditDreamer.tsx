@@ -41,8 +41,6 @@ export default function ProfileEditDreamer() {
           setUserInfo(userData);
           setProfileInfo(profileData);
 
-          console.log(profileData);
-
           if (profileData.image) {
             let imgMapping = "default";
             if (profileData.image === "DEFAULT_1") {
@@ -111,7 +109,6 @@ export default function ProfileEditDreamer() {
                 type="text"
                 label="닉네임"
                 placeholder="닉네임을 입력해주세요"
-
                 {...register("nickName")}
                 error={!!errors.nickName}
                 className="bg-color-background-200 border-0 "
