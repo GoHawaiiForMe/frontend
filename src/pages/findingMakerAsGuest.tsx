@@ -25,9 +25,9 @@ export default function findingMakerAsGuest() {
           <Label type="PENDING" />
           <Label type="CONFIRMED" />
         </div>
-        <DropdownFilter placeholder="지역" items={['전체','서울','인천','부산','제주도', '하와이', '태국', '베트남','호주', '뉴질랜드' ]} />
-        <DropdownFilter placeholder="서비스" items={['액티비티형','식도락형','쇼핑형','문화형','휴식형','요청형']} />
-        
+        <DropdownFilter type="location" />
+        <DropdownFilter type="service" />
+       
         </>
           </main>
     </>
