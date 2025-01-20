@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import downBlue from '@public/assets/dropdown_down_blue.svg';
 import downGray from '@public/assets/dropdown_down_gray.svg';
@@ -15,16 +15,30 @@ interface DropdownProps {
 const Dropdown: React.FC<DropdownProps> = ({ type }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const itemsToDisplay = type === 'location' ? items : items2;
   const placeholderText = type === 'location' ? placeholder : placeholder2;
 
   return (
-    <div className="w-full relative mt-4">
+    <div ref={dropdownRef} className="w-full relative mt-4">
       <button
         onClick={toggleDropdown}
         className={`w-[328px] h-16  flex justify-between items-center border rounded-[16px] cursor-pointer transition duration-200 shadow-sm 
