@@ -41,7 +41,7 @@ const Dropdown: React.FC<DropdownProps> = ({ type }) => {
     <div ref={dropdownRef} className="w-full relative mt-4">
       <button
         onClick={toggleDropdown}
-        className={`w-[328px] h-16 flex justify-between items-center border rounded-[16px] cursor-pointer transition duration-200 shadow-sm 
+        className={`w-[328px] h-16 px-6 py-4 flex justify-between items-center border-[1px] rounded-[16px] cursor-pointer transition duration-200 shadow-sm 
           ${isOpen ? 'border-color-blue-300 bg-color-blue-50 shadow-md' : ''} 
           ${selectedItem ? 'border-color-blue-300 bg-color-blue-50' : 'border-color-line-200'} 
           ${type === 'service' ? 'mobile-tablet:w-[150px]' : 'mobile-tablet:w-[75px]'}
@@ -50,8 +50,7 @@ const Dropdown: React.FC<DropdownProps> = ({ type }) => {
           `}
       >
         <p
-          className={` text-color-black-400  
-            pc:font-[18px] mobile-tablet:font-[14px]
+          className={` text-color-black-400 text-[18px] mobile-tablet:text-[14px]
             ${selectedItem ? 'text-color-blue-300' : ''}`}
         >
           {selectedItem || placeholderText}
