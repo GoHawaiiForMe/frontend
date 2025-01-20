@@ -36,6 +36,10 @@ const NavBar = () => {
     setIsOpenUserMenu((prev) => !prev);
   };
 
+  const handleCloseUserMenu = () => {
+    setIsOpenUserMenu(false);
+  };
+
   const renderLinks = () => {
     const linkItems = {
       guest: [{ href: "/", label: "Maker 찾기" }],
@@ -151,7 +155,7 @@ const NavBar = () => {
               <Image src={user_img} alt="유저이미지" width={36} height={36} />
               <span className="text-2lg medium hidden pc:block">{nickName} {role}</span>
             </div>
-            {isOpenUserMenu && <UserMenu userId={userInfo?.id} />}
+            {isOpenUserMenu && <UserMenu userId={userInfo?.id} closeMenu={handleCloseUserMenu} />}
           </>
         ) : (
           <>

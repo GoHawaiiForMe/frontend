@@ -3,10 +3,11 @@ import Link from "next/link";
 
 export interface UserMenuProps {
   userId: string;
+  closeMenu: () => void;
 }
 
 
-export default function Notification({ userId }: UserMenuProps) {
+export default function Notification({ userId, closeMenu }: UserMenuProps) {
   const { nickName, role, setLogout } = useAuthStore();
 
   if (role === "guest") return null;
@@ -25,7 +26,7 @@ export default function Notification({ userId }: UserMenuProps) {
       <>
         {menuItems[role ? role : "DREAMER"].map((link, index) => (
           <li key={index}>
-            <Link href={link.href}>{link.label}</Link>
+            <Link href={link.href} onClick={closeMenu}>{link.label}</Link>
           </li>
         ))}
       </>
