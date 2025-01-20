@@ -27,20 +27,24 @@ const Dropdown: React.FC<DropdownProps> = ({ type }) => {
     <div className="w-full relative mt-4">
       <button
         onClick={toggleDropdown}
-        className={`w-full max-w-[328px] h-16 font-[18px] text-color-black-400 px-4 flex justify-between items-center border rounded-[16px] cursor-pointer transition duration-200 shadow-sm 
+        className={`w-[328px] h-16  flex justify-between items-center border rounded-[16px] cursor-pointer transition duration-200 shadow-sm 
           ${isOpen ? 'border-color-blue-300 bg-color-blue-50 shadow-md' : ''} 
           ${selectedItem ? 'border-color-blue-300 bg-color-blue-50' : 'border-color-line-200'} 
-          mobile:max-w-[280px] tablet:max-w-[300px] pc:max-w-[328px]`}
+          mobile:w-[75px]  mobile:h-[36px] mobile:rounded-[8px] mobile:border-[1px] mobile:pl-[14px] mobile:pr-[10px] mobile:py-[6px]
+          tablet:w-[75px]  tablet:h-[36px] tablet:rounded-[8px] tablet:border-[1px] tablet:pl-[14px] tablet:pr-[10px] tablet:py-[6px]
+          pc:max-w-[328px]
+          ${type === 'service' ? 'mobile:w-[87px] tablet:w-[87px]' : ''}`}
       >
-        <span
-          className={`text-[18px] font-medium text-color-black-400 ${selectedItem ? 'text-color-blue-300' : ''}`}
+        <p
+          className={` text-color-black-400  
+            font-[18px] tablet:font-[14px] mobile:font-[14px]
+            ${selectedItem ? 'text-color-blue-300' : ''}`}
         >
           {selectedItem || placeholderText}
-        </span>
+        </p>
         <Image
           src={isOpen ? downBlue : downGray}
           alt="dropdown icon"
-        
           className={`transition-transform duration-200 mobile:w-[20px] mobile:h-[20px] tablet:w-[20px] tablet:h-[20px] pc:w-[36px] pc:h-[36px] ${isOpen ? 'transform rotate-180' : ''}`}
         />
       </button>
@@ -57,8 +61,10 @@ const Dropdown: React.FC<DropdownProps> = ({ type }) => {
                   setIsOpen(false);
                 }}
                 className={`w-[164px] h-[64px] justify-between px-[24px] py-[16px] font-medium text-color-black-400 cursor-pointer transition duration-200 hover:bg-gray-100 
-                  ${type === 'service' ? 'text-left w-[320px]' : 'border-r-[1px] border-l-[1px]'}
-                  mobile:text-[14px] tablet:text-[14px]`}
+                  ${type === 'service' ? 
+                    'text-left w-[320px] mobile:text-[14px] tablet:text-[14px]' 
+                    : 'border-r-[1px] border-l-[1px]mobile:text-[14px] tablet:text-[14px]'}
+                  `}
               >
                 {item}
               </button>
