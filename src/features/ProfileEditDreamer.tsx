@@ -11,6 +11,7 @@ import profileImgDefault from "@public/assets/icon_default_profile.svg";
 import ImageModal from "@/components/Common/ImageModal";
 import planData from "@/types/planData";
 import userService from "@/services/userService";
+import { useRouter } from "next/router";
 
 export default function ProfileEditDreamer() {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
@@ -30,44 +31,7 @@ export default function ProfileEditDreamer() {
     mode: "onBlur",
   });
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-
-    if (accessToken) {
-      const fetchUserInfo = async () => {
-        try {
-          const userData = await userService.getUserInfo();
-          const profileData = await userService.getProfileInfo();
-          setUserInfo(userData);
-          setProfileInfo(profileData);
-
-          if (profileData.image) {
-            let imgMapping = "default";
-            if (profileData.image === "DEFAULT_1") {
-              imgMapping = "1";
-            } else if (profileData.image === "DEFAULT_2") {
-              imgMapping = "2";
-            } else if (profileData.image === "DEFAULT_3") {
-              imgMapping = "3";
-            } else if (profileData.image === "DEFAULT_4") {
-              imgMapping = "4";
-            }
-            setProfileImg(`/assets/img_avatar${imgMapping}.svg`);
-          } else {
-            setProfileImg(null);
-          }
-          setValue("nickName", userData.nickName);
-          setValue("email", userData.email);
-          setValue("phoneNumber", userData.phoneNumber);
-          setSelectedServices(profileData.tripTypes || []);
-          setSelectedLocations(profileData.serviceArea || []);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      fetchUserInfo();
-    }
-  }, []);
+  const router = useRouter();
 
   const handleImageSelect = (imageSrc: string) => {
     setProfileImg(imageSrc);
@@ -86,16 +50,111 @@ export default function ProfileEditDreamer() {
     );
   };
 
-  const onSubmit = (data: EditDreamerData) => {
-    console.log(data); // 테스트용
+  const handleCancel = () => {
+    router.push("/plan_request") //임시 url
+  }
+  const onSubmit = async (data: EditDreamerData) => {
+    console.log("제출한 데이터", data);
+    try {
+      const UpdateData = {
+        nickName: userInfo?.nickName !== data.nickName ? data.nickName : userInfo?.nickName,
+        phoneNumber: userInfo?.phoneNumber !== data.phoneNumber ? data.phoneNumber : userInfo?.phoneNumber,
+        password: data.password ? data.password : undefined,
+        newPassword: data.newPassword || undefined,
+      };
+
+      const profileUpdateData = {
+        image: profileInfo?.profileImg || undefined,
+        tripTypes: selectedServices.length > 0 ? selectedServices : undefined,
+        serviceArea: selectedLocations.length > 0 ? selectedLocations : undefined,
+      };
+
+      // 기본 정보 업데이트
+      const basicInfoUpdatePromise = UpdateData.nickName || UpdateData.phoneNumber || UpdateData.password
+        ? userService.patchBasicInfo(UpdateData)
+        : Promise.resolve();
+
+      // 프로필 정보 업데이트
+      const profileInfoUpdatePromise = profileUpdateData.image || profileUpdateData.tripTypes || profileUpdateData.serviceArea
+        ? userService.patchProfileDreamer(profileUpdateData)
+        : Promise.resolve();
+
+      await Promise.all([basicInfoUpdatePromise, profileInfoUpdatePromise]);
+
+      alert("프로필이 성공적으로 수정되었습니다!");
+      //임시 url
+      // router.push("/plan_request")
+
+    } catch (error) {
+      console.error("프로필 수정 실패", error);
+      alert("수정 중 문제가 발생했습니다. 다시 시도해주세요.");
+    }
   };
 
   const watchFields = watch();
-  const isFormValid = Object.values(watchFields).every((value) => value?.toString().trim() !== "");
+
+  const isFormValid = (() => {
+    const { nickName, phoneNumber, password, newPassword, newConfirmPassword } = watchFields;
+    const isPasswordValid = password?.trim() !== "" || !newPassword;
+    const isNewPasswordValid = newPassword?.trim() !== "" && newPassword === newConfirmPassword;
+
+    // 기본 정보 수정 여부
+    const isBasicInfoModified =
+      userInfo?.nickName !== nickName ||
+      userInfo?.phoneNumber !== phoneNumber;
+
+    // 프로필 정보 수정 여부
+    const isProfileInfoModified =
+      profileImg !== profileInfo?.profileImg ||
+      selectedServices.join(",") !== profileInfo?.selectedServices?.join(",") ||
+      selectedLocations.join(",") !== profileInfo?.selectedLocations?.join(",");
+
+    // 최종 검증
+    return (
+      isPasswordValid &&
+      (isBasicInfoModified || isNewPasswordValid || isProfileInfoModified)
+    );
+  })();
 
   const ErrorMessage = ({ message }: { message: string | undefined }) => (
     <p className="text-color-red-200 mt-2">{message}</p>
   );
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+      const fetchUserInfo = async () => {
+        try {
+          const userData = await userService.getUserInfo();
+          const profileData = await userService.getProfileInfo();
+          setUserInfo(userData);
+          setProfileInfo(profileData);
+          console.log(userData);
+          console.log(profileData);
+
+          if (profileData.image) {
+            const imgMapping = {
+              "DEFAULT_1": "1",
+              "DEFAULT_2": "2",
+              "DEFAULT_3": "3",
+              "DEFAULT_4": "4"
+            }[profileData.image] || "default";
+
+            setProfileImg(`/assets/img_avatar${imgMapping}.svg`);
+          }
+          setValue("nickName", userData.nickName);
+          setValue("email", userData.email);
+          setValue("phoneNumber", userData.phoneNumber);
+          setSelectedServices(profileData.tripTypes || []);
+          setSelectedLocations(profileData.serviceArea || []);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchUserInfo();
+    }
+  }, []);
 
   return (
     <>
@@ -168,7 +227,7 @@ export default function ProfileEditDreamer() {
                 type="password"
                 label="새 비밀번호 확인"
                 placeholder="비밀번호를 다시 한번 입력해 주세요"
-                className="bg-color-background-200 border-0 text-color-gray-300"
+                className="bg-color-background-200 border-0"
                 {...register("newConfirmPassword")}
                 error={!!errors.newConfirmPassword}
               />
@@ -228,6 +287,7 @@ export default function ProfileEditDreamer() {
           <Button
             type="button"
             label="취소"
+            onClick={handleCancel}
             className="bg-color-gray-50 border border-color-gray-200 text-color-black-300 bold mobile-tablet:order-2"
           />
           <Button

@@ -34,4 +34,6 @@ Content-Type: application/json
 }
 
 
-### 견적 요청 테스트
+### 알림 테스트
+
+GET https://go-for-me.onrender.com/notifications

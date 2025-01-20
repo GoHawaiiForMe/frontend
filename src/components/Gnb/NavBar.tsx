@@ -82,8 +82,8 @@ const NavBar = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const data = await notificationService.getNotification();
-        setNotifications(data);
+        // const data = await notificationService.getNotification();
+        // setNotifications(data);
       } catch (error) {
         console.error("알림 데이터를 가져오는데 실패했습니다.", error);
         setNotifications([]);
@@ -125,8 +125,6 @@ const NavBar = () => {
 
               <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200 animate-ping"></span>
               <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200"></span>
-
-
             </div>
             <div className="relative">
               <Image

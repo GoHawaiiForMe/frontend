@@ -13,11 +13,12 @@ interface UserInfo {
   phoneNumber: string;
   coconut: number;
 }
+
 interface ProfileInfo {
   userId: string;
   image: string;
   serviceArea: string[];
-  serviceTypes: string[];
+  tripTypes: string[];
   gallery?: string;
   description?: string;
   detailDescription?: string;
@@ -86,6 +87,34 @@ const userService = {
     }
   },
 
+  patchBasicInfo: async (payload: {
+    nickName?: string;
+    phoneNumber?: string;
+    password?: string;
+    newPassword?: string;
+  }) => {
+    try {
+      const response = await api.patch("/user/update", payload);
+      return response;
+    } catch (error) {
+      console.error("기본 정보 수정 실패", error);
+      throw error;
+    }
+  },
+
+  patchProfileDreamer: async (payload: { //payload: any로 할까 고민중
+    image?: string;
+    tripTypes?: string[];
+    serviceArea?: string[];
+  }) => {
+    try {
+      const response = await api.patch("/user/update/profile", payload);
+      return response;
+    } catch (error) {
+      console.error("프로필 수정 실패", error);
+      throw error;
+    }
+  },
 };
 
 export default userService;
