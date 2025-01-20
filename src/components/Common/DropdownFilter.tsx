@@ -62,9 +62,13 @@ const Dropdown: React.FC<DropdownProps> = ({ type }) => {
         />
       </button>
       {isOpen && (
-        <div className={`w-full max-w-[328px] h-80 absolute top-full left-0 bg-white border border-gray-300 rounded-[16px] z-10 shadow-sm transition-all duration-300 ease-in-out overflow-y-scroll ${isOpen ? 'z-50 shadow-md' : 'opacity-0 pointer-events-none'} 
-          mobile-tablet:w-[150px] mobile-tablet:h-[180px] mobile-tablet:top-[112px] mobile-tablet:left-[25px] mobile-tablet:rounded-[8px] mobile-tablet:border-[1px]`}>
-          <div className={`${type === 'location' ? 'grid grid-cols-2 mt-2' : 'flex flex-col w-[328px] h-42 mt-2'}`}>
+        <div className={`
+          w-[328px] h-80 absolute top-full border border-gray-300 rounded-[16px] z-10 shadow-sm transition-all duration-300 ease-in-out overflow-y-scroll 
+          mobile-tablet:top-full mobile-tablet:left-0 mobile-tablet:rounded-[8px] mobile-tablet:border-[1px] 
+          ${type === 'service' ? 'mobile-tablet:w-full mobile-tablet:h-[144px]' : 'mobile-tablet:w-[150px] tablet:h-[179px] mobile:h-[180px]'} 
+          ${isOpen ? 'z-50 shadow-md' : 'opacity-0 pointer-events-none'} 
+          `}>
+          <div className={`${type === 'location' ? 'grid grid-cols-2 mt-2' : 'flex flex-col w-full mt-2'}`}>
             {itemsToDisplay.map(item => (
               <button
                 key={item}
@@ -72,9 +76,11 @@ const Dropdown: React.FC<DropdownProps> = ({ type }) => {
                   setSelectedItem(item);
                   setIsOpen(false);
                 }}
-                className={`w-full h-[64px] justify-between px-[24px] py-[16px] font-medium text-color-black-400 cursor-pointer transition duration-200 hover:bg-gray-100 
+                className={`h-[64px] justify-between px-[24px] py-[16px] font-medium text-color-black-400 cursor-pointer transition duration-200 hover:bg-gray-100
+                  mobile-tablet:w-full mobile-tablet:h-auto mobile-tablet:px-[14px] mobile-tablet:py-[8px]
+  
                   ${type === 'service' ? 
-                    'text-left w-[320px] mobile-tablet:text-[14px]' 
+                    'text-left w-full mobile-tablet:text-[14px] mobile-tablet:w-full'
                     : 'border-r-[1px] border-l-[1px] mobile-tablet:text-[14px]'}
                   `}
               >
