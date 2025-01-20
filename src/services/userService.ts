@@ -18,7 +18,8 @@ interface ProfileInfo {
   userId: string;
   image: string;
   serviceArea: string[];
-  tripTypes: string[];
+  tripTypes?: string[];
+  serviceTypes?: string[];
   gallery?: string;
   description?: string;
   detailDescription?: string;
@@ -102,7 +103,7 @@ const userService = {
     }
   },
 
-  patchProfileDreamer: async (payload: { //payload: any로 할까 고민중
+  patchProfileDreamer: async (payload: {
     image?: string;
     tripTypes?: string[];
     serviceArea?: string[];
@@ -115,6 +116,7 @@ const userService = {
       throw error;
     }
   },
+
 };
 
 export default userService;
