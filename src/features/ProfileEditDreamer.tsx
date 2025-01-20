@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Common/Input";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { editDreamerSchema, EditDreamerData } from "@/utils/validate";
 import Image from "next/image";
 import Button from "@/components/Common/Button";
@@ -54,7 +54,6 @@ export default function ProfileEditDreamer() {
     router.push("/plan_request") //임시 url
   }
   const onSubmit = async (data: EditDreamerData) => {
-    console.log("제출한 데이터", data);
     try {
       const UpdateData = {
         nickName: userInfo?.nickName !== data.nickName ? data.nickName : userInfo?.nickName,
@@ -130,8 +129,6 @@ export default function ProfileEditDreamer() {
           const profileData = await userService.getProfileInfo();
           setUserInfo(userData);
           setProfileInfo(profileData);
-          console.log(userData);
-          console.log(profileData);
 
           if (profileData.image) {
             const imgMapping = {

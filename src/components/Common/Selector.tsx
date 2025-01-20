@@ -16,8 +16,9 @@ const Services = ({
           ? "bg-color-blue-50 border-color-blue-300 text-color-blue-300 bold"
           : "bg-color-background-100 border-color-gray-100"
           } mobile-tablet:px-2 mobile-tablet:py-1 mobile-tablet:text-md`}
+        onClick={() => toggleSelection(service.mapping)}
       >
-        <button type="button" onClick={() => toggleSelection(service.mapping)}>{service.name}</button>
+        <button type="button" >{service.name}</button>
       </div>
     ))}
   </div>
@@ -37,8 +38,9 @@ const Locations = ({
           ? "bg-color-blue-50 border-color-blue-300 text-color-blue-300 bold"
           : "bg-color-background-100 border-color-gray-100"
           } mobile-tablet:px-2 mobile-tablet:py-1 mobile-tablet:text-md`}
+        onClick={() => toggleSelection(location.mapping)}
       >
-        <button type="button" onClick={() => toggleSelection(location.mapping)}>
+        <button type="button" >
           {location.name}
         </button>
       </div>

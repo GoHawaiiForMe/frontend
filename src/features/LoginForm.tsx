@@ -31,9 +31,6 @@ export default function LoginForm() {
       if (error.response && error.response.status === 400) {
         alert("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");
       }
-      if (error.response && error.response.status === 500) {
-        alert("문제가 생겼습니다.");
-      }
     }
   };
 
