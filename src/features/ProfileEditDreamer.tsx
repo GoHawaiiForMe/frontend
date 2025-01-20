@@ -12,12 +12,13 @@ import ImageModal from "@/components/Common/ImageModal";
 import planData from "@/types/planData";
 import userService from "@/services/userService";
 import { useRouter } from "next/router";
+import useAuthStore from "@/stores/useAuthStore";
 
 export default function ProfileEditDreamer() {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [isOpenImageModal, setIsOpenImageModal] = useState(false);
-  const [profileImg, setProfileImg] = useState<string | null>(null);
+  const [profileImg, setProfileImg] = useState<any>(null);
   const [userInfo, setUserInfo] = useState<any>(null);
   const [profileInfo, setProfileInfo] = useState<any>(null);
   const {
@@ -32,8 +33,10 @@ export default function ProfileEditDreamer() {
   });
 
   const router = useRouter();
+  const { setLogin } = useAuthStore();
 
   const handleImageSelect = (imageSrc: string) => {
+
     setProfileImg(imageSrc);
     setIsOpenImageModal(false);
   };
@@ -81,6 +84,9 @@ export default function ProfileEditDreamer() {
       await Promise.all([basicInfoUpdatePromise, profileInfoUpdatePromise]);
 
       alert("프로필이 성공적으로 수정되었습니다!");
+      if (userInfo?.nickName !== data.nickName) {
+        setLogin(data.nickName, userInfo?.role || "guest", userInfo?.coconut || 0);
+      }
       //임시 url
       // router.push("/plan_request")
 
@@ -132,13 +138,12 @@ export default function ProfileEditDreamer() {
 
           if (profileData.image) {
             const imgMapping = {
-              "DEFAULT_1": "1",
-              "DEFAULT_2": "2",
-              "DEFAULT_3": "3",
-              "DEFAULT_4": "4"
-            }[profileData.image] || "default";
-
-            setProfileImg(`/assets/img_avatar${imgMapping}.svg`);
+              "DEFAULT_1": "/assets/img_avatar1.svg",
+              "DEFAULT_2": "/assets/img_avatar2.svg",
+              "DEFAULT_3": "/assets/img_avatar3.svg",
+              "DEFAULT_4": "/assets/img_avatar4.svg"
+            }[profileData.image] || "/assets/img_default_profile.svg";
+            setProfileImg(imgMapping);
           }
           setValue("nickName", userData.nickName);
           setValue("email", userData.email);
@@ -152,6 +157,10 @@ export default function ProfileEditDreamer() {
       fetchUserInfo();
     }
   }, []);
+
+  useEffect(() => {
+    console.log("profileImg 업데이트", profileImg);
+  }, [profileImg]);
 
   return (
     <>
@@ -239,9 +248,9 @@ export default function ProfileEditDreamer() {
             <div className="flex flex-col gap-8">
               <div>
                 <p className="text-xl semibold mb-3 mobile-tablet:text-lg">프로필 이미지</p>
-                <div onClick={() => setIsOpenImageModal(true)} className="cursor-pointer w-30">
+                <div onClick={() => setIsOpenImageModal(true)} className="cursor-pointer w-[100px]" >
                   {profileImg ? (
-                    <Image src={profileImg} alt="프로필 이미지" width={100} height={100} />
+                    <img src={profileImg?.src} alt="프로필 이미지" width={100} height={100} />
                   ) : (
                     <Image src={profileImgDefault} alt="프로필 이미지" width={150} height={150} />
                   )}

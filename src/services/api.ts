@@ -6,6 +6,10 @@ export const api = {
     return response.data;
   },
   post: async <T, D extends Record<string, unknown>>(url: string, data?: D): Promise<T> => {
+
+    // post: async <T, D extends Record<string, unknown>>(url: string, data?: D, withCredentials: boolean = false): Promise<T> => {
+    // const config = withCredentials ? { withCredentials: true } : {};
+    // const response = await apiClient.post<T>(url, data, config);
     const response = await apiClient.post<T>(url, data);
     return response.data;
   },
