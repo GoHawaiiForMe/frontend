@@ -72,7 +72,7 @@ const Dropdown: React.FC<DropdownProps> = ({ type }) => {
                   setSelectedItem(item);
                   setIsOpen(false);
                 }}
-                className={`w-[164px] h-[64px] justify-between px-[24px] py-[16px] font-medium text-color-black-400 cursor-pointer transition duration-200 hover:bg-gray-100 
+                className={`w-full h-[64px] justify-between px-[24px] py-[16px] font-medium text-color-black-400 cursor-pointer transition duration-200 hover:bg-gray-100 
                   ${type === 'service' ? 
                     'text-left w-[320px] mobile-tablet:text-[14px]' 
                     : 'border-r-[1px] border-l-[1px] mobile-tablet:text-[14px]'}
