@@ -24,10 +24,11 @@ export default function findingMakerAsGuest() {
           <Label type="REQUEST" />
           <Label type="PENDING" />
           <Label type="CONFIRMED" />
-        </div>
+        </div >
+        <div className="flex space-x-4 mt-4">
         <DropdownFilter type="location" />
         <DropdownFilter type="service" />
-       
+        </div>
         </>
           </main>
     </>
