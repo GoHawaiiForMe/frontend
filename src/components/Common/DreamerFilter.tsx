@@ -4,7 +4,7 @@ import downBlue from '@public/assets/dropdown_down_blue.svg';
 import downGray from '@public/assets/dropdown_down_gray.svg';
 
 const placeholder = '지역';
-const items = ['전체','태국','서울','호주','제주도', '하와이', '인천', '베트남','부산', '뉴질랜드', '울릉도', '뉴욕', '거제도', '스위스' ]
+const items = ['전체', '서울', '경기', '인천', '강원', '충북', '충남', '세종', '대전', '전북'];
 const placeholder2 = '서비스';
 const items2 = ['기념품/쇼핑형', '맛집 탐방형', '액티비티/탐험형', '문화/역사탐방형', '축제참여형', '휴양형'];
 
