@@ -5,7 +5,6 @@ type Role = "DREAMER" | "MAKER";
 interface LoginResponse {
   accessToken: string;
 }
-
 interface UserInfo {
   id: string;
   role: Role;
@@ -14,6 +13,20 @@ interface UserInfo {
   phoneNumber: string;
   coconut: number;
 }
+
+interface ProfileInfo {
+  userId: string;
+  image: string;
+  serviceArea: string[];
+  tripTypes?: string[];
+  serviceTypes?: string[];
+  gallery?: string;
+  description?: string;
+  detailDescription?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 
 const userService = {
 
@@ -65,6 +78,44 @@ const userService = {
     }
   },
 
+  getProfileInfo: async (): Promise<ProfileInfo> => {
+    try {
+      const response = await api.get<ProfileInfo, {}>("/user/profile");
+      return response;
+    } catch (error) {
+      console.error("프로필 정보 조회 실패", error);
+      throw error;
+    }
+  },
+
+  patchBasicInfo: async (payload: {
+    nickName?: string;
+    phoneNumber?: string;
+    password?: string;
+    newPassword?: string;
+  }) => {
+    try {
+      const response = await api.patch("/user/update", payload);
+      return response;
+    } catch (error) {
+      console.error("기본 정보 수정 실패", error);
+      throw error;
+    }
+  },
+
+  patchProfileDreamer: async (payload: {
+    image?: string;
+    tripTypes?: string[];
+    serviceArea?: string[];
+  }) => {
+    try {
+      const response = await api.patch("/user/update/profile", payload);
+      return response;
+    } catch (error) {
+      console.error("프로필 수정 실패", error);
+      throw error;
+    }
+  },
 
 };
 

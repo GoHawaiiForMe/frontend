@@ -1,8 +1,8 @@
 import ProfileEditDreamer from "@/features/ProfileEditDreamer";
-import useAccess from "@/stores/useAccess"
+import withAuthAccess from "@/stores/withAuthAccess";
 
-function ProfileEditDreamerPage() {
+export default function ProfileEditDreamerPage() {
   return <ProfileEditDreamer />;
 }
 
-export default useAccess(ProfileEditDreamerPage);
+// export default withAuthAccess(ProfileEditDreamerPage);

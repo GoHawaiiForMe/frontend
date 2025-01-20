@@ -12,6 +12,7 @@ import coconut_icon from "@public/assets/icon_coconut.svg";
 import Notification from "./Notification";
 import UserMenu from "./UserMenu";
 import userService from "@/services/userService";
+import notificationService, { NotificationProps } from "@/services/notificationService";
 
 const NavBar = () => {
   const { isLoggedIn, nickName, role, coconut, setLogin } = useAuthStore();
@@ -19,6 +20,7 @@ const NavBar = () => {
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<any>(null);
+  const [notifications, setNotifications] = useState<NotificationProps[]>([]);
 
   const handleOpenSidebar = () => {
     setIsOpenSidebar(true);
@@ -77,6 +79,23 @@ const NavBar = () => {
     }
   }, [setLogin]);
 
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        // const data = await notificationService.getNotification();
+        // setNotifications(data);
+      } catch (error) {
+        console.error("알림 데이터를 가져오는데 실패했습니다.", error);
+        setNotifications([]);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
+
+  const hasUnreadNotifications = notifications.some((notification) => !notification.isRead);
+
+
   return (
     <div className="flex items-center justify-between py-6 bg-color-background-100 border-b-2 border-color-line-100 px-32 tablet:px-5 mobile:px-4 mobile-tablet:py-3">
       <div className="flex items-center">
@@ -103,6 +122,7 @@ const NavBar = () => {
                 height={36}
                 className="cursor-pointer"
               />
+
               <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200 animate-ping"></span>
               <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200"></span>
             </div>
@@ -115,9 +135,12 @@ const NavBar = () => {
                 onClick={handleOpenNotification}
                 className="cursor-pointer"
               />
-              {/* 알림 있다면 */}
-              <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200 animate-ping"></span>
-              <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200"></span>
+              {hasUnreadNotifications && (
+                <>
+                  <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200 animate-ping"></span>
+                  <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200"></span>
+                </>
+              )}
             </div>
 
             {isOpenNotification && <Notification closeModal={handleCloseNotification} />}
