@@ -40,7 +40,7 @@ const Dropdown: React.FC<DropdownProps> = ({ type }) => {
       </button>
       {isOpen && (
         <div className={`w-[328px] h-80 absolute top-full left-0 bg-white border border-gray-300 rounded-[16px] z-10 shadow-sm transition duration-200 ${isOpen ? 'z-50 shadow-md' : ''}`}>
-          <div className={`${type === 'location' ? 'grid grid-cols-2  overflow-y-auto mt-2' : 'flex flex-col w-28 h-36 overflow-y-hidden mt-2'}`}>
+          <div className={`${type === 'location' ? 'grid grid-cols-2  overflow-y-auto mt-2' : 'flex flex-col w-[328px] h-36 overflow-y-hidden mt-2'}`}>
             {itemsToDisplay.map(item => (
               <button
                 key={item}
@@ -48,7 +48,7 @@ const Dropdown: React.FC<DropdownProps> = ({ type }) => {
                   setSelectedItem(item);
                   setIsOpen(false);
                 }}
-                className={`px-3.5 py-1.5 text-[18px] font-medium text-color-black-400 cursor-pointer transition duration-200 hover:bg-gray-100 ${type === 'service' ? 'text-left' : ''}`}
+                className={`px-3.5 py-3.5 text-[18px] font-medium text-color-black-400 cursor-pointer transition duration-200 hover:bg-gray-100 ${type === 'service' ? 'text-left' : ''}`}
               >
                 {item}
               </button>
