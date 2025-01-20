@@ -1,6 +1,6 @@
 import Head from "next/head";
-import Label from '../components/Common/label';
-import DropdownFilter from '../components/Common/DropdownFilter';
+import Label from '../components/Common/Label';
+import DreamerFilter from '../components/Common/DreamerFilter';
 
 export default function findingMakerAsGuest() {
   return (
@@ -26,8 +26,8 @@ export default function findingMakerAsGuest() {
           <Label type="CONFIRMED" />
         </div >
         <div className="flex space-x-4 mt-4">
-        <DropdownFilter type="location" />
-        <DropdownFilter type="service" />
+        <DreamerFilter type="location" />
+        <DreamerFilter type="service" />
         </div>
         </>
           </main>

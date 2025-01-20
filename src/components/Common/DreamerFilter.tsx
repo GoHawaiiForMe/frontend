@@ -8,11 +8,11 @@ const items = ['전체','태국','서울','호주','제주도', '하와이', '�
 const placeholder2 = '서비스';
 const items2 = ['기념품/쇼핑형', '맛집 탐방형', '액티비티/탐험형', '문화/역사탐방형', '축제참여형', '휴양형'];
 
-interface DropdownProps {
+interface DreamerFilterProps {
   type: 'location' | 'service';
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ type }) => {
+const DreamerFilter: React.FC<DreamerFilterProps> = ({ type }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -94,4 +94,4 @@ const Dropdown: React.FC<DropdownProps> = ({ type }) => {
   );
 };
 
-export default Dropdown;
+export default DreamerFilter;
