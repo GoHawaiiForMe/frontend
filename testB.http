@@ -1,0 +1,22 @@
+### Maker회원가입 요청 테스트
+
+POST http://goforme.duckdns.org/user/signup
+Content-Type: application/json
+
+{
+  "user": {
+    "role": "MAKER",
+    "nickName": "testUser2",
+    "email": "testuser2@example.com",
+    "password": "password123",
+    "phoneNumber": "01012345678"
+  },
+ "profile": {
+		"image": "DEFAULT_1",
+    "serviceArea": ["SEOUL"],
+    "serviceTypes": ["FOOD_TOUR"],
+    "gallery": "sns url",
+    "description": "한줄 소개",
+    "detailDescription": "더 긴 소개 내용"
+	}
+  }

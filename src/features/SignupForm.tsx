@@ -46,7 +46,7 @@ export default function SignUpForm() {
       router.push('/profile/dreamer');
     }
     if (data.role === "MAKER") {
-      router.push('/profile/maker'); //임시 url
+      router.push('/profile/maker');
     }
   };
 

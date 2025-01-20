@@ -8,6 +8,7 @@ import { useSignUp } from "@/stores/SignUpContext";
 import userService from "@/services/userService";
 import planData from "@/types/planData";
 import Input from "@/components/Common/Input";
+import router from "next/router";
 
 export default function ProfileMaker() {
   const { userData, setMakerProfileData } = useSignUp();
@@ -62,9 +63,13 @@ export default function ProfileMaker() {
     setMakerProfileData(profileMakerData);
 
     try {
-      const payload = { ...userData, ...profileMakerData };
+      const payload = {
+        user: { ...userData },
+        profile: profileMakerData,
+      };
       await userService.signUp(payload);
-      console.log("회원가입 성공");
+      alert("Maker님 가입을 축하드립니다!");
+      router.push("/login");
     } catch (error) {
       console.error("회원가입 실패", error);
     }

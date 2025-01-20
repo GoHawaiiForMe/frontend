@@ -6,15 +6,22 @@ import RequestDetails from "@/components/Receive/RequestDetails";
 import writing from "@public/assets/icon_writing.png";
 import mobilefilter from "@public/assets/icon_filterbutton.png";
 import ModalFilter from "@/components/Receive/ModalFilter";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Quotation from "@/components/Receive/Quotation";
 import ReceiveModalLayout from "@/components/Receive/ReceiveModalLayout";
 import Reject from "@/components/Receive/Reject";
+import SearchBar from "@/components/Common/SearchBar";
 
 export default function Receive() {
   const [filterIsOpen, setFilterIsOpen] = useState<boolean>(false);
   const [quotationIsOpen, setQuotationIsOpen] = useState<boolean>(false);
   const [rejectIsOpen, setRejectIsOpen] = useState<boolean>(false);
+
+  const [searchValue, setSearchValue] = useState<string>('');
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
   return (
     <div>
       <div className=" mx-[auto] mobile:w-[327px] mobile:mx-[auto] tablet:w-[600px] tablet:mx-[auto] overflow-hidden ">
@@ -23,7 +30,7 @@ export default function Receive() {
       <div className="flex gap-[107px] ">
         <CheckFilter />
         <div className="w-full ">
-          <CustomerInput />
+          <SearchBar value={searchValue} onChange={handleSearchChange} />
           <div className="flex justify-between items-center w-[955px] mt-4 mb-8 tablet:w-[600px] tablet:mx-[auto] mobile:w-[327px] mobile:mx-[auto]">
             <p>전체 (totalcount)건</p>
             <div className="flex items-center gap-[4px]">
