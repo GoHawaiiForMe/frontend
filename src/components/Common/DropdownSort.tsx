@@ -5,9 +5,9 @@ import downGray from '@public/assets/dropdown_down_gray.svg';
 const placeholder = '리뷰 많은순';
 const items = ['리뷰 많은순','평점 높은순', '경력 높은순', '확정 많은순'];
 
-const DropdownSort: React.FC = () => {
+const DropdownSort = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string>(placeholder);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
@@ -33,7 +33,7 @@ const DropdownSort: React.FC = () => {
         onClick={toggleDropdown}
         className="w-[114px] h-[40px] px-[10px] py-2 flex justify-between items-center rounded-[8px] cursor-pointer transition duration-200 bg-color-gray-50"
       >
-        <p className="text-color-black-400 text-md font-semibold mobile-tablet:text-xs">
+        <p className="text-color-black-400 text-md semibold mobile-tablet:text-xs">
           {selectedItem || placeholder}
         </p>
         <Image
@@ -47,9 +47,9 @@ const DropdownSort: React.FC = () => {
         mobile-tablet:w-[91px] mobile-tablet:h-[127px] 
         ">
           <div className="flex flex-col w-full">
-            {items.map(item => (
+            {items.map((item, index) => (
               <button
-                key={item}
+                key={index}
                 onClick={() => {
                   setSelectedItem(item);
                   setIsOpen(false);
