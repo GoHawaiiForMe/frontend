@@ -32,33 +32,32 @@ const DropdownSort: React.FC = () => {
     <div ref={dropdownRef} className="w-full relative mt-4">
       <button
         onClick={toggleDropdown}
-        className={`w-[328px] h-16 px-6 py-4 flex justify-between items-center border-[1px] rounded-[16px] cursor-pointer transition duration-200 shadow-sm 
-          ${isOpen ? 'border-color-blue-300 bg-color-blue-50 shadow-md' : ''} 
-          ${selectedItem ? 'border-color-blue-300 bg-color-blue-50' : 'border-color-line-200'} 
+        className={`w-[114px] h-10 px-[10px] py-2  flex justify-between items-center rounded-2 cursor-pointer transition duration-200 
+          
           mobile-tablet:w-[150px] mobile-tablet:h-[36px] mobile-tablet:rounded-[8px] mobile-tablet:border-[1px] mobile-tablet:pl-[14px] mobile-tablet:pr-[10px] mobile-tablet:py-[6px]
           pc:max-w-[328px]
           `}
       >
         <p
-          className={` text-color-black-400 text-[18px] mobile-tablet:text-[14px]
-            ${selectedItem ? 'text-color-blue-300' : ''}`}
+          className={` text-color-black-400 text-md mobile-tablet:text-[14px] font-semibold
+            `}
         >
           {selectedItem || placeholder}
         </p>
         <Image
-          src={isOpen ? downBlue : downGray}
+          src={downGray}
           alt="dropdown icon"
-          className={`transition-transform duration-200 mobile-tablet:w-[20px] mobile-tablet:h-[20px] pc:w-[36px] pc:h-[36px] ${isOpen ? 'transform rotate-180' : ''}`}
+          className={`transition-transform duration-200 mobile-tablet:w-[20px] mobile-tablet:h-[20px] pc:w-5 pc:h-5 ${isOpen ? 'transform rotate-180' : ''}`}
         />
       </button>
       {isOpen && (
         <div className={`
-          w-[328px] h-80 absolute top-full border border-gray-300 rounded-[16px] z-10 shadow-sm transition-all duration-300 ease-in-out overflow-y-scroll 
+          w-[91px] h-[127px] rounded-[8px] border-[1px] top-full absolute  border-color-line-100 transition-all duration-300 ease-in-out overflow-y-scroll 
           mobile-tablet:top-full mobile-tablet:left-0 mobile-tablet:rounded-[8px] mobile-tablet:border-[1px] 
           mobile-tablet:w-full mobile-tablet:h-[144px] 
-          ${isOpen ? 'z-50 shadow-md' : 'opacity-0 pointer-events-none'} 
+          ${isOpen ? 'z-50 shadow-sm' : 'opacity-0 pointer-events-none'} 
           `}>
-          <div className="flex flex-col w-full mt-2">
+          <div className="flex flex-col w-full h-8">
             {items.map(item => (
               <button
                 key={item}
@@ -66,9 +65,9 @@ const DropdownSort: React.FC = () => {
                   setSelectedItem(item);
                   setIsOpen(false);
                 }}
-                className={`h-[64px] justify-between px-[24px] py-[16px] font-medium text-color-black-400 cursor-pointer transition duration-200 hover:bg-gray-100
+                className={`text-xs border border-color-gray-50 pr-1.5 pl-2 py-1.5 h-16 justify-between font-normal text-color-black-400 cursor-pointer transition duration-200 hover:bg-gray-100
                   mobile-tablet:w-full mobile-tablet:h-auto mobile-tablet:px-[14px] mobile-tablet:py-[8px]
-                  text-left w-full mobile-tablet:text-[14px] mobile-tablet:w-full
+                  text-left w-full mobile-tablet:text-[14px] 
                   `}
               >
                 {item}
