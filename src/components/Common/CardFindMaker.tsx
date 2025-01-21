@@ -4,7 +4,7 @@ import Label from '@/components/Common/label';
 interface CardFindMakerProps {
   type: 'normal' | 'favorite';
 }
-const CardFindMaker: React.FC<CardFindMakerProps> = ({ type }) => {
+const CardFindMaker = ({ type }: CardFindMakerProps) => {
   return (
     <div className={`w-[955px] h-[230px] border border-gray-200 rounded-lg p-4 shadow-md
     ${type === 'favorite' ? 'w-[327px] h-[188px]' : ''} `}>
