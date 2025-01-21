@@ -2,8 +2,9 @@ import Head from "next/head";
 import Label from '../components/Common/label';
 import DreamerFilter from '../components/Common/DreamerFilter';
 import DropdownSort from "@/components/Common/DropdownSort";
+import CardFindMaker from "@/components/Common/CardFindMaker";
 
-export default function findingMakerAsGuest() {
+export default function findMaker() {
   return (
     <>
       <Head>
@@ -12,6 +13,9 @@ export default function findingMakerAsGuest() {
       </Head>
       <main className="flex flex-col items-center justify-center min-h-screen py-2">
         <>
+        <div className="p-4">
+      <CardFindMaker />
+    </div>
         <h1 className="text-4xl">Finding Maker As A Guest</h1>
         <p className="mt-4 text-lg">This is the &quot;Finding Maker As A Guest&quot; page of our website.</p>
         <div className="flex space-x-4 mt-4">
