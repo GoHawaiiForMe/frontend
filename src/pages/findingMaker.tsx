@@ -14,7 +14,8 @@ export default function findMaker() {
       <main className="flex flex-col items-center justify-center min-h-screen py-2">
         <>
         <div className="p-4">
-      <CardFindMaker />
+      <CardFindMaker type="normal" />
+      <CardFindMaker type="favorite" />
     </div>
         <h1 className="text-4xl">Finding Maker As A Guest</h1>
         <p className="mt-4 text-lg">This is the &quot;Finding Maker As A Guest&quot; page of our website.</p>
