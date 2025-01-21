@@ -63,7 +63,7 @@ const DreamerFilter: React.FC<DreamerFilterProps> = ({ type }) => {
       </button>
       {isOpen && (
         <div className={`
-          w-[328px] h-80 absolute top-full border border-gray-300 rounded-[16px] z-10 shadow-sm transition-all duration-300 ease-in-out overflow-y-scroll 
+          w-[328px] h-80 absolute top-20 border border-gray-300 bg-gray-50 rounded-[16px] z-10 shadow-sm transition-all duration-300 ease-in-out overflow-y-scroll 
           mobile-tablet:top-full mobile-tablet:left-0 mobile-tablet:rounded-[8px] mobile-tablet:border-[1px] 
           ${type === 'service' ? 'mobile-tablet:w-full mobile-tablet:h-[144px]' : 'mobile-tablet:w-[150px] tablet:h-[179px] mobile:h-[180px]'} 
           ${isOpen ? 'z-50 shadow-md' : 'opacity-0 pointer-events-none'} 
