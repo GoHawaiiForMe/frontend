@@ -23,7 +23,7 @@ export default function ImageModal({ onSelectImage, onClose }: ImageModalProps) 
     <ModalLayout label="프로필 이미지 선택하기" closeModal={onClose}>
       <div className="flex gap-4 mb-10">
         {avatarImages.map((avatar, index) => (
-          <div key={index} onClick={() => onSelectImage(avatar.src)} className="cursor-pointer">
+          <div key={index} onClick={() => onSelectImage(avatar.key)} className="cursor-pointer">
             <Image src={avatar.src} alt={`아바타${index + 1}`} width={100} height={100} />
           </div>
         ))}

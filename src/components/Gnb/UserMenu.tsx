@@ -7,7 +7,7 @@ export interface UserMenuProps {
 }
 
 
-export default function Notification({ userId, closeMenu }: UserMenuProps) {
+export default function UserMenu({ userId, closeMenu }: UserMenuProps) {
   const { nickName, role, setLogout } = useAuthStore();
 
   if (role === "guest") return null;
@@ -16,10 +16,10 @@ export default function Notification({ userId, closeMenu }: UserMenuProps) {
     const menuItems = {
       DREAMER: [
         { href: userId ? `/profile/dreamer/edit/${userId}` : "", label: "프로필 수정" },
-        { href: "/", label: "찜한 Maker" },
+        { href: "/follow_maker", label: "찜한 Maker" },
         { href: "/", label: "여행 리뷰" },
       ],
-      MAKER: [{ href: "/", label: "마이페이지" }],
+      MAKER: [{ href: userId ? `/profile/maker/mypage/${userId}` : "", label: "마이페이지" }],
     };
 
     return (
