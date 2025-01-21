@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import downBlue from '@public/assets/dropdown_down_blue.svg';
 import downGray from '@public/assets/dropdown_down_gray.svg';
 
 const placeholder = '리뷰 많은순';
@@ -32,32 +31,20 @@ const DropdownSort: React.FC = () => {
     <div ref={dropdownRef} className="w-full relative mt-4">
       <button
         onClick={toggleDropdown}
-        className={`w-[114px] h-10 px-[10px] py-2  flex justify-between items-center rounded-2 cursor-pointer transition duration-200 
-          
-          mobile-tablet:w-[150px] mobile-tablet:h-[36px] mobile-tablet:rounded-[8px] mobile-tablet:border-[1px] mobile-tablet:pl-[14px] mobile-tablet:pr-[10px] mobile-tablet:py-[6px]
-          pc:max-w-[328px]
-          `}
+        className="w-[114px] h-[40px] px-[10px] py-2 flex justify-between items-center rounded-[8px] cursor-pointer transition duration-200 bg-color-gray-50"
       >
-        <p
-          className={` text-color-black-400 text-md mobile-tablet:text-[14px] font-semibold
-            `}
-        >
+        <p className="text-color-black-400 text-md font-semibold mobile-tablet:text-xs">
           {selectedItem || placeholder}
         </p>
         <Image
           src={downGray}
           alt="dropdown icon"
-          className={`transition-transform duration-200 mobile-tablet:w-[20px] mobile-tablet:h-[20px] pc:w-5 pc:h-5 ${isOpen ? 'transform rotate-180' : ''}`}
+          className={`transition-transform duration-200 w-5 h-5 ${isOpen ? 'transform rotate-180' : ''}`}
         />
       </button>
       {isOpen && (
-        <div className={`
-          w-[91px] h-[127px] rounded-[8px] border-[1px] top-full absolute  border-color-line-100 transition-all duration-300 ease-in-out overflow-y-scroll 
-          mobile-tablet:top-full mobile-tablet:left-0 mobile-tablet:rounded-[8px] mobile-tablet:border-[1px] 
-          mobile-tablet:w-full mobile-tablet:h-[144px] 
-          ${isOpen ? 'z-50 shadow-sm' : 'opacity-0 pointer-events-none'} 
-          `}>
-          <div className="flex flex-col w-full h-8">
+        <div className="w-[114px] h-[160px] rounded-[8px] border border-color-line-100 absolute top-full z-50 shadow-sm overflow-y-scroll transition-all duration-300 ease-in-out bg-white">
+          <div className="flex flex-col w-full">
             {items.map(item => (
               <button
                 key={item}
@@ -65,10 +52,8 @@ const DropdownSort: React.FC = () => {
                   setSelectedItem(item);
                   setIsOpen(false);
                 }}
-                className={`text-xs border border-color-gray-50 pr-1.5 pl-2 py-1.5 h-16 justify-between font-normal text-color-black-400 cursor-pointer transition duration-200 hover:bg-gray-100
-                  mobile-tablet:w-full mobile-tablet:h-auto mobile-tablet:px-[14px] mobile-tablet:py-[8px]
-                  text-left w-full mobile-tablet:text-[14px] 
-                  `}
+                className="text-md border-b border-color-gray-50 px-[10px] py-2 font-normal text-color-black-400 cursor-pointer transition duration-200 hover:bg-gray-100 
+                mobile-tablet:py-1.5 mobile-tablet:pr-1.5 mobile-tablet:pl-2 mobile-tablet:text-xs"
               >
                 {item}
               </button>
