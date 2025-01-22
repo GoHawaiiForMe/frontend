@@ -12,7 +12,8 @@ import coconut_icon from "@public/assets/icon_coconut.svg";
 import Notification from "./Notification";
 import UserMenu from "./UserMenu";
 import userService from "@/services/userService";
-import notificationService, { NotificationProps } from "@/services/notificationService";
+import notificationService, { NotificationProps } from "@/services/NotificationService";
+import { useRouter } from "next/router";
 
 const NavBar = () => {
   const { isLoggedIn, nickName, role, coconut, setLogin } = useAuthStore();
@@ -21,6 +22,8 @@ const NavBar = () => {
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<any>(null);
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
+
+  const router = useRouter();
 
   const handleOpenSidebar = () => {
     setIsOpenSidebar(true);
@@ -56,11 +59,19 @@ const NavBar = () => {
 
     return (
       <>
-        {linkItems[isLoggedIn ? role : "guest"].map((link, index) => (
-          <li key={index}>
-            <Link href={link.href}>{link.label}</Link>
-          </li>
-        ))}
+        {linkItems[isLoggedIn ? role : "guest"].map((link, index) => {
+          const isActive = router.pathname === link.href;
+          return (
+            <li key={index}>
+              <Link
+                href={link.href}
+                className={`${isActive ? "bold text-color-black-500" : "text-color-gray-500"}`}
+              >
+                {link.label}
+              </Link>
+            </li>
+          );
+        })}
       </>
     );
   };
@@ -99,22 +110,21 @@ const NavBar = () => {
 
   const hasUnreadNotifications = notifications.some((notification) => !notification.isRead);
 
-
   return (
-    <div className="flex items-center justify-between py-6 bg-color-background-100 border-b-2 border-color-line-100 px-32 tablet:px-5 mobile:px-4 mobile-tablet:py-3">
+    <div className="flex items-center justify-between border-b-2 border-color-line-100 bg-color-background-100 px-32 py-6 mobile:px-4 tablet:px-5 mobile-tablet:py-3">
       <div className="flex items-center">
-        <div className="text-2xl font-bold mr-16 mobile-tablet:mr-0">
+        <div className="mr-16 text-2xl font-bold mobile-tablet:mr-0">
           <Link href="/">
             <Image src={logo} width={100} height={100} alt="임시로고" />
           </Link>
         </div>
 
-        <ul className="space-x-4 text-lg bold hidden pc:flex">{renderLinks()}</ul>
+        <ul className="bold hidden space-x-4 text-lg pc:flex">{renderLinks()}</ul>
       </div>
       <div className="flex items-center space-x-4">
         {isLoggedIn ? (
           <>
-            <div className="flex items-center space-x-2 cursor-pointer">
+            <div className="flex cursor-pointer items-center space-x-2">
               <Image src={coconut_icon} alt="코코넛" width={24} height={24} />
               <p className="regular">{coconut}p</p>
             </div>
@@ -127,8 +137,8 @@ const NavBar = () => {
                 className="cursor-pointer"
               />
 
-              <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200 animate-ping"></span>
-              <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200"></span>
+              <span className="absolute right-0 top-0 h-2 w-2 animate-ping rounded-full bg-color-red-200"></span>
+              <span className="absolute right-0 top-0 h-2 w-2 rounded-full bg-color-red-200"></span>
             </div>
             <div className="relative">
               <Image
@@ -141,26 +151,28 @@ const NavBar = () => {
               />
               {hasUnreadNotifications && (
                 <>
-                  <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200 animate-ping"></span>
-                  <span className="absolute top-0 right-0 rounded-full h-2 w-2 bg-color-red-200"></span>
+                  <span className="absolute right-0 top-0 h-2 w-2 animate-ping rounded-full bg-color-red-200"></span>
+                  <span className="absolute right-0 top-0 h-2 w-2 rounded-full bg-color-red-200"></span>
                 </>
               )}
             </div>
 
             {isOpenNotification && <Notification closeModal={handleCloseNotification} />}
             <div
-              className="flex items-center space-x-2 cursor-pointer"
+              className="flex cursor-pointer items-center space-x-2"
               onClick={handleOpenUserMenu}
             >
               <Image src={user_img} alt="유저이미지" width={36} height={36} />
-              <span className="text-2lg medium hidden pc:block">{nickName} {role}</span>
+              <span className="medium hidden text-2lg pc:block">
+                {nickName} {role}
+              </span>
             </div>
             {isOpenUserMenu && <UserMenu userId={userInfo?.id} closeMenu={handleCloseUserMenu} />}
           </>
         ) : (
           <>
             <Link href="/login">
-              <button className="px-10 py-3 bg-color-blue-300 rounded-2xl hover:bg-color-blue-200 text-white text-2lg semibold mobile-tablet:text-md mobile-tablet:px-4 mobile-tablet:py-2)">
+              <button className="semibold mobile-tablet:py-2) rounded-2xl bg-color-blue-300 px-10 py-3 text-2lg text-white hover:bg-color-blue-200 mobile-tablet:px-4 mobile-tablet:text-md">
                 로그인
               </button>
             </Link>
@@ -171,16 +183,16 @@ const NavBar = () => {
           alt="메뉴"
           width={30}
           height={30}
-          className="block pc:hidden cursor-pointer"
+          className="block cursor-pointer pc:hidden"
           onClick={handleOpenSidebar}
         />
       </div>
 
       {/* 사이드바 */}
       {isOpenSidebar && (
-        <div className="fixed inset-0 z-[9999] bg-black bg-opacity-50 flex justify-end items-center">
-          <div className="flex flex-col bg-white w-[220px] h-full p-4 shadow-lg">
-            <div className="flex justify-end mb-4">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-end bg-black bg-opacity-50">
+          <div className="flex h-full w-[220px] flex-col bg-white p-4 shadow-lg">
+            <div className="mb-4 flex justify-end">
               <Image
                 src={closeIcon}
                 alt="닫기"
@@ -191,7 +203,7 @@ const NavBar = () => {
               />
             </div>
             <div className="h-0.5 bg-color-line-100"></div>
-            <ul className="flex flex-col space-y-4 mt-6 text-lg bold gap-y-10 cursor-pointer">
+            <ul className="bold mt-6 flex cursor-pointer flex-col gap-y-10 space-y-4 text-lg">
               {renderLinks()}
             </ul>
           </div>
