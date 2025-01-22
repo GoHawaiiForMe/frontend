@@ -1,4 +1,4 @@
-import { api } from "./api"
+import { api } from "./api";
 
 type Role = "DREAMER" | "MAKER";
 
@@ -27,9 +27,7 @@ interface ProfileInfo {
   updatedAt: string;
 }
 
-
 const userService = {
-
   signUp: async (data: any) => {
     try {
       const response = await api.post("/user/signup", data);
@@ -43,8 +41,7 @@ const userService = {
     try {
       const response = await api.post("/user/check/nickName", data);
       return response;
-    }
-    catch (error) {
+    } catch (error) {
       console.error("닉네임 체크 불가", error);
     }
   },
@@ -52,14 +49,17 @@ const userService = {
     try {
       const response = await api.post("/user/check/email", data);
       return response;
-    }
-    catch (error) {
+    } catch (error) {
       console.error("이메일 체크 불가", error);
     }
   },
   login: async (data: { email: string; password: string }): Promise<LoginResponse> => {
     try {
-      const response = await api.post<LoginResponse, { email: string; password: string }>("/user/login", data);
+      const response = await api.post<LoginResponse, { email: string; password: string }>(
+        "/user/login",
+        data,
+        true,
+      );
       localStorage.setItem("accessToken", response.accessToken);
       return response;
     } catch (error) {
@@ -116,7 +116,6 @@ const userService = {
       throw error;
     }
   },
-
 };
 
 export default userService;
