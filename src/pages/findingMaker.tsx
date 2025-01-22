@@ -15,7 +15,17 @@ export default function findMaker() {
         <>
         <div className="w-[955px]">
       <CardFindMaker />
-      <CardFindMaker cardWidth="w-[327px] h-[188px]" innerboxWidth="w-[299px] h-[78px]" textSize="text-sm" />
+      <CardFindMaker 
+      cardClassName="w-[327px] h-[188px] py-4 px-[14px]" 
+      innerboxClassName="w-[299px] h-[78px]" 
+      titleSize="text-sm" 
+      profileClassName="min-w-12 min-h-12"
+      photoSize="46"
+      nameSize="text-md"
+      otherText="text-[10px]"
+      starSize="20"
+      heartNumberSize="text-xs"
+      />
     </div>
         <h1 className="text-4xl">Finding Maker As A Guest</h1>
         <p className="mt-4 text-lg">This is the &quot;Finding Maker As A Guest&quot; page of our website.</p>
