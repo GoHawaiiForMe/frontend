@@ -14,13 +14,18 @@ export default function findMaker() {
       <main className="flex flex-col items-center justify-center min-h-screen py-2">
         <>
         <div className="w-[955px]">
-      <CardFindMaker />
+      <CardFindMaker
+      firstLabelType="SHOPPING"
+      secondLabelType="REQUEST"
+      cardSize="sm"
+      />
       <CardFindMaker 
-      customLabelContainerClass="h-[26px]"
-      customLabelTextClass="text-xs"
+      firstLabelType="FOOD_TOUR"
+      secondLabelType="REQUEST"
+      labelSize="sm"
       cardClassName="w-[327px] h-[188px] py-4 px-[14px]" 
       innerboxClassName=" h-[78px] !p-[10px] " 
-      titleSize="text-sm" 
+      titleSize="text-sm mb-1" 
       profileClassName="min-w-12 min-h-12"
       photoSize="46"
       nameSize="text-md"
@@ -34,7 +39,9 @@ export default function findMaker() {
         <p className="mt-4 text-lg">This is the &quot;Finding Maker As A Guest&quot; page of our website.</p>
         <div className="flex space-x-4 mt-4">
         
-          <Label type="SHOPPING" />
+          <Label 
+          type="SHOPPING"
+          size="sm" />
           <Label type="FOOD_TOUR" />
           <Label type="ACTIVITY" />
           <Label type="CULTURE" />

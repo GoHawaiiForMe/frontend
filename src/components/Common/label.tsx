@@ -9,18 +9,19 @@ import relaxationIcon from '@public/assets/label_relaxation.svg';
 import fileIcon from '@public/assets/label_File_dock.svg';
 
 interface LabelProps {
-  type?: 'SHOPPING' | 'FOOD_TOUR' | 'ACTIVITY' | 'CULTURE' | 'FESTIVAL' | 'RELAXATION' | 'REQUEST' | 'PENDING' | 'CONFIRMED';
+  labelType?: 'SHOPPING' | 'FOOD_TOUR' | 'ACTIVITY' | 'CULTURE' | 'FESTIVAL' | 'RELAXATION' | 'REQUEST' | 'PENDING' | 'CONFIRMED';
+  labelSize?: 'sm';
   customLabelContainerClass?: string;
   customLabelTextClass?: string;
 }
 
-const Label = ({ type = 'SHOPPING', customLabelContainerClass, customLabelTextClass }: LabelProps) => {
+const Label = ({ labelType = 'SHOPPING', labelSize, customLabelContainerClass, customLabelTextClass }: LabelProps) => {
   let labelSrc;
   let labelText;
   let containerClass = 'bg-color-blue-100';
   let textClass = 'text-color-blue-300';
 
-  switch (type) {
+  switch (labelType) {
     case 'SHOPPING':
       labelSrc = shoppingIcon;
       labelText = '기념품/쇼핑형';
@@ -68,9 +69,9 @@ const Label = ({ type = 'SHOPPING', customLabelContainerClass, customLabelTextCl
   }
 
   return (
-    <div className={`${containerClass} ${customLabelContainerClass} rounded-[4px] flex items-center pt-[4px] pr-[5px] pb-[4px] pl-[3px] mobile-tablet:pt-[2px] mobile-tablet:pr-[4px] mobile-tablet:pb-[2px] mobile-tablet:pl-[2px] gap-[4px] mobile-tablet:gap-[2px] `}>
-      {labelSrc && <Image src={labelSrc} alt={`${type} label`} width={24} height={24} />}
-      <p className={`${textClass} ${customLabelTextClass} text-[16px] font-semibold leading-[24px] mobile-tablet:text-[13px] mobile-tablet:leading-[22px]`}>
+    <div className={`${containerClass} ${customLabelContainerClass} ${labelSize === 'sm' ? 'h-[26px]' : '' } rounded-1 flex items-center py-1 pr-[5px] pl-[3px] mobile-tablet:pt-[2px] mobile-tablet:pr-[4px] mobile-tablet:pb-[2px] mobile-tablet:pl-[2px] gap-[4px] mobile-tablet:gap-[2px] `}>
+      {labelSrc && <Image src={labelSrc} alt={`${labelType} label`} width={24} height={24} />}
+      <p className={`${textClass} ${customLabelTextClass} ${labelSize === 'sm' ? 'text-xs' : ''} text-lg semibold leading-[24px] mobile-tablet:text-[13px] mobile-tablet:leading-[22px]`}>
         {labelText}
       </p>
     </div>

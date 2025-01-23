@@ -3,9 +3,13 @@ import Label from '@/components/Common/Label';
 import like from "@public/assets/icon_like_black.svg";
 import star from "@public/assets/icon_star_md.svg";
 import default_img from "@public/assets/img_avatar3.svg";
-import link from "@public/assets/icon_link.svg";
+
 
 interface CardFindMakerProps {
+  firstLabelType?: 'SHOPPING' | 'FOOD_TOUR' | 'ACTIVITY' | 'CULTURE' | 'FESTIVAL' | 'RELAXATION' | 'REQUEST' | 'PENDING' | 'CONFIRMED';
+  secondLabelType?: 'SHOPPING' | 'FOOD_TOUR' | 'ACTIVITY' | 'CULTURE' | 'FESTIVAL' | 'RELAXATION' | 'REQUEST' | 'PENDING' | 'CONFIRMED';
+  labelSize?: 'sm';
+  cardSize?: 'sm';
   customLabelContainerClass?: string;
   customLabelTextClass?: string; 
   cardClassName?: string;
@@ -18,52 +22,74 @@ interface CardFindMakerProps {
   starSize?: string;
   heartNumberSize?: string;
 
+
 }
-const CardFindMaker = ({ cardClassName, innerboxClassName, titleSize, profileClassName, photoSize = "56", starSize = "24", nameSize, otherText, heartNumberSize, customLabelContainerClass, customLabelTextClass }: CardFindMakerProps) => {
+const CardFindMaker = ({
+  firstLabelType,
+  secondLabelType,
+  labelSize,
+  cardSize,
+  cardClassName,
+  innerboxClassName,
+  titleSize,
+  profileClassName,
+  photoSize = "56",
+  starSize = "24",
+  nameSize,
+  otherText,
+  heartNumberSize,
+  customLabelContainerClass,
+  customLabelTextClass
+}: CardFindMakerProps) => {
+  
+  const computedPhotoSize = cardSize === 'sm' ? "46" : photoSize;
+  const computedStarSize = cardSize === 'sm' ? "20" : starSize;
   return (
     <div className={`w-full h-[230px] border border-color-line-100 rounded-lg py-5 px-6 shadow-[2px_2px_10px_rgba(220,220,220,0.14),-2px_-2px_10px_rgba(220,220,220,0.14)]
-     ${cardClassName}`}>
+     ${cardClassName} ${cardSize === 'sm' ? 'w-[327px] h-[188px] py-4 px-[14px]' : ''}`}>
       <div className="flex mb-2 gap-4">
-      <Label 
-          type="ACTIVITY" 
+        <Label 
+          labelType={firstLabelType}
+          labelSize={labelSize}
           customLabelContainerClass={customLabelContainerClass}
           customLabelTextClass={customLabelTextClass}
         />
         <Label 
-          type="REQUEST"
+          labelType={secondLabelType}
+          labelSize={labelSize}
           customLabelContainerClass={customLabelContainerClass}
           customLabelTextClass={customLabelTextClass}
         />
       </div>
 
-      <h2 className={`mb-4 text-2xl semibold text-color-black-300 ${titleSize}`}>Dreamer의 여행을 행복하게 이루어 드립니다.</h2>
+      <h2 className={`mb-4 text-2xl semibold text-color-black-300 ${titleSize} ${cardSize === 'sm' ? 'text-sm mb-1' : ''}`}>Dreamer의 여행을 행복하게 이루어 드립니다.</h2>
 
       <div className={`w-full h-[92px] flex items-center   rounded-md border-color-line-100 border py-4 px-[18px] shadow-sm 
-        ${innerboxClassName}`}>
-          <div className={`flex items-center w-20 h-20 ${profileClassName}`}>
+        ${innerboxClassName} ${cardSize === 'sm' ? 'h-[78px] !p-[10px] ' : ''}`}>
+          <div className={`flex items-center w-20 h-20 ${profileClassName} ${cardSize === 'sm' ? 'min-w-12 min-h-12' : ''}`}>
             <Image
               src={default_img}
               alt="maker 이미지"
-              width={parseInt(photoSize)}
-              height={parseInt(photoSize)}
+              width={parseInt(computedPhotoSize)}
+              height={parseInt(computedPhotoSize)}
               className="border-2 border-color-blue-400 rounded-full"
             />
           </div>
           <div className="flex flex-col w-full py-1">
             <div className="w-full flex justify-between ">
-              <p className={`text-2lg semibold text-color-black-300 ${nameSize}`}>김이팀 Maker</p>
+              <p className={`text-2lg semibold text-color-black-300 ${nameSize} ${cardSize === 'sm' ? 'text-md' : ''}`}>김이팀 Maker</p>
               <div className="flex gap-1 items-center">
                 <Image src={like} alt="heart" width={24} height={24} />
-                <p className={`text-2lg medium text-color-blue-400 ${heartNumberSize}`}>136</p>
+                <p className={`text-2lg medium text-color-blue-400 ${heartNumberSize} ${cardSize === 'sm' ? 'text-xs' : ''}`}>136</p>
               </div>
             </div>
-            <div className={`flex gap-2 items-center text-lg medium ${otherText}`}>
+            <div className={`flex gap-2 items-center text-lg medium ${otherText} ${cardSize === 'sm' ? 'text-[10px]' : ''}`}>
               <div className="flex gap-2 items-center">
                 <Image
                   src={star}
                   alt="별이미지"
-                  width={parseInt(starSize)}
-                  height={parseInt(starSize)}
+                  width={parseInt(computedStarSize)}
+                  height={parseInt(computedStarSize)}
                 />
                 <Image src={star} alt="별이미지" width={20} height={20} className="pc:hidden" />
                 <p className=" text-color-black-300">5.0</p>
