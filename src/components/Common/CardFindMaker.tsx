@@ -1,11 +1,13 @@
 import Image from "next/image";
-import Label from '@/components/Common/label';
+import Label from '@/components/Common/Label';
 import like from "@public/assets/icon_like_black.svg";
 import star from "@public/assets/icon_star_md.svg";
 import default_img from "@public/assets/img_avatar3.svg";
 import link from "@public/assets/icon_link.svg";
 
 interface CardFindMakerProps {
+  customLabelContainerClass?: string;
+  customLabelTextClass?: string; 
   cardClassName?: string;
   titleSize?: string;
   innerboxClassName?: string;
@@ -15,14 +17,23 @@ interface CardFindMakerProps {
   otherText?: string;
   starSize?: string;
   heartNumberSize?: string;
+
 }
-const CardFindMaker = ({ cardClassName, innerboxClassName, titleSize, profileClassName, photoSize = "56", starSize = "24", nameSize, otherText, heartNumberSize }: CardFindMakerProps) => {
+const CardFindMaker = ({ cardClassName, innerboxClassName, titleSize, profileClassName, photoSize = "56", starSize = "24", nameSize, otherText, heartNumberSize, customLabelContainerClass, customLabelTextClass }: CardFindMakerProps) => {
   return (
     <div className={`w-full h-[230px] border border-color-line-100 rounded-lg py-5 px-6 shadow-[2px_2px_10px_rgba(220,220,220,0.14),-2px_-2px_10px_rgba(220,220,220,0.14)]
      ${cardClassName}`}>
       <div className="flex mb-2 gap-4">
-        <Label type="SHOPPING" />
-        <Label type="REQUEST" />
+      <Label 
+          type="ACTIVITY" 
+          customLabelContainerClass={customLabelContainerClass}
+          customLabelTextClass={customLabelTextClass}
+        />
+        <Label 
+          type="REQUEST"
+          customLabelContainerClass={customLabelContainerClass}
+          customLabelTextClass={customLabelTextClass}
+        />
       </div>
 
       <h2 className={`mb-4 text-2xl semibold text-color-black-300 ${titleSize}`}>Dreamer의 여행을 행복하게 이루어 드립니다.</h2>
@@ -61,7 +72,7 @@ const CardFindMaker = ({ cardClassName, innerboxClassName, titleSize, profileCla
               <div className="h-5 border border-line-200" />
               <div className="flex gap-1 items-center">
                 <p className=" text-color-gray-300">경력</p>
-                <Image src={link} alt="링크이미지" width={30} height={30} />
+                <p className=" text-color-black-300">7년</p>
               </div>
               <div className="h-5 border border-line-200" />
               <div className="flex gap-2 items-center">

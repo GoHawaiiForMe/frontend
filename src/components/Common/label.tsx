@@ -10,9 +10,11 @@ import fileIcon from '@public/assets/label_File_dock.svg';
 
 interface LabelProps {
   type?: 'SHOPPING' | 'FOOD_TOUR' | 'ACTIVITY' | 'CULTURE' | 'FESTIVAL' | 'RELAXATION' | 'REQUEST' | 'PENDING' | 'CONFIRMED';
+  customLabelContainerClass?: string;
+  customLabelTextClass?: string;
 }
 
-const Label: React.FC<LabelProps> = ({ type }) => {
+const Label = ({ type = 'SHOPPING', customLabelContainerClass, customLabelTextClass }: LabelProps) => {
   let labelSrc;
   let labelText;
   let containerClass = 'bg-color-blue-100';
@@ -66,9 +68,9 @@ const Label: React.FC<LabelProps> = ({ type }) => {
   }
 
   return (
-    <div className={`${containerClass} rounded-[4px] flex items-center pt-[4px] pr-[5px] pb-[4px] pl-[3px] mobile-tablet:pt-[2px] mobile-tablet:pr-[4px] mobile-tablet:pb-[2px] mobile-tablet:pl-[2px] gap-[4px] mobile-tablet:gap-[2px] `}>
+    <div className={`${containerClass} ${customLabelContainerClass} rounded-[4px] flex items-center pt-[4px] pr-[5px] pb-[4px] pl-[3px] mobile-tablet:pt-[2px] mobile-tablet:pr-[4px] mobile-tablet:pb-[2px] mobile-tablet:pl-[2px] gap-[4px] mobile-tablet:gap-[2px] `}>
       {labelSrc && <Image src={labelSrc} alt={`${type} label`} width={24} height={24} />}
-      <p className={`${textClass} text-[16px] font-semibold leading-[24px] mobile-tablet:text-[13px] mobile-tablet:leading-[22px]`}>
+      <p className={`${textClass} ${customLabelTextClass} text-[16px] font-semibold leading-[24px] mobile-tablet:text-[13px] mobile-tablet:leading-[22px]`}>
         {labelText}
       </p>
     </div>

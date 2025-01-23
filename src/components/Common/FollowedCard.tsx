@@ -2,7 +2,7 @@ import Image from "next/image";
 import like from "@public/assets/icon_like_pink.svg";
 import star from "@public/assets/icon_star_md.svg";
 import default_img from "@public/assets/icon_default_profile.svg";
-import Label from "./label";
+import Label from "./Label";
 import link from "@public/assets/icon_link.svg";
 
 export default function SavedCard() {

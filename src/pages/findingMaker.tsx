@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Label from '../components/Common/label';
+import Label from '../components/Common/Label';
 import DreamerFilter from '../components/Common/DreamerFilter';
 import DropdownSort from "@/components/Common/DropdownSort";
 import CardFindMaker from "@/components/Common/CardFindMaker";
@@ -16,8 +16,10 @@ export default function findMaker() {
         <div className="w-[955px]">
       <CardFindMaker />
       <CardFindMaker 
+      customLabelContainerClass="h-[26px]"
+      customLabelTextClass="text-xs"
       cardClassName="w-[327px] h-[188px] py-4 px-[14px]" 
-      innerboxClassName="w-[299px] h-[78px]" 
+      innerboxClassName=" h-[78px] !p-[10px] " 
       titleSize="text-sm" 
       profileClassName="min-w-12 min-h-12"
       photoSize="46"
@@ -25,6 +27,7 @@ export default function findMaker() {
       otherText="text-[10px]"
       starSize="20"
       heartNumberSize="text-xs"
+      
       />
     </div>
         <h1 className="text-4xl">Finding Maker As A Guest</h1>
