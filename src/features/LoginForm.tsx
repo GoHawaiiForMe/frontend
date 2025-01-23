@@ -12,7 +12,7 @@ import kakao_icon from "@public/assets/icon_kakao.svg";
 import naver_icon from "@public/assets/icon_naver.svg";
 import userService from "@/services/userService";
 import { useRouter } from "next/router";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 interface LoginProps {
   email: string;
