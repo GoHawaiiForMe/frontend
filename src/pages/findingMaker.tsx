@@ -17,7 +17,7 @@ export default function findMaker() {
       <CardFindMaker
       firstLabelType="SHOPPING"
       secondLabelType="REQUEST"
-      cardSize="sm"
+    
       />
       <CardFindMaker 
       firstLabelType="FOOD_TOUR"
@@ -32,7 +32,7 @@ export default function findMaker() {
       otherText="text-[10px]"
       starSize="20"
       heartNumberSize="text-xs"
-      
+       
       />
     </div>
         <h1 className="text-4xl">Finding Maker As A Guest</h1>
