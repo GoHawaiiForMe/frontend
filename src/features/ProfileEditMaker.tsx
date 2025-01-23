@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Selector from "@/components/Common/Selector";
 import Image from "next/image";
 import profileImgDefault from "@public/assets/icon_default_profile.svg";
@@ -9,8 +9,19 @@ import userService from "@/services/userService";
 import planData from "@/types/planData";
 import Input from "@/components/Common/Input";
 import router from "next/router";
+import DEFAULT_1 from "@public/assets/img_avatar1.svg";
+import DEFAULT_2 from "@public/assets/img_avatar2.svg";
+import DEFAULT_3 from "@public/assets/img_avatar3.svg";
+import DEFAULT_4 from "@public/assets/img_avatar4.svg";
 
-export default function ProfileMaker() {
+const avatarImages = [
+  { key: "DEFAULT_1", src: DEFAULT_1 },
+  { key: "DEFAULT_2", src: DEFAULT_2 },
+  { key: "DEFAULT_3", src: DEFAULT_3 },
+  { key: "DEFAULT_4", src: DEFAULT_4 },
+];
+
+export default function ProfileEditor() {
   const { userData, setMakerProfileData } = useSignUp();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
@@ -19,6 +30,36 @@ export default function ProfileMaker() {
   const [description, setDescription] = useState<string>("");
   const [detailDescription, setDetailDescription] = useState<string>("");
   const [snsAddress, setSnsAddress] = useState<string>("");
+
+  const [profileInfo, setProfileInfo] = useState<any>(null);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+      const fetchMakerProfile = async () => {
+        try {
+          const profileData = await userService.getProfileInfo();
+          setProfileInfo(profileData);
+
+          if (profileData.image) {
+            setProfileImg(profileData.image);
+          }
+          setSelectedServices(profileData.serviceTypes || []);
+          setSelectedLocations(profileData.serviceArea || []);
+          setSnsAddress(profileData.gallery || "");
+          setDescription(profileData.description || "");
+          setDetailDescription(profileData.detailDescription || "");
+        } catch (error) {
+          console.error("프로필 불러오기 실패", error);
+          alert("프로필을 불러오는데 실패했습니다.");
+          router.push("/profile");
+        }
+      };
+
+      fetchMakerProfile();
+    }
+  }, []);
 
   const handleImageSelect = (imageKey: string) => {
     setProfileImg(imageKey);
@@ -52,7 +93,7 @@ export default function ProfileMaker() {
   };
 
   const handleSubmit = async () => {
-    const profileMakerData = {
+    const updatedProfileData = {
       image: profileImg || undefined,
       serviceTypes: selectedServices,
       serviceArea: selectedLocations,
@@ -60,18 +101,14 @@ export default function ProfileMaker() {
       description: description,
       detailDescription: detailDescription,
     };
-    setMakerProfileData(profileMakerData);
 
     try {
-      const payload = {
-        user: { ...userData },
-        profile: profileMakerData,
-      };
-      await userService.signUp(payload);
-      alert("Maker님 가입을 축하드립니다!");
-      router.push("/login");
+      await userService.patchProfileMaker(updatedProfileData); // API 호출 필요
+      alert("프로필이 성공적으로 수정되었습니다!");
+      router.push("/profile");
     } catch (error) {
-      console.error("회원가입 실패", error);
+      console.error("프로필 수정 실패", error);
+      alert("프로필 수정에 실패했습니다.");
     }
   };
 
@@ -86,21 +123,24 @@ export default function ProfileMaker() {
 
   return (
     <div className="mb-20 flex w-full justify-center">
-      <div className="flex w-full flex-col gap-5 ">
+      <div className="flex w-full flex-col gap-5">
         <div className="flex flex-col">
-          <p className="bold text-3xl mobile-tablet:text-2lg">Maker 프로필 등록</p>
+          <p className="bold text-3xl mobile-tablet:text-2lg">Maker 프로필 수정</p>
           <p className="regular my-8 text-xl text-color-black-300 mobile-tablet:text-xs">
-            추가 정보를 입력하여 회원가입을 완료해주세요.
+            프로필 정보를 수정해주세요.
           </p>
           <div className="mb-8 h-0.5 bg-color-line-100"></div>
         </div>
-        <div className="flex gap-[72px] mobile-tablet:flex-col mobile-tablet:justify-center ">
+        <div className="flex gap-[72px] mobile-tablet:flex-col mobile-tablet:justify-center">
           <div className="w-full">
             <p className="semibold mb-3 text-xl mobile-tablet:text-lg">프로필 이미지</p>
             <div onClick={() => setIsOpenImageModal(true)} className="w-[160px] cursor-pointer">
               {profileImg ? (
                 <Image
-                  src={`/assets/img_avatar${profileImg.split("_")[1]}.svg`}
+                  src={
+                    avatarImages.find((avatar) => avatar.key === profileImg)?.src ||
+                    profileImgDefault
+                  }
                   alt="프로필 이미지"
                   width={160}
                   height={160}
@@ -115,18 +155,18 @@ export default function ProfileMaker() {
                 onClose={() => setIsOpenImageModal(false)}
               />
             )}
-            <div className="my-8 h-0.5 bg-color-line-100 "></div>
+            <div className="my-8 h-0.5 bg-color-line-100"></div>
             <div>
               <Input
                 label="SNS 주소"
-                className="mb-8 border-none border-color-line-100 bg-color-background-200 "
+                className="mb-8 border-none border-color-line-100 bg-color-background-200"
                 type="text"
                 placeholder="SNS 주소를 입력해주세요."
                 value={snsAddress}
                 onChange={handleSnsAddressChange}
               />
               <Input
-                className="border-none bg-color-background-200 "
+                className="border-none bg-color-background-200"
                 label="한 줄 소개*"
                 type="text"
                 placeholder="한 줄 소개를 입력해주세요."
@@ -140,7 +180,7 @@ export default function ProfileMaker() {
           <div className="w-full">
             <p className="semibold mb-4 text-xl mobile-tablet:text-lg">상세 소개</p>
             <textarea
-              className="mb-4 h-40 w-full resize-none rounded-xl border border-none bg-color-background-200 p-4 "
+              className="mb-4 h-40 w-full resize-none rounded-xl border border-none bg-color-background-200 p-4"
               placeholder="서비스를 제공 할 정보에 대해 상세 내용을 입력해주세요."
               value={detailDescription}
               onChange={handleDetailDescriptionChange}
@@ -180,9 +220,8 @@ export default function ProfileMaker() {
           </div>
         </div>
         <Button
-          label="시작하기"
+          label="수정하기"
           onClick={handleSubmit}
-          disabled={isButtonDisabled}
           type="submit"
           className="text-color-gray-50"
         />

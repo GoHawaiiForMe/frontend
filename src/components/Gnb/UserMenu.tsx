@@ -18,7 +18,7 @@ export default function Notification({ userId }: UserMenuProps) {
         { href: "/", label: "찜한 Maker" },
         { href: "/", label: "여행 리뷰" },
       ],
-      MAKER: [{ href: "/", label: "마이페이지" }],
+      MAKER: [{href: userId ? `/profile/maker/mypage/${userId}` : "", label: "마이페이지" }],
     };
 
     return (

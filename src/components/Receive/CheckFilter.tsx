@@ -1,4 +1,7 @@
+import React from "react";
+import { PlanResponse } from "@/services/RequestService";
 import { useState } from "react";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 
 interface TypeCheckboxState {
   all: boolean;
@@ -16,7 +19,15 @@ interface FilterCheckboxState {
   quote_request: boolean;
 }
 
-export default function CheckFilter() {
+interface CheckFilterProps {
+  data: PlanResponse | undefined;
+  selectedTypes: string[];
+  setSelectedTypes: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const CheckFilter: React.FC<CheckFilterProps> = ({ data, selectedTypes, setSelectedTypes }) => {
+  const queryClient = useQueryClient();
+
   const [typeCheckboxes, setTypeCheckboxes] = useState<TypeCheckboxState>({
     all: false,
     FOOD_TOUR: false,
@@ -34,7 +45,7 @@ export default function CheckFilter() {
   });
 
   const handleTypeAllCheck = (checked: boolean): void => {
-    setTypeCheckboxes({
+    const newCheckboxes = {
       all: checked,
       FOOD_TOUR: checked,
       SHOPPING: checked,
@@ -42,6 +53,17 @@ export default function CheckFilter() {
       CULTURE: checked,
       ACTIVITY: checked,
       FESTIVAL: checked,
+    };
+
+    const newSelectedTypes = checked
+      ? Object.keys(newCheckboxes).filter((key) => key !== "all")
+      : [];
+
+    setSelectedTypes(newSelectedTypes);
+    setTypeCheckboxes(newCheckboxes);
+
+    queryClient.invalidateQueries({
+      queryKey: ["receiveRequest", { isAssigned: true, tripType: newSelectedTypes }],
     });
   };
 
@@ -62,13 +84,18 @@ export default function CheckFilter() {
       [id]: checked,
     };
 
-    const allChecked = Object.keys(newCheckboxes)
-      .filter((key): key is keyof Omit<TypeCheckboxState, "all"> => key !== "all")
-      .every((key) => newCheckboxes[key]);
+    const newSelectedTypes = Object.entries(newCheckboxes)
+      .filter(([key, value]) => key !== "all" && value)
+      .map(([key]) => key);
 
+    setSelectedTypes(newSelectedTypes);
     setTypeCheckboxes({
       ...newCheckboxes,
-      all: allChecked,
+      all: Object.values(newCheckboxes).every((value) => value),
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: ["receiveRequest", { isAssigned: true, tripType: newSelectedTypes }],
     });
   };
 
@@ -91,10 +118,7 @@ export default function CheckFilter() {
     });
   };
 
-  const mainTabs = [
-    { id: "type", label: "여행 유형" },
-    { id: "filter", label: "필터" },
-  ];
+  const mainTabs = [{ id: "type", label: "여행 유형" }];
 
   const typeOptions = [
     { id: "FOOD_TOUR", label: "맛집 탐방형" },
@@ -105,39 +129,35 @@ export default function CheckFilter() {
     { id: "FESTIVAL", label: "축제 참여형" },
   ];
 
-  const filterOptions = [
-    { id: "service_area", label: "서비스가능지역" },
-    { id: "quote_request", label: "지정 견적 요청" },
-  ];
   return (
-    <div className="w-[328px] hidden pc:block  ">
+    <div className="hidden w-[328px] pc:block">
       <div className="mb-[24px]">
-        <div className="flex justify-between items-center border-b border-color-line-200 px-[13.5px] py-[16px] my-[24px]">
-          <p className="text-[20px] font-medium leading-8 whitespace-nowrap">여행 유형</p>
+        <div className="my-[24px] flex items-center justify-between border-b border-color-line-200 px-[13.5px] py-[16px]">
+          <p className="whitespace-nowrap text-[20px] font-medium leading-8">여행 유형</p>
           <div className="flex items-center gap-[12px]">
             <input
-              className="w-[20px] h-[20px]"
+              className="h-[20px] w-[20px]"
               type="checkbox"
               id="all"
               checked={typeCheckboxes.all}
               onChange={(e) => handleTypeAllCheck(e.target.checked)}
             />
-            <p className="text-[18px] font-normal leading-[26px] whitespace-nowrap">전체 선택</p>
+            <p className="whitespace-nowrap text-[18px] font-normal leading-[26px]">전체 선택</p>
           </div>
         </div>
         {typeOptions.map((option) => (
           <div
             key={option.id}
-            className="flex justify-between items-center border-b border-color-line-200 px-[16px] py-[21px]"
+            className="flex items-center justify-between border-b border-color-line-200 px-[16px] py-[21px]"
           >
             <label
-              className="text-[18px] font-medium leading-[26px] whitespace-nowrap"
+              className="whitespace-nowrap text-[18px] font-medium leading-[26px]"
               htmlFor={option.id}
             >
-              {option.label} (count)
+              {`${option.label} (${data?.groupByCount.find((count) => count.tripType === option.id)?.count || "0"})`}
             </label>
             <input
-              className="w-[20px] h-[20px]"
+              className="h-[20px] w-[20px]"
               type="checkbox"
               id={option.id}
               checked={typeCheckboxes[option.id as keyof TypeCheckboxState]}
@@ -151,51 +171,8 @@ export default function CheckFilter() {
           </div>
         ))}
       </div>
-
-      <div className="flex justify-between items-center border-b border-color-line-200 px-[13.5px] py-[16px] mb-[24px] ">
-        <p className="text-[20px] font-medium leading-8 whitespace-nowrap">필터</p>
-        <div className="flex items-center gap-[12px]">
-          <input
-            className="w-[20px] h-[20px]"
-            type="checkbox"
-            id="filter-all"
-            checked={filterCheckboxes.all}
-            onChange={(e) => handleFilterAllCheck(e.target.checked)}
-          />
-          <label
-            className="text-[18px] font-normal leading-[26px] whitespace-nowrap"
-            htmlFor="filter-all"
-          >
-            전체선택{" "}
-          </label>
-        </div>
-      </div>
-
-      {filterOptions.map((option) => (
-        <div
-          key={option.id}
-          className="flex justify-between items-center border-b border-color-line-200 px-[16px] py-[21px] "
-        >
-          <label
-            className="text-[18px] font-medium leading-[26px] whitespace-nowrap"
-            htmlFor={option.id}
-          >
-            {option.label}(count)
-          </label>
-          <input
-            className="w-[20px] h-[20px]"
-            type="checkbox"
-            id={option.id}
-            checked={filterCheckboxes[option.id as keyof FilterCheckboxState]}
-            onChange={(e) =>
-              handleFilterSingleCheck(
-                option.id as keyof Omit<FilterCheckboxState, "all">,
-                e.target.checked,
-              )
-            }
-          />
-        </div>
-      ))}
     </div>
   );
-}
+};
+
+export default CheckFilter;
