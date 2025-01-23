@@ -3,10 +3,11 @@ import Link from "next/link";
 
 export interface UserMenuProps {
   userId: string;
+  closeMenu: () => void;
 }
 
 
-export default function Notification({ userId }: UserMenuProps) {
+export default function UserMenu({ userId, closeMenu }: UserMenuProps) {
   const { nickName, role, setLogout } = useAuthStore();
 
   if (role === "guest") return null;
@@ -15,17 +16,17 @@ export default function Notification({ userId }: UserMenuProps) {
     const menuItems = {
       DREAMER: [
         { href: userId ? `/profile/dreamer/edit/${userId}` : "", label: "프로필 수정" },
-        { href: "/", label: "찜한 Maker" },
+        { href: "/follow_maker", label: "찜한 Maker" },
         { href: "/", label: "여행 리뷰" },
       ],
-      MAKER: [{href: userId ? `/profile/maker/mypage/${userId}` : "", label: "마이페이지" }],
+      MAKER: [{ href: userId ? `/profile/maker/mypage/${userId}` : "", label: "마이페이지" }],
     };
 
     return (
       <>
         {menuItems[role ? role : "DREAMER"].map((link, index) => (
           <li key={index}>
-            <Link href={link.href}>{link.label}</Link>
+            <Link href={link.href} onClick={closeMenu}>{link.label}</Link>
           </li>
         ))}
       </>

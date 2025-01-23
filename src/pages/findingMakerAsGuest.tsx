@@ -1,5 +1,7 @@
 import Head from "next/head";
 import Label from '../components/Common/label';
+import DreamerFilter from '../components/Common/DreamerFilter';
+import DropdownSort from "@/components/Common/DropdownSort";
 
 export default function findingMakerAsGuest() {
   return (
@@ -13,6 +15,7 @@ export default function findingMakerAsGuest() {
         <h1 className="text-4xl">Finding Maker As A Guest</h1>
         <p className="mt-4 text-lg">This is the &quot;Finding Maker As A Guest&quot; page of our website.</p>
         <div className="flex space-x-4 mt-4">
+        
           <Label type="SHOPPING" />
           <Label type="FOOD_TOUR" />
           <Label type="ACTIVITY" />
@@ -22,9 +25,14 @@ export default function findingMakerAsGuest() {
           <Label type="REQUEST" />
           <Label type="PENDING" />
           <Label type="CONFIRMED" />
+        </div >
+        <div className="flex space-x-4 mt-4">
+        <DreamerFilter type="location" />
+        <DreamerFilter type="service" />
         </div>
+        <DropdownSort />
         </>
-      </main>
+          </main>
     </>
   );
 }

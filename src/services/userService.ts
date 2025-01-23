@@ -55,10 +55,7 @@ const userService = {
   },
   login: async (data: { email: string; password: string }): Promise<LoginResponse> => {
     try {
-      const response = await api.post<LoginResponse, { email: string; password: string }>(
-        "/user/login",
-        data,
-      );
+      const response = await api.post<LoginResponse, { email: string; password: string }>("/user/login", data);
       localStorage.setItem("accessToken", response.accessToken);
       return response;
     } catch (error) {

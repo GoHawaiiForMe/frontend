@@ -8,13 +8,14 @@ const apiClient = axios.create({
 });
 
 // request
-apiClient.interceptors.request.use((config) => {
-  const accessToken = localStorage.getItem("accessToken");
-  if (accessToken) {
-    config.headers['Authorization'] = `Bearer ${accessToken}`;
-  }
-  return config;
-},
+apiClient.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
   (error) => {
     return Promise.reject(error);
   },
@@ -25,7 +26,7 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      console.error("미인증상태");
+      console.error("accessToken 만료");
     }
     return Promise.reject(error);
   },

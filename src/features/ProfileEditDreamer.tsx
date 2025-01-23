@@ -46,9 +46,8 @@ export default function ProfileEditDreamer() {
   const router = useRouter();
   const { setLogin } = useAuthStore();
 
-  const handleImageSelect = (imageKey: string) => {
-    console.log("Selected image key:", imageKey); // 디버깅용
-    setProfileImg(imageKey);
+  const handleImageSelect = (imageSrc: string) => {
+    setProfileImg(imageSrc);
     setIsOpenImageModal(false);
   };
 
@@ -65,8 +64,8 @@ export default function ProfileEditDreamer() {
   };
 
   const handleCancel = () => {
-    router.push("/plan_request"); //임시 url
-  };
+    router.push("/plan_request") //임시 url
+  }
   const onSubmit = async (data: EditDreamerData) => {
     const UpdateData = {
       nickName: userInfo?.nickName !== data.nickName ? data.nickName : userInfo?.nickName,
