@@ -107,15 +107,6 @@ export default function ProfileEditorMaker() {
     }
   };
 
-  // const isButtonDisabled =
-  //   selectedServices.length === 0 ||
-  //   selectedLocations.length === 0 ||
-  //   !profileImg ||
-  //   !_userData ||
-  //   !description ||
-  //   !detailDescription ||
-  //   !snsAddress;
-
   return (
     <div className="mb-20 flex w-full justify-center">
       <div className="flex w-full flex-col gap-5">
