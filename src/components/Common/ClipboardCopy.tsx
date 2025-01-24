@@ -30,7 +30,7 @@ const ClipboardCopy = ({ icon }) => {
       </button>
       {showPopup && (
         <div
-          className="fixed bottom-4 left-1/2 transform -translate-x-1/2 p-4 bg-white rounded-lg shadow-lg border"
+          className="fixed bottom-4 left-1/2 -translate-x-1/2 transform rounded-lg border bg-white p-4 shadow-lg"
           style={{ zIndex: 999 }}
         >
           <p className="text-center text-black">URL이 복사되었습니다!</p>

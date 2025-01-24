@@ -85,13 +85,16 @@ const NavBar = () => {
   const { data: notificationData = [] } = useQuery({
     queryKey: ["hasNotification"],
     queryFn: getNotification,
+    enabled: isLoggedIn,
   });
 
   useEffect(() => {
-    if (notificationData) {
-      setNotifications(notificationData);
+    if (isLoggedIn) {
+      if (notificationData) {
+        setNotifications(notificationData);
+      }
     }
-  }, [notificationData]);
+  }, [isLoggedIn, notificationData]);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
