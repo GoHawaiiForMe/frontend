@@ -40,16 +40,16 @@ export default function findMaker() {
         <div className="flex space-x-4 mt-4">
         
           <Label 
-          type="SHOPPING"
-          size="sm" />
-          <Label type="FOOD_TOUR" />
-          <Label type="ACTIVITY" />
-          <Label type="CULTURE" />
-          <Label type="FESTIVAL" />
-          <Label type="RELAXATION" />
-          <Label type="REQUEST" />
-          <Label type="PENDING" />
-          <Label type="CONFIRMED" />
+          labelType="SHOPPING"
+          labelSize="sm" />
+          <Label labelType="FOOD_TOUR" />
+          <Label labelType="ACTIVITY" />
+          <Label labelType="CULTURE" />
+          <Label labelType="FESTIVAL" />
+          <Label labelType="RELAXATION" />
+          <Label labelType="REQUEST" />
+          <Label labelType="PENDING" />
+          <Label labelType="CONFIRMED" />
         </div >
         <div className="flex space-x-4 mt-4">
         <DreamerFilter type="location" />
