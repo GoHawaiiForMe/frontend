@@ -43,6 +43,7 @@ export default function LoginForm() {
         console.error("유저 정보 가져오기 실패", error);
       }
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       if (error.response) {
         console.error("Error response", error.response);

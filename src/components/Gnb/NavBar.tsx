@@ -39,6 +39,7 @@ const NavBar = () => {
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [userInfo, setUserInfo] = useState<any>(null);
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
 
@@ -164,6 +165,8 @@ const NavBar = () => {
             </div>
 
             {isOpenNotification && <Notification closeModal={handleCloseNotification} />}
+            {notifications === null && null}
+
             <div
               className="flex cursor-pointer items-center space-x-2"
               onClick={handleOpenUserMenu}

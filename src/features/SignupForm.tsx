@@ -46,8 +46,7 @@ export default function SignUpForm() {
       router.push("/profile/dreamer");
     }
     if (data.role === "MAKER") {
-      router.push('/profile/maker');
-
+      router.push("/profile/maker");
     }
   };
 
@@ -74,7 +73,7 @@ export default function SignUpForm() {
         setError("nickName", { message: "닉네임이 중복되었습니다!" });
         setNickNameMessage("");
       }
-    } catch (error) {
+    } catch {
       setError("nickName", { message: "닉네임 체크 중 오류가 발생했습니다." });
       setIsNickNameValid(false);
     }
@@ -92,7 +91,7 @@ export default function SignUpForm() {
         setEmailMessage("");
         setIsEmailValid(false);
       }
-    } catch (error) {
+    } catch {
       setError("email", { message: "이메일 체크 중 오류가 발생했습니다." });
       setIsEmailValid(false);
     }

@@ -10,11 +10,7 @@ const fetchFollowData = () => {
 };
 
 export default function FollowMaker() {
-  const {
-    data: followedItems,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: followedItems, isLoading } = useQuery({
     queryKey: ["followedItems"],
     queryFn: fetchFollowData,
   });
