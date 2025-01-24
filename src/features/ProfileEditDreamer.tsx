@@ -64,7 +64,7 @@ export default function ProfileEditDreamer() {
   };
 
   const handleCancel = () => {
-    router.push("/plan_request"); //임시 url
+    router.push("/plan-request"); //임시 url
   };
 
   const onSubmit = async (data: EditDreamerData) => {
@@ -101,7 +101,7 @@ export default function ProfileEditDreamer() {
         setLogin(data.nickName, userInfo?.role || "guest", userInfo?.coconut || 0);
       }
       //임시 url
-      // router.push("/plan_request")
+      // router.push("/plan-request")
     } catch (error) {
       console.error("프로필 수정 실패", error);
       alert("수정 중 문제가 발생했습니다. 다시 시도해주세요.");

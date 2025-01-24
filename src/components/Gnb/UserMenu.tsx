@@ -6,7 +6,6 @@ export interface UserMenuProps {
   closeMenu: () => void;
 }
 
-
 export default function UserMenu({ userId, closeMenu }: UserMenuProps) {
   const { nickName, role, setLogout } = useAuthStore();
 

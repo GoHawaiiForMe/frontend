@@ -12,8 +12,21 @@ import coconut_icon from "@public/assets/icon_coconut.svg";
 import Notification from "./Notification";
 import UserMenu from "./UserMenu";
 import userService from "@/services/userService";
-import notificationService, { NotificationProps } from "@/services/NotificationService";
+import notificationService, { NotificationProps } from "@/services/notificationService";
 import { useRouter } from "next/router";
+
+const linkItems = {
+  guest: [{ href: "/", label: "Maker 찾기" }],
+  DREAMER: [
+    { href: "/plan-request", label: "여행 요청" },
+    { href: "/", label: "Maker 찾기" },
+    { href: "/", label: "내 여행 관리" },
+  ],
+  MAKER: [
+    { href: "/", label: "받은 요청" },
+    { href: "/", label: "내 여행 관리" },
+  ],
+};
 
 const NavBar = () => {
   const { isLoggedIn, nickName, role, coconut, setLogin } = useAuthStore();
@@ -44,19 +57,6 @@ const NavBar = () => {
   };
 
   const renderLinks = () => {
-    const linkItems = {
-      guest: [{ href: "/", label: "Maker 찾기" }],
-      DREAMER: [
-        { href: "/plan_request", label: "여행 요청" },
-        { href: "/", label: "Maker 찾기" },
-        { href: "/", label: "내 여행 관리" },
-      ],
-      MAKER: [
-        { href: "/", label: "받은 요청" },
-        { href: "/", label: "내 여행 관리" },
-      ],
-    };
-
     return (
       <>
         {linkItems[isLoggedIn ? role : "guest"].map((link, index) => {
