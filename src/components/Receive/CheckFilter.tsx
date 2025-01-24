@@ -1,7 +1,7 @@
 import React from "react";
 import { PlanResponse } from "@/services/RequestService";
 import { useState } from "react";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface TypeCheckboxState {
   all: boolean;
@@ -13,19 +13,12 @@ interface TypeCheckboxState {
   FESTIVAL: boolean;
 }
 
-interface FilterCheckboxState {
-  all: boolean;
-  service_area: boolean;
-  quote_request: boolean;
-}
-
 interface CheckFilterProps {
   data: PlanResponse | undefined;
-  selectedTypes: string[];
   setSelectedTypes: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const CheckFilter: React.FC<CheckFilterProps> = ({ data, selectedTypes, setSelectedTypes }) => {
+const CheckFilter: React.FC<CheckFilterProps> = ({ data, setSelectedTypes }) => {
   const queryClient = useQueryClient();
 
   const [typeCheckboxes, setTypeCheckboxes] = useState<TypeCheckboxState>({
@@ -36,12 +29,6 @@ const CheckFilter: React.FC<CheckFilterProps> = ({ data, selectedTypes, setSelec
     CULTURE: false,
     ACTIVITY: false,
     FESTIVAL: false,
-  });
-
-  const [filterCheckboxes, setFilterCheckboxes] = useState<FilterCheckboxState>({
-    all: false,
-    service_area: false,
-    quote_request: false,
   });
 
   const handleTypeAllCheck = (checked: boolean): void => {
@@ -64,14 +51,6 @@ const CheckFilter: React.FC<CheckFilterProps> = ({ data, selectedTypes, setSelec
 
     queryClient.invalidateQueries({
       queryKey: ["receiveRequest", { isAssigned: true, tripType: newSelectedTypes }],
-    });
-  };
-
-  const handleFilterAllCheck = (checked: boolean): void => {
-    setFilterCheckboxes({
-      all: checked,
-      service_area: checked,
-      quote_request: checked,
     });
   };
 
@@ -98,27 +77,6 @@ const CheckFilter: React.FC<CheckFilterProps> = ({ data, selectedTypes, setSelec
       queryKey: ["receiveRequest", { isAssigned: true, tripType: newSelectedTypes }],
     });
   };
-
-  const handleFilterSingleCheck = (
-    id: keyof Omit<FilterCheckboxState, "all">,
-    checked: boolean,
-  ): void => {
-    const newCheckboxes = {
-      ...filterCheckboxes,
-      [id]: checked,
-    };
-
-    const allChecked = Object.keys(newCheckboxes)
-      .filter((key): key is keyof Omit<FilterCheckboxState, "all"> => key !== "all")
-      .every((key) => newCheckboxes[key]);
-
-    setFilterCheckboxes({
-      ...newCheckboxes,
-      all: allChecked,
-    });
-  };
-
-  const mainTabs = [{ id: "type", label: "여행 유형" }];
 
   const typeOptions = [
     { id: "FOOD_TOUR", label: "맛집 탐방형" },

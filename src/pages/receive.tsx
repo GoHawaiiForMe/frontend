@@ -1,18 +1,17 @@
 import Image from "next/image";
-import CustomerInput from "@/components/Receive/CustomerInput";
 import CheckFilter from "../components/Receive/CheckFilter";
 import FastDropdown from "@/components/Receive/FastDropdown";
 import RequestDetails from "@/components/Receive/RequestDetails";
-import writing from "@public/assets/icon_writing.png";
 import mobilefilter from "@public/assets/icon_filterbutton.png";
 import ModalFilter from "@/components/Receive/ModalFilter";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import Quotation from "@/components/Receive/Quotation";
 import ReceiveModalLayout from "@/components/Receive/ReceiveModalLayout";
 import Reject from "@/components/Receive/Reject";
 import SearchBar from "@/components/Common/SearchBar";
-import { useQuery } from "@tanstack/react-query";
-import ReceiveRequest, { PlanResponse } from "@/services/RequestService";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import ReceiveRequest from "@/services/RequestService";
+import { useInView } from "react-intersection-observer";
 
 export default function Receive() {
   const [filterIsOpen, setFilterIsOpen] = useState<boolean>(false);
@@ -24,19 +23,39 @@ export default function Receive() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
 
-  const { data, isLoading, error } = useQuery<PlanResponse>({
+  const { ref, inView } = useInView();
+
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: [
       "receiveRequest",
       { isAssigned: true, tripType: selectedTypes, keyword: searchTerm, orderBy },
     ],
-    queryFn: () =>
+    initialPageParam: 1,
+    queryFn: ({ pageParam = 1 }) =>
       ReceiveRequest({
         isAssigned: true,
         tripType: selectedTypes.length > 0 ? selectedTypes : undefined,
         keyword: searchTerm || undefined,
         orderBy,
+        page: pageParam,
+        pageSize: 5,
       }),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.list.length === 5 ? allPages.length + 1 : undefined;
+    },
   });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, hasNextPage]);
+
+  // 전체 아이템 수를 계산
+  const totalCount = data?.pages[0]?.totalCount || 0;
+
+  // 모든 페이지의 리스트를 하나로 합치기
+  const allItems = data?.pages.flatMap((page) => page.list) || [];
 
   const handleSearch = (value: string) => {
     setSearchValue(value);
@@ -49,8 +68,6 @@ export default function Receive() {
       setSearchTerm("");
     }
   };
-
-  console.log("데이터", data);
 
   const handleSendQuotation = () => {
     setQuotationIsOpen(true);
@@ -66,15 +83,11 @@ export default function Receive() {
         <p className="text-4 py-8 font-semibold">받은 요청</p>
       </div>
       <div className="flex gap-[107px]">
-        <CheckFilter
-          data={data}
-          selectedTypes={selectedTypes}
-          setSelectedTypes={setSelectedTypes}
-        />
+        <CheckFilter data={data?.pages[0]} setSelectedTypes={setSelectedTypes} />
         <div className="w-full">
           <SearchBar value={searchValue} onChange={handleSearchChange} onSearch={handleSearch} />
           <div className="mb-8 mt-4 flex w-[955px] items-center justify-between mobile:mx-[auto] mobile:w-[327px] tablet:mx-[auto] tablet:w-[600px]">
-            <p>전체 {data?.totalCount || 0} 건</p>
+            <p>전체 {totalCount} 건</p>
             <div className="flex items-center gap-[4px]">
               <FastDropdown onSort={setOrderBy} currentSort={orderBy} />
               <Image
@@ -92,21 +105,35 @@ export default function Receive() {
               <span>Loading...</span>
             </div>
           ) : (
-            data?.list.map((item: any) => (
-              <RequestDetails
-                key={item.id}
-                data={item}
-                onSendQuotation={handleSendQuotation}
-                onReject={handleReject}
-              />
-            ))
+            <>
+              {allItems.map(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (item: any, index: number) => (
+                  <RequestDetails
+                    key={`${item.id}-${index}`}
+                    data={item}
+                    onSendQuotation={handleSendQuotation}
+                    onReject={handleReject}
+                  />
+                ),
+              )}
+
+              {/* 무한 스크롤 트리거 */}
+              <div ref={ref} className="h-10">
+                {isFetchingNextPage && (
+                  <div className="flex items-center justify-center py-4">
+                    <span>Loading more...</span>
+                  </div>
+                )}
+              </div>
+            </>
           )}
         </div>
       </div>
       {filterIsOpen && (
         <ModalFilter
           closeModal={() => setFilterIsOpen(false)}
-          data={data}
+          data={data?.pages[0]}
           selectedTypes={selectedTypes}
           setSelectedTypes={setSelectedTypes}
         />

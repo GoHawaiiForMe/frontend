@@ -1,6 +1,4 @@
 import Image from "next/image";
-import iconBox from "@public/assets/icon_boximg.png";
-import iconDocument from "@public/assets/icon_document.png";
 import writing from "@public/assets/icon_writing.png";
 import Label from "../Common/label";
 import { useQuery } from "@tanstack/react-query";
@@ -9,30 +7,24 @@ import { formatRelativeTime, formatToDetailedDate } from "@/utils/formatDate";
 import { convertRegionToKorean } from "@/utils/formatRegion";
 
 interface RequestDetailsProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
   onSendQuotation: () => void;
   onReject: () => void;
 }
 
 export default function RequestDetails({ data, onSendQuotation, onReject }: RequestDetailsProps) {
-  const {
-    data: userInfo,
-    isLoading,
-    error,
-  } = useQuery<UserInfo>({
+  const { data: userInfo } = useQuery<UserInfo>({
     queryKey: ["userprofile"],
     queryFn: userService.getUserInfo,
   });
-
 
   const writeTime = formatRelativeTime(data.updatedAt);
   const tripDate = formatToDetailedDate(data.tripDate);
   const region = convertRegionToKorean(data.serviceArea);
 
   const specifyMaker = userInfo?.id === data.assignees[0]?.id ? <Label type="REQUEST" /> : "";
-  
-  
- 
+
   return (
     <div className="mb-12 w-[955px] rounded-[16px] border border-color-line-100 px-4 pb-[12px] pt-[20px] shadow-md mobile:mx-[auto] mobile:mb-6 mobile:w-[328px] mobile:px-[14px] mobile:py-[16px] tablet:mx-[auto] tablet:mb-8 tablet:w-[600px]">
       <div className="flex flex-col">

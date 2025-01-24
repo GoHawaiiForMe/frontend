@@ -4,7 +4,6 @@ import Image from "next/image";
 import profileImgDefault from "@public/assets/icon_default_profile.svg";
 import Button from "@/components/Common/Button";
 import ImageModal from "@/components/Common/ImageModal";
-import { useSignUp } from "@/stores/SignUpContext";
 import userService from "@/services/userService";
 import planData from "@/types/planData";
 import Input from "@/components/Common/Input";
@@ -21,8 +20,7 @@ const avatarImages = [
   { key: "DEFAULT_4", src: DEFAULT_4 },
 ];
 
-export default function ProfileEditor() {
-  const { userData, setMakerProfileData } = useSignUp();
+export default function ProfileEditorMaker() {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [isOpenImageModal, setIsOpenImageModal] = useState(false);
@@ -31,8 +29,6 @@ export default function ProfileEditor() {
   const [detailDescription, setDetailDescription] = useState<string>("");
   const [snsAddress, setSnsAddress] = useState<string>("");
 
-  const [profileInfo, setProfileInfo] = useState<any>(null);
-
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
 
@@ -40,7 +36,6 @@ export default function ProfileEditor() {
       const fetchMakerProfile = async () => {
         try {
           const profileData = await userService.getProfileInfo();
-          setProfileInfo(profileData);
 
           if (profileData.image) {
             setProfileImg(profileData.image);
@@ -112,14 +107,14 @@ export default function ProfileEditor() {
     }
   };
 
-  const isButtonDisabled =
-    selectedServices.length === 0 ||
-    selectedLocations.length === 0 ||
-    !profileImg ||
-    !userData ||
-    !description ||
-    !detailDescription ||
-    !snsAddress;
+  // const isButtonDisabled =
+  //   selectedServices.length === 0 ||
+  //   selectedLocations.length === 0 ||
+  //   !profileImg ||
+  //   !_userData ||
+  //   !description ||
+  //   !detailDescription ||
+  //   !snsAddress;
 
   return (
     <div className="mb-20 flex w-full justify-center">

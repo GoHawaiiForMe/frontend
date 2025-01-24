@@ -1,5 +1,4 @@
 import { api } from "./api";
-import { AxiosResponse } from "axios";
 
 // 사용자 기본 정보 타입
 interface User {
@@ -70,6 +69,8 @@ interface RequestParams {
   tripType?: string[];
   keyword?: string;
   orderBy?: OrderBy;
+  page?: number;
+  pageSize?: number;
 }
 
 const ReceiveRequest = async ({
@@ -77,6 +78,8 @@ const ReceiveRequest = async ({
   tripType,
   keyword,
   orderBy,
+  page = 1,
+  pageSize = 5,
 }: RequestParams = {}): Promise<PlanResponse> => {
   try {
     console.log("받은 요청 조회 시작");
@@ -102,12 +105,18 @@ const ReceiveRequest = async ({
       params.push(`orderBy=${orderBy}`);
     }
 
-    queryString = params.length > 0 ? `?${params.join("&")}` : "";
-    const response = await api.get<PlanResponse, {}>(`/plans/maker${queryString}`);
+    params.push(`page=${page}`);
+    params.push(`pageSize=${pageSize}`);
 
+    queryString = params.length > 0 ? `?${params.join("&")}` : "";
+    console.log("쿼리스트링", queryString);
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    const response = await api.get<PlanResponse, {}>(`/plans/maker${queryString}`);
+    console.log("쿼리스트링", queryString);
     console.log("받은 요청 조회 완료", response);
 
     if (!response) {
+      console.log("쿼리스트링", queryString);
       console.warn("데이터가 없습니다. 빈 데이터를 반환합니다.");
       return { totalCount: 0, groupByCount: [], list: [] };
     }

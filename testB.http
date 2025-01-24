@@ -39,6 +39,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjNDU3N
 
 ### 받은요청
 
-GET https://goforme.duckdns.org/plans/maker?isAssigned=true&keyword=플랜
+GET https://goforme.duckdns.org/plans/maker?isAssigned=true
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMzJkN2JkNC0xMTZjLTQ2N2ItOTM1Mi1hMTRiMGQ0OTRlZjkiLCJyb2xlIjoiTUFLRVIiLCJpYXQiOjE3Mzc2MDk1ODcsImV4cCI6MTczNzY5NTk4N30.htLpRS0C7zjN64RR8Te4FV-klYWZw4DSodUtbIQTQ6c
 
