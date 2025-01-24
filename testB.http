@@ -1,0 +1,44 @@
+### Maker회원가입 요청 테스트
+
+POST http://goforme.duckdns.org/user/signup
+Content-Type: application/json
+
+{
+  "user": {
+    "role": "MAKER",
+    "nickName": "testUser2",
+    "email": "testuser2@example.com",
+    "password": "password123",
+    "phoneNumber": "01012345678"
+  },
+ "profile": {
+		"image": "DEFAULT_1",
+    "serviceArea": ["SEOUL"],
+    "serviceTypes": ["FOOD_TOUR"],
+    "gallery": "sns url",
+    "description": "한줄 소개",
+    "detailDescription": "더 긴 소개 내용"
+	}
+  }
+
+###
+### 로그인 요청 테스트
+
+POST https://goforme.duckdns.org/user/login
+Content-Type: application/json
+
+{
+  "email": "testuser2@example.com",
+  "password": "password123"
+}
+
+
+### 프로필 조회
+GET http://goforme.duckdns.org/user/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjNDU3NGRjYy0wYmJkLTQ1NTktOTQ3ZS0zZjY2ZTExNDcyNGUiLCJyb2xlIjoiTUFLRVIiLCJpYXQiOjE3MzczNzg5MzQsImV4cCI6MTczNzQ2NTMzNH0.bCgTHVdLxr8nou4qMJ082lu-n8NEOvOyBpzszRKbWL4
+
+### 받은요청
+
+GET https://goforme.duckdns.org/plans/maker?isAssigned=true
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMzJkN2JkNC0xMTZjLTQ2N2ItOTM1Mi1hMTRiMGQ0OTRlZjkiLCJyb2xlIjoiTUFLRVIiLCJpYXQiOjE3Mzc2MDk1ODcsImV4cCI6MTczNzY5NTk4N30.htLpRS0C7zjN64RR8Te4FV-klYWZw4DSodUtbIQTQ6c
+

@@ -1,5 +1,5 @@
 import ProfileMaker from "@/features/ProfileMaker";
 
-export default function Test() {
+export default function MakerProfile() {
   return <div><ProfileMaker/></div>;
 }
