@@ -4,7 +4,7 @@ import DreamerFilter from '../components/Common/DreamerFilter';
 import DropdownSort from "@/components/Common/DropdownSort";
 import CardFindMaker from "@/components/Common/CardFindMaker";
 
-export default function findMaker() {
+export default function FindingMaker() {
   return (
     <>
       <Head>
