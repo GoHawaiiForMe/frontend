@@ -6,6 +6,12 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
+//상위 컴포넌트에서 props로 currentPage, totalPages, onPageChange를 받아와서 사용
+//currentPage: 현재 페이지
+//totalPages: 총 페이지 수
+//onPageChange: 페이지 변경 함수
+//자세한 props 설명은 상위 컴포넌트(profile/maker/mypage/[id]페이지 컴포넌트)에서 작성
+
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
   const renderPageNumbers = () => {
     const pages = [];

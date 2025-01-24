@@ -2,23 +2,47 @@ import Image from "next/image";
 import { useState } from "react";
 import arrowDown from "@public/assets/icon_arrowdown.png";
 
-export default function FastDropdown() {
+interface FastDropdownProps {
+  onSort: (orderBy: "RECENT" | "SCHEDULE_FIRST") => void;
+  currentSort: "RECENT" | "SCHEDULE_FIRST";
+}
+
+export default function FastDropdown({ onSort, currentSort }: FastDropdownProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const getSortText = (sort: "RECENT" | "SCHEDULE_FIRST") => {
+    return sort === "RECENT" ? "최근 요청순" : "일정 빠른순";
+  };
+
+  const handleSort = (orderBy: "RECENT" | "SCHEDULE_FIRST") => {
+    onSort(orderBy);
+    setIsOpen(false);
+  };
 
   return (
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-[12px] px-4 py-2 rounded-lg"
+        className="flex items-center gap-[12px] rounded-lg px-4 py-2"
       >
-        일정 빠른순
+        {getSortText(currentSort)}
         <Image src={arrowDown} alt="dropdown" width={20} height={20} />
       </button>
 
       {isOpen && (
-        <ul className="absolute mt-2 w-full bg-white border border-gray-300 rounded-lg shadow">
-          <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">일정 빠른순</li>
-          <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">최근 요청순</li>
+        <ul className="absolute mt-2 w-full rounded-lg border border-gray-300 bg-white shadow">
+          <li
+            className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+            onClick={() => handleSort("SCHEDULE_FIRST")}
+          >
+            일정 빠른순
+          </li>
+          <li
+            className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+            onClick={() => handleSort("RECENT")}
+          >
+            최근 요청순
+          </li>
         </ul>
       )}
     </div>

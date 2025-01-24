@@ -46,8 +46,8 @@ export default function ProfileEditDreamer() {
   const router = useRouter();
   const { setLogin } = useAuthStore();
 
-  const handleImageSelect = (imageKey: string) => {
-    setProfileImg(imageKey);
+  const handleImageSelect = (imageSrc: string) => {
+    setProfileImg(imageSrc);
     setIsOpenImageModal(false);
   };
 

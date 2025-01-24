@@ -1,15 +1,13 @@
 import Image from "next/image";
-import writing from "@public/assets/icon_writing.png";
-import writing_gray from "@public/assets/icon_writing_gray.png";
 import profileImg from "@public/assets/icon_maskgroup.png";
 import star_sm from "@public/assets/icon_star.svg";
 import StarRating from "@/components/Receive/StarRating";
 import ReviewGraph from "@/components/Receive/ReviewGraph";
 import { useState } from "react";
 import Pagination from "@/components/Common/Pagination";
+import Link from "next/link";
 
-
-export default function MyPage() {
+export default function MyPage({ userId }: { userId: string }) {
   const reviewStats = {
     1: 0,
     2: 0,
@@ -18,7 +16,7 @@ export default function MyPage() {
     5: 170,
   };
 
-    // 현재 페이지를 저장할 state (처음에는 1페이지)
+  // 현재 페이지를 저장할 state (처음에는 1페이지)
   const [currentPage, setCurrentPage] = useState(1);
 
   // 한 페이지에 보여줄 리뷰 수
@@ -26,20 +24,16 @@ export default function MyPage() {
 
   // 전체 리뷰 수
   const totalItems = 63; // 전체 리뷰 수
-  
-  // 전체 페이지 수
-    // 63 ÷ 5 = 12.6 → 올림해서 13페이지가 됨
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+  // 전체 페이지 수
+  // 63 ÷ 5 = 12.6 → 올림해서 13페이지가 됨
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   // 페이지 번호 클릭했을 때 실행될 함수
   const handlePageChange = (page: number) => {
     setCurrentPage(page); // 클릭한 페이지로 현재 페이지 변경
     // 여기서 페이지 변경에 따른 데이터 fetch 로직 구현
   };
-
-
-  const totalReviews = Object.values(reviewStats).reduce((acc, curr) => acc + curr, 0);
 
   return (
     <>
@@ -104,12 +98,14 @@ export default function MyPage() {
               </p>
               {/* <Image src={writing_gray} alt="기본정보 수정" width={24} height={24} /> */}
             </button>
-            <button className="flex items-center gap-[6px] rounded-[16px] bg-color-blue-300 px-[64px] py-4 mobile:px-[100px]">
-              <p className="text-xl font-semibold text-white mobile-tablet:whitespace-nowrap">
-                내 프로필 수정
-              </p>
-              {/* <Image src={writing} alt="프로필수정" width={24} height={24} /> */}
-            </button>
+            <Link href={`/profile/maker/edit/${userId}`}>
+              <button className="flex items-center gap-[6px] rounded-[16px] bg-color-blue-300 px-[64px] py-4 mobile:px-[100px]">
+                <p className="text-xl font-semibold text-white mobile-tablet:whitespace-nowrap">
+                  내 프로필 수정
+                </p>
+                {/* <Image src={writing} alt="프로필수정" width={24} height={24} /> */}
+              </button>
+            </Link>
           </div>
         </div>
       </div>
