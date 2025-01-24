@@ -2,7 +2,7 @@ import Image from "next/image";
 import like from "@public/assets/icon_like_pink.svg";
 import star from "@public/assets/icon_star_md.svg";
 import default_img from "@public/assets/icon_default_profile.svg";
-import Label from "./label";
+import Label from "./Label";
 import link from "@public/assets/icon_link.svg";
 import Link from "next/link";
 import DEFAULT_1 from "@public/assets/img_avatar1.svg";
@@ -25,7 +25,20 @@ export interface FollowedCardProps {
   totalReviews: number;
   totalFollows: number;
   totalConfirms: number;
+  serviceTypes: string[];
 }
+
+const validLabelTypes = [
+  "SHOPPING",
+  "FOOD_TOUR",
+  "RELAXATION",
+  "CULTURE",
+  "ACTIVITY",
+  "FESTIVAL",
+  "REQUEST",
+  "PENDING",
+  "CONFIRMED",
+] as const;
 
 export default function FollowedCard({
   image,
@@ -35,6 +48,7 @@ export default function FollowedCard({
   totalReviews,
   totalFollows,
   totalConfirms,
+  serviceTypes,
 }: FollowedCardProps) {
   const avatarImage = avatarImages.find((avatar) => avatar.key === image);
 
@@ -42,8 +56,9 @@ export default function FollowedCard({
     <>
       <div className="flex w-full flex-col gap-5 rounded-2xl border border-color-line-100 p-5 shadow-md card:gap-0">
         <div className="flex flex-row gap-2">
-          <Label type="SHOPPING" />
-          <Label type="SHOPPING" />
+          {serviceTypes.map((serviceType, index) => (
+            <Label key={index} type={serviceType as (typeof validLabelTypes)[number]} />
+          ))}
         </div>
         <div className="flex rounded-md border border-color-line-100 p-4">
           <div className="mr-5 flex min-h-20 min-w-20 items-center">

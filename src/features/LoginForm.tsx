@@ -81,7 +81,7 @@ export default function LoginForm() {
   return (
     <div className="flex justify-center">
       <div className="flex flex-col items-center gap-8 pc:w-[640px] mobile-tablet:w-[372px]">
-        <Image src={logo} alt="로고" />
+        <Image src={logo} width={400} height={400} alt="로고" />
         <form className="relative flex w-full flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-2">
             <Input

@@ -1,103 +1,114 @@
 import Image from "next/image";
 import closeIcon from "@public/assets/icon_X.svg";
 import notificationService, { NotificationProps } from "@/services/notificationService";
-import { useEffect, useState } from "react";
 import { formatRelativeTime } from "@/utils/formatDate";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
-export const commonTextStyle = "text-color-blue-300";
-export const textStylesKeywords = ["확정", "플랜", "견적"];
+const getNotification = () => {
+  const notificationData = notificationService.getNotification();
+  return notificationData;
+};
 
-//서버 코드 변경 후 다시 작업할 예정
+const readNotification = (notificationId: string) => {
+  return notificationService.readNotification(notificationId);
+};
+
+const tripTypeMap: Record<string, string> = {
+  FOOD_TOUR: "맛집 탐방형",
+  SHOPPING: "기념품/쇼핑형",
+  RELAXATION: "휴양형",
+  CULTURE: "문화/역사탐방형",
+  ACTIVITY: "액티비티/탐험형",
+  FESTIVAL: "축제참여형",
+};
+
+const getTripType = (tripType: string): string => {
+  return tripTypeMap[tripType] || "알 수 없는 여행 타입";
+};
+
+const getNotificationMessage = (event: string, payload: any) => {
+  switch (event) {
+    case "ARRIVE_REQUEST":
+      return (
+        <>
+          {payload.nickName} Dreamer가
+          <span className="text-color-red-200"> {getTripType(payload.tripType)}</span>
+          <span className="text-color-blue-300"> 지정견적</span>을 요청했어요.
+        </>
+      );
+    case "CONFIRM_REQUEST":
+      return (
+        <>
+          {payload.nickName} Dreamer의 견적이 <span className="text-color-blue-300">확정</span>
+          되었어요.
+        </>
+      );
+    case "SCHEDULE":
+      return (
+        <>
+          내일은 <span className="text-color-red-200">{payload.planTitle}</span>
+          <span className="text-color-blue-300"> 여행 예정일</span>
+          이에요.
+        </>
+      );
+    case "ARRIVE_QUOTE":
+      return (
+        <>
+          {payload.nickName} Maker의
+          <span className="text-color-red-200"> {getTripType(payload.tripType)}</span>
+          <span className="text-color-blue-300"> 견적</span>이 도착했어요.
+        </>
+      );
+    case "CONFIRM_QUOTE":
+      return (
+        <>
+          {payload.nickName} Maker의 견적이 <span className="text-color-blue-300">확정</span>
+          되었어요.
+        </>
+      );
+
+    default:
+      return <>알 수 없는 이벤트입니다.</>;
+  }
+};
+
 export default function Notification({ closeModal }: { closeModal: () => void }) {
-  const [notifications, setNotifications] = useState<NotificationProps[]>([]);
+  const { data: initialNotificationData = [], isLoading } = useQuery<NotificationProps[]>({
+    queryKey: ["notificationData"],
+    queryFn: getNotification,
+  });
 
-  // const handleRead = async (notificationId: string) => {
-  // try {
-  // const updatedNotification = await notificationService.readNotification(notificationId);
+  const [notificationData, setNotificationData] =
+    useState<NotificationProps[]>(initialNotificationData);
 
-  // setNotifications((prevNotifications) =>
-  // prevNotifications.map((notification) =>
-  // notification.id === updatedNotification.id
-  // ? { ...notification, isRead: true }
-  // : notification
-  // )
-  // );
-  // }
-  // catch (error) {
-  // console.error(error);
-  // 
-  // }
-  // }
-  // 
-  // const highlightKeywords = (content: string) => {
-  // const regex = new RegExp(`(${textStylesKeywords.join("|")})`, "g");
-  // 
-  // return content.split(regex).map((part, index) => {
-  // if (textStylesKeywords.includes(part)) {
-  // return (
-  // <span key={index} className={commonTextStyle}>
-  {/* {part} */ }
-  {/* </span> */ }
-  // );
-  // }
-  // return <span key={index}>{part}</span>;
-  // });
-  // };
-  // 
-  // const highlightDynamicText = (content: string) => {
-  // const parts = content.split(/(알림|중입니다!)/);
-  // 
-  // return parts.map((part, index) => {
-  // if (part === "알림" || part === "중입니다!") {
-  // return <span key={index}>{part}</span>;
-  // }
-  // 나머지 텍스트는 하이라이트 적용
-  // return (
-  // <span key={index} className={commonTextStyle}>
-  {/* {part} */ }
-  {/* </span> */ }
-  // );
-  // });
-  // };
-  // 
-  // const applyHighlights = (content: string) => {
-  // let highlightedText = highlightKeywords(content);
-  // 
-  // highlightedText = highlightedText.reduce((acc: React.ReactElement[], part) => {
-  // if (typeof part === 'string') {
-  // string이라면 하이라이트 적용
-  // acc.push(...highlightDynamicText(part) as React.ReactElement[]); // 배열을 평탄화하여 추가
-  // } else {
-  // acc.push(part); // 이미 React Element라면 그대로 추가
-  // }
-  // return acc;
-  // }, [] as React.ReactElement[]);
-  // 
-  // return highlightedText;
-  // };
+  const patchNotiMutation = useMutation<NotificationProps, any, string>({
+    mutationFn: readNotification,
+    onSuccess: (notification) => {
+      setNotificationData((prev) =>
+        prev.map((n) => (n.id === notification.id ? { ...n, isRead: true } : n)),
+      );
+    },
+    onError: (error: any) => {
+      console.error(error);
+    },
+  });
 
-  // const accessToken = localStorage.getItem("accessToken");
+  const handleRead = async (notificationId: string) => {
+    patchNotiMutation.mutate(notificationId);
+  };
 
-  // if (accessToken) {
-  // const fetchNotifications = async () => {
-  // try {
-  // const data = await notificationService.getNotification();
-  // setNotifications(Array.isArray(data) ? data : []);
-  // console.log(data);
-  // } catch (error) {
-  // console.error("알림 데이터를 가져오는데 실패했습니다.", error);
-  // setNotifications([]);
-  // }
-  // };
-  // }
-
-
+  useEffect(() => {
+    if (!isLoading && initialNotificationData.length > 0) {
+      setNotificationData(initialNotificationData);
+    }
+  }, [isLoading, initialNotificationData]);
 
   return (
     <>
-      <div className="fixed top-20 right-16 z-[9999] pc:right-64 tablet:right-20">
-        <div className=" bg-color-gray-50 rounded-2xl py-3 w-[300px] shadow-lg text-2xl semibold border pc:w-[360px]">
-          <div className="flex justify-between items-center pl-8 pr-5">
+      <div className="fixed right-16 top-20 z-[9999] tablet:right-20 pc:right-64">
+        <div className="semibold w-[300px] rounded-2xl border bg-color-gray-50 py-3 text-2xl shadow-lg pc:w-[360px]">
+          <div className="flex items-center justify-between pl-8 pr-5">
             <span className="text-2lg">알림</span>
             <Image
               src={closeIcon}
@@ -108,31 +119,33 @@ export default function Notification({ closeModal }: { closeModal: () => void })
               className="cursor-pointer"
             />
           </div>
-          <div>
-            {notifications.length > 0 ? (
-              <ul >
-                {notifications.map((notification, index) => (
+          {isLoading ? (
+            <p className="mb-8 px-5 text-lg">로딩 중...</p>
+          ) : notificationData.length === 0 ? (
+            <p className="mb-8 px-5 text-lg">새로운 알림이 없습니다.</p>
+          ) : (
+            <ul>
+              {notificationData.map((notification, index) => (
+                <div key={notification.id}>
+                  <li
+                    onClick={() => handleRead(notification.id)}
+                    className={`cursor-pointer pt-4 ${notification.isRead ? "bg-[#f1f1f1]" : "bg-color-gray-50"}`}
+                  >
+                    <p className="px-5 text-lg">
+                      {getNotificationMessage(notification.event, notification.payload)}
+                    </p>
+                    <p className="px-5 pb-4 text-md text-color-gray-300">
+                      {formatRelativeTime(notification.createdAt)}
+                    </p>
 
-                  <div key={notification.id}>
-                    <li className={`pt-4 cursor-pointer ${notification.isRead ? "bg-[#f1f1f1]" : "bg-color-gray-50"}`}>
-                      <p className="text-lg px-5">
-                        {/* {applyHighlights(notification.content)} */}
-                      </p>
-                      <p className="text-md text-color-gray-300 px-5 pb-4">{formatRelativeTime(notification.createdAt)}</p>
-
-                      {index < notifications.length - 1 && (
-                        <div className="h-0.5 bg-color-line-100"></div>
-                      )}
-                    </li>
-                  </div>
-
-                ))}
-              </ul>
-            ) : (
-              <p className="text-lg mb-8 px-5">새로운 알림이 없습니다.</p>
-            )}
-
-          </div>
+                    {index < notificationData.length - 1 && (
+                      <div className="h-0.5 bg-color-line-100"></div>
+                    )}
+                  </li>
+                </div>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </>

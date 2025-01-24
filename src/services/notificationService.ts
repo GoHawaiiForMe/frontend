@@ -2,10 +2,11 @@ import { api } from "./api";
 
 export interface NotificationProps {
   id: string;
-  content: string;
+  payload: string;
   isRead: boolean;
   createdAt: string;
   updatedAt: string;
+  event: string;
 }
 
 const notificationService = {
