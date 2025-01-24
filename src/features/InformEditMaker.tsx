@@ -7,9 +7,17 @@ import { useEffect, useState } from "react";
 import userService from "@/services/userService";
 import { useRouter } from "next/router";
 import useAuthStore from "@/stores/useAuthStore";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
+const fetchUserInfo = async () => {
+  const userData = await userService.getUserInfo();
+  return userData;
+};
+
+const updateUserInfo = async (UpdateData: any): Promise<void> => {
+  return userService.patchBasicInfo(UpdateData);
+};
 export default function InformEditMaker() {
-  const [userInfo, setUserInfo] = useState<any>(null);
   const {
     register,
     handleSubmit,
@@ -24,11 +32,42 @@ export default function InformEditMaker() {
   const router = useRouter();
   const { setLogin } = useAuthStore();
 
+  const {
+    data: userInfo,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: fetchUserInfo,
+  });
+
+  const mutation = useMutation<void, Error, any>({
+    mutationFn: updateUserInfo,
+    onSuccess: () => {
+      alert("프로필이 성공적으로 수정되었습니다!");
+      refetch();
+    },
+    onError: (error: any) => {
+      if (error.response?.status === 401) {
+        alert("기존 비밀번호를 확인해주세요.");
+      } else {
+        console.error("메이커 프로필 수정 실패", error);
+        alert("수정 중 문제가 발생했습니다. 다시 시도해주세요.");
+      }
+    },
+  });
+
   const handleCancel = () => {
-    router.push("/plan_request"); //임시 url
+    router.push("/plan-request"); //임시 url
   };
 
   const onSubmit = async (data: EditMakerData) => {
+    if (isLoading || isError) {
+      alert("사용자 정보를 불러오는 중입니다.");
+      return;
+    }
+
     const UpdateData = {
       nickName: userInfo?.nickName !== data.nickName ? data.nickName : userInfo?.nickName,
       phoneNumber:
@@ -36,22 +75,10 @@ export default function InformEditMaker() {
       password: data.password ? data.password : undefined,
       newPassword: data.newPassword || undefined,
     };
-    console.log(UpdateData);
-    try {
-      await userService.patchBasicInfo(UpdateData);
-      alert("프로필이 성공적으로 수정되었습니다!");
-      if (userInfo?.nickName !== data.nickName) {
-        setLogin(data.nickName, userInfo?.role || "guest", userInfo?.coconut || 0);
-      }
-      //임시 url
-      // router.push("/plan_request")
-    } catch (error: any) {
-      if (error.response?.status === 401) {
-        alert("기존 비밀번호를 확인해주세요.");
-      } else {
-        console.error("메이커 프로필 수정 실패", error);
-        alert("수정 중 문제가 발생했습니다. 다시 시도해주세요.");
-      }
+    mutation.mutate(UpdateData);
+
+    if (userInfo?.nickName !== data.nickName) {
+      setLogin(data.nickName, userInfo?.role || "guest", userInfo?.coconut || 0);
     }
   };
 
@@ -75,25 +102,12 @@ export default function InformEditMaker() {
   );
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-
-    if (accessToken) {
-      const fetchUserInfo = async () => {
-        try {
-          const userData = await userService.getUserInfo();
-
-          setUserInfo(userData);
-
-          setValue("nickName", userData.nickName);
-          setValue("email", userData.email);
-          setValue("phoneNumber", userData.phoneNumber);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      fetchUserInfo();
+    if (userInfo) {
+      setValue("nickName", userInfo.nickName);
+      setValue("email", userInfo.email);
+      setValue("phoneNumber", userInfo.phoneNumber);
     }
-  }, []);
+  }, [userInfo, setValue]);
 
   return (
     <>

@@ -89,10 +89,9 @@ const userService = {
     phoneNumber?: string;
     password?: string;
     newPassword?: string;
-  }) => {
+  }): Promise<void> => {
     try {
-      const response = await api.patch("/user/update", payload);
-      return response;
+      await api.patch("/user/update", payload);
     } catch (error) {
       console.error("기본 정보 수정 실패", error);
       throw error;

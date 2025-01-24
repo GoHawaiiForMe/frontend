@@ -8,6 +8,7 @@ import Button from "@/components/Common/Button";
 import Calendar from "@/components/Common/Calandar";
 import planData from "@/types/planData";
 import planService from "@/services/planService";
+import { useMutation } from "@tanstack/react-query";
 
 export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
   const [textValue, setTextValue] = useState<string>("");
@@ -29,15 +30,11 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
   };
 
   const handleLocationSelection = (type: string) => {
-    setSelectedLocations((prev) =>
-      prev[0] === type ? [] : [type]
-    );
+    setSelectedLocations((prev) => (prev[0] === type ? [] : [type]));
   };
 
   const handleServiceSelection = (type: string) => {
-    setSelectedServices((prev) =>
-      prev[0] === type ? [] : [type]
-    );
+    setSelectedServices((prev) => (prev[0] === type ? [] : [type]));
   };
 
   const handleOpenAddress = () => {
@@ -85,6 +82,15 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
   };
+  const planRequestMutation = useMutation({
+    mutationFn: (data: any) => planService.planRequest(data),
+    onSuccess: () => {
+      onConfirm();
+    },
+    onError: (error: any) => {
+      console.error("여행 요청 실패", error);
+    },
+  });
 
   const handlePlanConfirm = () => {
     const planData = {
@@ -96,17 +102,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
       address: address + ", " + detailAddress,
     };
 
-    handlePlanRequest(planData);
-
-    onConfirm();
-  };
-
-  const handlePlanRequest = async (data: any) => {
-    try {
-      await planService.planRequest(data);
-    } catch (error) {
-      console.error("여행 요청 실패", error);
-    }
+    planRequestMutation.mutate(planData);
   };
 
   useEffect(() => {
@@ -116,11 +112,11 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
   return (
     <>
       <div className="mb-8 w-[312px]">
-        <div className="flex flex-col gap-4 justify-center w-screen text-2xl semibold h-24 bg-color-gray-50 pc:px-[260px] pc:-mx-[260px] tablet:-mx-[72px] tablet:px-[72px] mobile:-mx-[24px] mobile:px-[24px]">
+        <div className="semibold flex h-24 w-screen flex-col justify-center gap-4 bg-color-gray-50 text-2xl mobile:-mx-[24px] mobile:px-[24px] tablet:-mx-[72px] tablet:px-[72px] pc:-mx-[260px] pc:px-[260px]">
           플랜요청
-          <div className="relative w-full h-2 bg-gray-300 rounded-full">
+          <div className="relative h-2 w-full rounded-full bg-gray-300">
             <div
-              className="absolute top-0 left-0 h-full bg-blue-500 rounded-full"
+              className="absolute left-0 top-0 h-full rounded-full bg-blue-500"
               style={{ width: `${progress}%`, transition: "width 0.5s ease-in-out" }}
             ></div>
           </div>
@@ -133,12 +129,14 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
       {/* step 1 */}
       {!showStep1Summary && (
         <div>
-
           <Bubble type="right_select">
             <p className="mb-4">한 지역만 선택 가능합니다!</p>
             <Selector
               category="locations"
-              selectedTypes={selectedLocations.map(location => planData.locations.find(loc => loc.mapping === location)?.name || location)}
+              selectedTypes={selectedLocations.map(
+                (location) =>
+                  planData.locations.find((loc) => loc.mapping === location)?.name || location,
+              )}
               toggleSelection={handleLocationSelection}
             />
 
@@ -156,11 +154,15 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
           <Bubble type="right">
             <div>
               <p>[여행할 지역]</p>
-              <div>{selectedLocations.map(loc => planData.locations.find(l => l.mapping === loc)?.name).join(", ")}</div>
+              <div>
+                {selectedLocations
+                  .map((loc) => planData.locations.find((l) => l.mapping === loc)?.name)
+                  .join(", ")}
+              </div>
             </div>
           </Bubble>
           <p
-            className="underline flex justify-end cursor-pointer -mt-7 mb-8"
+            className="-mt-7 mb-8 flex cursor-pointer justify-end underline"
             onClick={() => setShowStep1Summary(false)}
           >
             수정하기
@@ -192,13 +194,16 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
 
               <Selector
                 category="services"
-                selectedTypes={selectedServices.map(service => planData.services.find(ser => ser.mapping === service)?.name || service)}
+                selectedTypes={selectedServices.map(
+                  (service) =>
+                    planData.services.find((ser) => ser.mapping === service)?.name || service,
+                )}
                 toggleSelection={handleServiceSelection}
               />
               {selectedServices.includes("SHOPPING") && (
                 <div className="mt-4">
                   <button
-                    className="border px-4 flex flex-start w-full h-16 items-center border-color-blue-300 text-color-blue-300 bold rounded-2xl"
+                    className="flex-start bold flex h-16 w-full items-center rounded-2xl border border-color-blue-300 px-4 text-color-blue-300"
                     onClick={handleOpenAddress}
                   >
                     {address ? address : "물건을 받을 도착지 선택하기"}
@@ -217,7 +222,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
                     placeholder="상세 주소를 입력하세요"
                     value={detailAddress}
                     onChange={(e) => setDetailAddress(e.target.value)}
-                    className=" text-color-blue-300"
+                    className="text-color-blue-300"
                   />
                 </div>
               )}
@@ -243,7 +248,12 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
               <div>{textareaValue}</div>
             </div>
             <div>
-              <p>[선택된 서비스]</p> <div>{selectedServices.map(service => planData.services.find(ser => ser.mapping === service)?.name).join(", ")}</div>
+              <p>[선택된 서비스]</p>{" "}
+              <div>
+                {selectedServices
+                  .map((service) => planData.services.find((ser) => ser.mapping === service)?.name)
+                  .join(", ")}
+              </div>
             </div>
             {selectedServices.includes("SHOPPING") && (
               <>
@@ -258,7 +268,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
           </Bubble>
 
           <p
-            className="underline flex justify-end cursor-pointer -mt-7 mb-8"
+            className="-mt-7 mb-8 flex cursor-pointer justify-end underline"
             onClick={() => setShowStep2Summary(false)}
           >
             수정하기
@@ -294,7 +304,7 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
             </div>
           </Bubble>
           <p
-            className="underline flex justify-end cursor-pointer -mt-7 mb-8"
+            className="-mt-7 mb-8 flex cursor-pointer justify-end underline"
             onClick={() => setShowStep3Summary(false)}
           >
             수정하기
