@@ -3,7 +3,7 @@ import closeIcon from "@public/assets/icon_X.svg";
 import notificationService, { NotificationProps } from "@/services/notificationService";
 import { formatRelativeTime } from "@/utils/formatDate";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const getNotification = () => {
   const notificationData = notificationService.getNotification();
@@ -74,12 +74,13 @@ const getNotificationMessage = (event: string, payload: any) => {
 };
 
 export default function Notification({ closeModal }: { closeModal: () => void }) {
-  const { data: initialNotificationData = [] } = useQuery<NotificationProps[]>({
+  const { data: initialNotificationData = [], isLoading } = useQuery<NotificationProps[]>({
     queryKey: ["notificationData"],
     queryFn: getNotification,
   });
 
-  const [notificationData, setNotificationData] = useState(initialNotificationData);
+  const [notificationData, setNotificationData] =
+    useState<NotificationProps[]>(initialNotificationData);
 
   const patchNotiMutation = useMutation<NotificationProps, any, string>({
     mutationFn: readNotification,
@@ -92,9 +93,16 @@ export default function Notification({ closeModal }: { closeModal: () => void })
       console.error(error);
     },
   });
+
   const handleRead = async (notificationId: string) => {
     patchNotiMutation.mutate(notificationId);
   };
+
+  useEffect(() => {
+    if (!isLoading && initialNotificationData.length > 0) {
+      setNotificationData(initialNotificationData);
+    }
+  }, [isLoading, initialNotificationData]);
 
   return (
     <>
@@ -111,33 +119,33 @@ export default function Notification({ closeModal }: { closeModal: () => void })
               className="cursor-pointer"
             />
           </div>
-          <div>
-            {notificationData.length > 0 ? (
-              <ul>
-                {notificationData.map((notification, index) => (
-                  <div key={notification.id}>
-                    <li
-                      onClick={() => handleRead(notification.id)}
-                      className={`cursor-pointer pt-4 ${notification.isRead ? "bg-[#f1f1f1]" : "bg-color-gray-50"}`}
-                    >
-                      <p className="px-5 text-lg">
-                        {getNotificationMessage(notification.event, notification.payload)}
-                      </p>
-                      <p className="px-5 pb-4 text-md text-color-gray-300">
-                        {formatRelativeTime(notification.createdAt)}
-                      </p>
+          {isLoading ? (
+            <p className="mb-8 px-5 text-lg">로딩 중...</p>
+          ) : notificationData.length === 0 ? (
+            <p className="mb-8 px-5 text-lg">새로운 알림이 없습니다.</p>
+          ) : (
+            <ul>
+              {notificationData.map((notification, index) => (
+                <div key={notification.id}>
+                  <li
+                    onClick={() => handleRead(notification.id)}
+                    className={`cursor-pointer pt-4 ${notification.isRead ? "bg-[#f1f1f1]" : "bg-color-gray-50"}`}
+                  >
+                    <p className="px-5 text-lg">
+                      {getNotificationMessage(notification.event, notification.payload)}
+                    </p>
+                    <p className="px-5 pb-4 text-md text-color-gray-300">
+                      {formatRelativeTime(notification.createdAt)}
+                    </p>
 
-                      {index < notificationData.length - 1 && (
-                        <div className="h-0.5 bg-color-line-100"></div>
-                      )}
-                    </li>
-                  </div>
-                ))}
-              </ul>
-            ) : (
-              <p className="mb-8 px-5 text-lg">새로운 알림이 없습니다.</p>
-            )}
-          </div>
+                    {index < notificationData.length - 1 && (
+                      <div className="h-0.5 bg-color-line-100"></div>
+                    )}
+                  </li>
+                </div>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </>

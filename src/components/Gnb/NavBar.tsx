@@ -14,6 +14,7 @@ import UserMenu from "./UserMenu";
 import userService from "@/services/userService";
 import notificationService, { NotificationProps } from "@/services/notificationService";
 import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
 
 const linkItems = {
   guest: [{ href: "/", label: "Maker 찾기" }],
@@ -26,6 +27,11 @@ const linkItems = {
     { href: "/", label: "받은 요청" },
     { href: "/", label: "내 여행 관리" },
   ],
+};
+
+const getNotification = () => {
+  const notificationData = notificationService.getNotification();
+  return notificationData;
 };
 
 const NavBar = () => {
@@ -76,6 +82,17 @@ const NavBar = () => {
     );
   };
 
+  const { data: notificationData = [] } = useQuery({
+    queryKey: ["hasNotification"],
+    queryFn: getNotification,
+  });
+
+  useEffect(() => {
+    if (notificationData) {
+      setNotifications(notificationData);
+    }
+  }, [notificationData]);
+
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
 
@@ -94,21 +111,7 @@ const NavBar = () => {
     }
   }, [setLogin]);
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        // const data = await notificationService.getNotification();
-        // setNotifications(data);
-      } catch (error) {
-        console.error("알림 데이터를 가져오는데 실패했습니다.", error);
-        setNotifications([]);
-      }
-    };
-
-    fetchNotifications();
-  }, []);
-
-  const hasUnreadNotifications = notifications.some((notification) => !notification.isRead);
+  const hasUnreadNotifications = notificationData.some((notification) => !notification.isRead);
 
   return (
     <div className="flex items-center justify-between border-b-2 border-color-line-100 bg-color-background-100 px-32 py-6 mobile:px-4 tablet:px-5 mobile-tablet:py-3">
