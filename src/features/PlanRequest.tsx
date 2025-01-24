@@ -179,9 +179,13 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
               <div className="mb-4">
                 <Input
                   type="text"
-                  onChange={(e) => setTextValue(e.target.value)}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 25) {
+                      setTextValue(e.target.value);
+                    }
+                  }}
                   value={textValue}
-                  placeholder="제목을 작성해주세요."
+                  placeholder="제목을 작성해주세요. (최대 25자까지)"
                 />
               </div>
               <Input
