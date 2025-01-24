@@ -121,7 +121,7 @@ const NavBar = () => {
       <div className="flex items-center">
         <div className="mr-16 text-2xl font-bold mobile-tablet:mr-0">
           <Link href="/">
-            <Image src={logo} width={100} height={100} alt="임시로고" />
+            <Image src={logo} width={100} alt="임시로고" />
           </Link>
         </div>
 
