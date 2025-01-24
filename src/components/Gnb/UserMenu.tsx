@@ -15,7 +15,7 @@ export default function UserMenu({ userId, closeMenu }: UserMenuProps) {
     const menuItems = {
       DREAMER: [
         { href: userId ? `/profile/dreamer/edit/${userId}` : "", label: "프로필 수정" },
-        { href: "/follow_maker", label: "찜한 Maker" },
+        { href: "/follow-maker", label: "찜한 Maker" },
         { href: "/", label: "여행 리뷰" },
       ],
       MAKER: [{ href: userId ? `/profile/maker/mypage/${userId}` : "", label: "마이페이지" }],
@@ -25,7 +25,9 @@ export default function UserMenu({ userId, closeMenu }: UserMenuProps) {
       <>
         {menuItems[role ? role : "DREAMER"].map((link, index) => (
           <li key={index}>
-            <Link href={link.href} onClick={closeMenu}>{link.label}</Link>
+            <Link href={link.href} onClick={closeMenu}>
+              {link.label}
+            </Link>
           </li>
         ))}
       </>
@@ -33,28 +35,31 @@ export default function UserMenu({ userId, closeMenu }: UserMenuProps) {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken")
+    localStorage.removeItem("accessToken");
 
     setLogout();
-  }
+  };
 
   return (
     <>
-      <div className="fixed flex top-20 right-20 z-[9999] tablet:right-16">
-        <div className=" bg-color-gray-50 rounded-2xl shadow-lg px-2 pt-6 flex flex-col gap-6 w-[248px] border mobile-tablet:w-[152px] ">
-          <div className="flex justify-between items-center px-6 mobile-tablet:pl-2">
-            <span className="text-2lg bold mobile-tablet:text-lg">
+      <div className="fixed right-20 top-20 z-[9999] flex tablet:right-16">
+        <div className="flex w-[248px] flex-col gap-6 rounded-2xl border bg-color-gray-50 px-2 pt-6 shadow-lg mobile-tablet:w-[152px]">
+          <div className="flex items-center justify-between px-6 mobile-tablet:pl-2">
+            <span className="bold text-2lg mobile-tablet:text-lg">
               {nickName}
               {role}
             </span>
           </div>
           <div>
-            <ul className="text-lg flex flex-col gap-6 medium px-6 mobile-tablet:text-md mobile-tablet:pl-2">
+            <ul className="medium flex flex-col gap-6 px-6 text-lg mobile-tablet:pl-2 mobile-tablet:text-md">
               {renderMenus()}
             </ul>
           </div>
           <div className="h-[1px] w-full bg-color-line-100"></div>
-          <div className="flex justify-center text-color-gray-500 pb-4 mobile-tablet:text-xs cursor-pointer" onClick={handleLogout}>
+          <div
+            className="flex cursor-pointer justify-center pb-4 text-color-gray-500 mobile-tablet:text-xs"
+            onClick={handleLogout}
+          >
             로그아웃
           </div>
         </div>

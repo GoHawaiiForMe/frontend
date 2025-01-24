@@ -44,6 +44,7 @@ export default function FollowMaker() {
               totalReviews={item.totalReviews}
               totalFollows={item.totalFollows}
               totalConfirms={item.totalConfirms}
+              serviceTypes={item.serviceTypes}
             />
           ))
         ) : (
