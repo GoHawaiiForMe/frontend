@@ -1,10 +1,10 @@
 // ClipboardCopy.js
 "use client"; // 클라이언트 사이드에서만 실행되도록 설정
 import { useState } from "react";
-import Image from "next/image"; // Image 컴포넌트 임포트
+import Image, { StaticImageData } from "next/image"; // Image 컴포넌트 임포트
 
 interface ClipboardCopyProps {
-  icon: string; // icon의 타입을 string으로 지정
+  icon: StaticImageData; // icon의 타입을 StaticImageData으로 지정
 }
 
 const ClipboardCopy: React.FC<ClipboardCopyProps> = ({ icon }) => {

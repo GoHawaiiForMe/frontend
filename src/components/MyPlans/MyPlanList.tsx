@@ -21,6 +21,24 @@ interface MyPlanListProps {
 
 const MyPlanList = forwardRef<HTMLDivElement, MyPlanListProps>(
   ({ visiblePlans, loadedCount, totalPlans, title }, ref) => {
+    const router = useRouter();
+
+    const handleDetailClick = (planId: number) => {
+      const currentPath = router.pathname;
+      let basePath = "/";
+
+      if (currentPath.includes("ongoing-plan")) {
+        basePath = "/mytrip-manage/ongoing-plan/detail";
+      } else if (currentPath.includes("completed-plan")) {
+        basePath = "/mytrip-manage/completed-plan/detail";
+      } else if (currentPath.includes("expired-plan")) {
+        basePath = "/mytrip-manage/expired-plan/detail";
+      }
+      const targetPath = `${basePath}/${planId}`;
+      console.log("Navigating to:", targetPath); // 경로 디버깅
+      router.push(targetPath);
+    };
+
     return (
       <div className="my-12 flex flex-col rounded-2xl border-color-gray-300 bg-color-gray-50 shadow">
         <div className="semibold px-8 pt-8 text-2xl">{`${title} 플랜 목록`}</div>
@@ -34,7 +52,10 @@ const MyPlanList = forwardRef<HTMLDivElement, MyPlanListProps>(
                 <div className="semibold px-2 pt-2 text-2lg">{plan.name}</div>
                 <div className="semibold px-2 pt-2 text-lg">{plan.serviceArea}</div>
               </div>
-              <button className="min-w-38 semibold text-nowrap rounded-lg border-[1px] border-solid border-color-blue-300 bg-color-gray-50 px-[32.5px] py-4 text-xl text-color-blue-300 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[6px]">
+              <button
+                className="min-w-38 semibold text-nowrap rounded-lg border-[1px] border-solid border-color-blue-300 bg-color-gray-50 px-[32.5px] py-4 text-xl text-color-blue-300 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[6px]"
+                onClick={() => handleDetailClick(plan.id)}
+              >
                 플랜 상세
               </button>
             </div>

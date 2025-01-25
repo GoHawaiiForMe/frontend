@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import MyPlanNav from "@/components/MyPlans/MyPlanNav";
 import Layout from "@/components/Common/Layout";
 import MyPlanList from "@/components/MyPlans/MyPlanList";
@@ -207,17 +207,19 @@ export default function CompletedPlan() {
   useEffect(() => {
     setVisiblePlans(planData.plans.slice(0, ITEMS_PER_LOAD));
     setLoadedCount(ITEMS_PER_LOAD);
-  }, []);
+  }, [planData.plans]);
 
-  const loadMorePlans = () => {
+  const loadMorePlans = useCallback(() => {
     setVisiblePlans((prev) => {
+      if (prev.length >= planData.plans.length) return prev; // 더 로드할 데이터가 없으면 그대로 반환
       const nextBatch = planData.plans.slice(prev.length, prev.length + ITEMS_PER_LOAD);
       return [...prev, ...nextBatch];
     });
-    setLoadedCount((prev) => prev + ITEMS_PER_LOAD);
-  };
+    setLoadedCount((prev) => Math.min(prev + ITEMS_PER_LOAD, planData.plans.length)); // loadedCount를 초과하지 않도록 제한
+  }, [planData.plans]);
 
   useEffect(() => {
+    const observerNode = observerRef.current;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -227,16 +229,16 @@ export default function CompletedPlan() {
       { rootMargin: "200px", threshold: 0.1 },
     );
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
+    if (observerNode) {
+      observer.observe(observerNode);
     }
 
     return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
+      if (observerNode) {
+        observer.unobserve(observerNode);
       }
     };
-  }, [visiblePlans]);
+  }, [loadMorePlans]);
 
   return (
     <>

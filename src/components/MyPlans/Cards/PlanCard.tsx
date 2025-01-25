@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 interface Plan {
   id: number;
   name: string;
@@ -17,16 +15,10 @@ interface PlanData {
 
 interface PlanCardProps {
   planData: PlanData;
+  planId: number;
 }
 
-export default function PlanCard({ planData }: PlanCardProps) {
-  // ongoing에서 보내주는 selectedPlanId를 받아옴
-  const { selectedPlanId } = planData;
-
-  useEffect(() => {
-    console.log("selectedPlanId 변경됨:", selectedPlanId);
-  }, [selectedPlanId]);
-
+export default function PlanCard({ planData, planId }: PlanCardProps) {
   // planData.plans가 비어있는 경우를 대비한 예외 처리
   if (!planData || !planData.plans || planData.plans.length === 0) {
     return (
@@ -44,7 +36,7 @@ export default function PlanCard({ planData }: PlanCardProps) {
   });
 
   // 선택된 플랜 데이터를 찾는 함수
-  const selectedPlan = sortedPlans.find((plan) => plan.id === selectedPlanId);
+  const selectedPlan = sortedPlans.find((plan) => plan.id === planId);
 
   return (
     <div className="my-[46px] flex flex-col gap-y-[32px] mobile:gap-y-4 mobile-tablet:my-8">
