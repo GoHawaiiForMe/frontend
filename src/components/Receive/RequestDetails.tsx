@@ -11,9 +11,15 @@ interface RequestDetailsProps {
   data: any;
   onSendQuotation: () => void;
   onReject: () => void;
+  oneButton?: boolean;
 }
 
-export default function RequestDetails({ data, onSendQuotation, onReject }: RequestDetailsProps) {
+export default function RequestDetails({
+  data,
+  onSendQuotation,
+  onReject,
+  oneButton = false,
+}: RequestDetailsProps) {
   const { data: userInfo } = useQuery<UserInfo>({
     queryKey: ["userprofile"],
     queryFn: userService.getUserInfo,
@@ -63,14 +69,14 @@ export default function RequestDetails({ data, onSendQuotation, onReject }: Requ
         <div className="mt-8 flex items-center justify-between gap-[11px] mobile:mt-5 mobile:flex-col mobile:justify-normal mobile-tablet:gap-[8px]">
           <button
             onClick={onSendQuotation}
-            className="flex h-[64px] w-[448px] items-center justify-center gap-[10px] rounded-[16px] bg-color-blue-300 mobile:h-[48px] mobile:w-[300px] tablet:h-[48px] tablet:w-[280px]"
+            className="flex w-full items-center justify-center gap-[10px] rounded-[16px] bg-color-blue-300 p-4 mobile:p-3 tablet:p-3"
           >
             <p className="whitespace-nowrap text-xl font-semibold text-white">견적 보내기</p>
             <Image src={writing} alt="send" width={24} height={24} />
           </button>
           <button
             onClick={onReject}
-            className="h-[64px] w-[448px] rounded-[16px] border border-color-blue-300 bg-white text-xl font-semibold text-color-blue-300 mobile:h-[48px] mobile:w-[300px] tablet:h-[48px] tablet:w-[280px]"
+            className={`w-full items-center justify-center rounded-[16px] border border-color-blue-300 bg-white p-4 text-xl font-semibold text-color-blue-300 mobile:p-3 tablet:p-3 ${oneButton ? "hidden" : ""}`}
           >
             반려
           </button>

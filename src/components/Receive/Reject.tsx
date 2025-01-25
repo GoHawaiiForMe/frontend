@@ -1,83 +1,86 @@
-import Image from "next/image";
-import iconBox from "@public/assets/icon_boximg.png";
-import iconDocument from "@public/assets/icon_document.png";
-import { useState } from "react";
+import { PlanItem } from "@/services/RequestService";
+import Label from "../Common/label";
+import { convertRegionToKorean } from "@/utils/formatRegion";
+import { formatToDetailedDate } from "@/utils/formatDate";
+import userService from "@/services/userService";
+import { UserInfo } from "@/services/userService";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { rejectRequest } from "@/services/RequestService";
 
-export default function Reject() {
-    const [comment, setComment] = useState<string>("");
-    const isButtonEnabled = comment.length >= 10;
+interface RejectProps {
+  data: PlanItem | undefined;
+  closeModal: () => void;
+}
+
+export default function Reject({ data, closeModal }: RejectProps) {
+  const queryClient = useQueryClient();
+  const { data: userInfo } = useQuery<UserInfo>({
+    queryKey: ["userprofile"],
+    queryFn: userService.getUserInfo,
+  });
+
+  const rejectMutation = useMutation({
+    mutationFn: () => rejectRequest(data!.id),
+    onSuccess: (response) => {
+      if (response.success) {
+        alert("반려가 완료되었습니다.");
+        queryClient.invalidateQueries({ queryKey: ["receiveRequest"] });
+      } else {
+        alert(response.message);
+      }
+      closeModal();
+    },
+  });
+
+  if (!data) return null;
+
+  const tripDate = formatToDetailedDate(data.tripDate);
+  const region = convertRegionToKorean(data.serviceArea);
+
+  const specifyMaker = userInfo?.id === data.assignees[0]?.id ? <Label type="REQUEST" /> : "";
+
+  const handleReject = () => {
+    rejectMutation.mutate();
+  };
+
   return (
     <div>
-      <div className="flex  items-center gap-[12px] ">
-        <div className="flex items-center gap-[4px] bg-color-blue-100 rounded-[4px] p-[4px]">
-          <Image src={iconBox} alt="box" width={24} height={24} className="w-[20px] h-[20px]" />
-          <p className="text-[16px] font-semibold leading-[26px] text-color-blue-300 mobile:text-sm">
-            축제 참여형
-          </p>
-        </div>
-        <div className="flex items-center gap-[4px] bg-color-red-100 rounded-[4px] p-[4px]">
-          <Image
-            src={iconDocument}
-            alt="document"
-            width={24}
-            height={24}
-            className="w-[20px] h-[20px]"
-          />
-          <p className="text-[16px] font-semibold leading-[26px] text-color-red-200 mobile:text-sm">
-            지정 견적 요청
-          </p>
-        </div>
+      <div className="flex items-center gap-[12px]">
+        <Label type={data.tripType} />
+        {specifyMaker}
       </div>
-      <div className="mt-[24px] py-[24px] border border-color-line-200 rounded-[8px] mb-[32px] w-[560px] tablet:border-none tablet:mt-[24px] tablet:py-[10px] tablet:w-[327px] mobile:mt-[24px] mobile:py-[10px] mobile:w-[327px] mobile:border-none">
-          <p className="text-2xl px-[18px] font-semibold tablet:text-2lg mb-[8px] tablet:pl-0 mobile:px-0 mobile:text-2lg">
-            일본도쿄여행 진짜 축제 제대로 즐기다 오실분! 우당탕탕 축제 참여형
-          </p>
-          <p className="text-md text-color-gray-500 pl-[18px] font-medium pb-[18px] border-b border-color-line-200 mb-[18px] tablet:pl-0 tablet:text-sm mobile:px-0 mobile:text-sm">
-            김인서 고객님
-          </p>
-          <div className=" grid grid-cols-2 gap-[0px]">
-            <div className="flex items-center gap-[4px] col-span-2 mb-2 pl-[18px] tablet:gap-[8px] tablet:pl-0 mobile:pl-0 mobile:text-sm">
-              <p className="text-[18px] font-normal leading-[26px] text-color-gray-500 bg-color-background-400 rounded-[4px] px-[6px] py-[4px] whitespace-nowrap tablet:text-md mobile:text-md">
-                이사일
-              </p>
-              <p className="text-[18px] medium leading-[26px] text-color-black-300 mobile:text-md tablet:text-md">
-                2024.07.01(월)
-              </p>
-            </div>
-            <div className="flex items-center gap-[12px] border-r border-color-line-200  pl-[18px] tablet:pl-0 mobile:pl-0 mobile:text-sm">
-              <p className="text-[18px] font-normal leading-[26px] text-color-gray-500 bg-color-background-400 rounded-[4px] px-[6px] py-[4px] whitespace-nowrap mobile:text-md tablet:text-md">
-                출발
-              </p>
-              <p className="text-[18px] font-medium leading-[26px] whitespace-nowrap text-color-black-300 mobile:text-md tablet:text-md">
-                서울 강남구
-              </p>
-            </div>
-            <div className="flex items-center gap-[12px] pl-[14px]">
-              <p className="text-[18px] font-normal leading-[26px] text-color-gray-500 bg-color-background-400 rounded-[4px] px-[6px] py-[4px] whitespace-nowrap mobile:text-md">
-                도착
-              </p>
-              <p className="text-[18px] font-medium leading-[26px] whitespace-nowrap text-color-black-300 mobile:text-md tablet:text-md">
-                경기도 수원시
-              </p>
-            </div>
+      <div className="mb-[32px] mt-[24px] w-[560px] rounded-[8px] border border-color-line-200 py-[24px] mobile:mt-[24px] mobile:w-[327px] mobile:border-none mobile:py-[10px] tablet:mt-[24px] tablet:w-[327px] tablet:border-none tablet:py-[10px]">
+        <p className="mb-[8px] px-[18px] text-2xl font-semibold mobile:px-0 mobile:text-2lg tablet:pl-0 tablet:text-2lg">
+          {data.title}
+        </p>
+        <p className="mb-[18px] border-b border-color-line-200 pb-[18px] pl-[18px] text-md font-medium text-color-gray-500 mobile:px-0 mobile:text-sm tablet:pl-0 tablet:text-sm">
+          {data.dreamer.nickName} 고객님
+        </p>
+        <div className="grid grid-cols-2 gap-[0px]">
+          <div className="col-span-2 mb-2 flex items-center gap-[4px] pl-[18px] mobile:pl-0 mobile:text-sm tablet:gap-[8px] tablet:pl-0">
+            <p className="whitespace-nowrap rounded-[4px] bg-color-background-400 px-[6px] py-[4px] text-[18px] font-normal leading-[26px] text-color-gray-500 mobile:text-md tablet:text-md">
+              이사일
+            </p>
+            <p className="medium text-[18px] leading-[26px] text-color-black-300 mobile:text-md tablet:text-md">
+              {tripDate}
+            </p>
+          </div>
+          <div className="mobile-tablet:gap2 flex items-center gap-[12px] pl-[14px] mobile-tablet:pl-0">
+            <p className="whitespace-nowrap rounded-[4px] bg-color-background-400 px-[6px] py-1 text-2lg text-color-gray-500 mobile:text-md tablet:text-md">
+              여행지
+            </p>
+            <p className="whitespace-nowrap text-2lg font-medium text-color-black-300 mobile:text-md tablet:text-md">
+              {region}
+            </p>
           </div>
         </div>
-        <div className="mb-[40px] tablet:mb-[24px] mobile:mb-[24px]">
-        <p className="text-2xl font-semibold tablet:text-2lg mobile:text-2lg">반려 사유를 입력해 주세요</p>
-        <textarea
-          placeholder="최소 10글자 이상 입력해 주세요"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          className="w-[560px] h-[160px] bg-color-background-200 rounded-[16px] p-[14px] mt-[16px] text-xl resize-none tablet:w-[327px] tablet:h-[160px] tablet:text-lg mobile:w-[327px] mobile:h-[160px] mobile:text-lg"
-        />
       </div>
       <button
-        className={`rounded-[16px] w-[560px] h-[64px] text-white font-semibold text-[20px] leading-[32px] ${
-          isButtonEnabled ? "bg-color-blue-300" : "bg-color-gray-100 cursor-not-allowed"
-        } tablet:w-[327px] tablet:h-[54px] tablet:text-lg mobile:w-[327px] mobile:h-[48px] mobile:text-lg`}
-        disabled={!isButtonEnabled}
+        className={`h-[64px] w-[560px] rounded-[16px] bg-color-blue-300 text-[20px] font-semibold leading-[32px] text-white mobile:h-[48px] mobile:w-[327px] mobile:text-lg tablet:h-[54px] tablet:w-[327px] tablet:text-lg`}
+        onClick={handleReject}
+        disabled={rejectMutation.isPending}
       >
-        반려 하기
+        {rejectMutation.isPending ? "반려 중..." : "반려 하기"}
       </button>
     </div>
   );

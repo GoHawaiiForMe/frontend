@@ -1,26 +1,23 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import useAuthStore from './useAuthStore';
-
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 const withAuthAccess = (WrappedComponent: React.ComponentType) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const AuthComponent = (props: any) => {
     const router = useRouter();
-    const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-
+    const [accessToken, setAccessToken] = useState<string | null>(null);
     useEffect(() => {
-      if (!isLoggedIn) {
-        router.push('/login');
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        router.push("/login");
+      } else {
+        setAccessToken(token);
       }
-    }, [isLoggedIn, router]);
-
-    if (!isLoggedIn) {
+    }, [router]);
+    if (!accessToken) {
       return null;
     }
-
     return <WrappedComponent {...props} />;
   };
-
   return AuthComponent;
 };
-
 export default withAuthAccess;
