@@ -1,14 +1,10 @@
 // ClipboardCopy.js
 "use client"; // 클라이언트 사이드에서만 실행되도록 설정
 
-interface ClipboardCopyProps {
-  icon: StaticImageData;
-}
-
 import { useState } from "react";
-import Image, { StaticImageData } from "next/image"; // Image 컴포넌트 임포트
+import Image from "next/image"; // Image 컴포넌트 임포트
 
-const ClipboardCopy: React.FC<ClipboardCopyProps> = ({ icon }) => {
+const ClipboardCopy = ({ icon }) => {
   const [isCopied, setIsCopied] = useState(false); // 복사 여부 상태
   const [showPopup, setShowPopup] = useState(false); // 팝업 표시 상태
 
