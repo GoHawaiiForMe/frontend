@@ -24,8 +24,8 @@ const linkItems = {
     { href: "/", label: "내 여행 관리" },
   ],
   MAKER: [
-    { href: "/", label: "받은 요청" },
-    { href: "/", label: "내 여행 관리" },
+    { href: "/receive", label: "받은 요청" },
+    { href: "/", label: "내 견적 관리" },
   ],
 };
 
