@@ -107,87 +107,87 @@ export default function RequestDetailDreamer() {
   const selectedPlan = plans.find((plan) => plan.id === selectedPlanId);
 
   return (
-    <div className="flex flex-col w-full relative">
-      <div className="flex py-8 text-color-black-400 text-2xl semibold center mobile-tablet:text-2lg">
+    <div className="relative flex w-full flex-col">
+      <div className="semibold center flex py-8 text-2xl text-color-black-400 mobile-tablet:text-2lg">
         견적 상세
       </div>
-      <div className="flex gap-24 mobile-tablet:flex-col mb:flex-col mobile-tablet:gap-0">
-        <div className="flex flex-col flex-grow">
+      <div className="mb:flex-col flex gap-24 mobile-tablet:flex-col mobile-tablet:gap-0">
+        <div className="flex flex-grow flex-col">
           <div className="flex">
-            <div className="flex flex-col w-full bg-color-gray-50 py-7 px-6 rounded-2xl mobile-tablet:px-3 mobile-tablet:py-4">
-              <div className="flex justify-left items-center gap-[12px] mobile-tablet:mt-[6px]">
-                <div className="flex items-center gap-[4px] bg-color-blue-100 rounded-[4px] p-[4px]">
+            <div className="flex w-full flex-col rounded-2xl bg-color-gray-50 px-6 py-7 mobile-tablet:px-3 mobile-tablet:py-4">
+              <div className="justify-left flex items-center gap-[12px] mobile-tablet:mt-[6px]">
+                <div className="flex items-center gap-[4px] rounded-[4px] bg-color-blue-100 p-[4px]">
                   <Image
                     src={iconBox}
                     alt="box"
                     width={24}
                     height={24}
-                    className="w-[20px] h-[20px]"
+                    className="h-[20px] w-[20px]"
                   />
-                  <p className="text-2lg semibold text-color-blue-300 mobile:text-sm">소형 이사</p>
+                  <p className="semibold text-2lg text-color-blue-300 mobile:text-sm">소형 이사</p>
                 </div>
-                <div className="flex items-center gap-[4px] bg-color-red-100 rounded-[4px] p-[4px]">
+                <div className="flex items-center gap-[4px] rounded-[4px] bg-color-red-100 p-[4px]">
                   <Image
                     src={iconDocument}
                     alt="document"
                     width={24}
                     height={24}
-                    className="w-[20px] h-[20px]"
+                    className="h-[20px] w-[20px]"
                   />
-                  <p className="text-2lg semibold text-color-red-200 mobile:text-sm">
+                  <p className="semibold text-2lg text-color-red-200 mobile:text-sm">
                     지정 견적 요청
                   </p>
                 </div>
               </div>
-              <div className="flex my-6 gap-6 border-color border-[1px] bg-body.bg-gray rounded-md py-4 px-[18px] mobile-tablet:gap-3 mobile-tablet:px-[10px] mobile-tablet:my-[14px]">
-                <div className="flex items-center w-20 h-20 mobile-tablet:w-[46px] mobile-tablet:h-[46px]">
+              <div className="border-color bg-body.bg-gray my-6 flex gap-6 rounded-md border-[1px] px-[18px] py-4 mobile-tablet:my-[14px] mobile-tablet:gap-3 mobile-tablet:px-[10px]">
+                <div className="flex h-20 w-20 items-center mobile-tablet:h-[46px] mobile-tablet:w-[46px]">
                   <Image
                     src={img_avatar1}
                     alt="프로필사진"
                     width={80}
                     height={80}
-                    className="border-2 border-color-blue-400 rounded-full"
+                    className="rounded-full border-2 border-color-blue-400"
                   />
                 </div>
                 <div className="flex w-full">
-                  <div className="w-full flex-col justify-between items-center text-xs text-color-black-500">
-                    <p className="text-xl semibold mobile-tablet:text-lg">김코드 Maker</p>
+                  <div className="w-full flex-col items-center justify-between text-xs text-color-black-500">
+                    <p className="semibold text-xl mobile-tablet:text-lg">김코드 Maker</p>
                     <div className="flex items-center">
-                      <div className="flex flex-shrink-0 gap-[6px] items-center text-lg medium mobile-tablet:text-sm mobile-tablet:gap-[5px]">
+                      <div className="medium flex flex-shrink-0 items-center gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                         <Image
                           src={icon_active_star}
                           alt="별점"
-                          className="color-red-200 w-6 h-6 mobile-tablet:w-[14px] mobile-tablet:h-[14px]"
+                          className="color-red-200 h-6 w-6 mobile-tablet:h-[14px] mobile-tablet:w-[14px]"
                         />
                         <p>55</p>
                         <p className="text-color-gray-400">(178)</p>
                       </div>
-                      <p className="text-color-line-200 mx-4 mobile-tablet:mx-1">ㅣ</p>
-                      <div className="flex flex-shrink-0 gap-[6px] text-lg medium mobile-tablet:text-sm mobile-tablet:gap-[5px]">
+                      <p className="mx-4 text-color-line-200 mobile-tablet:mx-1">ㅣ</p>
+                      <div className="medium flex flex-shrink-0 gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                         <p className="text-color-gray-400">경력</p>
                         <p>7년</p>
                       </div>
-                      <p className="text-color-line-200 mx-4 mobile-tablet:mx-1">ㅣ</p>
-                      <div className="flex flex-shrink-0 gap-[6px] text-lg medium mobile-tablet:text-sm mobile-tablet:gap-[5px]">
+                      <p className="mx-4 text-color-line-200 mobile-tablet:mx-1">ㅣ</p>
+                      <div className="medium flex flex-shrink-0 gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                         <p>334건</p>
                         <p className="text-color-gray-400">확정</p>
                       </div>
                     </div>
                   </div>
-                  <div className="flex text-color-blue-400 medium text-2lg mobile-tablet:text-sm">
+                  <div className="medium flex text-2lg text-color-blue-400 mobile-tablet:text-sm">
                     <Image
                       src={icon_like_red}
                       alt="좋아요"
                       width={24}
                       height={24}
-                      className="color-red-200 w-[24px] h-[24px] "
+                      className="color-red-200 h-[24px] w-[24px]"
                     />
                     136
                   </div>
                 </div>
               </div>
               <div>
-                <p className="text-black-300 text-2xl semibold mobile-tablet:text-lg">
+                <p className="text-black-300 semibold text-2xl mobile-tablet:text-lg">
                   고객님의 꿈을 행복하게 이루어 드립니다.
                 </p>
               </div>
@@ -195,14 +195,14 @@ export default function RequestDetailDreamer() {
           </div>
           <hr className="border-Line-100 my-10 mobile-tablet:my-6" />
           <div className="flex flex-col gap-8 mobile-tablet:gap-4">
-            <p className="text-2xl semibold text-color-black-400 mobile-tablet:text-lg">견적가</p>
-            <p className="text-3xl bold text-color-black-400 mobile-tablet:text-xl">180,000원</p>
+            <p className="semibold text-2xl text-color-black-400 mobile-tablet:text-lg">견적가</p>
+            <p className="bold text-3xl text-color-black-400 mobile-tablet:text-xl">180,000원</p>
           </div>
           <hr className="border-Line-100 my-10 mobile-tablet:my-6" />
           <div className="flex flex-col gap-[22px] pc:hidden">
-            <p className="text-xl semibold text-black-400">플랜 공유하기</p>
+            <p className="semibold text-black-400 text-xl">플랜 공유하기</p>
             <div className="flex gap-4">
-              <div className="my-6 w-10 h-10">
+              <div className="my-6 h-10 w-10">
                 <ClipboardCopy icon={icon_outline} /> {/*링크 복사 버튼*/}
               </div>
               <button onClick={shareMessage}>
@@ -215,22 +215,22 @@ export default function RequestDetailDreamer() {
           </div>
           <hr className="border-Line-100 my-6 pc:hidden" />
           <div>
-            <p className="text-2xl semibold text-color-black-400">플랜 정보</p>
+            <p className="semibold text-2xl text-color-black-400">플랜 정보</p>
             <PlanCard planData={{ selectedPlanId, plans }} />
           </div>
         </div>
-        <div className="flex flex-nowrap flex-col mobile-tablet:w-full mobile-tablet:relative mobile-tablet:flex-grow">
-          <div className="flex mobile-tablet:flex-grow w-full mobile-tablet:py-[10px] mobile-tablet:gap-2 mobile-tablet:fixed mobile-tablet:bg-color-gray-50 mobile-tablet:bottom-0 mobile-tablet:inset-x-0 mobile:px-6 tablet:px-[72px]">
-            <button className="flex p-2 border-[1px] bg-body.bg-gray rounded-2xl pc:hidden">
+        <div className="flex flex-col flex-nowrap mobile-tablet:relative mobile-tablet:w-full mobile-tablet:flex-grow">
+          <div className="flex w-full mobile:px-6 tablet:px-[72px] mobile-tablet:fixed mobile-tablet:inset-x-0 mobile-tablet:bottom-0 mobile-tablet:flex-grow mobile-tablet:gap-2 mobile-tablet:bg-color-gray-50 mobile-tablet:py-[10px]">
+            <button className="bg-body.bg-gray flex rounded-2xl border-[1px] p-2 pc:hidden">
               <Image src={icon_like_black} alt="좋아요" width={32} height={32} />
             </button>
-            <button className="flex w-full py-4 px-28 justify-center items-center bg-color-blue-300 text-gray-50 semibold rounded-2xl text-xl tablet:text-lg mobile:text-md mobile-tablet:py-[11px] mobile-tablet:px-4 mobile-tablet:w-full mobile-tablet:max-w-full">
+            <button className="semibold flex w-full items-center justify-center rounded-2xl bg-color-blue-300 px-28 py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:w-full mobile-tablet:max-w-full mobile-tablet:px-4 mobile-tablet:py-[11px]">
               견적 확정하기
             </button>
           </div>
           <hr className="border-Line-100 my-10 mobile-tablet:hidden" />
           <div className="flex flex-col gap-[22px] mobile-tablet:hidden">
-            <p className="flex text-xl semibold text-black-400">플랜 공유하기</p>
+            <p className="semibold text-black-400 flex text-xl">플랜 공유하기</p>
             <div className="flex gap-4">
               <div className="my-6">
                 <ClipboardCopy icon={icon_outline} /> {/*링크 복사 버튼*/}
