@@ -1,6 +1,5 @@
 // ClipboardCopy.js
 "use client"; // 클라이언트 사이드에서만 실행되도록 설정
-
 import { useState } from "react";
 import Image from "next/image"; // Image 컴포넌트 임포트
 
