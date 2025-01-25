@@ -17,19 +17,20 @@ export default function FindingMaker() {
       <CardFindMaker
       firstLabelType="SHOPPING"
       secondLabelType="REQUEST"
+      
     
       />
       <CardFindMaker 
       firstLabelType="FOOD_TOUR"
       secondLabelType="REQUEST"
       labelSize="sm"
-      cardClassName="w-[327px] h-[188px] py-4 px-[14px]" 
+      cardClassName="!w-[327px] !h-[188px] py-4 px-[14px]" 
       innerboxClassName=" h-[78px] !p-[10px] " 
-      titleSize="text-sm mb-1" 
+      titleSize="text-sm !mb-1" 
       profileClassName="min-w-12 min-h-12"
       photoSize="46"
       nameSize="text-md"
-      otherText="text-[10px]"
+      otherText="!text-[10px]"
       starSize="20"
       heartNumberSize="text-xs"
        
