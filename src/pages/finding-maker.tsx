@@ -9,30 +9,58 @@ export default function FindingMaker() {
   return (
     <>
       <div className="mx-auto overflow-hidden mobile:mx-auto mobile:w-[327px] tablet:mx-auto tablet:w-[600px]">
-        <p className="text-4 py-8 font-semibold">Maker 찾기</p>
+        <p className="text-2xl py-8 semibold">Maker 찾기</p>
       </div> 
       
-      <div className="flex gap-8">
-        <div className="w-1/4">
-          <p className="text-4 py-8 font-semibold">필터</p>
-          <DreamerFilter type="location" />
-          <DreamerFilter type="service" />
-          <CardFindMaker 
-              firstLabelType="FOOD_TOUR"
-              secondLabelType="REQUEST"
-              labelSize="sm"
-              cardSize="sm"
-            />
+      <div className="flex gap-[107px]">
+        <div className="w-1/4 gap-[10px] h-[872px] top-[208px] pr-[10px] pb-[10px]">
+          <div className="flex flex-col gap-[46px]">
+            <div className="flex flex-col gap-[32px]">
+              <div className="flex justify-between items-center border-b border-color-line-200 py-4 px-[10px]">
+                <p className="text-xl medium">필터</p>
+                <button className="text-gray-500">초기화</button>
+              </div>
+              <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-4">
+                  <p className="text-2lg semibold">지역을 선택해 주세요</p>
+                  <DreamerFilter type="location" />
+                </div>
+                <div className="flex flex-col gap-4">
+                  <p className="text-2lg semibold">어떤 서비스가 필요하세요?</p>
+                  <DreamerFilter type="service" />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-4 ">
+              <p className="text-xl semibold">최근에 찜한 Maker</p>
+              <CardFindMaker 
+                firstLabelType="FOOD_TOUR"
+                secondLabelType="REQUEST"
+                labelSize="sm"
+                cardSize="sm"
+              />
+              <CardFindMaker 
+                firstLabelType="SHOPPING"
+                labelSize="sm"
+                cardSize="sm"
+              />
+            </div>
+          </div>
         </div>
-        
-        <div className="w-3/4">
-          <div className="flex justify-between items-center mb-4">
+        <div className="w-3/4 flex flex-col gap-[32px]">
+          <div className="gap-6">
+              <div className="w-[144px] ml-auto">
+              <DropdownSort />
+              </div>
             <SearchBar placeholder="텍스트를 입력해 주세요." />
-            <DropdownSort />
           </div>
           
           <div className="flex flex-col gap-4">
-            
+            <CardFindMaker
+              firstLabelType="SHOPPING"
+              secondLabelType="REQUEST"
+            />
             <CardFindMaker
               firstLabelType="SHOPPING"
               secondLabelType="REQUEST"
