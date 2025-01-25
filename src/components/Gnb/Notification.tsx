@@ -83,6 +83,7 @@ export default function Notification({ closeModal }: { closeModal: () => void })
   const [notificationData, setNotificationData] =
     useState<NotificationProps[]>(initialNotificationData);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const patchNotiMutation = useMutation<NotificationProps, any, string>({
     mutationFn: readNotification,
     onSuccess: (notification) => {

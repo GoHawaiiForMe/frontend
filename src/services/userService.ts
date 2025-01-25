@@ -28,6 +28,7 @@ interface ProfileInfo {
 }
 
 const userService = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signUp: async (data: any) => {
     try {
       const response = await api.post("/user/signup", data);
@@ -55,7 +56,10 @@ const userService = {
   },
   login: async (data: { email: string; password: string }): Promise<LoginResponse> => {
     try {
-      const response = await api.post<LoginResponse, { email: string; password: string }>("/user/login", data);
+      const response = await api.post<LoginResponse, { email: string; password: string }>(
+        "/user/login",
+        data,
+      );
       localStorage.setItem("accessToken", response.accessToken);
       return response;
     } catch (error) {
@@ -66,7 +70,7 @@ const userService = {
 
   getUserInfo: async (): Promise<UserInfo> => {
     try {
-      const response = await api.get<UserInfo, {}>("/user");
+      const response = await api.get<UserInfo, Record<string, unknown>>("/user");
       return response;
     } catch (error) {
       console.error("유저 정보 조회 실패", error);
@@ -76,7 +80,7 @@ const userService = {
 
   getProfileInfo: async (): Promise<ProfileInfo> => {
     try {
-      const response = await api.get<ProfileInfo, {}>("/user/profile");
+      const response = await api.get<ProfileInfo, Record<string, unknown>>("/user/profile");
       return response;
     } catch (error) {
       console.error("프로필 정보 조회 실패", error);

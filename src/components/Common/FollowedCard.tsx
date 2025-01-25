@@ -28,17 +28,16 @@ export interface FollowedCardProps {
   serviceTypes: string[];
 }
 
-const validLabelTypes = [
-  "SHOPPING",
-  "FOOD_TOUR",
-  "RELAXATION",
-  "CULTURE",
-  "ACTIVITY",
-  "FESTIVAL",
-  "REQUEST",
-  "PENDING",
-  "CONFIRMED",
-] as const;
+export type LabelTypes =
+  | "SHOPPING"
+  | "FOOD_TOUR"
+  | "RELAXATION"
+  | "CULTURE"
+  | "ACTIVITY"
+  | "FESTIVAL"
+  | "REQUEST"
+  | "PENDING"
+  | "CONFIRMED";
 
 export default function FollowedCard({
   image,
@@ -57,7 +56,7 @@ export default function FollowedCard({
       <div className="flex w-full flex-col gap-5 rounded-2xl border border-color-line-100 p-5 shadow-md card:gap-0">
         <div className="flex flex-row gap-2">
           {serviceTypes.map((serviceType, index) => (
-            <Label key={index} type={serviceType as (typeof validLabelTypes)[number]} />
+            <Label key={index} labelType={serviceType as LabelTypes} />
           ))}
         </div>
         <div className="flex rounded-md border border-color-line-100 p-4">
