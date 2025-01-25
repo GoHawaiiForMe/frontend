@@ -10,11 +10,7 @@ const fetchFollowData = () => {
 };
 
 export default function FollowMaker() {
-  const {
-    data: followedItems,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: followedItems, isLoading } = useQuery({
     queryKey: ["followedItems"],
     queryFn: fetchFollowData,
   });
@@ -44,6 +40,7 @@ export default function FollowMaker() {
               totalReviews={item.totalReviews}
               totalFollows={item.totalFollows}
               totalConfirms={item.totalConfirms}
+              serviceTypes={item.serviceTypes}
             />
           ))
         ) : (

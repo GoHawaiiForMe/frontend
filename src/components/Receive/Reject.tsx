@@ -1,5 +1,5 @@
 import { PlanItem } from "@/services/RequestService";
-import Label from "../Common/label";
+import Label from "../Common/Label";
 import { convertRegionToKorean } from "@/utils/formatRegion";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import userService from "@/services/userService";
@@ -37,7 +37,7 @@ export default function Reject({ data, closeModal }: RejectProps) {
   const tripDate = formatToDetailedDate(data.tripDate);
   const region = convertRegionToKorean(data.serviceArea);
 
-  const specifyMaker = userInfo?.id === data.assignees[0]?.id ? <Label type="REQUEST" /> : "";
+  const specifyMaker = userInfo?.id === data.assignees[0]?.id ? <Label labelType="REQUEST" /> : "";
 
   const handleReject = () => {
     rejectMutation.mutate();
@@ -46,7 +46,7 @@ export default function Reject({ data, closeModal }: RejectProps) {
   return (
     <div>
       <div className="flex items-center gap-[12px]">
-        <Label type={data.tripType} />
+        <Label labelType={data.tripType} />
         {specifyMaker}
       </div>
       <div className="mb-[32px] mt-[24px] w-[560px] rounded-[8px] border border-color-line-200 py-[24px] mobile:mt-[24px] mobile:w-[327px] mobile:border-none mobile:py-[10px] tablet:mt-[24px] tablet:w-[327px] tablet:border-none tablet:py-[10px]">

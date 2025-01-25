@@ -1,7 +1,7 @@
 import Bubble from "@/components/Common/Bubble";
 import Selector from "@/components/Common/Selector";
 import Input from "@/components/Common/Input";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import ModalLayout from "@/components/Common/ModalLayout";
 import Button from "@/components/Common/Button";
@@ -24,10 +24,10 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [progress, setProgress] = useState(0);
 
-  const updateProgress = () => {
+  const updateProgress = useCallback(() => {
     const newProgress = showStep3Summary ? 100 : showStep2Summary ? 75 : showStep1Summary ? 50 : 25;
     setProgress(newProgress);
-  };
+  }, [showStep1Summary, showStep2Summary, showStep3Summary]);
 
   const handleLocationSelection = (type: string) => {
     setSelectedLocations((prev) => (prev[0] === type ? [] : [type]));
@@ -83,10 +83,12 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
     setSelectedDate(date);
   };
   const planRequestMutation = useMutation({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mutationFn: (data: any) => planService.planRequest(data),
     onSuccess: () => {
       onConfirm();
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       console.error("여행 요청 실패", error);
     },
@@ -179,9 +181,13 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
               <div className="mb-4">
                 <Input
                   type="text"
-                  onChange={(e) => setTextValue(e.target.value)}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 25) {
+                      setTextValue(e.target.value);
+                    }
+                  }}
                   value={textValue}
-                  placeholder="제목을 작성해주세요."
+                  placeholder="제목을 작성해주세요. (최대 25자까지)"
                 />
               </div>
               <Input

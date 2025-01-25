@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Label from "../Common/label";
+import Label from "../Common/Label";
 import { PlanItem } from "@/services/RequestService";
 import { UserInfo } from "@/services/userService";
 import userService from "@/services/userService";
@@ -44,7 +44,7 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
   const region = convertRegionToKorean(data.serviceArea);
 
   const isButtonEnabled = price !== 0 && comment.length >= 10;
-  const specifyMaker = userInfo?.id === data.assignees[0]?.id ? <Label type="REQUEST" /> : "";
+  const specifyMaker = userInfo?.id === data.assignees[0]?.id ? <Label labelType="REQUEST" /> : "";
 
   const handleSubmit = () => {
     if (!isButtonEnabled) return;
@@ -55,7 +55,7 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
     <>
       <div>
         <div className="flex items-center gap-[12px]">
-          <Label type={data.tripType} />
+          <Label labelType={data.tripType} />
           {specifyMaker}
         </div>
         <div className="mb-[32px] mt-[24px] w-[560px] rounded-[8px] border border-color-line-200 py-[24px] mobile:mt-[24px] mobile:w-[327px] mobile:border-none mobile:py-[10px] tablet:mt-[24px] tablet:w-[327px] tablet:border-none tablet:py-[10px]">

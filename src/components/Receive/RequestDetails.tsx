@@ -1,6 +1,6 @@
 import Image from "next/image";
 import writing from "@public/assets/icon_writing.png";
-import Label from "../Common/label";
+import Label from "../Common/Label";
 import { useQuery } from "@tanstack/react-query";
 import userService, { UserInfo } from "@/services/userService";
 import { formatRelativeTime, formatToDetailedDate } from "@/utils/formatDate";
@@ -29,14 +29,14 @@ export default function RequestDetails({
   const tripDate = formatToDetailedDate(data.tripDate);
   const region = convertRegionToKorean(data.serviceArea);
 
-  const specifyMaker = userInfo?.id === data.assignees[0]?.id ? <Label type="REQUEST" /> : "";
+  const specifyMaker = userInfo?.id === data.assignees[0]?.id ? <Label labelType="REQUEST" /> : "";
 
   return (
     <div className="mb-12 w-[955px] rounded-[16px] border border-color-line-100 px-4 pb-[12px] pt-[20px] shadow-md mobile:mx-[auto] mobile:mb-6 mobile:w-[328px] mobile:px-[14px] mobile:py-[16px] tablet:mx-[auto] tablet:mb-8 tablet:w-[600px]">
       <div className="flex flex-col">
         <div className="mb-4 flex items-center justify-between text-xs text-color-gray-500">
           <div className="flex items-center gap-2">
-            <Label type={data.tripType} />
+            <Label labelType={data.tripType} />
             {specifyMaker}
             {/* <Label type={data.status === "PENDING" ? "PENDING" : "CONFIRMED"} /> */}
           </div>

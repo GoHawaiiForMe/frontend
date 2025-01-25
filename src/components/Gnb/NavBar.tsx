@@ -14,6 +14,7 @@ import UserMenu from "./UserMenu";
 import userService from "@/services/userService";
 import notificationService, { NotificationProps } from "@/services/notificationService";
 import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
 
 const linkItems = {
   guest: [{ href: "/", label: "Maker 찾기" }],
@@ -23,9 +24,14 @@ const linkItems = {
     { href: "/", label: "내 여행 관리" },
   ],
   MAKER: [
-    { href: "/", label: "받은 요청" },
-    { href: "/", label: "내 여행 관리" },
+    { href: "/receive", label: "받은 요청" },
+    { href: "/", label: "내 견적 관리" },
   ],
+};
+
+const getNotification = () => {
+  const notificationData = notificationService.getNotification();
+  return notificationData;
 };
 
 const NavBar = () => {
@@ -33,6 +39,7 @@ const NavBar = () => {
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [userInfo, setUserInfo] = useState<any>(null);
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
 
@@ -76,6 +83,20 @@ const NavBar = () => {
     );
   };
 
+  const { data: notificationData = [] } = useQuery({
+    queryKey: ["hasNotification"],
+    queryFn: getNotification,
+    enabled: isLoggedIn,
+  });
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      if (notificationData) {
+        setNotifications(notificationData);
+      }
+    }
+  }, [isLoggedIn, notificationData]);
+
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
 
@@ -94,28 +115,14 @@ const NavBar = () => {
     }
   }, [setLogin]);
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        // const data = await notificationService.getNotification();
-        // setNotifications(data);
-      } catch (error) {
-        console.error("알림 데이터를 가져오는데 실패했습니다.", error);
-        setNotifications([]);
-      }
-    };
-
-    fetchNotifications();
-  }, []);
-
-  const hasUnreadNotifications = notifications.some((notification) => !notification.isRead);
+  const hasUnreadNotifications = notificationData.some((notification) => !notification.isRead);
 
   return (
     <div className="flex items-center justify-between border-b-2 border-color-line-100 bg-color-background-100 px-32 py-6 mobile:px-4 tablet:px-5 mobile-tablet:py-3">
       <div className="flex items-center">
         <div className="mr-16 text-2xl font-bold mobile-tablet:mr-0">
           <Link href="/">
-            <Image src={logo} width={100} height={100} alt="임시로고" />
+            <Image src={logo} width={100} alt="임시로고" />
           </Link>
         </div>
 
@@ -158,6 +165,8 @@ const NavBar = () => {
             </div>
 
             {isOpenNotification && <Notification closeModal={handleCloseNotification} />}
+            {notifications === null && null}
+
             <div
               className="flex cursor-pointer items-center space-x-2"
               onClick={handleOpenUserMenu}

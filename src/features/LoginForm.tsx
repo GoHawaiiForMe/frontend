@@ -43,6 +43,7 @@ export default function LoginForm() {
         console.error("유저 정보 가져오기 실패", error);
       }
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       if (error.response) {
         console.error("Error response", error.response);
@@ -81,7 +82,7 @@ export default function LoginForm() {
   return (
     <div className="flex justify-center">
       <div className="flex flex-col items-center gap-8 pc:w-[640px] mobile-tablet:w-[372px]">
-        <Image src={logo} alt="로고" />
+        <Image src={logo} width={400} height={400} alt="로고" />
         <form className="relative flex w-full flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-2">
             <Input
