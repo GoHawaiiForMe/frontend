@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Common/Input";
 import { editMakerSchema, EditMakerData } from "@/utils/validate";
 import Button from "@/components/Common/Button";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import userService from "@/services/userService";
 import { useRouter } from "next/router";
 import useAuthStore from "@/stores/useAuthStore";
@@ -13,7 +13,7 @@ const fetchUserInfo = async () => {
   const userData = await userService.getUserInfo();
   return userData;
 };
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const updateUserInfo = async (UpdateData: any): Promise<void> => {
   return userService.patchBasicInfo(UpdateData);
 };
@@ -42,12 +42,14 @@ export default function InformEditMaker() {
     queryFn: fetchUserInfo,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mutation = useMutation<void, Error, any>({
     mutationFn: updateUserInfo,
     onSuccess: () => {
       alert("프로필이 성공적으로 수정되었습니다!");
       refetch();
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       if (error.response?.status === 401) {
         alert("기존 비밀번호를 확인해주세요.");

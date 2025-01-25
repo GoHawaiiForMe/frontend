@@ -37,10 +37,12 @@ export default function ProfileDreamer() {
   };
 
   const profileDreamerMutation = useMutation({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mutationFn: (data: any) => userService.signUp(data),
     onSuccess: () => {
       router.push("/login");
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       console.error("회원가입 실패", error);
       alert("회원가입에 실패하셨습니다.");
