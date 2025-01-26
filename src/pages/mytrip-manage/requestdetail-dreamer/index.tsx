@@ -1,6 +1,19 @@
 "use client";
 //useEffect, useState등을 사용할 수 있게 함(CSR로 전환)
 
+interface KakaoSDK {
+  init: (key: string) => void;
+  Share: {
+    sendScrap: (options: { requestUrl: string }) => void;
+  };
+}
+
+declare global {
+  interface Window {
+    Kakao: KakaoSDK;
+  }
+}
+
 import Image from "next/image";
 import iconBox from "@public/assets/icon_boximg.png";
 import iconDocument from "@public/assets/icon_document.png";
@@ -14,15 +27,14 @@ import icon_facebook from "@public/assets/icon_facebook.png";
 import PlanCard from "@/components/MyPlans/Cards/PlanCard";
 import { useEffect } from "react";
 import ClipboardCopy from "@/components/Common/ClipboardCopy";
+import { useRouter } from "next/router";
 
 export default function RequestDetailDreamer() {
   /*eslint-disable*/
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao) {
       const Kakao = window.Kakao;
-      if (!Kakao.isInitialized()) {
-        Kakao.init("0337a68dec8e9d5ebea78113c3b9fc62");
-      }
+      Kakao.init("0337a68dec8e9d5ebea78113c3b9fc62");
     }
   }, []);
   //init괄호 안에는 카카오디벨로퍼스에서 받은 javascript키 입력
@@ -103,10 +115,20 @@ export default function RequestDetailDreamer() {
   };
 
   // PlanCard 컴포넌트에 전달할 데이터
-  const { selectedPlanId, plans } = planData;
+  const router = useRouter();
+  const { id } = router.query;
+  const selectedPlan = id
+    ? planData.plans.find((plan) => plan.id === Number(id))
+    : planData.plans.find((plan) => plan.id === 1);
 
-  // 선택된 플랜을 찾는 함수
-  const selectedPlan = plans.find((plan) => plan.id === selectedPlanId);
+  if (!selectedPlan) {
+    return <div>Loading...</div>;
+  }
+
+  const planDataForCard = {
+    selectedPlanId: selectedPlan.id,
+    plans: planData.plans, // 모든 플랜 데이터를 전달
+  };
 
   return (
     <div className="relative flex w-full flex-col">
@@ -218,7 +240,7 @@ export default function RequestDetailDreamer() {
           <hr className="border-Line-100 my-6 pc:hidden" />
           <div>
             <p className="semibold text-2xl text-color-black-400">플랜 정보</p>
-            <PlanCard planData={{ selectedPlanId, plans }} />
+            <PlanCard planData={planDataForCard} planId={selectedPlan.id} />
           </div>
         </div>
         <div className="flex flex-col flex-nowrap mobile-tablet:relative mobile-tablet:w-full mobile-tablet:flex-grow">

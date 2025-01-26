@@ -91,15 +91,6 @@ export default function RequestCard() {
               서울 강남구
             </p>
           </div>
-          {/* <p className="text-color-line-200 mobile-tablet:hidden">ㅣ</p>
-          <div className="flex items-center gap-3 mobile-tablet:pl-2">
-            <p className="text-2lg font-normal leading-[26px] text-color-gray-500 bg-color-background-400 rounded-[4px] px-[6px] py-[4px] whitespace-nowrap mobile:text-md">
-              도착
-            </p>
-            <p className="text-2lg font-medium leading-[26px] whitespace-nowrap text-color-black-300 mobile-tablet:text-md">
-              경기도 수원시
-            </p>
-          </div> */}
         </div>
         <div className="flex items-center justify-end gap-4 py-6">
           <p className="medium text-2lg mobile-tablet:text-md">견적 금액</p>
