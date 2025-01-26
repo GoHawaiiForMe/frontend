@@ -46,7 +46,6 @@ export default function RequestDetailDreamer() {
     // 여기서 페이지 변경에 따른 데이터 fetch 로직 구현
   };
 
-  const totalReviews = Object.values(reviewStats).reduce((acc, curr) => acc + curr, 0);
   /*eslint-disable*/
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao) {
@@ -90,8 +89,8 @@ export default function RequestDetailDreamer() {
             {/* 라벨 */}
             <div className="mobile-tablet:mt-[6px]">
               <div className="mb-3 flex gap-4">
-                <Label type="SHOPPING" />
-                <Label type="CONFIRMED" />
+                <Label labelType="SHOPPING" />
+                <Label labelType="CONFIRMED" />
               </div>
             </div>
             {/* 제목 */}
