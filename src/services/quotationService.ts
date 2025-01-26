@@ -39,8 +39,7 @@ export const getQuotations = async ({
     params.push(`pageSize=${pageSize}`);
 
     queryString = params.length > 0 ? `?${params.join("&")}` : "";
-
-    console.log("쿼리스트링", queryString);
+    
     const response = await api.get<QuotationResponse, any>(`/quotes${queryString}`);
 
     if (!response) {

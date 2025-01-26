@@ -1,5 +1,8 @@
 import ProfileEditMaker from "@/features/ProfileEditMaker";
+import withAuthAccess from "@/stores/withAuthAccess";
 
-export default function ProfileEditMakerPage() {
+export function ProfileEditMakerPage() {
   return <ProfileEditMaker />;
 }
+
+export default withAuthAccess(ProfileEditMakerPage);

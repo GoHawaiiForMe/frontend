@@ -60,6 +60,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMzJkN
 
 ###
 
-GET http://localhost:4000/quotes?isSent=true&page=2&pageSize=10
+GET http://localhost:4000/quotes?isSent=true&page=1&pageSize=10
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMzJkN2JkNC0xMTZjLTQ2N2ItOTM1Mi1hMTRiMGQ0OTRlZjkiLCJyb2xlIjoiTUFLRVIiLCJpYXQiOjE3Mzc4Nzk5ODAsImV4cCI6MTczNzk2NjM4MH0.0rtZC-DSJDYEBu0e_Msm5dj4FkRFxE-HFKO3bFKKBxE
 

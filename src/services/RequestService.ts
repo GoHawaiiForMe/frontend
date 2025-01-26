@@ -13,7 +13,7 @@ interface User {
 type TripType = "CULTURE" | "SHOPPING" | "FESTIVAL" | "ACTIVITY" | "FOOD_TOUR";
 
 // 여행 상태
-export type PlanStatus = "CONFIRMED" | "PENDING" | "COMPLETE";
+export type PlanStatus = "CONFIRMED" | "PENDING" | "COMPLETED";
 
 // 서비스 지역
 type ServiceArea =
@@ -72,6 +72,7 @@ interface RequestParams {
   orderBy?: OrderBy;
   page?: number;
   pageSize?: number;
+  id?: string;
 }
 
 const ReceiveRequest = async ({
@@ -81,9 +82,9 @@ const ReceiveRequest = async ({
   orderBy,
   page = 1,
   pageSize = 5,
+  id,
 }: RequestParams = {}): Promise<PlanResponse> => {
   try {
-
     let queryString = "";
     const params: string[] = [];
 
@@ -103,6 +104,10 @@ const ReceiveRequest = async ({
 
     if (orderBy) {
       params.push(`orderBy=${orderBy}`);
+    }
+
+    if (id) {
+      params.push(`id=${id}`);
     }
 
     params.push(`page=${page}`);
@@ -166,3 +171,13 @@ const rejectRequest = async (planId: string): Promise<{ success: boolean; messag
 export { submitQuote, rejectRequest };
 
 export default ReceiveRequest;
+
+export const getPlanDetail = async (planId: string): Promise<PlanItem> => {
+  try {
+    const response = await api.get<PlanItem, {}>(`/plans/${planId}`);
+    return response;
+  } catch (error: any) {
+    console.error("플랜 상세 조회 실패", error);
+    throw error;
+  }
+};

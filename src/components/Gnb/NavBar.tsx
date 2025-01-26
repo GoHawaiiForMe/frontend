@@ -31,7 +31,7 @@ const linkItems: Record<"guest" | "DREAMER" | "MAKER", LinkItem[]> = {
   ],
   MAKER: [
     { href: "/receive", label: "받은 요청", group: "receive" },
-    { href: "/managequo", label: "내 견적 관리" },
+    { href: "/managequo", label: "내 견적 관리", group: "managequo" },
   ],
 };
 
@@ -76,7 +76,9 @@ const NavBar = () => {
           const isActive =
             link.group === "receive"
               ? ["/receive", "/all-receive-plan"].includes(router.pathname)
-              : router.pathname === link.href;
+              : link.group === "managequo"
+                ? ["/managequo", "/rejectlist"].includes(router.pathname)
+                : router.pathname === link.href;
           return (
             <li key={index}>
               <Link

@@ -6,8 +6,9 @@ import ReviewGraph from "@/components/Receive/ReviewGraph";
 import { useState } from "react";
 import Pagination from "@/components/Common/Pagination";
 import Link from "next/link";
+import withAuthAccess from "@/stores/withAuthAccess";
 
-export default function MyPage() {
+export function MyPage() {
   const reviewStats = {
     1: 0,
     2: 0,
@@ -203,3 +204,5 @@ export default function MyPage() {
     </>
   );
 }
+
+export default withAuthAccess(MyPage);

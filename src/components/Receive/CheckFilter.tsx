@@ -97,33 +97,30 @@ const CheckFilter: React.FC<CheckFilterProps> = ({ data, setSelectedTypes, onFil
 
   return (
     <div className="hidden w-[328px] pc:block">
-      <div className="mb-[24px]">
-        <div className="my-[24px] flex items-center justify-between border-b border-color-line-200 px-[13.5px] py-[16px]">
-          <p className="whitespace-nowrap text-[20px] font-medium leading-8">여행 유형</p>
-          <div className="flex items-center gap-[12px]">
+      <div className="mb-6">
+        <div className="my-6 flex items-center justify-between gap-3 border-b border-color-line-200 px-[13.5px] py-4">
+          <p className="whitespace-nowrap text-xl pr-2 border-r border-color-line-200">여행 유형</p>
+          <div className="flex items-center gap-3">
+            <p className="whitespace-nowrap text-2lg font-normal">전체 선택</p>
             <input
-              className="h-[20px] w-[20px]"
+              className="h-5 w-5"
               type="checkbox"
               id="all"
               checked={typeCheckboxes.all}
               onChange={(e) => handleTypeAllCheck(e.target.checked)}
             />
-            <p className="whitespace-nowrap text-[18px] font-normal leading-[26px]">전체 선택</p>
           </div>
         </div>
         {typeOptions.map((option) => (
           <div
             key={option.id}
-            className="flex items-center justify-between border-b border-color-line-200 px-[16px] py-[21px]"
+            className="flex items-center justify-between border-b border-color-line-200 px-4 py-[21px]"
           >
-            <label
-              className="whitespace-nowrap text-[18px] font-medium leading-[26px]"
-              htmlFor={option.id}
-            >
+            <label className="whitespace-nowrap text-2lg" htmlFor={option.id}>
               {`${option.label} (${data?.groupByCount.find((count) => count.tripType === option.id)?.count || "0"})`}
             </label>
             <input
-              className="h-[20px] w-[20px]"
+              className="h-5 w-5"
               type="checkbox"
               id={option.id}
               checked={typeCheckboxes[option.id as keyof TypeCheckboxState]}
