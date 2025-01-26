@@ -10,7 +10,7 @@ import icon_kakao from "@public/assets/icon_kakao.png";
 import icon_facebook from "@public/assets/icon_facebook.png";
 import { useEffect, useState } from "react";
 import ClipboardCopy from "@/components/Common/ClipboardCopy";
-import Label from "@/components/Common/label";
+import Label from "@/components/Common/Label";
 import planData from "@/types/planData";
 import Selector from "@/components/Common/Selector";
 import icon_link from "@public/assets/icon_link.svg";
