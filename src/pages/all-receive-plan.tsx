@@ -14,8 +14,9 @@ import ReceiveRequest from "@/services/RequestService";
 import { useInView } from "react-intersection-observer";
 import request_empty from "@public/assets/icon_request_empty.png";
 import Link from "next/link";
+import withAuthAccess from "@/stores/withAuthAccess";
 
-export default function AllReceivePlan() {
+export function AllReceivePlan() {
   const [filterIsOpen, setFilterIsOpen] = useState<boolean>(false);
   const [quotationIsOpen, setQuotationIsOpen] = useState<boolean>(false);
   const [rejectIsOpen, setRejectIsOpen] = useState<boolean>(false);
@@ -179,3 +180,5 @@ export default function AllReceivePlan() {
     </div>
   );
 }
+
+export default withAuthAccess(AllReceivePlan);
