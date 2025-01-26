@@ -16,7 +16,7 @@ export default function UserMenu({ userId, closeMenu }: UserMenuProps) {
       DREAMER: [
         { href: userId ? `/profile/dreamer/edit/${userId}` : "", label: "프로필 수정" },
         { href: "/follow-maker", label: "찜한 Maker" },
-        { href: "/", label: "여행 리뷰" },
+        { href: "/trip-review", label: "여행 리뷰" },
       ],
       MAKER: [{ href: userId ? `/profile/maker/mypage/${userId}` : "", label: "마이페이지" }],
     };
