@@ -16,7 +16,7 @@ export default function FindingMaker() {
         <div className="w-1/4 gap-[10px] h-[872px] top-[208px] pr-[10px] pb-[10px] mobile-tablet:hidden">
           <div className="flex flex-col gap-[46px]">
             <div className="flex flex-col gap-[32px]">
-              <div className="flex justify-between items-center border-b border-color-line-200 py-4 px-[10px]">
+              <div className="w-[328px] flex justify-between items-center border-b border-color-line-200 py-4 px-[10px]">
                 <p className="text-xl medium">필터</p>
                 <button className="text-gray-500">초기화</button>
               </div>
