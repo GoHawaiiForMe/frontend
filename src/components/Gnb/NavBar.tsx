@@ -17,15 +17,15 @@ import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 
 const linkItems = {
-  guest: [{ href: "/", label: "Maker 찾기" }],
+  guest: [{ href: "/finding-maker", label: "Maker 찾기" }],
   DREAMER: [
     { href: "/plan-request", label: "여행 요청" },
-    { href: "/", label: "Maker 찾기" },
-    { href: "/", label: "내 여행 관리" },
+    { href: "/finding-maker", label: "Maker 찾기" },
+    { href: "/mytrip-manage/ongoing-plan", label: "내 여행 관리" },
   ],
   MAKER: [
     { href: "/receive", label: "받은 요청" },
-    { href: "/", label: "내 견적 관리" },
+    { href: "/managequo", label: "내 견적 관리" },
   ],
 };
 

@@ -6,36 +6,38 @@ export default function MyPlanNav() {
   const activeTab = router.pathname.split("/").pop();
 
   return (
-    <div className="flex gap-[32px]  text-color-gray-400 text-xl semibold mobile-tablet:gap-[24px] mobile-tablet:text-md">
-      <Link href="./ongoingPlan">
-        <button
-          className={`py-[16px] ${
-            activeTab === "ongoingPlan"
-              ? "text-color-black-500 border-b-2 border-color-black-500"
-              : ""
-          }`}
-        >
-          진행 중인 플랜
-        </button>
-      </Link>
-      <Link href="./completedPlan">
-        <button
-          className={`py-[16px] ${
-            activeTab === "completedPlan" ? "text-color-black-500 border-b-2 border-black" : ""
-          }`}
-        >
-          종료된 플랜
-        </button>
-      </Link>
-      <Link href="expiredPlan">
-        <button
-          className={`py-[16px] ${
-            activeTab === "expiredPlan" ? "text-color-black-500 border-b-2 border-black" : ""
-          }`}
-        >
-          만료된 플랜
-        </button>
-      </Link>
+    <div className="relative left-1/2 w-screen -translate-x-1/2 bg-color-background-100 px-[260px] mobile:px-6 tablet:px-[72px]">
+      <div className="max-w-screen-xl semibold mx-auto flex gap-[32px] px-[16px] text-xl text-color-gray-400 mobile-tablet:gap-[24px] mobile-tablet:text-md">
+        <Link href="/mytrip-manage/ongoing-plan">
+          <button
+            className={`py-[16px] ${
+              activeTab === "ongoing-plan"
+                ? "border-b-2 border-color-black-500 text-color-black-500"
+                : ""
+            }`}
+          >
+            진행 중인 플랜
+          </button>
+        </Link>
+        <Link href="/mytrip-manage/completed-plan">
+          <button
+            className={`py-[16px] ${
+              activeTab === "completed-plan" ? "border-b-2 border-black text-color-black-500" : ""
+            }`}
+          >
+            종료된 플랜
+          </button>
+        </Link>
+        <Link href="/mytrip-manage/expired-plan">
+          <button
+            className={`py-[16px] ${
+              activeTab === "expired-plan" ? "border-b-2 border-black text-color-black-500" : ""
+            }`}
+          >
+            만료된 플랜
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }
