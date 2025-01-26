@@ -28,7 +28,7 @@ const DropdownSort = () => {
   }, []);
 
   return (
-    <div ref={dropdownRef} className="w-full relative mt-4">
+    <div ref={dropdownRef} className="w-full relative ">
       <button
         onClick={toggleDropdown}
         className="w-[114px] h-[40px] px-[10px] py-2 flex justify-between items-center rounded-[8px] cursor-pointer transition duration-200 bg-color-gray-50"

@@ -1,6 +1,19 @@
 "use client";
 //useEffect, useState등을 사용할 수 있게 함(CSR로 전환)
 
+interface KakaoSDK {
+  init: (key: string) => void;
+  Share: {
+    sendScrap: (options: { requestUrl: string }) => void;
+  };
+}
+
+declare global {
+  interface Window {
+    Kakao: KakaoSDK;
+  }
+}
+
 import Image from "next/image";
 import iconBox from "@public/assets/icon_boximg.png";
 import iconDocument from "@public/assets/icon_document.png";
@@ -14,6 +27,7 @@ import icon_facebook from "@public/assets/icon_facebook.png";
 import PlanCard from "@/components/MyPlans/Cards/PlanCard";
 import { useEffect } from "react";
 import ClipboardCopy from "@/components/Common/ClipboardCopy";
+import { useRouter } from "next/router";
 
 export default function RequestDetailDreamer() {
   /*eslint-disable*/
@@ -101,10 +115,20 @@ export default function RequestDetailDreamer() {
   };
 
   // PlanCard 컴포넌트에 전달할 데이터
-  const { selectedPlanId, plans } = planData;
+  const router = useRouter();
+  const { id } = router.query;
+  const selectedPlan = id
+    ? planData.plans.find((plan) => plan.id === Number(id))
+    : planData.plans.find((plan) => plan.id === 1);
 
-  // 선택된 플랜을 찾는 함수
-  const selectedPlan = plans.find((plan) => plan.id === selectedPlanId);
+  if (!selectedPlan) {
+    return <div>Loading...</div>;
+  }
+
+  const planDataForCard = {
+    selectedPlanId: selectedPlan.id,
+    plans: planData.plans, // 모든 플랜 데이터를 전달
+  };
 
   return (
     <div className="relative flex w-full flex-col">
@@ -216,7 +240,7 @@ export default function RequestDetailDreamer() {
           <hr className="border-Line-100 my-6 pc:hidden" />
           <div>
             <p className="semibold text-2xl text-color-black-400">플랜 정보</p>
-            <PlanCard planData={{ selectedPlanId, plans }} />
+            <PlanCard planData={planDataForCard} planId={selectedPlan.id} />
           </div>
         </div>
         <div className="flex flex-col flex-nowrap mobile-tablet:relative mobile-tablet:w-full mobile-tablet:flex-grow">
@@ -224,7 +248,7 @@ export default function RequestDetailDreamer() {
             <button className="bg-body.bg-gray flex rounded-2xl border-[1px] p-2 pc:hidden">
               <Image src={icon_like_black} alt="좋아요" width={32} height={32} />
             </button>
-            <button className="semibold flex w-full items-center justify-center rounded-2xl bg-color-blue-300 px-28 py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:w-full mobile-tablet:max-w-full mobile-tablet:px-4 mobile-tablet:py-[11px]">
+            <button className="semibold flex w-full items-center justify-center text-nowrap rounded-2xl bg-color-blue-300 px-28 py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:w-full mobile-tablet:max-w-full mobile-tablet:px-4 mobile-tablet:py-[11px]">
               견적 확정하기
             </button>
           </div>
