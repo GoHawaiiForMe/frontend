@@ -119,7 +119,10 @@ export default function MyPlanDetailCompleted() {
       <Layout bodyClass="bg-gray">
         <div className="my-16 rounded-2xl bg-color-gray-50 p-10">
           <p className="semibold text-2xl">플랜 정보</p>
-          <PlanCard planData={planDataForCard} planId={selectedPlan.id} />
+          <div className="my-10 rounded-2xl border-gray-300 p-5 shadow">
+            <div className="semibold mb-3 text-2xl text-color-black-500">{selectedPlan.name}</div>
+            <PlanCard planData={planDataForCard} planId={selectedPlan.id} />
+          </div>
           <div className="flex-col">
             <p className="semibold mb-10 text-2xl">견적 정보</p>
             <RequestCardListCompleted />

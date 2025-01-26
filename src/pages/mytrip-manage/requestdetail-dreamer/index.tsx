@@ -3,6 +3,7 @@
 
 interface KakaoSDK {
   init: (key: string) => void;
+  isInitialized: () => boolean;
   Share: {
     sendScrap: (options: { requestUrl: string }) => void;
   };
@@ -15,8 +16,7 @@ declare global {
 }
 
 import Image from "next/image";
-import iconBox from "@public/assets/icon_boximg.png";
-import iconDocument from "@public/assets/icon_document.png";
+import Label from "@/components/Common/Label";
 import icon_like_red from "@public/assets/icon_like_red.png";
 import icon_like_black from "@public/assets/icon_like_black.svg";
 import img_avatar1 from "@public/assets/img_avatar1.svg";
@@ -24,17 +24,20 @@ import icon_active_star from "@public/assets/icon_active_star.svg";
 import icon_outline from "@public/assets/icon_outline.png";
 import icon_kakao from "@public/assets/icon_kakao.png";
 import icon_facebook from "@public/assets/icon_facebook.png";
+import link from "@public/assets/icon_link.svg";
+import Link from "next/link";
 import PlanCard from "@/components/MyPlans/Cards/PlanCard";
 import { useEffect } from "react";
 import ClipboardCopy from "@/components/Common/ClipboardCopy";
 import { useRouter } from "next/router";
 
 export default function RequestDetailDreamer() {
-  /*eslint-disable*/
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao) {
       const Kakao = window.Kakao;
-      Kakao.init("0337a68dec8e9d5ebea78113c3b9fc62");
+      if (!Kakao.isInitialized()) {
+        Kakao.init("0337a68dec8e9d5ebea78113c3b9fc62");
+      }
     }
   }, []);
   //init괄호 안에는 카카오디벨로퍼스에서 받은 javascript키 입력
@@ -140,28 +143,8 @@ export default function RequestDetailDreamer() {
           <div className="flex">
             <div className="flex w-full flex-col rounded-2xl bg-color-gray-50 px-6 py-7 mobile-tablet:px-3 mobile-tablet:py-4">
               <div className="justify-left flex items-center gap-[12px] mobile-tablet:mt-[6px]">
-                <div className="flex items-center gap-[4px] rounded-[4px] bg-color-blue-100 p-[4px]">
-                  <Image
-                    src={iconBox}
-                    alt="box"
-                    width={24}
-                    height={24}
-                    className="h-[20px] w-[20px]"
-                  />
-                  <p className="semibold text-2lg text-color-blue-300 mobile:text-sm">소형 이사</p>
-                </div>
-                <div className="flex items-center gap-[4px] rounded-[4px] bg-color-red-100 p-[4px]">
-                  <Image
-                    src={iconDocument}
-                    alt="document"
-                    width={24}
-                    height={24}
-                    className="h-[20px] w-[20px]"
-                  />
-                  <p className="semibold text-2lg text-color-red-200 mobile:text-sm">
-                    지정 견적 요청
-                  </p>
-                </div>
+                <Label labelType="RELAXATION" customLabelContainerClass="rounded-lg" />
+                <Label labelType="REQUEST" customLabelContainerClass="rounded-lg" />
               </div>
               <div className="border-color bg-body.bg-gray my-6 flex gap-6 rounded-md border-[1px] px-[18px] py-4 mobile-tablet:my-[14px] mobile-tablet:gap-3 mobile-tablet:px-[10px]">
                 <div className="flex h-20 w-20 items-center mobile-tablet:h-[46px] mobile-tablet:w-[46px]">
@@ -188,8 +171,15 @@ export default function RequestDetailDreamer() {
                       </div>
                       <p className="mx-4 text-color-line-200 mobile-tablet:mx-1">ㅣ</p>
                       <div className="medium flex flex-shrink-0 gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
-                        <p className="text-color-gray-400">경력</p>
-                        <p>7년</p>
+                        <Link
+                          href="https://www.instagram.com/codeit_kr/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex"
+                        >
+                          <Image src={link} alt="링크이미지" width={30} height={30} />
+                          <p className="text-color-gray-400">SNS</p>
+                        </Link>
                       </div>
                       <p className="mx-4 text-color-line-200 mobile-tablet:mx-1">ㅣ</p>
                       <div className="medium flex flex-shrink-0 gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
@@ -239,7 +229,7 @@ export default function RequestDetailDreamer() {
           </div>
           <hr className="border-Line-100 my-6 pc:hidden" />
           <div>
-            <p className="semibold text-2xl text-color-black-400">플랜 정보</p>
+            <p className="semibold mb-8 text-2xl text-color-black-400">플랜 정보</p>
             <PlanCard planData={planDataForCard} planId={selectedPlan.id} />
           </div>
         </div>

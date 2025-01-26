@@ -39,7 +39,7 @@ export default function StarRating({
           onMouseEnter={() => !readonly && setHover(star)}
           onMouseLeave={() => !readonly && setHover(0)}
           disabled={readonly}
-          className={` ${!readonly && "hover:scale-110 transition-transform"}`}
+          className={` ${!readonly && "transition-transform hover:scale-110"}`}
         >
           {type ? (
             <Image
