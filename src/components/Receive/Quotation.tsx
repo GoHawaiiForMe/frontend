@@ -43,8 +43,8 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
   const tripDate = formatToDetailedDate(data.tripDate);
   const region = convertRegionToKorean(data.serviceArea);
 
-  const isButtonEnabled = price !== 0 && comment.length >= 10;
   const specifyMaker = userInfo?.id === data.assignees[0]?.id ? <Label labelType="REQUEST" /> : "";
+  const isButtonEnabled = price !== 0 && comment.length >= 10;
 
   const handleSubmit = () => {
     if (!isButtonEnabled) return;

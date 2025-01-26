@@ -16,7 +16,13 @@ import notificationService, { NotificationProps } from "@/services/notificationS
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 
-const linkItems = {
+interface LinkItem {
+  href: string;
+  label: string;
+  group?: string;
+}
+
+const linkItems: Record<"guest" | "DREAMER" | "MAKER", LinkItem[]> = {
   guest: [{ href: "/finding-maker", label: "Maker 찾기" }],
   DREAMER: [
     { href: "/plan-request", label: "여행 요청" },
@@ -24,7 +30,7 @@ const linkItems = {
     { href: "/mytrip-manage/ongoing-plan", label: "내 여행 관리" },
   ],
   MAKER: [
-    { href: "/receive", label: "받은 요청" },
+    { href: "/receive", label: "받은 요청", group: "receive" },
     { href: "/managequo", label: "내 견적 관리" },
   ],
 };
@@ -67,7 +73,10 @@ const NavBar = () => {
     return (
       <>
         {linkItems[isLoggedIn ? role : "guest"].map((link, index) => {
-          const isActive = router.pathname === link.href;
+          const isActive =
+            link.group === "receive"
+              ? ["/receive", "/all-receive-plan"].includes(router.pathname)
+              : router.pathname === link.href;
           return (
             <li key={index}>
               <Link

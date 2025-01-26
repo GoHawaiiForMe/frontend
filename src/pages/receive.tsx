@@ -83,9 +83,6 @@ export function Receive() {
     setSelectedRequestId(requestId);
     setRejectIsOpen(true);
   };
-
-  console.log("견적데이터", data?.pages[0].list);
-
   return (
     <div>
       <div className="mx-[auto] overflow-hidden mobile:mx-[auto] mobile:w-[327px] tablet:mx-[auto] tablet:w-[600px]">

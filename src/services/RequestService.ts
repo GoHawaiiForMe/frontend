@@ -13,7 +13,7 @@ interface User {
 type TripType = "CULTURE" | "SHOPPING" | "FESTIVAL" | "ACTIVITY" | "FOOD_TOUR";
 
 // 여행 상태
-type PlanStatus = "CONFIRMED" | "PENDING";
+export type PlanStatus = "CONFIRMED" | "PENDING" | "COMPLETE";
 
 // 서비스 지역
 type ServiceArea =
@@ -83,7 +83,6 @@ const ReceiveRequest = async ({
   pageSize = 5,
 }: RequestParams = {}): Promise<PlanResponse> => {
   try {
-    console.log("받은 요청 조회 시작");
 
     let queryString = "";
     const params: string[] = [];
