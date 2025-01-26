@@ -75,9 +75,10 @@ const CardFindMaker = ({
               alt="maker 이미지"
               width={parseInt(computedPhotoSize)}
               height={parseInt(computedPhotoSize)}
-              className="border-2 border-color-blue-400 rounded-full"
+              className="border-2 border-color-blue-400 rounded-full mobile-tablet:hidden"
               
             />
+            <Image src={default_img} alt="파일이미지" width={46} height={46} className="border-2 border-color-blue-400 rounded-full pc:hidden" />
           </div>
           <div className="flex flex-col w-full py-1">
             <div className="w-full flex justify-between ">
@@ -94,6 +95,7 @@ const CardFindMaker = ({
                   alt="별이미지"
                   width={parseInt(computedStarSize)}
                   height={parseInt(computedStarSize)}
+                  className="mobile-tablet:hidden"
                 />
                 <Image src={star} alt="별이미지" width={20} height={20} className="pc:hidden" />
                 <p className=" text-color-black-300">5.0</p>

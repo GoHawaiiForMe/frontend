@@ -14,7 +14,7 @@ export default function FindingMaker() {
   };
 
   return (
-   <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
+   <>
       <div className="mx-auto overflow-hidden mobile:mx-auto mobile:w-[327px] tablet:mx-auto tablet:w-[600px]">
         <p className="text-2xl py-8 semibold mobile-tablet:hidden pc:block">Maker 찾기</p>
       </div> 
@@ -50,6 +50,7 @@ export default function FindingMaker() {
                 />
                 <CardFindMaker 
                   firstLabelType="SHOPPING"
+                  secondLabelType="REQUEST"
                   labelSize="sm"
                   cardSize="sm"
                 />
@@ -103,6 +104,6 @@ export default function FindingMaker() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

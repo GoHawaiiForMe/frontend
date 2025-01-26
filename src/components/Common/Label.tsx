@@ -65,6 +65,8 @@ const Label = ({ labelType = 'SHOPPING', labelSize, customLabelContainerClass, c
   
     default:
       labelText = '지정 라벨 없음';
+      containerClass = 'bg-color-gray-100';
+      textClass = 'hidden';
       break;
   }
 
