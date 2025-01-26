@@ -49,7 +49,7 @@ const CardFindMaker = ({
   const computedStarSize = cardSize === 'sm' || isSmallScreen ? "20" : starSize;
   return (
     <div className={`w-full h-[230px] border border-color-line-100 rounded-lg py-5 px-6 shadow-[2px_2px_10px_rgba(220,220,220,0.14),-2px_-2px_10px_rgba(220,220,220,0.14)]
-     ${cardClassName} ${cardSize === 'sm' ? '!w-[327px] !h-[188px] py-4 px-[14px]' : ''} tablet:w-[600px] tablet:h-[188px] mobile:w-[327px] mobile:h-[188px]`}>
+     ${cardClassName} ${cardSize === 'sm' ? '!w-[327px] !h-[188px] py-4 px-[14px]' : ''} tablet:w-full tablet:h-[188px] mobile:w-full mobile:h-[188px]`}>
       <div className="flex mb-2 gap-4">
         <Label 
           labelType={firstLabelType}

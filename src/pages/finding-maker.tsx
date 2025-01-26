@@ -1,4 +1,3 @@
-import Head from "next/head";
 import DreamerFilter from '../components/Common/DreamerFilter';
 import DropdownSort from "@/components/Common/DropdownSort";
 import CardFindMaker from "@/components/Common/CardFindMaker";
@@ -8,7 +7,7 @@ export default function FindingMaker() {
   const isLoggedIn = true;
 
   return (
-    <>
+   <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
       <div className="mx-auto overflow-hidden mobile:mx-auto mobile:w-[327px] tablet:mx-auto tablet:w-[600px]">
         <p className="text-2xl py-8 semibold mobile-tablet:hidden pc:block">Maker 찾기</p>
       </div> 
@@ -53,18 +52,23 @@ export default function FindingMaker() {
         </div>
         <div className="w-3/4 flex flex-col gap-[32px] mobile-tablet:w-full mobile:mx-[auto] mobile:w-[327px] tablet:mx-[auto] tablet:w-[600px] tablet:px-[10px] tablet:py-[12px]">
           <div className="gap-6">
-            <div className="w-[144px] pc:ml-auto mobile-tablet:flex !mobile-tablet:justify-between">
+            <div className="pc:ml-auto pc:flex pc:justify-between mobile-tablet:flex mobile-tablet:justify-between">
               <div className="pc:hidden mobile-tablet:flex mobile-tablet:gap-4">
                 <DreamerFilter type="service" />
                 <DreamerFilter type="location" />
               </div>
-              <DropdownSort />
-              
+              <div className="pc:ml-auto">
+                <DropdownSort />
+              </div>
             </div>
-            <SearchBar placeholder="텍스트를 입력해 주세요." className="w-full" />
+            <SearchBar placeholder="텍스트를 입력해 주세요."
+             className="w-full mobile-tablet:w-full" 
+        
+             />
+            
           </div>
           
-          <div className="flex flex-col gap-4">
+          <div className="w-full flex flex-col gap-4">
             <CardFindMaker
               firstLabelType="SHOPPING"
               secondLabelType="REQUEST"
@@ -85,6 +89,6 @@ export default function FindingMaker() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
