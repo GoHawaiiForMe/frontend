@@ -109,11 +109,9 @@ const ReceiveRequest = async ({
     params.push(`pageSize=${pageSize}`);
 
     queryString = params.length > 0 ? `?${params.join("&")}` : "";
-    console.log("쿼리스트링", queryString);
+
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     const response = await api.get<PlanResponse, {}>(`/plans/maker${queryString}`);
-    console.log("쿼리스트링", queryString);
-    console.log("받은 요청 조회 완료", response);
 
     if (!response) {
       console.log("쿼리스트링", queryString);
@@ -122,10 +120,58 @@ const ReceiveRequest = async ({
     }
 
     return response;
-  } catch (error) {
+  } catch (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    error: any
+  ) {
     console.error("받은 요청 조회 실패", error);
     throw error;
   }
 };
+
+interface QuoteRequest {
+  price: number;
+  content: string;
+}
+
+const submitQuote = async (
+  planId: string,
+  quoteData: QuoteRequest,
+): Promise<{ success: boolean; message: string }> => {
+  try {
+    console.log("견적 제출 시작");
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    await api.post<QuoteRequest, {}>(`/plans/${planId}/quotes`, quoteData);
+    return { success: true, message: "견적이 성공적으로 보내졌습니다." };
+  } catch (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    error: any
+  ) {
+    if (error.response?.status === 409) {
+      return { success: false, message: "이미 제출한 견적입니다." };
+    } else if (error.response?.status === 404 || error.response?.status === 403) {
+      return { success: false, message: "잘못된 접근입니다." };
+    }
+    return { success: false, message: "견적 보내기에 실패했습니다. 다시 시도해주세요." };
+  }
+};
+
+const rejectRequest = async (planId: string): Promise<{ success: boolean; message: string }> => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    await api.delete<{}>(`/plans/${planId}/assign`);
+    return { success: true, message: "요청이 반려되었습니다." };
+  } catch (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    error: any
+  ) {
+    if ([400, 403, 404].includes(error.response?.status)) {
+      return { success: false, message: "잘못된 방식으로 접근하셨습니다." };
+    }
+    return { success: false, message: "요청 반려에 실패했습니다." };
+  }
+};
+
+export { submitQuote, rejectRequest };
 
 export default ReceiveRequest;
