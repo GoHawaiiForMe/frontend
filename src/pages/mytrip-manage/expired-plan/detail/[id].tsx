@@ -1,15 +1,9 @@
-import { useRouter } from "next/router";
+import MyPlanDetailCompleted from "@/components/MyPlans/MyPlanDetailCompleted";
 
-const DetailPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
-
+export default function expiredPlanDetail() {
   return (
-    <div>
-      <h1>Detail Page</h1>
-      <p>Plan ID: {id}</p>
-    </div>
+    <>
+      <MyPlanDetailCompleted />
+    </>
   );
-};
-
-export default DetailPage;
+}
