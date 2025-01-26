@@ -1,10 +1,10 @@
 import MyPlanNav from "./MyPlanNav";
 import Layout from "../Common/Layout";
 import PlanCard from "./Cards/PlanCard";
-import RequestCardList from "./RequestCardList";
+import RequestCardListCompleted from "./RequestCardListCompleted";
 import { useRouter } from "next/router";
 
-export default function MyPlanDetail() {
+export default function MyPlanDetailCompleted() {
   const planData = {
     plans: [
       {
@@ -117,8 +117,14 @@ export default function MyPlanDetail() {
     <>
       <MyPlanNav />
       <Layout bodyClass="bg-gray">
-        <PlanCard planData={planDataForCard} planId={selectedPlan.id} />
-        <RequestCardList />
+        <div className="my-16 rounded-2xl bg-color-gray-50 p-10">
+          <p className="semibold text-2xl">플랜 정보</p>
+          <PlanCard planData={planDataForCard} planId={selectedPlan.id} />
+          <div className="flex-col">
+            <p className="semibold mb-10 text-2xl">견적 정보</p>
+            <RequestCardListCompleted />
+          </div>
+        </div>
       </Layout>
     </>
   );

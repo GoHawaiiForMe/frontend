@@ -49,7 +49,7 @@ const CardFindMaker = ({
   const computedStarSize = cardSize === 'sm' || isSmallScreen ? "20" : starSize;
   return (
     <div className={`w-full h-[230px] border border-color-line-100 rounded-lg py-5 px-6 shadow-[2px_2px_10px_rgba(220,220,220,0.14),-2px_-2px_10px_rgba(220,220,220,0.14)]
-     ${cardClassName} ${cardSize === 'sm' ? 'w-[327px] h-[188px] py-4 px-[14px]' : ''} tablet:w-[600px] tablet:h-[188px] mobile:w-[327px] mobile:h-[188px]`}>
+     ${cardClassName} ${cardSize === 'sm' ? '!w-[327px] !h-[188px] py-4 px-[14px]' : ''} tablet:w-full tablet:h-[188px] mobile:w-full mobile:h-[188px]`}>
       <div className="flex mb-2 gap-4">
         <Label 
           labelType={firstLabelType}
@@ -65,7 +65,7 @@ const CardFindMaker = ({
         />
       </div>
 
-      <h2 className={`mb-4 text-2xl semibold text-color-black-300 ${titleSize} ${cardSize === 'sm' ? 'text-sm mb-1' : ''}`}>Dreamer의 여행을 행복하게 이루어 드립니다.</h2>
+      <h2 className={`mb-4 text-2xl semibold text-color-black-300 ${titleSize} ${cardSize === 'sm' ? 'text-sm !mb-1' : ''}mobile-tablet:text-sm`}>Dreamer의 여행을 행복하게 이루어 드립니다.</h2>
 
       <div className={`w-full h-[92px] flex items-center   rounded-md border-color-line-100 border py-4 px-[18px] shadow-sm 
         ${innerboxClassName} ${cardSize === 'sm' ? 'h-[78px] !p-[10px] ' : ''} mobile-tablet:h-[78px] mobile-tablet:p-[10px]`}>
@@ -87,7 +87,7 @@ const CardFindMaker = ({
                 <p className={`text-2lg medium text-color-blue-400 ${heartNumberSize} ${cardSize === 'sm' ? 'text-xs' : ''} mobile-tablet:text-xs`}>136</p>
               </div>
             </div>
-            <div className={`flex gap-2 items-center text-lg medium ${otherText} ${cardSize === 'sm' ? 'text-[10px]' : ''} mobile-tablet:text-[10px]`}>
+            <div className={`flex gap-2 items-center text-lg medium ${otherText} ${cardSize === 'sm' ? '!text-[10px]' : ''} mobile-tablet:text-[10px]`}>
               <div className="flex gap-2 items-center">
                 <Image
                   src={star}

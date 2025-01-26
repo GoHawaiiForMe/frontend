@@ -69,7 +69,7 @@ const Label = ({ labelType = 'SHOPPING', labelSize, customLabelContainerClass, c
   }
 
   return (
-    <div className={`${containerClass} ${customLabelContainerClass} ${labelSize === 'sm' ? 'h-[26px]' : '' } rounded-1 flex items-center py-1 pr-[5px] pl-[3px] mobile-tablet:pt-[2px] mobile-tablet:pr-[4px] mobile-tablet:pb-[2px] mobile-tablet:pl-[2px] gap-[4px] mobile-tablet:gap-[2px] `}>
+    <div className={`${containerClass} ${customLabelContainerClass} ${labelSize === 'sm' ? 'h-[26px]' : '' } rounded-1 flex items-center py-1 pr-[5px] pl-[3px] mobile-tablet:h-[26px]  mobile-tablet:pt-[2px] mobile-tablet:pr-[4px] mobile-tablet:pb-[2px] mobile-tablet:pl-[2px] gap-[4px] mobile-tablet:gap-[2px] `}>
       {labelSrc && <Image src={labelSrc} alt={`${labelType} label`} width={24} height={24} />}
       <p className={`${textClass} ${customLabelTextClass} ${labelSize === 'sm' ? 'text-xs' : ''} text-lg semibold leading-[24px] mobile-tablet:text-[13px] mobile-tablet:leading-[22px]`}>
         {labelText}

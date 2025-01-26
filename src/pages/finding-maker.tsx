@@ -1,63 +1,94 @@
-import Head from "next/head";
-import Label from '../components/Common/Label';
 import DreamerFilter from '../components/Common/DreamerFilter';
 import DropdownSort from "@/components/Common/DropdownSort";
 import CardFindMaker from "@/components/Common/CardFindMaker";
+import SearchBar from "@/components/Common/SearchBar";
 
 export default function FindingMaker() {
+  const isLoggedIn = true;
+
   return (
-    <>
-      <Head>
-        <title>Maker 찾기 페이지 / 비회원</title>
-        <meta name="description" content="Learn more about us." />
-      </Head>
-      <main className="flex flex-col items-center justify-center min-h-screen py-2">
-        <>
-        <div className="w-[955px]">
-      <CardFindMaker
-      firstLabelType="SHOPPING"
-      secondLabelType="REQUEST"
-    
-      />
-      <CardFindMaker 
-      firstLabelType="FOOD_TOUR"
-      secondLabelType="REQUEST"
-      labelSize="sm"
-      cardClassName="w-[327px] h-[188px] py-4 px-[14px]" 
-      innerboxClassName=" h-[78px] !p-[10px] " 
-      titleSize="text-sm mb-1" 
-      profileClassName="min-w-12 min-h-12"
-      photoSize="46"
-      nameSize="text-md"
-      otherText="text-[10px]"
-      starSize="20"
-      heartNumberSize="text-xs"
-       
-      />
-    </div>
-        <h1 className="text-4xl">Finding Maker As A Guest</h1>
-        <p className="mt-4 text-lg">This is the &quot;Finding Maker As A Guest&quot; page of our website.</p>
-        <div className="flex space-x-4 mt-4">
-        
-          <Label 
-          labelType="SHOPPING"
-          labelSize="sm" />
-          <Label labelType="FOOD_TOUR" />
-          <Label labelType="ACTIVITY" />
-          <Label labelType="CULTURE" />
-          <Label labelType="FESTIVAL" />
-          <Label labelType="RELAXATION" />
-          <Label labelType="REQUEST" />
-          <Label labelType="PENDING" />
-          <Label labelType="CONFIRMED" />
-        </div >
-        <div className="flex space-x-4 mt-4">
-        <DreamerFilter type="location" />
-        <DreamerFilter type="service" />
+   <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
+      <div className="mx-auto overflow-hidden mobile:mx-auto mobile:w-[327px] tablet:mx-auto tablet:w-[600px]">
+        <p className="text-2xl py-8 semibold mobile-tablet:hidden pc:block">Maker 찾기</p>
+      </div> 
+      
+      <div className="flex gap-[107px]">
+        <div className="w-1/4 gap-[10px] h-[872px] top-[208px] pr-[10px] pb-[10px] mobile-tablet:hidden">
+          <div className="flex flex-col gap-[46px]">
+            <div className="flex flex-col gap-[32px]">
+              <div className="w-[328px] flex justify-between items-center border-b border-color-line-200 py-4 px-[10px]">
+                <p className="text-xl medium">필터</p>
+                <button className="text-gray-500">초기화</button>
+              </div>
+              <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-4">
+                  <p className="text-2lg semibold">지역을 선택해 주세요</p>
+                  <DreamerFilter type="location" />
+                </div>
+                <div className="flex flex-col gap-4">
+                  <p className="text-2lg semibold">어떤 서비스가 필요하세요?</p>
+                  <DreamerFilter type="service" />
+                </div>
+              </div>
+            </div>
+
+            {isLoggedIn && (
+              <div className="flex flex-col gap-4 ">
+                <p className="text-xl semibold">최근에 찜한 Maker</p>
+                <CardFindMaker 
+                  firstLabelType="FOOD_TOUR"
+                  secondLabelType="REQUEST"
+                  labelSize="sm"
+                  cardSize="sm"
+                />
+                <CardFindMaker 
+                  firstLabelType="SHOPPING"
+                  labelSize="sm"
+                  cardSize="sm"
+                />
+              </div>
+            )}
+          </div>
         </div>
-        <DropdownSort />
-        </>
-          </main>
-    </>
-  );
+        <div className="w-3/4 flex flex-col gap-[32px] mobile-tablet:w-full mobile:mx-[auto] mobile:w-[327px] tablet:mx-[auto] tablet:w-[600px] tablet:px-[10px] tablet:py-[12px]">
+          <div className="gap-6">
+            <div className="pc:ml-auto pc:flex pc:justify-between mobile-tablet:flex mobile-tablet:justify-between">
+              <div className="pc:hidden mobile-tablet:flex mobile-tablet:gap-4">
+                <DreamerFilter type="service" />
+                <DreamerFilter type="location" />
+              </div>
+              <div className="pc:ml-auto">
+                <DropdownSort />
+              </div>
+            </div>
+            <SearchBar placeholder="텍스트를 입력해 주세요."
+             className="w-full mobile-tablet:w-full" 
+        
+             />
+            
+          </div>
+          
+          <div className="w-full flex flex-col gap-4">
+            <CardFindMaker
+              firstLabelType="SHOPPING"
+              secondLabelType="REQUEST"
+            />
+            <CardFindMaker
+              firstLabelType="SHOPPING"
+              secondLabelType="REQUEST"
+            />
+          </div>
+          
+          <div className="flex min-h-[200px] items-center justify-center">
+            <span>Loading...</span>
+          </div>
+          <div className="h-10">
+            <div className="flex items-center justify-center py-4">
+              <span>Loading more...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
