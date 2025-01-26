@@ -3,6 +3,7 @@ import DreamerFilter from '../components/Common/DreamerFilter';
 import DropdownSort from "@/components/Common/DropdownSort";
 import CardFindMaker from "@/components/Common/CardFindMaker";
 import SearchBar from "@/components/Common/SearchBar";
+import Link from 'next/link';
 
 export default function FindingMaker() {
   const [searchValue, setSearchValue] = useState('');
@@ -78,14 +79,18 @@ export default function FindingMaker() {
           </div>
           
           <div className="w-full flex flex-col gap-4">
-            <CardFindMaker
-              firstLabelType="SHOPPING"
-              secondLabelType="REQUEST"
-            />
-            <CardFindMaker
-              firstLabelType="SHOPPING"
-              secondLabelType="REQUEST"
-            />
+            <Link href="/maker-detail">
+              <CardFindMaker
+                firstLabelType="SHOPPING"
+                secondLabelType="REQUEST"
+              />
+            </Link>
+            <Link href="/maker-detail">
+              <CardFindMaker
+                firstLabelType="SHOPPING"
+                secondLabelType="REQUEST"
+              />
+            </Link>
           </div>
           
           <div className="flex min-h-[200px] items-center justify-center">
