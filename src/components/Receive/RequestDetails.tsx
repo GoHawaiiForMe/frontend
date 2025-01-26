@@ -5,10 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import userService, { UserInfo } from "@/services/userService";
 import { formatRelativeTime, formatToDetailedDate } from "@/utils/formatDate";
 import { convertRegionToKorean } from "@/utils/formatRegion";
+import { PlanItem } from "@/services/RequestService";
 
 interface RequestDetailsProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
+  data: PlanItem;
   onSendQuotation: () => void;
   onReject: () => void;
   oneButton?: boolean;

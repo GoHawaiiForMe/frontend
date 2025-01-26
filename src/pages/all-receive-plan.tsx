@@ -15,6 +15,7 @@ import { useInView } from "react-intersection-observer";
 import request_empty from "@public/assets/icon_request_empty.png";
 import Link from "next/link";
 import withAuthAccess from "@/stores/withAuthAccess";
+import { PlanItem } from "@/services/RequestService";
 
 export function AllReceivePlan() {
   const [filterIsOpen, setFilterIsOpen] = useState<boolean>(false);
@@ -122,18 +123,15 @@ export function AllReceivePlan() {
             <>
               {allItems.length > 0 ? (
                 // 데이터가 있을 때
-                allItems.map(
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  (item: any, index: number) => (
-                    <RequestDetails
-                      key={`${item.id}-${index}`}
-                      data={item}
-                      onSendQuotation={() => handleSendQuotation(item.id)}
-                      onReject={handleReject}
-                      oneButton={true}
-                    />
-                  ),
-                )
+                allItems.map((item: PlanItem, index: number) => (
+                  <RequestDetails
+                    key={`${item.id}-${index}`}
+                    data={item}
+                    onSendQuotation={() => handleSendQuotation(item.id)}
+                    onReject={handleReject}
+                    oneButton={true}
+                  />
+                ))
               ) : (
                 // 데이터가 없을 때
                 <div className="my-[180px] flex items-center justify-center">
