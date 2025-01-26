@@ -16,6 +16,11 @@ const CustomCalendar = styled(ReactCalendar)`
     line-height: 1.125em;
   }
 
+  .react-calendar__tile--disabled {
+    color: #ccc;
+    pointer-events: none;
+  }
+
   .react-calendar,
   .react-calendar *,
   .react-calendar *:before,
@@ -113,6 +118,9 @@ const CustomCalendar = styled(ReactCalendar)`
 
 export default function Calendar({ onDateChange }: { onDateChange: (date: Date) => void }) {
   const [date, setDate] = useState<Date | null>(new Date());
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
 
   const handleDateChange: CalendarProps["onChange"] = (value) => {
     if (value instanceof Date) {
@@ -129,6 +137,11 @@ export default function Calendar({ onDateChange }: { onDateChange: (date: Date) 
         locale="ko-KR"
         selectRange={false}
         formatDay={(locale, date) => dayjs(date).format("DD")}
+        tileDisabled={({ date }) => {
+          const targetDate = new Date(date);
+          targetDate.setHours(0, 0, 0, 0);
+          return targetDate < today;
+        }}
       />
     </div>
   );
