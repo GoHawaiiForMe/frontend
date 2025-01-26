@@ -1,13 +1,9 @@
-import MyPlanDetail from "@/components/MyPlans/MyPlanDetail";
+import MyPlanDetailCompleted from "@/components/MyPlans/MyPlanDetailCompleted";
 
-interface PlanDataProps {
-  id: number;
-}
-
-export default function completedPlanDetail({ id }: PlanDataProps) {
+export default function completedPlanDetail() {
   return (
     <>
-      <MyPlanDetail PlanDataProps={{ id }} />
+      <MyPlanDetailCompleted />
     </>
   );
 }

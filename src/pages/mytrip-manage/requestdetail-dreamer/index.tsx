@@ -20,7 +20,9 @@ export default function RequestDetailDreamer() {
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao) {
       const Kakao = window.Kakao;
-      Kakao.init("0337a68dec8e9d5ebea78113c3b9fc62");
+      if (!Kakao.isInitialized()) {
+        Kakao.init("0337a68dec8e9d5ebea78113c3b9fc62");
+      }
     }
   }, []);
   //init괄호 안에는 카카오디벨로퍼스에서 받은 javascript키 입력
@@ -224,7 +226,7 @@ export default function RequestDetailDreamer() {
             <button className="bg-body.bg-gray flex rounded-2xl border-[1px] p-2 pc:hidden">
               <Image src={icon_like_black} alt="좋아요" width={32} height={32} />
             </button>
-            <button className="semibold flex w-full items-center justify-center rounded-2xl bg-color-blue-300 px-28 py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:w-full mobile-tablet:max-w-full mobile-tablet:px-4 mobile-tablet:py-[11px]">
+            <button className="semibold flex w-full items-center justify-center text-nowrap rounded-2xl bg-color-blue-300 px-28 py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:w-full mobile-tablet:max-w-full mobile-tablet:px-4 mobile-tablet:py-[11px]">
               견적 확정하기
             </button>
           </div>

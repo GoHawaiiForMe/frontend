@@ -4,11 +4,10 @@ import iconDocument from "@public/assets/icon_document.png";
 import icon_like_red from "@public/assets/icon_like_red.png";
 import img_avatar1 from "@public/assets/img_avatar1.svg";
 import icon_active_star from "@public/assets/icon_active_star.svg";
-import Link from "next/link";
 
-export default function RequestCard() {
+export default function RequestCardCompleted() {
   return (
-    <div className="mb-[32px] flex flex-col rounded-2xl bg-color-gray-50 px-6 py-7 mobile-tablet:px-3 mobile-tablet:py-4">
+    <div className="mb-[32px] flex flex-col rounded-2xl bg-color-gray-50 px-6 py-7 shadow mobile-tablet:px-3 mobile-tablet:py-4">
       <div className="justify-left flex items-center gap-[12px] mobile-tablet:mt-[6px]">
         <div className="flex items-center gap-[4px] rounded-[4px] bg-color-blue-100 p-[4px]">
           <Image src={iconBox} alt="box" width={24} height={24} className="h-[20px] w-[20px]" />
@@ -91,30 +90,11 @@ export default function RequestCard() {
               서울 강남구
             </p>
           </div>
-          {/* <p className="text-color-line-200 mobile-tablet:hidden">ㅣ</p>
-          <div className="flex items-center gap-3 mobile-tablet:pl-2">
-            <p className="text-2lg font-normal leading-[26px] text-color-gray-500 bg-color-background-400 rounded-[4px] px-[6px] py-[4px] whitespace-nowrap mobile:text-md">
-              도착
-            </p>
-            <p className="text-2lg font-medium leading-[26px] whitespace-nowrap text-color-black-300 mobile-tablet:text-md">
-              경기도 수원시
-            </p>
-          </div> */}
         </div>
         <div className="flex items-center justify-end gap-4 py-6">
           <p className="medium text-2lg mobile-tablet:text-md">견적 금액</p>
           <p className="bold text-2xl mobile-tablet:text-2lg"> 180,000원</p>
         </div>
-      </div>
-      <div className="flex justify-between gap-[11px] mobile:flex-col">
-        <button className="semibold w-full text-nowrap rounded-lg bg-color-blue-300 px-[32.5px] py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]">
-          플랜 확정하기
-        </button>
-        <Link href={`/mytrip-manage/requestdetail-dreamer/`}>
-          <button className="semibold w-full text-nowrap rounded-lg border-[1px] border-solid border-color-blue-300 px-[32.5px] py-4 text-xl text-color-blue-300 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]">
-            상세보기
-          </button>
-        </Link>
       </div>
     </div>
   );
