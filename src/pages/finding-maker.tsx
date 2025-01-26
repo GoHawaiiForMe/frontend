@@ -1,10 +1,16 @@
+import React, { useState, ChangeEvent } from 'react';
 import DreamerFilter from '../components/Common/DreamerFilter';
 import DropdownSort from "@/components/Common/DropdownSort";
 import CardFindMaker from "@/components/Common/CardFindMaker";
 import SearchBar from "@/components/Common/SearchBar";
 
 export default function FindingMaker() {
+  const [searchValue, setSearchValue] = useState('');
   const isLoggedIn = true;
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
 
   return (
    <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
@@ -61,10 +67,13 @@ export default function FindingMaker() {
                 <DropdownSort />
               </div>
             </div>
-            <SearchBar placeholder="텍스트를 입력해 주세요."
-             className="w-full mobile-tablet:w-full" 
-        
-             />
+            <SearchBar 
+              placeholder="텍스트를 입력해 주세요."
+              className="w-full mobile-tablet:w-full" 
+              value={searchValue}
+              onChange={handleSearchChange}
+            
+            />
             
           </div>
           
