@@ -10,8 +10,8 @@ export default function RequestCardCompleted() {
   return (
     <div className="mb-[32px] flex flex-col rounded-2xl bg-color-gray-50 px-6 py-7 shadow mobile-tablet:px-3 mobile-tablet:py-4">
       <div className="justify-left flex items-center gap-[12px] mobile-tablet:mt-[6px]">
-        <Label labelType="RELAXATION" />
-        <Label labelType="REQUEST" />
+        <Label labelType="RELAXATION" customLabelContainerClass="rounded-lg" />
+        <Label labelType="REQUEST" customLabelContainerClass="rounded-lg" />
       </div>
       <div className="border-color bg-body.bg-gray my-6 flex gap-6 rounded-md border-[1px] px-[18px] py-4 mobile-tablet:my-[14px] mobile-tablet:gap-3 mobile-tablet:px-[10px]">
         <div className="flex h-20 w-20 flex-shrink-0 items-center mobile-tablet:h-[46px] mobile-tablet:w-[46px]">
