@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from "./api";
 
 // 사용자 기본 정보 타입
@@ -120,10 +121,7 @@ const ReceiveRequest = async ({
     }
 
     return response;
-  } catch (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    error: any
-  ) {
+  } catch (error: any) {
     console.error("받은 요청 조회 실패", error);
     throw error;
   }
@@ -143,10 +141,7 @@ const submitQuote = async (
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     await api.post<QuoteRequest, {}>(`/plans/${planId}/quotes`, quoteData);
     return { success: true, message: "견적이 성공적으로 보내졌습니다." };
-  } catch (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    error: any
-  ) {
+  } catch (error: any) {
     if (error.response?.status === 409) {
       return { success: false, message: "이미 제출한 견적입니다." };
     } else if (error.response?.status === 404 || error.response?.status === 403) {
@@ -161,10 +156,7 @@ const rejectRequest = async (planId: string): Promise<{ success: boolean; messag
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     await api.delete<{}>(`/plans/${planId}/assign`);
     return { success: true, message: "요청이 반려되었습니다." };
-  } catch (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    error: any
-  ) {
+  } catch (error: any) {
     if ([400, 403, 404].includes(error.response?.status)) {
       return { success: false, message: "잘못된 방식으로 접근하셨습니다." };
     }

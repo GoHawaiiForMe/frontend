@@ -10,7 +10,7 @@ export default function QuotationDetail() {
       <p className="font-semibold text-2xl py-8 mb-6 ">견적 상세</p>
       <div className="flex justify-between mobile-tablet:flex-col mobile-tablet:gap-6 ">
         <div className=" border grow border-color-line-100 rounded-[16px] p-6 mr-[117px] shadow-md">
-          <RequestDetails />
+          {/* <RequestDetails data={data} onSendQuotation={() => {}} onReject={() => {}} /> */}
         </div>
         <div className=" flex flex-col gap-4 mobile-tablet:pb-6 mobile-tablet:border-b mobile-tablet:border-color-line-100 mobile-tablet:mb-6">
           <p className="text-xl font-semibold tablet:text-lg mobile:text-md whitespace-nowrap">
