@@ -15,6 +15,7 @@ const notificationService = {
       const response = await api.get<NotificationProps[], Record<string, unknown>>(
         "/notifications",
       );
+      console.log(response);
       return response;
     } catch (error) {
       console.error("알림 get 실패", error);
