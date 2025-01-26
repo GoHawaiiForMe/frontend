@@ -10,18 +10,18 @@ export default function FindingMaker() {
   return (
     <>
       <div className="mx-auto overflow-hidden mobile:mx-auto mobile:w-[327px] tablet:mx-auto tablet:w-[600px]">
-        <p className="text-2xl py-8 semibold mobile-tablet:hidden ">Maker 찾기</p>
+        <p className="text-2xl py-8 semibold mobile-tablet:hidden pc:block">Maker 찾기</p>
       </div> 
       
       <div className="flex gap-[107px]">
-        <div className="w-1/4 gap-[10px] h-[872px] top-[208px] pr-[10px] pb-[10px]">
+        <div className="w-1/4 gap-[10px] h-[872px] top-[208px] pr-[10px] pb-[10px] mobile-tablet:hidden">
           <div className="flex flex-col gap-[46px]">
             <div className="flex flex-col gap-[32px]">
-              <div className="flex justify-between items-center border-b border-color-line-200 py-4 px-[10px] mobile-tablet:hidden">
+              <div className="flex justify-between items-center border-b border-color-line-200 py-4 px-[10px]">
                 <p className="text-xl medium">필터</p>
                 <button className="text-gray-500">초기화</button>
               </div>
-              <div className="flex flex-col gap-8 mobile-tablet:hidden">
+              <div className="flex flex-col gap-8">
                 <div className="flex flex-col gap-4">
                   <p className="text-2lg semibold">지역을 선택해 주세요</p>
                   <DreamerFilter type="location" />
@@ -34,7 +34,7 @@ export default function FindingMaker() {
             </div>
 
             {isLoggedIn && (
-              <div className="flex flex-col gap-4 mobile-tablet:hidden">
+              <div className="flex flex-col gap-4 ">
                 <p className="text-xl semibold">최근에 찜한 Maker</p>
                 <CardFindMaker 
                   firstLabelType="FOOD_TOUR"
@@ -51,18 +51,18 @@ export default function FindingMaker() {
             )}
           </div>
         </div>
-        <div className="w-3/4 flex flex-col gap-[32px]">
-          <div className="gap-6 mobile-tablet:flex"> 
-            <div className="flex gap-4 pc:hidden mobile-tablet:block">
-              <DreamerFilter type="location" />
-              <DreamerFilter type="service" />
+        <div className="w-3/4 flex flex-col gap-[32px] mobile-tablet:w-full mobile:mx-[auto] mobile:w-[327px] tablet:mx-[auto] tablet:w-[600px] tablet:px-[10px] tablet:py-[12px]">
+          <div className="gap-6">
+            <div className="w-[144px] pc:ml-auto mobile-tablet:flex !mobile-tablet:justify-between">
+              <div className="pc:hidden mobile-tablet:flex mobile-tablet:gap-4">
+                <DreamerFilter type="service" />
+                <DreamerFilter type="location" />
+              </div>
+              <DropdownSort />
+              
             </div>
-            <DropdownSort className="w-[144px] ml-auto" />
-            
-            <SearchBar placeholder="텍스트를 입력해 주세요." />
+            <SearchBar placeholder="텍스트를 입력해 주세요." className="w-full" />
           </div>
-          
-        
           
           <div className="flex flex-col gap-4">
             <CardFindMaker
