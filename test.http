@@ -42,5 +42,3 @@ GET https://go-for-me.onrender.com/notifications
 ### 찜한 메이커 조회
 GET https://www.goforme.duckdns.org/follow?page=1&pageSize=10
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1NTVkNDYzZS0zN2I2LTQxMGItOTA2MS0xMWE5ZDY4MjJiZGQiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczNzYxNzY2MywiZXhwIjoxNzM3NzA0MDYzfQ.YOUGCcJJ-TYPKGS4X9F3_0mdVGZOwaBS8vJOXspfBeA
-
-### test
