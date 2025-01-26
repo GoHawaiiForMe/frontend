@@ -1,0 +1,44 @@
+### 회원가입 요청 테스트
+
+POST https://go-for-me.onrender.com/user/signup
+Content-Type: application/json
+
+{
+  "user": {
+    "role": "DREAMER",
+    "nickName": "testUser",
+    "email": "testuser@example.com",
+    "password": "password123",
+    "phoneNumber": "01012345678"
+  },
+  "profile": {
+    "image": "DEFAULT_1",
+    "tripTypes": [
+      "FOOD_TOUR"
+    ],
+    "serviceArea": [
+      "SEOUL",
+      "INCHEON"
+    ]
+  }
+}
+
+### 로그인 요청 테스트
+
+POST https://go-for-me.onrender.com/user/login
+Content-Type: application/json
+
+{
+  "email": "dreamer2@test.com",
+  "password": "12345678"
+}
+
+
+### 알림 테스트
+
+GET https://go-for-me.onrender.com/notifications
+
+
+### 찜한 메이커 조회
+GET https://www.goforme.duckdns.org/follow?page=1&pageSize=10
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1NTVkNDYzZS0zN2I2LTQxMGItOTA2MS0xMWE5ZDY4MjJiZGQiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczNzYxNzY2MywiZXhwIjoxNzM3NzA0MDYzfQ.YOUGCcJJ-TYPKGS4X9F3_0mdVGZOwaBS8vJOXspfBeA

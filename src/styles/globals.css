@@ -7,12 +7,18 @@
   --font-weight-semibold: 600;
   --font-weight-medium: 500;
   --font-weight-regular: 400;
+  justify-content: space-around;
 }
 
 html,
 body {
-  background-color: var(--color-background-1);
-  color: var(--color-black-400);
+  background-color: #fcfcfc;
+  color: #1f1f1f;
+  min-height: 100vh;
+}
+
+body.bg-gray {
+  background-color: #f7f7f7;
 }
 
 * {
@@ -29,11 +35,12 @@ a {
 
 button {
   cursor: pointer;
-  border: none;
 }
+
 .bold {
   font-weight: var(--font-weight-bold);
 }
+
 .semibold {
   font-weight: var(--font-weight-semibold);
 }

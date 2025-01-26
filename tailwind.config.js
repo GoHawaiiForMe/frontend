@@ -1,12 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/pages/**/*.{js,ts,jsx,tsx}", "./src/components/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./src/features/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     screens: {
-      mobile: { max: "374px" },
-      tablet: { max: "743px" },
-      pc: { max: "1023px" },
-      "mobile-tablet": { min: "375px", max: "1023px" },
+      mobile: { max: "743px" },
+      tablet: { min: "744px", max: "1023px" },
+      pc: { min: "1024px" },
+      "mobile-tablet": { max: "1023px" },
+      card: { min: "1024px", max: "1460px" }
     },
     extend: {
       colors: {
@@ -51,8 +56,10 @@ module.exports = {
         md: ["14px", "24px"],
         sm: ["13px", "22px"],
         xs: ["12px", "20px"],
+        "2xs": ["10px", "18px"],
       },
     },
   },
-  plugins: [],
+  plugins: ["prettier-plugin-tailwindcss"],
 };
+

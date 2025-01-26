@@ -1,0 +1,103 @@
+import React, { useState, ChangeEvent } from 'react';
+import DreamerFilter from '../components/Common/DreamerFilter';
+import DropdownSort from "@/components/Common/DropdownSort";
+import CardFindMaker from "@/components/Common/CardFindMaker";
+import SearchBar from "@/components/Common/SearchBar";
+
+export default function FindingMaker() {
+  const [searchValue, setSearchValue] = useState('');
+  const isLoggedIn = true;
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
+  return (
+   <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
+      <div className="mx-auto overflow-hidden mobile:mx-auto mobile:w-[327px] tablet:mx-auto tablet:w-[600px]">
+        <p className="text-2xl py-8 semibold mobile-tablet:hidden pc:block">Maker 찾기</p>
+      </div> 
+      
+      <div className="flex gap-[107px]">
+        <div className="w-1/4 gap-[10px] h-[872px] top-[208px] pr-[10px] pb-[10px] mobile-tablet:hidden">
+          <div className="flex flex-col gap-[46px]">
+            <div className="flex flex-col gap-[32px]">
+              <div className="w-[328px] flex justify-between items-center border-b border-color-line-200 py-4 px-[10px]">
+                <p className="text-xl medium">필터</p>
+                <button className="text-gray-500">초기화</button>
+              </div>
+              <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-4">
+                  <p className="text-2lg semibold">지역을 선택해 주세요</p>
+                  <DreamerFilter type="location" />
+                </div>
+                <div className="flex flex-col gap-4">
+                  <p className="text-2lg semibold">어떤 서비스가 필요하세요?</p>
+                  <DreamerFilter type="service" />
+                </div>
+              </div>
+            </div>
+
+            {isLoggedIn && (
+              <div className="flex flex-col gap-4 ">
+                <p className="text-xl semibold">최근에 찜한 Maker</p>
+                <CardFindMaker 
+                  firstLabelType="FOOD_TOUR"
+                  secondLabelType="REQUEST"
+                  labelSize="sm"
+                  cardSize="sm"
+                />
+                <CardFindMaker 
+                  firstLabelType="SHOPPING"
+                  labelSize="sm"
+                  cardSize="sm"
+                />
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="w-3/4 flex flex-col gap-[32px] mobile-tablet:w-full mobile:mx-[auto] mobile:w-[327px] tablet:mx-[auto] tablet:w-[600px] tablet:px-[10px] tablet:py-[12px]">
+          <div className="gap-6">
+            <div className="pc:ml-auto pc:flex pc:justify-between mobile-tablet:flex mobile-tablet:justify-between">
+              <div className="pc:hidden mobile-tablet:flex mobile-tablet:gap-4">
+                <DreamerFilter type="service" />
+                <DreamerFilter type="location" />
+              </div>
+              <div className="pc:ml-auto">
+                <DropdownSort />
+              </div>
+            </div>
+            <SearchBar 
+              placeholder="텍스트를 입력해 주세요."
+              className="w-full mobile-tablet:w-full" 
+              value={searchValue}
+              onChange={handleSearchChange}
+            
+            />
+            
+          </div>
+          
+          <div className="w-full flex flex-col gap-4">
+            <CardFindMaker
+              firstLabelType="SHOPPING"
+              secondLabelType="REQUEST"
+            />
+            <CardFindMaker
+              firstLabelType="SHOPPING"
+              secondLabelType="REQUEST"
+            />
+          </div>
+          
+          <div className="flex min-h-[200px] items-center justify-center">
+            <span>Loading...</span>
+          </div>
+          <div className="h-10">
+            <div className="flex items-center justify-center py-4">
+              <span>Loading more...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

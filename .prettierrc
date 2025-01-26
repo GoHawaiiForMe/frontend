@@ -7,5 +7,6 @@
   "trailingComma": "all",
   "bracketSpacing": true,
   "arrowParens": "always",
-  "jsxBracketSameLine": false
+  "jsxBracketSameLine": false,
+  "plugins": ["prettier-plugin-tailwindcss"]
 }
