@@ -14,30 +14,29 @@ import ReceiveRequest from "@/services/RequestService";
 import { useInView } from "react-intersection-observer";
 import request_empty from "@public/assets/icon_request_empty.png";
 import Link from "next/link";
-import withAuthAccess from "@/stores/withAuthAccess";
 
-export function Receive() {
+export default function AllReceivePlan() {
   const [filterIsOpen, setFilterIsOpen] = useState<boolean>(false);
   const [quotationIsOpen, setQuotationIsOpen] = useState<boolean>(false);
   const [rejectIsOpen, setRejectIsOpen] = useState<boolean>(false);
   const [orderBy, setOrderBy] = useState<"RECENT" | "SCHEDULE_FIRST">("SCHEDULE_FIRST");
-  const [selectedRequestId, setSelectedRequestId] = useState<string | null>(null);
 
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedRequestId, setSelectedRequestId] = useState<string | null>(null);
 
   const { ref, inView } = useInView();
 
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: [
       "receiveRequest",
-      { isAssigned: true, tripType: selectedTypes, keyword: searchTerm, orderBy },
+      { isAssigned: false, tripType: selectedTypes, keyword: searchTerm, orderBy },
     ],
     initialPageParam: 1,
     queryFn: ({ pageParam = 1 }) =>
       ReceiveRequest({
-        isAssigned: true,
+        isAssigned: false,
         tripType: selectedTypes.length > 0 ? selectedTypes : undefined,
         keyword: searchTerm || undefined,
         orderBy,
@@ -78,24 +77,21 @@ export function Receive() {
     setQuotationIsOpen(true);
   };
 
-  const handleReject = (requestId: string) => {
-    setSelectedRequestId(requestId);
+  const handleReject = () => {
     setRejectIsOpen(true);
   };
-
-  console.log("견적데이터", data?.pages[0].list);
 
   return (
     <div>
       <div className="mx-[auto] overflow-hidden mobile:mx-[auto] mobile:w-[327px] tablet:mx-[auto] tablet:w-[600px]">
         <div className="mb-8 flex items-center gap-8 border-b border-color-line-200">
           <Link href="/receive">
-            <p className="text-4 cursor-pointer border-b-[3px] border-black py-6 font-semibold">
-              받은 견적 요청
-            </p>
+            <p className="text-4 cursor-pointer font-semibold">받은 견적 요청</p>
           </Link>
           <Link href="/all-receive-plan">
-            <p className="text-4 cursor-pointer font-semibold">전체 플랜</p>
+            <p className="text-4 cursor-pointer border-b-[3px] border-black py-6 font-semibold">
+              전체 플랜
+            </p>
           </Link>
         </div>
       </div>
@@ -132,7 +128,8 @@ export function Receive() {
                       key={`${item.id}-${index}`}
                       data={item}
                       onSendQuotation={() => handleSendQuotation(item.id)}
-                      onReject={() => handleReject(item.id)}
+                      onReject={handleReject}
+                      oneButton={true}
                     />
                   ),
                 )
@@ -147,7 +144,7 @@ export function Receive() {
               <div ref={ref} className="h-10">
                 {isFetchingNextPage && (
                   <div className="flex items-center justify-center py-4">
-                    <span>더 불러오는 중...</span>
+                    <span>Loading more...</span>
                   </div>
                 )}
               </div>
@@ -182,5 +179,3 @@ export function Receive() {
     </div>
   );
 }
-
-export default withAuthAccess(Receive);

@@ -19,11 +19,8 @@ const withAuthAccess = (WrappedComponent: React.ComponentType) => {
     if (!accessToken) {
       return null;
     }
-
     return <WrappedComponent {...props} />;
   };
-
   return AuthComponent;
 };
-
 export default withAuthAccess;

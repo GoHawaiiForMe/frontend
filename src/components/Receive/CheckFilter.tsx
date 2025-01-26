@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { PlanResponse } from "@/services/RequestService";
-import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface TypeCheckboxState {
@@ -16,20 +15,29 @@ interface TypeCheckboxState {
 interface CheckFilterProps {
   data: PlanResponse | undefined;
   setSelectedTypes: React.Dispatch<React.SetStateAction<string[]>>;
+  onFilterChange?: (selectedTypes: string[]) => void;
 }
 
-const CheckFilter: React.FC<CheckFilterProps> = ({ data, setSelectedTypes }) => {
+const CheckFilter: React.FC<CheckFilterProps> = ({ data, setSelectedTypes, onFilterChange }) => {
   const queryClient = useQueryClient();
 
   const [typeCheckboxes, setTypeCheckboxes] = useState<TypeCheckboxState>({
-    all: false,
-    FOOD_TOUR: false,
-    SHOPPING: false,
-    RELAXATION: false,
-    CULTURE: false,
-    ACTIVITY: false,
-    FESTIVAL: false,
+    all: true,
+    FOOD_TOUR: true,
+    SHOPPING: true,
+    RELAXATION: true,
+    CULTURE: true,
+    ACTIVITY: true,
+    FESTIVAL: true,
   });
+
+  useEffect(() => {
+    const allTypes = ["FOOD_TOUR", "SHOPPING", "RELAXATION", "CULTURE", "ACTIVITY", "FESTIVAL"];
+    setSelectedTypes(allTypes);
+    if (onFilterChange) {
+      onFilterChange(allTypes);
+    }
+  }, [setSelectedTypes, onFilterChange]);
 
   const handleTypeAllCheck = (checked: boolean): void => {
     const newCheckboxes = {
