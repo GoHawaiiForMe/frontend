@@ -16,9 +16,9 @@ export default function ReceiveModalLayout({ label, children, closeModal }: Moda
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center mobile:items-end overflow-y-scroll pt-[100px] mobile-tablet::pt-0 ">
-      <div className="bg-white rounded-2xl  px-[24px] py-[32px]  mobile:rounded-b-none mobile:pb-[32px]">
-        <div className="flex text-2xl font-bold justify-between items-center mb-10 tablet:text-2lg tablet:mb-[24px] mobile:mb-[24px] ">
+    <div className="mobile-tablet::pt-0 fixed inset-0 flex items-center justify-center overflow-y-scroll bg-black bg-opacity-50 pt-[100px] mobile:items-end">
+      <div className="rounded-2xl bg-white px-[24px] py-[32px] mobile:rounded-b-none mobile:pb-[32px]">
+        <div className="mb-10 flex items-center justify-between text-2xl font-bold mobile:mb-[24px] tablet:mb-[24px] tablet:text-2lg">
           {label}
           <Image
             src={closeIcon}
@@ -26,7 +26,7 @@ export default function ReceiveModalLayout({ label, children, closeModal }: Moda
             width={36}
             height={36}
             onClick={closeModal}
-            className="cursor-pointer tablet:w-[24px] tablet:h-[24px] "
+            className="cursor-pointer tablet:h-[24px] tablet:w-[24px]"
           />
         </div>
         {children}

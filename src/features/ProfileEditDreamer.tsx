@@ -102,11 +102,11 @@ export default function ProfileEditDreamer() {
       if (userInfo?.nickName !== data.nickName) {
         setLogin(data.nickName, userInfo?.role || "guest", userInfo?.coconut || 0);
       }
-      //임시 url
-      // router.push("/plan-request")
+      router.reload();
     } catch (error) {
       console.error("프로필 수정 실패", error);
       alert("수정 중 문제가 발생했습니다. 다시 시도해주세요.");
+      router.reload();
     }
   };
 
@@ -214,6 +214,7 @@ export default function ProfileEditDreamer() {
                 label="현재 비밀번호"
                 placeholder="현재 비밀번호를 입력해 주세요"
                 className="border-0 bg-color-background-200"
+                {...register("password")}
               />
             </div>
             <div className="my-4 h-0.5 bg-color-line-100"></div>

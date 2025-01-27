@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Label from "../Common/Label";
-import { PlanItem } from "@/services/RequestService";
+import { PlanItem } from "@/services/requestService";
 import { UserInfo } from "@/services/userService";
 import userService from "@/services/userService";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import { convertRegionToKorean } from "@/utils/formatRegion";
-import { submitQuote } from "@/services/RequestService";
+import { submitQuote } from "@/services/requestService";
 
 interface QuotationProps {
   data: PlanItem | undefined; // 선택된 하나의 아이템만 받도록 수정
@@ -43,8 +43,8 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
   const tripDate = formatToDetailedDate(data.tripDate);
   const region = convertRegionToKorean(data.serviceArea);
 
-  const isButtonEnabled = price !== 0 && comment.length >= 10;
   const specifyMaker = userInfo?.id === data.assignees[0]?.id ? <Label labelType="REQUEST" /> : "";
+  const isButtonEnabled = price !== 0 && comment.length >= 10;
 
   const handleSubmit = () => {
     if (!isButtonEnabled) return;

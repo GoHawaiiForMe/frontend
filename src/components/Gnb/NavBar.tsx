@@ -16,16 +16,22 @@ import notificationService, { NotificationProps } from "@/services/notificationS
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 
-const linkItems = {
+interface LinkItem {
+  href: string;
+  label: string;
+  group?: string;
+}
+
+const linkItems: Record<"guest" | "DREAMER" | "MAKER", LinkItem[]> = {
   guest: [{ href: "/finding-maker", label: "Maker 찾기" }],
   DREAMER: [
     { href: "/plan-request", label: "여행 요청" },
     { href: "/finding-maker", label: "Maker 찾기" },
-    { href: "/mytrip-manage/ongoing-plan", label: "내 여행 관리" },
+    { href: "/mytrip-manage/ongoing-plan", label: "내 여행 관리", group: "mytrip-manage" },
   ],
   MAKER: [
-    { href: "/receive", label: "받은 요청" },
-    { href: "/managequo", label: "내 견적 관리" },
+    { href: "/receive", label: "받은 요청", group: "receive" },
+    { href: "/managequo", label: "내 견적 관리", group: "managequo" },
   ],
 };
 
@@ -63,16 +69,40 @@ const NavBar = () => {
     setIsOpenUserMenu(false);
   };
 
+  const isLinkActive = (link: LinkItem): boolean => {
+    switch (link.group) {
+      case "receive":
+        return ["/receive", "/all-receive-plan"].includes(router.pathname);
+      case "managequo":
+        return ["/managequo", "/rejectlist"].includes(router.pathname);
+      case "mytrip-manage":
+        return router.pathname.startsWith("/mytrip-manage/");
+      default:
+        return router.pathname === link.href;
+    }
+  };
+
   const renderLinks = () => {
+    const isCurrentUrlRelated = linkItems[isLoggedIn ? role : "guest"].some((link) =>
+      isLinkActive(link),
+    );
+
     return (
       <>
         {linkItems[isLoggedIn ? role : "guest"].map((link, index) => {
-          const isActive = router.pathname === link.href;
+          const isActive = isLinkActive(link);
+
           return (
             <li key={index}>
               <Link
                 href={link.href}
-                className={`${isActive ? "bold text-color-black-500" : "text-color-gray-500"}`}
+                className={`${
+                  isCurrentUrlRelated
+                    ? isActive
+                      ? "bold text-color-black-500"
+                      : "text-color-gray-500"
+                    : "text-color-black-500"
+                }`}
               >
                 {link.label}
               </Link>
@@ -82,7 +112,6 @@ const NavBar = () => {
       </>
     );
   };
-
   const { data: notificationData = [] } = useQuery({
     queryKey: ["hasNotification"],
     queryFn: getNotification,

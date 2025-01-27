@@ -6,8 +6,9 @@ import ReviewGraph from "@/components/Receive/ReviewGraph";
 import { useState } from "react";
 import Pagination from "@/components/Common/Pagination";
 import Link from "next/link";
+import withAuthAccess from "@/stores/withAuthAccess";
 
-export default function MyPage({ userId }: { userId: string }) {
+export function MyPage() {
   const reviewStats = {
     1: 0,
     2: 0,
@@ -92,13 +93,15 @@ export default function MyPage({ userId }: { userId: string }) {
           </div>
 
           <div className="flex items-center justify-end gap-4 mobile:flex-col">
-            <button className="mobile: flex items-center gap-[6px] rounded-[16px] border border-color-gray-200 bg-color-background-200 px-[64px] py-4 mobile:px-[100px]">
-              <p className="text-xl font-semibold text-color-gray-400 mobile-tablet:whitespace-nowrap">
-                기본정보 수정
-              </p>
-              {/* <Image src={writing_gray} alt="기본정보 수정" width={24} height={24} /> */}
-            </button>
-            <Link href={`/profile/maker/edit/${userId}`}>
+            <Link href={`/profile/maker/edit/informEdit`}>
+              <button className="mobile: flex items-center gap-[6px] rounded-[16px] border border-color-gray-200 bg-color-background-200 px-[64px] py-4 mobile:px-[100px]">
+                <p className="text-xl font-semibold text-color-gray-400 mobile-tablet:whitespace-nowrap">
+                  기본정보 수정
+                </p>
+                {/* <Image src={writing_gray} alt="기본정보 수정" width={24} height={24} /> */}
+              </button>
+            </Link>
+            <Link href={`/profile/maker/edit/profileEdit`}>
               <button className="flex items-center gap-[6px] rounded-[16px] bg-color-blue-300 px-[64px] py-4 mobile:px-[100px]">
                 <p className="text-xl font-semibold text-white mobile-tablet:whitespace-nowrap">
                   내 프로필 수정
@@ -201,3 +204,5 @@ export default function MyPage({ userId }: { userId: string }) {
     </>
   );
 }
+
+export default withAuthAccess(MyPage);
