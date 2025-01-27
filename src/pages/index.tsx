@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Image from "next/image";
 import logo from "@public/assets/icon_logo_img.svg";
 
 export default function Home() {
