@@ -15,6 +15,15 @@ export default function FindingMaker() {
 
   return (
    <>
+   <style>
+    {`
+      @media (min-width: 1024px) and (max-width: 1800px) {
+        .main-container {
+          padding: 0 72px;
+        }
+      }
+    `}
+   </style>
       <div className="mx-auto overflow-hidden mobile:mx-auto mobile:w-[327px] tablet:mx-auto tablet:w-[600px]">
         <p className="text-2xl py-8 semibold mobile-tablet:hidden pc:block">Maker 찾기</p>
       </div> 
