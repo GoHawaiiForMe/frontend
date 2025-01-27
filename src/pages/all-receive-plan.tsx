@@ -16,10 +16,8 @@ import request_empty from "@public/assets/icon_request_empty.png";
 import Link from "next/link";
 import withAuthAccess from "@/stores/withAuthAccess";
 import { PlanItem } from "@/services/RequestService";
-import { useRouter } from "next/router";
 
 export function AllReceivePlan() {
-  const router = useRouter();
   const [filterIsOpen, setFilterIsOpen] = useState<boolean>(false);
   const [quotationIsOpen, setQuotationIsOpen] = useState<boolean>(false);
   const [rejectIsOpen, setRejectIsOpen] = useState<boolean>(false);

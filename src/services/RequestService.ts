@@ -174,6 +174,7 @@ export default ReceiveRequest;
 
 export const getPlanDetail = async (planId: string): Promise<PlanItem> => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     const response = await api.get<PlanItem, {}>(`/plans/${planId}`);
     return response;
   } catch (error: any) {
