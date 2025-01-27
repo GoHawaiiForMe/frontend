@@ -16,11 +16,23 @@ export default function SendQuotation({ data }: SendQuotationProps) {
 
   const specifyMaker = data.isAssigned ? <Label labelType="REQUEST" /> : "";
 
+  const waitingQuotation = ()=>{
+    if (data.plan.status === "PENDING") {
+      return <Label labelType="PENDING" />;
+    }
+    if (data.plan.status === "CONFIRMED") {
+      return <Label labelType="CONFIRMED" />;
+    }
+  }
+
+ 
+
   return (
     <>
       <div className="relative mb-8 flex flex-col rounded-[16px] border border-color-line-100 px-6 pb-3 pt-5 shadow-md">
         <div className="mb-4 flex items-center justify-between text-xs text-color-gray-500">
           <div className="flex items-center gap-3">
+            {waitingQuotation()}
             <Label labelType={data.plan.tripType} />
             {specifyMaker}
           </div>
