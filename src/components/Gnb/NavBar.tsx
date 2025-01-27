@@ -15,6 +15,17 @@ import userService from "@/services/userService";
 import notificationService, { NotificationProps } from "@/services/notificationService";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
+import DEFAULT_1 from "@public/assets/img_avatar1.svg";
+import DEFAULT_2 from "@public/assets/img_avatar2.svg";
+import DEFAULT_3 from "@public/assets/img_avatar3.svg";
+import DEFAULT_4 from "@public/assets/img_avatar4.svg";
+
+const avatarImages = [
+  { key: "DEFAULT_1", src: DEFAULT_1 },
+  { key: "DEFAULT_2", src: DEFAULT_2 },
+  { key: "DEFAULT_3", src: DEFAULT_3 },
+  { key: "DEFAULT_4", src: DEFAULT_4 },
+];
 
 interface LinkItem {
   href: string;
@@ -48,6 +59,7 @@ const NavBar = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [userInfo, setUserInfo] = useState<any>(null);
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
+  const [userImage, setUserImage] = useState<string>(user_img.src);
 
   const router = useRouter();
 
@@ -133,7 +145,11 @@ const NavBar = () => {
       const fetchUserInfo = async () => {
         try {
           const userData = await userService.getUserInfo();
+          const profileData = await userService.getProfileInfo();
+
           setUserInfo(userData);
+          const avatarImage = avatarImages.find((avatar) => avatar.key === profileData.image);
+          setUserImage(avatarImage ? avatarImage.src : user_img.src);
           setLogin(userData.nickName, userData.role, userData.coconut);
         } catch (error) {
           console.error(error);
@@ -200,7 +216,13 @@ const NavBar = () => {
               className="flex cursor-pointer items-center space-x-2"
               onClick={handleOpenUserMenu}
             >
-              <Image src={user_img} alt="유저이미지" width={36} height={36} />
+              <Image
+                src={userImage}
+                alt="유저이미지"
+                width={36}
+                height={36}
+                className="rounded-full"
+              />
               <span className="medium hidden text-2lg pc:block">
                 {nickName} {role}
               </span>
