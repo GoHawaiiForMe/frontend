@@ -1,29 +1,17 @@
 import Image from "next/image";
-import iconBox from "@public/assets/icon_boximg.png";
-import iconDocument from "@public/assets/icon_document.png";
+import Label from "@/components/Common/Label";
 import icon_like_red from "@public/assets/icon_like_red.png";
 import img_avatar1 from "@public/assets/img_avatar1.svg";
 import icon_active_star from "@public/assets/icon_active_star.svg";
+import link from "@public/assets/icon_link.svg";
 import Link from "next/link";
 
 export default function RequestCard() {
   return (
-    <div className="mb-[32px] flex flex-col rounded-2xl bg-color-gray-50 px-6 py-7 mobile-tablet:px-3 mobile-tablet:py-4">
+    <div className="mb-[32px] flex flex-col rounded-2xl bg-color-gray-50 px-6 py-7 shadow mobile-tablet:px-3 mobile-tablet:py-4">
       <div className="justify-left flex items-center gap-[12px] mobile-tablet:mt-[6px]">
-        <div className="flex items-center gap-[4px] rounded-[4px] bg-color-blue-100 p-[4px]">
-          <Image src={iconBox} alt="box" width={24} height={24} className="h-[20px] w-[20px]" />
-          <p className="semibold text-2lg text-color-blue-300 mobile:text-sm">소형 이사</p>
-        </div>
-        <div className="flex items-center gap-[4px] rounded-[4px] bg-color-red-100 p-[4px]">
-          <Image
-            src={iconDocument}
-            alt="document"
-            width={24}
-            height={24}
-            className="h-[20px] w-[20px]"
-          />
-          <p className="semibold text-2lg text-color-red-200 mobile:text-sm">지정 견적 요청</p>
-        </div>
+        <Label labelType="RELAXATION" customLabelContainerClass="rounded-lg" />
+        <Label labelType="REQUEST" customLabelContainerClass="rounded-lg" />
       </div>
       <div className="border-color bg-body.bg-gray my-6 flex gap-6 rounded-md border-[1px] px-[18px] py-4 mobile-tablet:my-[14px] mobile-tablet:gap-3 mobile-tablet:px-[10px]">
         <div className="flex h-20 w-20 flex-shrink-0 items-center mobile-tablet:h-[46px] mobile-tablet:w-[46px]">
@@ -50,8 +38,15 @@ export default function RequestCard() {
               </div>
               <p className="text-color-line-200">ㅣ</p>
               <div className="medium flex flex-shrink-0 gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
-                <p className="text-color-gray-400">경력</p>
-                <p>7년</p>
+                <Link
+                  href="https://www.instagram.com/codeit_kr/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex"
+                >
+                  <Image src={link} alt="링크이미지" width={30} height={30} />
+                  <p className="text-color-gray-400">SNS</p>
+                </Link>
               </div>
               <p className="text-color-line-200">ㅣ</p>
               <div className="medium flex flex-shrink-0 gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
@@ -101,11 +96,9 @@ export default function RequestCard() {
         <button className="semibold w-full text-nowrap rounded-lg bg-color-blue-300 px-[32.5px] py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]">
           플랜 확정하기
         </button>
-        <Link href={`/mytrip-manage/requestdetail-dreamer/`}>
-          <button className="semibold w-full text-nowrap rounded-lg border-[1px] border-solid border-color-blue-300 px-[32.5px] py-4 text-xl text-color-blue-300 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]">
-            상세보기
-          </button>
-        </Link>
+        <button className="semibold w-full text-nowrap rounded-lg border-[1px] border-solid border-color-blue-300 px-[32.5px] py-4 text-xl text-color-blue-300 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]">
+          <Link href={`/mytrip-manage/requestdetail-dreamer/`}>상세보기</Link>
+        </button>
       </div>
     </div>
   );

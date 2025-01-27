@@ -117,7 +117,12 @@ export default function MyPlanDetail() {
     <>
       <MyPlanNav />
       <Layout bodyClass="bg-gray">
-        <PlanCard planData={planDataForCard} planId={selectedPlan.id} />
+        <div className="my-10 flex-col">
+          <div className="my-10 rounded-2xl border-gray-300 bg-color-gray-50 p-5 shadow">
+            <div className="semibold mb-3 text-2xl text-color-black-500">{selectedPlan.name}</div>
+            <PlanCard planData={planDataForCard} planId={selectedPlan.id} />
+          </div>
+        </div>
         <RequestCardList />
       </Layout>
     </>
