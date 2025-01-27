@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import closeIcon from "@public/assets/icon_X.svg";
-import { PlanResponse } from "@/services/RequestService";
+import { PlanResponse } from "@/services/requestService";
 
 interface ModalFilterProps {
   closeModal: () => void;

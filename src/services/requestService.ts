@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from "./api";
 
 // 사용자 기본 정보 타입
@@ -12,7 +13,7 @@ interface User {
 type TripType = "CULTURE" | "SHOPPING" | "FESTIVAL" | "ACTIVITY" | "FOOD_TOUR";
 
 // 여행 상태
-type PlanStatus = "CONFIRMED" | "PENDING";
+export type PlanStatus = "CONFIRMED" | "PENDING" | "COMPLETED";
 
 // 서비스 지역
 type ServiceArea =
@@ -71,6 +72,7 @@ interface RequestParams {
   orderBy?: OrderBy;
   page?: number;
   pageSize?: number;
+  id?: string;
 }
 
 const ReceiveRequest = async ({
@@ -80,10 +82,9 @@ const ReceiveRequest = async ({
   orderBy,
   page = 1,
   pageSize = 5,
+  id,
 }: RequestParams = {}): Promise<PlanResponse> => {
   try {
-    console.log("받은 요청 조회 시작");
-
     let queryString = "";
     const params: string[] = [];
 
@@ -105,6 +106,10 @@ const ReceiveRequest = async ({
       params.push(`orderBy=${orderBy}`);
     }
 
+    if (id) {
+      params.push(`id=${id}`);
+    }
+
     params.push(`page=${page}`);
     params.push(`pageSize=${pageSize}`);
 
@@ -120,10 +125,7 @@ const ReceiveRequest = async ({
     }
 
     return response;
-  } catch (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    error: any
-  ) {
+  } catch (error: any) {
     console.error("받은 요청 조회 실패", error);
     throw error;
   }
@@ -143,10 +145,7 @@ const submitQuote = async (
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     await api.post<QuoteRequest, {}>(`/plans/${planId}/quotes`, quoteData);
     return { success: true, message: "견적이 성공적으로 보내졌습니다." };
-  } catch (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    error: any
-  ) {
+  } catch (error: any) {
     if (error.response?.status === 409) {
       return { success: false, message: "이미 제출한 견적입니다." };
     } else if (error.response?.status === 404 || error.response?.status === 403) {
@@ -161,10 +160,7 @@ const rejectRequest = async (planId: string): Promise<{ success: boolean; messag
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     await api.delete<{}>(`/plans/${planId}/assign`);
     return { success: true, message: "요청이 반려되었습니다." };
-  } catch (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    error: any
-  ) {
+  } catch (error: any) {
     if ([400, 403, 404].includes(error.response?.status)) {
       return { success: false, message: "잘못된 방식으로 접근하셨습니다." };
     }
@@ -175,3 +171,14 @@ const rejectRequest = async (planId: string): Promise<{ success: boolean; messag
 export { submitQuote, rejectRequest };
 
 export default ReceiveRequest;
+
+export const getPlanDetail = async (planId: string): Promise<PlanItem> => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    const response = await api.get<PlanItem, {}>(`/plans/${planId}`);
+    return response;
+  } catch (error: any) {
+    console.error("플랜 상세 조회 실패", error);
+    throw error;
+  }
+};

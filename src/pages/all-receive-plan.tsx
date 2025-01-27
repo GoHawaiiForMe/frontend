@@ -10,12 +10,14 @@ import ReceiveModalLayout from "@/components/Receive/ReceiveModalLayout";
 import Reject from "@/components/Receive/Reject";
 import SearchBar from "@/components/Common/SearchBar";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import ReceiveRequest from "@/services/RequestService";
+import ReceiveRequest from "@/services/requestService";
 import { useInView } from "react-intersection-observer";
 import request_empty from "@public/assets/icon_request_empty.png";
 import Link from "next/link";
+import withAuthAccess from "@/stores/withAuthAccess";
+import { PlanItem } from "@/services/requestService";
 
-export default function AllReceivePlan() {
+export function AllReceivePlan() {
   const [filterIsOpen, setFilterIsOpen] = useState<boolean>(false);
   const [quotationIsOpen, setQuotationIsOpen] = useState<boolean>(false);
   const [rejectIsOpen, setRejectIsOpen] = useState<boolean>(false);
@@ -120,27 +122,22 @@ export default function AllReceivePlan() {
           ) : (
             <>
               {allItems.length > 0 ? (
-                // 데이터가 있을 때
-                allItems.map(
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  (item: any, index: number) => (
+                allItems.map((item: PlanItem, index: number) => (
+                  <div key={`${item.id}-${index}`} className="cursor-pointer">
                     <RequestDetails
-                      key={`${item.id}-${index}`}
                       data={item}
                       onSendQuotation={() => handleSendQuotation(item.id)}
                       onReject={handleReject}
                       oneButton={true}
                     />
-                  ),
-                )
+                  </div>
+                ))
               ) : (
-                // 데이터가 없을 때
                 <div className="my-[180px] flex items-center justify-center">
                   <Image src={request_empty} alt="request_empty" width={180} height={180} />
                 </div>
               )}
 
-              {/* 무한 스크롤 트리거 */}
               <div ref={ref} className="h-10">
                 {isFetchingNextPage && (
                   <div className="flex items-center justify-center py-4">
@@ -179,3 +176,5 @@ export default function AllReceivePlan() {
     </div>
   );
 }
+
+export default withAuthAccess(AllReceivePlan);
