@@ -1,4 +1,5 @@
 import Head from "next/head";
+import logo from "@public/assets/icon_logo_img.svg";
 
 export default function Home() {
   return (
@@ -8,9 +9,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex flex-col items-center justify-center min-h-screen py-2">
-        안녕하세요. 랜딩페이지입니다.
-        <div className="text-2xl">랜딩 테스트</div>
-        <button className="text-md ">버튼 테스트</button>
+        <Image src={logo} width={400} height={400} alt="로고" />
+        안녕하세요. 임시 랜딩페이지입니다.
       </main>
     </>
   );
