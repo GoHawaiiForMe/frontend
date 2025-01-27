@@ -100,7 +100,7 @@ export default function ProfileEditorMaker() {
     try {
       await userService.patchProfileMaker(updatedProfileData); // API 호출 필요
       alert("프로필이 성공적으로 수정되었습니다!");
-      router.push("/profile");
+      router.push("/profile/maker/mypage");
     } catch (error) {
       console.error("프로필 수정 실패", error);
       alert("프로필 수정에 실패했습니다.");

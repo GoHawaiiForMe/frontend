@@ -1,11 +1,11 @@
-import { PlanItem } from "@/services/RequestService";
+import { PlanItem } from "@/services/requestService";
 import Label from "../Common/Label";
 import { convertRegionToKorean } from "@/utils/formatRegion";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import userService from "@/services/userService";
 import { UserInfo } from "@/services/userService";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { rejectRequest } from "@/services/RequestService";
+import { rejectRequest } from "@/services/requestService";
 
 interface RejectProps {
   data: PlanItem | undefined;
