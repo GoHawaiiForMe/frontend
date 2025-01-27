@@ -5,7 +5,7 @@ import Image from "next/image";
 import clipshare from "@public/assets/icon_outline.png";
 import facebook from "@public/assets/icon_facebook.png";
 import kakao from "@public/assets/icon_kakao.png";
-import { getPlanDetail } from "@/services/RequestService";
+import { getPlanDetail } from "@/services/requestService";
 import withAuthAccess from "@/stores/withAuthAccess";
 
 export function PlanDetail() {

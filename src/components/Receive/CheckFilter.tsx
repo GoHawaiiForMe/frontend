@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { PlanResponse } from "@/services/RequestService";
+import { PlanResponse } from "@/services/requestService";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface TypeCheckboxState {
@@ -99,7 +99,7 @@ const CheckFilter: React.FC<CheckFilterProps> = ({ data, setSelectedTypes, onFil
     <div className="hidden w-[328px] pc:block">
       <div className="mb-6">
         <div className="my-6 flex items-center justify-between gap-3 border-b border-color-line-200 px-[13.5px] py-4">
-          <p className="whitespace-nowrap text-xl pr-2 border-r border-color-line-200">여행 유형</p>
+          <p className="whitespace-nowrap border-r border-color-line-200 pr-2 text-xl">여행 유형</p>
           <div className="flex items-center gap-3">
             <p className="whitespace-nowrap text-2lg font-normal">전체 선택</p>
             <input

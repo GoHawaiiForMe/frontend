@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import userService, { UserInfo } from "@/services/userService";
 import { formatRelativeTime, formatToDetailedDate } from "@/utils/formatDate";
 import { convertRegionToKorean } from "@/utils/formatRegion";
-import { PlanItem } from "@/services/RequestService";
+import { PlanItem } from "@/services/requestService";
 import Link from "next/link";
 
 interface RequestDetailsProps {

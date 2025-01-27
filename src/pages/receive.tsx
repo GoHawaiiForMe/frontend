@@ -10,12 +10,12 @@ import ReceiveModalLayout from "@/components/Receive/ReceiveModalLayout";
 import Reject from "@/components/Receive/Reject";
 import SearchBar from "@/components/Common/SearchBar";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import ReceiveRequest from "@/services/RequestService";
+import ReceiveRequest from '@/services/requestService'
 import { useInView } from "react-intersection-observer";
 import request_empty from "@public/assets/icon_request_empty.png";
 import Link from "next/link";
 import withAuthAccess from "@/stores/withAuthAccess";
-import { PlanItem } from "@/services/RequestService";
+import { PlanItem } from "@/services/requestService";
 
 export function Receive() {
   const [filterIsOpen, setFilterIsOpen] = useState<boolean>(false);

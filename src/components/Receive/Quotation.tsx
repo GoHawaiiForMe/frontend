@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Label from "../Common/Label";
-import { PlanItem } from "@/services/RequestService";
+import { PlanItem } from "@/services/requestService";
 import { UserInfo } from "@/services/userService";
 import userService from "@/services/userService";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import { convertRegionToKorean } from "@/utils/formatRegion";
-import { submitQuote } from "@/services/RequestService";
+import { submitQuote } from "@/services/requestService";
 
 interface QuotationProps {
   data: PlanItem | undefined; // 선택된 하나의 아이템만 받도록 수정

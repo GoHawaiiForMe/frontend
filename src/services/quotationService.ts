@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { PlanItem } from "./RequestService";
+import { PlanItem } from "./requestService";
 import { UserInfo } from "./userService";
 
 export interface QuotationItem extends PlanItem {
@@ -39,7 +39,7 @@ export const getQuotations = async ({
     params.push(`pageSize=${pageSize}`);
 
     queryString = params.length > 0 ? `?${params.join("&")}` : "";
-    
+
     const response = await api.get<QuotationResponse, any>(`/quotes${queryString}`);
 
     if (!response) {
