@@ -42,14 +42,12 @@ export default function InformEditMaker() {
     queryFn: fetchUserInfo,
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mutation = useMutation<void, Error, any>({
     mutationFn: updateUserInfo,
     onSuccess: () => {
       alert("프로필이 성공적으로 수정되었습니다!");
       refetch();
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       if (error.response?.status === 401) {
         alert("기존 비밀번호를 확인해주세요.");

@@ -28,7 +28,6 @@ interface ProfileInfo {
 }
 
 const userService = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signUp: async (data: any) => {
     try {
       const response = await api.post("/users/signup", data);

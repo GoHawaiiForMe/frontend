@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 const withAuthAccess = (WrappedComponent: React.ComponentType) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const AuthComponent = (props: any) => {
     const router = useRouter();
     const [accessToken, setAccessToken] = useState<string | null>(null);

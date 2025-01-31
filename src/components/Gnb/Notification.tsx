@@ -99,7 +99,6 @@ export default function Notification({ closeModal }: { closeModal: () => void })
   const [notificationData, setNotificationData] =
     useState<NotificationProps[]>(initialNotificationData);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const patchNotiMutation = useMutation<NotificationProps, any, string>({
     mutationFn: readNotification,
     onSuccess: (notification) => {
@@ -107,7 +106,6 @@ export default function Notification({ closeModal }: { closeModal: () => void })
         prev.map((n) => (n.id === notification.id ? { ...n, isRead: true } : n)),
       );
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       console.error(error);
     },
