@@ -2,6 +2,7 @@
 
 interface KakaoSDK {
   init: (key: string) => void;
+  isInitialized: () => boolean;
   Share: {
     sendScrap: (options: { requestUrl: string }) => void;
   };
@@ -12,6 +13,7 @@ declare global {
     Kakao: KakaoSDK;
   }
 }
+
 import Image from "next/image";
 import icon_like_red from "@public/assets/icon_like_red.png";
 import icon_like_black from "@public/assets/icon_like_black.svg";
@@ -58,11 +60,12 @@ export default function RequestDetailDreamer() {
     // 여기서 페이지 변경에 따른 데이터 fetch 로직 구현
   };
 
-  /*eslint-disable*/
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao) {
       const Kakao = window.Kakao;
-      Kakao.init("0337a68dec8e9d5ebea78113c3b9fc62");
+      if (!Kakao.isInitialized()) {
+        Kakao.init("0337a68dec8e9d5ebea78113c3b9fc62");
+      }
     }
   }, []);
   //init괄호 안에는 카카오디벨로퍼스에서 받은 javascript키 입력

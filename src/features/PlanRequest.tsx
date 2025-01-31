@@ -83,12 +83,10 @@ export default function PlanRequest({ onConfirm }: { onConfirm: () => void }) {
     setSelectedDate(date);
   };
   const planRequestMutation = useMutation({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mutationFn: (data: any) => planService.planRequest(data),
     onSuccess: () => {
       onConfirm();
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       console.error("여행 요청 실패", error);
     },

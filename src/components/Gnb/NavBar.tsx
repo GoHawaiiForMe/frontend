@@ -15,6 +15,8 @@ import userService from "@/services/userService";
 import notificationService, { NotificationProps } from "@/services/notificationService";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
+import avatarImages from "@/utils/formatImage";
+import { useRef } from "react";
 
 interface LinkItem {
   href: string;
@@ -27,7 +29,7 @@ const linkItems: Record<"guest" | "DREAMER" | "MAKER", LinkItem[]> = {
   DREAMER: [
     { href: "/plan-request", label: "여행 요청" },
     { href: "/finding-maker", label: "Maker 찾기" },
-    { href: "/mytrip-manage/ongoing-plan", label: "내 여행 관리" },
+    { href: "/mytrip-manage/ongoing-plan", label: "내 여행 관리", group: "mytrip-manage" },
   ],
   MAKER: [
     { href: "/receive", label: "받은 요청", group: "receive" },
@@ -45,9 +47,11 @@ const NavBar = () => {
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [userInfo, setUserInfo] = useState<any>(null);
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
+  const [userImage, setUserImage] = useState<string>(user_img.src);
+  const userMenuRef = useRef<HTMLDivElement | null>(null);
+  const notificationRef = useRef<HTMLDivElement | null>(null);
 
   const router = useRouter();
 
@@ -69,21 +73,40 @@ const NavBar = () => {
     setIsOpenUserMenu(false);
   };
 
+  const isLinkActive = (link: LinkItem): boolean => {
+    switch (link.group) {
+      case "receive":
+        return ["/receive", "/all-receive-plan"].includes(router.pathname);
+      case "managequo":
+        return ["/managequo", "/rejectlist"].includes(router.pathname);
+      case "mytrip-manage":
+        return router.pathname.startsWith("/mytrip-manage/");
+      default:
+        return router.pathname === link.href;
+    }
+  };
+
   const renderLinks = () => {
+    const isCurrentUrlRelated = linkItems[isLoggedIn ? role : "guest"].some((link) =>
+      isLinkActive(link),
+    );
+
     return (
       <>
         {linkItems[isLoggedIn ? role : "guest"].map((link, index) => {
-          const isActive =
-            link.group === "receive"
-              ? ["/receive", "/all-receive-plan"].includes(router.pathname)
-              : link.group === "managequo"
-                ? ["/managequo", "/rejectlist"].includes(router.pathname)
-                : router.pathname === link.href;
+          const isActive = isLinkActive(link);
+
           return (
             <li key={index}>
               <Link
                 href={link.href}
-                className={`${isActive ? "bold text-color-black-500" : "text-color-gray-500"}`}
+                className={`${
+                  isCurrentUrlRelated
+                    ? isActive
+                      ? "bold text-color-black-500"
+                      : "text-color-gray-500"
+                    : "text-color-black-500"
+                }`}
               >
                 {link.label}
               </Link>
@@ -93,7 +116,6 @@ const NavBar = () => {
       </>
     );
   };
-
   const { data: notificationData = [] } = useQuery({
     queryKey: ["hasNotification"],
     queryFn: getNotification,
@@ -115,7 +137,11 @@ const NavBar = () => {
       const fetchUserInfo = async () => {
         try {
           const userData = await userService.getUserInfo();
+          const profileData = await userService.getProfileInfo();
+
           setUserInfo(userData);
+          const avatarImage = avatarImages.find((avatar) => avatar.key === profileData.image);
+          setUserImage(avatarImage ? avatarImage.src : user_img.src);
           setLogin(userData.nickName, userData.role, userData.coconut);
         } catch (error) {
           console.error(error);
@@ -126,6 +152,31 @@ const NavBar = () => {
     }
   }, [setLogin]);
 
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        isOpenUserMenu &&
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsOpenUserMenu(false);
+      }
+
+      if (
+        isOpenNotification &&
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target as Node)
+      ) {
+        setIsOpenNotification(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isOpenUserMenu, isOpenNotification]);
+
   const hasUnreadNotifications = notificationData.some((notification) => !notification.isRead);
 
   return (
@@ -133,7 +184,7 @@ const NavBar = () => {
       <div className="flex items-center">
         <div className="mr-16 text-2xl font-bold mobile-tablet:mr-0">
           <Link href="/">
-            <Image src={logo} width={100} alt="임시로고" />
+            <Image src={logo} width={100} alt="니가가라하와이 로고" />
           </Link>
         </div>
 
@@ -147,14 +198,15 @@ const NavBar = () => {
               <p className="regular">{coconut}p</p>
             </div>
             <div className="relative">
-              <Image
-                src={chatting_icon}
-                alt="채팅"
-                width={36}
-                height={36}
-                className="cursor-pointer"
-              />
-
+              <Link href="/chatting">
+                <Image
+                  src={chatting_icon}
+                  alt="채팅"
+                  width={36}
+                  height={36}
+                  className="cursor-pointer"
+                />
+              </Link>
               <span className="absolute right-0 top-0 h-2 w-2 animate-ping rounded-full bg-color-red-200"></span>
               <span className="absolute right-0 top-0 h-2 w-2 rounded-full bg-color-red-200"></span>
             </div>
@@ -175,19 +227,34 @@ const NavBar = () => {
               )}
             </div>
 
-            {isOpenNotification && <Notification closeModal={handleCloseNotification} />}
+            {isOpenNotification && (
+              <div ref={notificationRef} className="absolute z-50">
+                <Notification closeModal={handleCloseNotification} />
+              </div>
+            )}
             {notifications === null && null}
 
             <div
               className="flex cursor-pointer items-center space-x-2"
               onClick={handleOpenUserMenu}
+              ref={userMenuRef}
             >
-              <Image src={user_img} alt="유저이미지" width={36} height={36} />
+              <Image
+                src={userImage}
+                alt="유저이미지"
+                width={36}
+                height={36}
+                className="rounded-full"
+              />
               <span className="medium hidden text-2lg pc:block">
                 {nickName} {role}
               </span>
             </div>
-            {isOpenUserMenu && <UserMenu userId={userInfo?.id} closeMenu={handleCloseUserMenu} />}
+            {isOpenUserMenu && (
+              <div ref={userMenuRef} className="absolute z-50">
+                <UserMenu userId={userInfo?.id} closeMenu={handleCloseUserMenu} />
+              </div>
+            )}
           </>
         ) : (
           <>

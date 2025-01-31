@@ -12,27 +12,14 @@ import profileImgDefault from "@public/assets/icon_default_profile.svg";
 import planData from "@/types/planData";
 import userService from "@/services/userService";
 import useAuthStore from "@/stores/useAuthStore";
-
-import DEFAULT_1 from "@public/assets/img_avatar1.svg";
-import DEFAULT_2 from "@public/assets/img_avatar2.svg";
-import DEFAULT_3 from "@public/assets/img_avatar3.svg";
-import DEFAULT_4 from "@public/assets/img_avatar4.svg";
-
-const avatarImages = [
-  { key: "DEFAULT_1", src: DEFAULT_1 },
-  { key: "DEFAULT_2", src: DEFAULT_2 },
-  { key: "DEFAULT_3", src: DEFAULT_3 },
-  { key: "DEFAULT_4", src: DEFAULT_4 },
-];
+import avatarImages from "@/utils/formatImage";
 
 export default function ProfileEditDreamer() {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [isOpenImageModal, setIsOpenImageModal] = useState(false);
   const [profileImg, setProfileImg] = useState<string | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [userInfo, setUserInfo] = useState<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [profileInfo, setProfileInfo] = useState<any>(null);
   const {
     register,
@@ -102,11 +89,11 @@ export default function ProfileEditDreamer() {
       if (userInfo?.nickName !== data.nickName) {
         setLogin(data.nickName, userInfo?.role || "guest", userInfo?.coconut || 0);
       }
-      //임시 url
-      // router.push("/plan-request")
+      router.reload();
     } catch (error) {
       console.error("프로필 수정 실패", error);
       alert("수정 중 문제가 발생했습니다. 다시 시도해주세요.");
+      router.reload();
     }
   };
 
@@ -214,6 +201,7 @@ export default function ProfileEditDreamer() {
                 label="현재 비밀번호"
                 placeholder="현재 비밀번호를 입력해 주세요"
                 className="border-0 bg-color-background-200"
+                {...register("password")}
               />
             </div>
             <div className="my-4 h-0.5 bg-color-line-100"></div>

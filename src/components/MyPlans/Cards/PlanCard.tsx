@@ -39,7 +39,7 @@ export default function PlanCard({ planData, planId }: PlanCardProps) {
   const selectedPlan = sortedPlans.find((plan) => plan.id === planId);
 
   return (
-    <div className="my-[46px] flex flex-col gap-y-[32px] mobile:gap-y-4 mobile-tablet:my-8">
+    <div className="flex flex-col gap-y-[32px] mobile:gap-y-4 mobile-tablet:my-8">
       <div className="w-fill border-color semibol flex flex-col gap-y-1 rounded-2xl border-[1px] bg-color-background-200 px-10 py-8 text-xl mobile:px-[16px] mobile:py-[16px] mobile-tablet:text-md">
         <div className="flex">
           <label className="w-[150px] text-color-gray-300" htmlFor="requestDate">

@@ -68,3 +68,22 @@ button {
     padding: 0 24px;
   }
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #d9d9d9;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7d7d7d;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

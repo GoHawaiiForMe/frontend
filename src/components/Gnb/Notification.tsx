@@ -34,8 +34,8 @@ const getNotificationMessage = (event: string, payload: any) => {
       return (
         <>
           {payload.nickName} Dreamer가
-          <span className="text-color-red-200"> {getTripType(payload.tripType)}</span>
-          <span className="text-color-blue-300"> 지정견적</span>을 요청했어요.
+          <span className="text-color-blue-300"> {getTripType(payload.tripType)}</span>
+          <span className="text-color-red-200"> 지정견적</span>을 요청했어요.
         </>
       );
     case "CONFIRM_REQUEST":
@@ -48,8 +48,8 @@ const getNotificationMessage = (event: string, payload: any) => {
     case "SCHEDULE":
       return (
         <>
-          내일은 <span className="text-color-red-200">{payload.planTitle}</span>
-          <span className="text-color-blue-300"> 여행 예정일</span>
+          내일은 <span className="text-color-blue-300">{payload.planTitle}</span>
+          <span className="text-color-red-200"> 여행 예정일</span>
           이에요.
         </>
       );
@@ -57,8 +57,8 @@ const getNotificationMessage = (event: string, payload: any) => {
       return (
         <>
           {payload.nickName} Maker의
-          <span className="text-color-red-200"> {getTripType(payload.tripType)}</span>
-          <span className="text-color-blue-300"> 견적</span>이 도착했어요.
+          <span className="text-color-blue-300"> {getTripType(payload.tripType)}</span>
+          <span className="text-color-red-200"> 견적</span>이 도착했어요.
         </>
       );
     case "CONFIRM_QUOTE":
@@ -66,6 +66,22 @@ const getNotificationMessage = (event: string, payload: any) => {
         <>
           {payload.nickName} Maker의 견적이 <span className="text-color-blue-300">확정</span>
           되었어요.
+        </>
+      );
+    case "REJECT_REQUEST":
+      return (
+        <>
+          {payload.nickName} Maker가{" "}
+          <span className="text-color-blue-300">{payload.planTitle}</span>
+          지정견적 요청을 <span className="text-color-red-200">반려</span>했어요.
+        </>
+      );
+    case "REJECT_QUOTE":
+      return (
+        <>
+          {payload.nickName} Dreamer가{" "}
+          <span className="text-color-blue-300">{payload.planTitle}</span>
+          견적을 <span className="text-color-red-200">반려</span>했어요.
         </>
       );
 
@@ -83,7 +99,6 @@ export default function Notification({ closeModal }: { closeModal: () => void })
   const [notificationData, setNotificationData] =
     useState<NotificationProps[]>(initialNotificationData);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const patchNotiMutation = useMutation<NotificationProps, any, string>({
     mutationFn: readNotification,
     onSuccess: (notification) => {
@@ -91,7 +106,6 @@ export default function Notification({ closeModal }: { closeModal: () => void })
         prev.map((n) => (n.id === notification.id ? { ...n, isRead: true } : n)),
       );
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       console.error(error);
     },
