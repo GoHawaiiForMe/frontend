@@ -9,7 +9,6 @@ interface SendQuotationProps {
 }
 
 export default function SendQuotation({ data }: SendQuotationProps) {
-  console.log("data", data);
 
   const tripDate = formatToDetailedDate(data.plan.tripDate);
   const region = convertRegionToKorean(data.plan.serviceArea);

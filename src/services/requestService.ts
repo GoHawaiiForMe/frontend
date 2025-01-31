@@ -116,6 +116,7 @@ const ReceiveRequest = async ({
     queryString = params.length > 0 ? `?${params.join("&")}` : "";
 
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    console.log("쿼리스트링", queryString);
     const response = await api.get<PlanResponse, {}>(`/plans/maker${queryString}`);
 
     if (!response) {
