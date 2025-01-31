@@ -1,7 +1,6 @@
 import { api } from "./api";
 
 const planService = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   planRequest: async (data: any) => {
     try {
       const response = await api.post("/plans", data);

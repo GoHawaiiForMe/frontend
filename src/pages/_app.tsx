@@ -9,7 +9,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <NavBar />
+        <div className="sticky top-0 z-50">
+          <NavBar />
+        </div>
         <main className="main-container">
           <Component {...pageProps} />
         </main>

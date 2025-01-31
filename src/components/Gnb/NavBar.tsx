@@ -15,17 +15,8 @@ import userService from "@/services/userService";
 import notificationService, { NotificationProps } from "@/services/notificationService";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
-import DEFAULT_1 from "@public/assets/img_avatar1.svg";
-import DEFAULT_2 from "@public/assets/img_avatar2.svg";
-import DEFAULT_3 from "@public/assets/img_avatar3.svg";
-import DEFAULT_4 from "@public/assets/img_avatar4.svg";
-
-const avatarImages = [
-  { key: "DEFAULT_1", src: DEFAULT_1 },
-  { key: "DEFAULT_2", src: DEFAULT_2 },
-  { key: "DEFAULT_3", src: DEFAULT_3 },
-  { key: "DEFAULT_4", src: DEFAULT_4 },
-];
+import avatarImages from "@/utils/formatImage";
+import { useRef } from "react";
 
 interface LinkItem {
   href: string;
@@ -56,10 +47,11 @@ const NavBar = () => {
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [userInfo, setUserInfo] = useState<any>(null);
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
   const [userImage, setUserImage] = useState<string>(user_img.src);
+  const userMenuRef = useRef<HTMLDivElement | null>(null);
+  const notificationRef = useRef<HTMLDivElement | null>(null);
 
   const router = useRouter();
 
@@ -160,6 +152,31 @@ const NavBar = () => {
     }
   }, [setLogin]);
 
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        isOpenUserMenu &&
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsOpenUserMenu(false);
+      }
+
+      if (
+        isOpenNotification &&
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target as Node)
+      ) {
+        setIsOpenNotification(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isOpenUserMenu, isOpenNotification]);
+
   const hasUnreadNotifications = notificationData.some((notification) => !notification.isRead);
 
   return (
@@ -167,7 +184,7 @@ const NavBar = () => {
       <div className="flex items-center">
         <div className="mr-16 text-2xl font-bold mobile-tablet:mr-0">
           <Link href="/">
-            <Image src={logo} width={100} alt="임시로고" />
+            <Image src={logo} width={100} alt="니가가라하와이 로고" />
           </Link>
         </div>
 
@@ -181,14 +198,15 @@ const NavBar = () => {
               <p className="regular">{coconut}p</p>
             </div>
             <div className="relative">
-              <Image
-                src={chatting_icon}
-                alt="채팅"
-                width={36}
-                height={36}
-                className="cursor-pointer"
-              />
-
+              <Link href="/chatting">
+                <Image
+                  src={chatting_icon}
+                  alt="채팅"
+                  width={36}
+                  height={36}
+                  className="cursor-pointer"
+                />
+              </Link>
               <span className="absolute right-0 top-0 h-2 w-2 animate-ping rounded-full bg-color-red-200"></span>
               <span className="absolute right-0 top-0 h-2 w-2 rounded-full bg-color-red-200"></span>
             </div>
@@ -209,12 +227,17 @@ const NavBar = () => {
               )}
             </div>
 
-            {isOpenNotification && <Notification closeModal={handleCloseNotification} />}
+            {isOpenNotification && (
+              <div ref={notificationRef} className="absolute z-50">
+                <Notification closeModal={handleCloseNotification} />
+              </div>
+            )}
             {notifications === null && null}
 
             <div
               className="flex cursor-pointer items-center space-x-2"
               onClick={handleOpenUserMenu}
+              ref={userMenuRef}
             >
               <Image
                 src={userImage}
@@ -227,7 +250,11 @@ const NavBar = () => {
                 {nickName} {role}
               </span>
             </div>
-            {isOpenUserMenu && <UserMenu userId={userInfo?.id} closeMenu={handleCloseUserMenu} />}
+            {isOpenUserMenu && (
+              <div ref={userMenuRef} className="absolute z-50">
+                <UserMenu userId={userInfo?.id} closeMenu={handleCloseUserMenu} />
+              </div>
+            )}
           </>
         ) : (
           <>
