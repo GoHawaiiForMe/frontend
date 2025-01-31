@@ -31,7 +31,7 @@ const userService = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signUp: async (data: any) => {
     try {
-      const response = await api.post("/user/signup", data);
+      const response = await api.post("/users/signup", data);
       return response;
     } catch (error) {
       console.error("회원가입 실패", error);
@@ -40,7 +40,7 @@ const userService = {
   },
   checkNickName: async (data: { nickName: string }) => {
     try {
-      const response = await api.post("/user/check/nickName", data);
+      const response = await api.post("/users/check/nickName", data);
       return response;
     } catch (error) {
       console.error("닉네임 체크 불가", error);
@@ -48,7 +48,7 @@ const userService = {
   },
   checkEmail: async (data: { email: string }) => {
     try {
-      const response = await api.post("/user/check/email", data);
+      const response = await api.post("/users/check/email", data);
       return response;
     } catch (error) {
       console.error("이메일 체크 불가", error);
@@ -57,7 +57,7 @@ const userService = {
   login: async (data: { email: string; password: string }): Promise<LoginResponse> => {
     try {
       const response = await api.post<LoginResponse, { email: string; password: string }>(
-        "/user/login",
+        "/users/login",
         data,
       );
       localStorage.setItem("accessToken", response.accessToken);
@@ -70,7 +70,7 @@ const userService = {
 
   getUserInfo: async (): Promise<UserInfo> => {
     try {
-      const response = await api.get<UserInfo, Record<string, unknown>>("/user");
+      const response = await api.get<UserInfo, Record<string, unknown>>("/users");
       return response;
     } catch (error) {
       console.error("유저 정보 조회 실패", error);
@@ -80,7 +80,7 @@ const userService = {
 
   getProfileInfo: async (): Promise<ProfileInfo> => {
     try {
-      const response = await api.get<ProfileInfo, Record<string, unknown>>("/user/profile");
+      const response = await api.get<ProfileInfo, Record<string, unknown>>("/users/profile");
       return response;
     } catch (error) {
       console.error("프로필 정보 조회 실패", error);
@@ -95,7 +95,7 @@ const userService = {
     newPassword?: string;
   }): Promise<void> => {
     try {
-      await api.patch("/user/update", payload);
+      await api.patch("/users/update", payload);
     } catch (error) {
       console.error("기본 정보 수정 실패", error);
       throw error;
@@ -108,7 +108,7 @@ const userService = {
     serviceArea?: string[];
   }) => {
     try {
-      const response = await api.patch("/user/update/profile", payload);
+      const response = await api.patch("/users/update/profile", payload);
       return response;
     } catch (error) {
       console.error("프로필 수정 실패", error);
@@ -125,7 +125,7 @@ const userService = {
     detailDescription?: string;
   }) => {
     try {
-      const response = await api.patch("/user/update/profile", payload);
+      const response = await api.patch("/users/update/profile", payload);
       return response;
     } catch (error) {
       console.error("메이커 프로필 수정 실패", error);
