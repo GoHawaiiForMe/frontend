@@ -41,21 +41,22 @@ export default function FollowMaker() {
         <div className="mb-8 h-0.5 bg-color-line-200 mobile:-mx-[24px] tablet:-mx-[72px] pc:-mx-[260px]"></div>
 
         {followedItems && followedItems.length > 0 ? (
-          followedItems.map((item: FollowedCardProps, index: number) => (
-            <div className="items-center justify-center gap-4 pc:grid pc:grid-cols-2 mobile-tablet:flex mobile-tablet:flex-col card:flex card:flex-col">
-              <FollowedCard
-                key={index}
-                image={item.image}
-                nickName={item.nickName}
-                gallery={item.gallery}
-                averageRating={item.averageRating}
-                totalReviews={item.totalReviews}
-                totalFollows={item.totalFollows}
-                totalConfirms={item.totalConfirms}
-                serviceTypes={item.serviceTypes}
-              />
-            </div>
-          ))
+          <div className="gap-4 pc:grid pc:grid-cols-2 mobile-tablet:flex mobile-tablet:flex-col card:flex card:flex-col">
+            {followedItems.map((item: FollowedCardProps, index: number) => (
+              <div key={index}>
+                <FollowedCard
+                  image={item.image}
+                  nickName={item.nickName}
+                  gallery={item.gallery}
+                  averageRating={item.averageRating}
+                  totalReviews={item.totalReviews}
+                  totalFollows={item.totalFollows}
+                  totalConfirms={item.totalConfirms}
+                  serviceTypes={item.serviceTypes}
+                />
+              </div>
+            ))}
+          </div>
         ) : (
           <div className="pc:grid-cols-0 flex flex-col items-center justify-center pt-10">
             <Image src={luggage} alt="캐리어 이미지" width={500} />
