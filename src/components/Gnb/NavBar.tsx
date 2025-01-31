@@ -198,14 +198,15 @@ const NavBar = () => {
               <p className="regular">{coconut}p</p>
             </div>
             <div className="relative">
-              <Image
-                src={chatting_icon}
-                alt="채팅"
-                width={36}
-                height={36}
-                className="cursor-pointer"
-              />
-
+              <Link href="/chatting">
+                <Image
+                  src={chatting_icon}
+                  alt="채팅"
+                  width={36}
+                  height={36}
+                  className="cursor-pointer"
+                />
+              </Link>
               <span className="absolute right-0 top-0 h-2 w-2 animate-ping rounded-full bg-color-red-200"></span>
               <span className="absolute right-0 top-0 h-2 w-2 rounded-full bg-color-red-200"></span>
             </div>
