@@ -85,7 +85,7 @@ export function Receive() {
   };
   return (
     <div>
-      <div className="mx-[auto] overflow-hidden mobile:mx-[auto] mobile:w-[327px] tablet:mx-[auto] tablet:w-[600px]">
+      <div className="mx-[auto] overflow-hidden mobile:mx-[auto] w-full tablet:mx-[auto] ">
         <div className="mb-8 flex items-center gap-8 border-b border-color-line-200">
           <Link href="/receive">
             <p className="text-4 cursor-pointer border-b-[3px] border-black py-6 font-semibold">
@@ -101,7 +101,7 @@ export function Receive() {
         <CheckFilter data={data?.pages[0]} setSelectedTypes={setSelectedTypes} />
         <div className="w-full">
           <SearchBar value={searchValue} onChange={handleSearchChange} onSearch={handleSearch} />
-          <div className="mb-8 mt-4 flex w-[955px] items-center justify-between mobile:mx-[auto] mobile:w-[327px] tablet:mx-[auto] tablet:w-[600px]">
+          <div className="mb-8 mt-4 flex w-full items-center justify-between mobile:mx-[auto]  tablet:mx-[auto]">
             <p>전체 {totalCount} 건</p>
             <div className="flex items-center gap-[4px]">
               <FastDropdown onSort={setOrderBy} currentSort={orderBy} />

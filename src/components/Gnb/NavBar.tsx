@@ -180,7 +180,7 @@ const NavBar = () => {
   const hasUnreadNotifications = notificationData.some((notification) => !notification.isRead);
 
   return (
-    <div className="flex items-center justify-between border-b-2 border-color-line-100 bg-color-background-100 px-32 py-6 mobile:px-4 tablet:px-5 mobile-tablet:py-3">
+    <div className="z-40 flex items-center justify-between border-b-2 border-color-line-100 bg-color-background-100 px-32 py-6 mobile:px-4 tablet:px-5 mobile-tablet:py-3">
       <div className="flex items-center">
         <div className="mr-16 text-2xl font-bold mobile-tablet:mr-0">
           <Link href="/">

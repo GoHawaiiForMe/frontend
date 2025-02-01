@@ -1,18 +1,5 @@
 "use client";
 
-interface KakaoSDK {
-  init: (key: string) => void;
-  isInitialized: () => boolean;
-  Share: {
-    sendScrap: (options: { requestUrl: string }) => void;
-  };
-}
-
-declare global {
-  interface Window {
-    Kakao: KakaoSDK;
-  }
-}
 
 import Image from "next/image";
 import icon_like_red from "@public/assets/icon_like_red.png";
