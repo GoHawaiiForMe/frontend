@@ -10,12 +10,19 @@ const items2 = ['기념품/쇼핑형', '맛집 탐방형', '액티비티/탐험�
 
 interface DreamerFilterProps {
   type: 'location' | 'service';
+  reset: boolean;
 }
 
-const DreamerFilter: React.FC<DreamerFilterProps> = ({ type }) => {
+const DreamerFilter = ({ type, reset }: DreamerFilterProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (reset) {
+      setSelectedItem(null);
+    }
+  }, [reset]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
