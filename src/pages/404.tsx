@@ -4,12 +4,8 @@ import tree_mobile from "@public/assets/404_mobile.png";
 import sun from "@public/assets/icon_sun.png";
 import { useRouter } from "next/router";
 
-export default function errorPage() {
+export default function ErrorPage() {
   const router = useRouter();
-
-  const handleBackClick = () => {
-    router.back();
-  };
 
   return (
     <>
@@ -44,7 +40,7 @@ export default function errorPage() {
           </div>
           <div className="flex justify-end">
             <button
-              onClick={handleBackClick}
+              onClick={() => router.back()}
               className="bold mt-10 flex items-end rounded-xl bg-color-blue-200 px-8 py-4 text-2xl"
             >
               뒤로가기
@@ -78,7 +74,7 @@ export default function errorPage() {
             </div>
             <div className="flex">
               <button
-                onClick={handleBackClick}
+                onClick={() => router.back()}
                 className="bold mt-10 flex items-end rounded-xl bg-color-blue-200 px-8 py-4 text-xl text-color-gray-50"
               >
                 뒤로가기
