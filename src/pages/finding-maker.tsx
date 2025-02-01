@@ -7,10 +7,21 @@ import Link from 'next/link';
 
 export default function FindingMaker() {
   const [searchValue, setSearchValue] = useState('');
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [resetFilters, setResetFilters] = useState(false);
   const isLoggedIn = true;
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
+  };
+
+  const handleButtonClick = () => {
+    setIsButtonClicked(true);
+    setResetFilters(true);
+    setTimeout(() => {
+      setIsButtonClicked(false);
+      setResetFilters(false);
+    }, 300);
   };
 
   return (
@@ -21,6 +32,13 @@ export default function FindingMaker() {
         .main-container {
           padding: 0 72px;
         }
+      }
+      .flash {
+        animation: flash-animation 0.3s ease-in-out;
+      }
+      @keyframes flash-animation {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
       }
     `}
    </style>
@@ -34,16 +52,21 @@ export default function FindingMaker() {
             <div className="flex flex-col gap-[32px]">
               <div className="w-[328px] flex justify-between items-center border-b border-color-line-200 py-4 px-[10px]">
                 <p className="text-xl medium">필터</p>
-                <button className="text-gray-500">초기화</button>
+                <button 
+                  className={`text-gray-500 ${isButtonClicked ? 'flash' : ''}`} 
+                  onClick={handleButtonClick}
+                >
+                  초기화
+                </button>
               </div>
               <div className="flex flex-col gap-8">
                 <div className="flex flex-col gap-4">
                   <p className="text-2lg semibold">지역을 선택해 주세요</p>
-                  <DreamerFilter type="location" />
+                  <DreamerFilter type="location" reset={resetFilters} />
                 </div>
                 <div className="flex flex-col gap-4">
                   <p className="text-2lg semibold">어떤 서비스가 필요하세요?</p>
-                  <DreamerFilter type="service" />
+                  <DreamerFilter type="service" reset={resetFilters} />
                 </div>
               </div>
             </div>
@@ -71,8 +94,8 @@ export default function FindingMaker() {
           <div className="gap-6">
             <div className="pc:ml-auto pc:flex pc:justify-between mobile-tablet:flex mobile-tablet:justify-between">
               <div className="pc:hidden mobile-tablet:flex mobile-tablet:gap-4">
-                <DreamerFilter type="service" />
-                <DreamerFilter type="location" />
+                <DreamerFilter type="service" reset={resetFilters} />
+                <DreamerFilter type="location" reset={resetFilters} />
               </div>
               <div className="pc:ml-auto">
                 <DropdownSort />
