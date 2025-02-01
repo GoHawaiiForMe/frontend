@@ -24,7 +24,7 @@ const useAuthStore = create<AuthState>()(
       setLogout: () => set({ isLoggedIn: false, nickName: "게스트", role: "guest", coconut: 0 }),
     }),
     {
-      name: "auth-storage",
+      name: "auth",
       storage: createJSONStorage(() => localStorage),
     },
   ),
