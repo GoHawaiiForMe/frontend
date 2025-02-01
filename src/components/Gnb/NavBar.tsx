@@ -157,8 +157,6 @@ const NavBar = () => {
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
-      console.log("Clicked target:", event.target);
-      console.log("Sidebar ref:", sideBarRef.current);
       if (
         isOpenUserMenu &&
         userMenuRef.current &&
