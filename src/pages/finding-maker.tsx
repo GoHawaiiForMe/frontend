@@ -53,7 +53,7 @@ export default function FindingMaker() {
               <div className="w-[328px] flex justify-between items-center border-b border-color-line-200 py-4 px-[10px]">
                 <p className="text-xl medium">필터</p>
                 <button 
-                  className={`text-gray-500 ${isButtonClicked ? 'flash' : ''}`} 
+                  className={`text-gray-500 hover:text-blue-500 ${isButtonClicked ? 'flash' : ''}`} 
                   onClick={handleButtonClick}
                 >
                   초기화
