@@ -8,16 +8,22 @@ const withAuthAccess = (WrappedComponent: React.ComponentType) => {
 
     useEffect(() => {
       const token = localStorage.getItem("accessToken");
-      if (!token) {
-        router.push("/login");
-      } else {
+
+      if (token) {
+        if (router.pathname === "/login" || router.pathname === "/signup") {
+          router.push("/");
+          return;
+        }
         setAccessToken(token);
+      } else {
+        router.push("/login");
       }
     }, [router]);
 
-    if (!accessToken) {
+    if (!accessToken && !(router.pathname === "/login" || router.pathname === "/signup")) {
       return null;
     }
+
     return <WrappedComponent {...props} />;
   };
   return AuthComponent;

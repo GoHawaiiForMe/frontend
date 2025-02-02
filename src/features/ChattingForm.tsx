@@ -1,6 +1,7 @@
 import Layout from "@/components/Common/Layout";
 import Image from "next/image";
 import user from "@public/assets/icon_default_profile.svg";
+import Bubble from "@/components/Common/Bubble";
 
 export default function ChattingForm() {
   return (
@@ -38,7 +39,11 @@ export default function ChattingForm() {
                 </p>
               </div>
             </div>
-            <div className="h-[600px] mobile-tablet:h-[650px]">{/* 실제 채팅 들어가는 부분 */}</div>
+            <div className="h-[600px] mobile-tablet:h-[650px]">
+              {/* 실제 채팅 들어가는 부분 */}
+              <Bubble type="left_say">왼쪽 사람이 말함</Bubble>
+              <Bubble type="right">오른쪽 사람이 말함</Bubble>
+            </div>
             <div className="flex flex-col gap-5">
               <input
                 className="h-16 w-full rounded-xl bg-color-background-200 indent-5 text-color-gray-400 outline-none mobile-tablet:h-10"

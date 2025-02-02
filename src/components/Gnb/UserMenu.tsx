@@ -1,5 +1,6 @@
 import useAuthStore from "@/stores/useAuthStore";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export interface UserMenuProps {
   userId: string;
@@ -8,6 +9,7 @@ export interface UserMenuProps {
 
 export default function UserMenu({ userId, closeMenu }: UserMenuProps) {
   const { nickName, role, setLogout } = useAuthStore();
+  const router = useRouter();
 
   if (role === "guest") return null;
 
@@ -36,7 +38,7 @@ export default function UserMenu({ userId, closeMenu }: UserMenuProps) {
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-
+    router.reload();
     setLogout();
   };
 
