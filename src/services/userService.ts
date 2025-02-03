@@ -27,6 +27,34 @@ interface ProfileInfo {
   updatedAt: string;
 }
 
+interface ReviewWriter {
+  nickName: string;
+}
+
+interface ReviewItem {
+  id: string;
+  writer: ReviewWriter;
+  rating: number;
+  content: string;
+  createdAt: string;
+}
+
+interface RatingCount {
+  rating: string;
+  count: number;
+}
+
+interface MakerReviewResponse {
+  totalCount: number;
+  groupByCount: RatingCount[];
+  list: ReviewItem[];
+}
+
+interface MakerReviewParams {
+  page?: number;
+  pageSize?: number;
+}
+
 const userService = {
   signUp: async (data: any) => {
     try {
@@ -128,6 +156,21 @@ const userService = {
       return response;
     } catch (error) {
       console.error("메이커 프로필 수정 실패", error);
+      throw error;
+    }
+  },
+
+  getMakerMypage: async (
+    makerId: string,
+    params: MakerReviewParams = {},
+  ): Promise<MakerReviewResponse> => {
+    try {
+      const { page = 1, pageSize = 5 } = params;
+      const queryString = `?page=${page}&pageSize=${pageSize}`;
+      const response = await api.get<MakerReviewResponse, {}>(`/reviews/maker${queryString}`);
+      return response;
+    } catch (error) {
+      console.error("메이커 마이페이지 조회 실패", error);
       throw error;
     }
   },

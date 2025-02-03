@@ -7,18 +7,31 @@ import { useState } from "react";
 import Pagination from "@/components/Common/Pagination";
 import Link from "next/link";
 import withAuthAccess from "@/stores/withAuthAccess";
+// import { useRouter } from "next/router";
 
 export function MyPage() {
+  // const router = useRouter();
+  // const { id } = router.query;
+
+
   const reviewStats = {
     1: 0,
     2: 0,
     3: 0,
     4: 8,
     5: 170,
+
   };
+
+  // const { data: makerMypage } = useQuery({
+  //   queryKey: ["makerMypage"],
+  //   queryFn: () => userService.getMakerMypage(id as string),
+  // });
+
 
   // 현재 페이지를 저장할 state (처음에는 1페이지)
   const [currentPage, setCurrentPage] = useState(1);
+
 
   // 한 페이지에 보여줄 리뷰 수
   const itemsPerPage = 5;

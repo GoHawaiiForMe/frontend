@@ -9,23 +9,19 @@ interface SendQuotationProps {
 }
 
 export default function SendQuotation({ data }: SendQuotationProps) {
-  console.log("data", data);
-
   const tripDate = formatToDetailedDate(data.plan.tripDate);
   const region = convertRegionToKorean(data.plan.serviceArea);
 
   const specifyMaker = data.isAssigned ? <Label labelType="REQUEST" /> : "";
 
-  const waitingQuotation = ()=>{
+  const waitingQuotation = () => {
     if (data.plan.status === "PENDING") {
       return <Label labelType="PENDING" />;
     }
     if (data.plan.status === "CONFIRMED") {
       return <Label labelType="CONFIRMED" />;
     }
-  }
-
- 
+  };
 
   return (
     <>
@@ -41,7 +37,7 @@ export default function SendQuotation({ data }: SendQuotationProps) {
           <div>
             <p className="text-xl font-semibold">{data.plan.title}</p>
             <p className="mb-[18px] border-b border-color-line-200 pb-[18px] text-md font-medium">
-              Dreamer 닉네임 들어갈 고객님
+              {data.dreamer.nickName} 고객님
             </p>
             <div className="flex flex-col gap-1 mobile:grid mobile:grid-cols-2 mobile:gap-0 tablet:flex-row">
               <div className="flex items-center gap-1 mobile:col-span-2 mobile:mb-2">

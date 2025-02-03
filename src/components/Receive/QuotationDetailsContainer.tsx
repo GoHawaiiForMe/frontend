@@ -1,57 +1,60 @@
 import Image from "next/image";
 import writing from "@public/assets/icon_writing.png";
 import Label from "../Common/Label";
-import { useQuery } from "@tanstack/react-query";
-import userService, { UserInfo } from "@/services/userService";
 import { formatRelativeTime, formatToDetailedDate } from "@/utils/formatDate";
 import { convertRegionToKorean } from "@/utils/formatRegion";
-import { PlanItem } from "@/services/requestService";
 import Link from "next/link";
+import { QuotationItem } from "@/services/quotationService";
 
-interface RequestDetailsProps {
-  data: PlanItem;
+interface QuotationDetailsProps {
+  data: QuotationItem;
   onSendQuotation: () => void;
   onReject: () => void;
   oneButton?: boolean;
   twoButton?: boolean;
 }
 
-export default function RequestDetails({
+export default function QuotationDetailsContainer({
   data,
   onSendQuotation,
   onReject,
   oneButton = false,
   twoButton = false,
-}: RequestDetailsProps) {
-  const { data: userInfo } = useQuery<UserInfo>({
-    queryKey: ["userprofile"],
-    queryFn: userService.getUserInfo,
-  });
-
+}: QuotationDetailsProps) {
   const writeTime = formatRelativeTime(data.updatedAt);
-  const tripDate = formatToDetailedDate(data.tripDate);
-  const region = convertRegionToKorean(data.serviceArea);
+  const tripDate = formatToDetailedDate(data.plan.tripDate);
+  const region = convertRegionToKorean(data.plan.serviceArea);
 
-  const specifyMaker = userInfo?.id === data.assignees[0]?.id ? <Label labelType="REQUEST" /> : "";
+
+  const specifyMaker = data.isAssigned ? <Label labelType="REQUEST" /> : "";
+  const waitingQuotation = () => {
+    if (data.plan.status === "PENDING") {
+      return <Label labelType="PENDING" />;
+    }
+    if (data.plan.status === "CONFIRMED") {
+      return <Label labelType="CONFIRMED" />;
+    }
+  };
 
   return (
     <>
-      <div className="mb-12 w-full rounded-[16px] border border-color-line-100 px-4 pb-[12px] pt-[20px] shadow-md mobile:mx-[auto] mobile:mb-6 mobile:px-[14px] mobile:py-[16px] tablet:mx-[auto] tablet:mb-8 ">
+      <div className="mb-12 mr-[117px] w-full rounded-[16px] border border-color-line-100 px-4 pb-[12px] pt-[20px] shadow-md mobile:mx-[auto] mobile:mb-6 mobile:px-[14px] mobile:py-[16px] tablet:mx-[auto] tablet:mb-8 mobile-tablet:mr-0">
         <div className="flex flex-col">
           <Link href={`/planDetail/${data.id}`}>
             <div className="mb-4 flex items-center justify-between text-xs text-color-gray-500">
               <div className="flex items-center gap-2">
+                {waitingQuotation()}
                 <Label labelType={data.tripType} />
                 {specifyMaker}
-                {/* <Label type={data.status === "PENDING" ? "PENDING" : "CONFIRMED"} /> */}
               </div>
               <div className="">{writeTime}</div>
             </div>
             <div>
-              <p className="text-xl font-semibold">{data.title}</p>
+              <p className="text-xl font-semibold">{data.plan.title}</p>
               <p className="mb-[18px] border-b border-color-line-200 pb-[18px] text-md font-medium">
                 {data.dreamer.nickName} 님
               </p>
+
               <div className="flex items-center gap-1 mobile:grid mobile:grid-cols-2 mobile:gap-[0px]">
                 <div className="flex items-center gap-1 mobile:col-span-2 mobile:mb-2">
                   <p className="rounded-1 whitespace-nowrap bg-color-background-400 px-[6px] py-1 text-2lg font-normal text-color-gray-500 mobile:text-md">

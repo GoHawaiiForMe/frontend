@@ -1,20 +1,6 @@
 "use client";
 //useEffect, useState등을 사용할 수 있게 함(CSR로 전환)
 
-interface KakaoSDK {
-  init: (key: string) => void;
-  isInitialized: () => boolean;
-  Share: {
-    sendScrap: (options: { requestUrl: string }) => void;
-  };
-}
-
-declare global {
-  interface Window {
-    Kakao: KakaoSDK;
-  }
-}
-
 import Image from "next/image";
 import Label from "@/components/Common/Label";
 import icon_like_red from "@public/assets/icon_like_red.png";
