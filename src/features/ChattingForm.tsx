@@ -7,6 +7,7 @@ import chatService from "@/services/chatService";
 import avatarImages from "@/utils/formatImage";
 import { useQuery } from "@tanstack/react-query";
 import userService from "@/services/userService";
+import { formatToDetailedDate } from "@/utils/formatDate";
 
 const getUserId = async (): Promise<string> => {
   const userInfo = await userService.getUserInfo();
@@ -34,7 +35,7 @@ export default function ChattingForm() {
   const fetchMessages = async (chatRoomId: string) => {
     try {
       const data = await chatService.getMessages(chatRoomId, 1, 5);
-      console.log(data);
+
       setMessages(data);
     } catch (error) {
       console.error("메시지를 가져오는데 실패했습니다.");
@@ -61,6 +62,7 @@ export default function ChattingForm() {
     const getChatRooms = async () => {
       try {
         const data = await chatService.getChatRooms();
+        console.log(data);
         setChatRooms(data);
       } catch (error) {
         console.error("채팅방을 가져오는데 실패했습니다.");
@@ -149,16 +151,18 @@ export default function ChattingForm() {
           </div>
           {/* 채팅창 */}
           <div className="col-span-5 rounded-xl bg-color-gray-50 p-8 mobile-tablet:col-span-7 card:col-span-7">
-            <div className="rounded-lg border border-color-line-100 p-3">
-              <p className="semibold text-2xl text-color-black-300 mobile-tablet:text-xl">제목</p>
+            <div className="mb-4 rounded-lg border border-color-line-100 p-4">
+              <p className="semibold text-2xl text-color-black-300 mobile-tablet:text-xl">
+                {selectedChatRoom?.planTitle}
+              </p>
               <div className="flex gap-4">
                 <p className="regular text-xl text-color-gray-500 mobile-tablet:text-2lg">여행일</p>
                 <p className="medium text-color-balck-400 text-xl mobile-tablet:text-2lg">
-                  2024.07.01
+                  {formatToDetailedDate(selectedChatRoom?.planTripDate || "")}
                 </p>
                 <p className="regular text-xl text-color-gray-500 mobile-tablet:text-2lg">플랜가</p>
                 <p className="medium text-color-balck-400 text-xl mobile-tablet:text-2lg">
-                  210,000원
+                  {selectedChatRoom?.quotePrice}
                 </p>
               </div>
             </div>

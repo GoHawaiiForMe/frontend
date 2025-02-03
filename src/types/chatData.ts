@@ -9,6 +9,9 @@ export interface ChatRoom {
   createdAt: string;
   updatedAt: string;
   planId: string;
+  planTitle: string;
+  planTripDate: string;
+  quotePrice: string;
   lastChat: string | null;
   isActive: boolean;
   users: User[];

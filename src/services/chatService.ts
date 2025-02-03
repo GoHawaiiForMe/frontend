@@ -13,6 +13,9 @@ const chatService = {
         createdAt: item.createdAt,
         updatedAt: item.updatedAt,
         planId: item.planId,
+        planTitle: item.planTitle,
+        planTripDate: item.planTripDate,
+        quotePrice: item.quotePrice,
         lastChat: item.lastChat,
         isActive: item.isActive,
         users: item.users.map((user: User) => ({
