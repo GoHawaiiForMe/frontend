@@ -14,8 +14,8 @@ const getUserId = async (): Promise<string> => {
 };
 
 export default function ChattingForm() {
-  const [messages, setMessages] = useState<Messagge[]>([]); //전체
-  const [message, setMessage] = useState<string>(""); //전송할 메세지
+  const [messages, setMessages] = useState<Messagge[]>([]); //전체 메시지 보기
+  const [message, setMessage] = useState<string>(""); //전송할 메세지 관리
   const [chatRooms, setChatRooms] = useState<any[]>([]);
   const [selectedChatRoom, setSelectedChatRoom] = useState<ChatRoom | null>(null);
 
@@ -26,7 +26,7 @@ export default function ChattingForm() {
 
   const handleSendMessage = () => {
     if (message.trim()) {
-      console.log("메시지 전송: ", message);
+      console.log("메시지 전송 내용 =>", message);
       setMessage("");
     }
   };
@@ -34,10 +34,19 @@ export default function ChattingForm() {
   const fetchMessages = async (chatRoomId: string) => {
     try {
       const data = await chatService.getMessages(chatRoomId, 1, 5);
-      setMessages(data); // 메시지 배열 전체 저장
+      console.log(data);
+      setMessages(data);
     } catch (error) {
       console.error("메시지를 가져오는데 실패했습니다.");
     }
+  };
+
+  const renderMessages = () => {
+    return messages.map((msg) => (
+      <Bubble key={msg.id} type={msg.senderId === userId ? "right" : "left_say"}>
+        {msg.content}
+      </Bubble>
+    ));
   };
 
   const handleChatRoomClick = (chatRoom: ChatRoom) => {
@@ -49,7 +58,6 @@ export default function ChattingForm() {
     const getChatRooms = async () => {
       try {
         const data = await chatService.getChatRooms();
-        console.log(data);
         setChatRooms(data);
       } catch (error) {
         console.error("채팅방을 가져오는데 실패했습니다.");
@@ -151,18 +159,12 @@ export default function ChattingForm() {
                 </p>
               </div>
             </div>
-            <div className="h-[600px] mobile-tablet:h-[650px]">
-              {/* 실제 채팅 들어가는 부분 */}
-              {messages.map((msg) => (
-                <Bubble key={msg.id} type={msg.senderId === userId ? "right" : "left_say"}>
-                  {msg.content}
-                </Bubble>
-              ))}
-            </div>
+            <div className="h-[600px] mobile-tablet:h-[650px]">{renderMessages()}</div>
             <div className="flex flex-col gap-5">
               <input
-                className="h-16 w-full rounded-xl bg-color-background-200 indent-5 text-color-gray-400 outline-none mobile-tablet:h-10"
+                className="h-16 w-full rounded-xl bg-color-background-200 indent-5 text-color-black-500 outline-none mobile-tablet:h-10"
                 placeholder="텍스트를 입력해 주세요."
+                onChange={(e) => setMessage(e.target.value)}
               />
               <div className="flex justify-between">
                 <button className="rounded-xl border border-color-blue-300 bg-color-blue-100 px-6 py-3 text-lg text-color-blue-300 mobile-tablet:px-4 mobile-tablet:py-1">
