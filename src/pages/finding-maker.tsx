@@ -4,12 +4,13 @@ import DropdownSort from "@/components/Common/DropdownSort";
 import CardFindMaker from "@/components/Common/CardFindMaker";
 import SearchBar from "@/components/Common/SearchBar";
 import Link from 'next/link';
+import useAuthStore from "@/stores/useAuthStore";
 
 export default function FindingMaker() {
   const [searchValue, setSearchValue] = useState('');
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [resetFilters, setResetFilters] = useState(false);
-  const isLoggedIn = true;
+  const { isLoggedIn, setLogin } = useAuthStore();
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
