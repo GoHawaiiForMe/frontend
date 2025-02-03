@@ -93,26 +93,30 @@ export function QuotationDetail() {
               src={clipshare}
               alt="clipshare"
               onClick={handleCopyUrl}
-              className="rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
+              className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
               width={64}
               height={64}
             />
+
             <Image
               src={kakao}
               alt="kakao"
+              id="kakaotalk-sharing-btn"
               onClick={handleKakaoShare}
-              className="rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
+              className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
               width={64}
               height={64}
             />
+
             <Image
               src={facebook}
               alt="facebook"
               onClick={handleFacebookShare}
-              className="rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
+              className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
               width={64}
               height={64}
             />
+
           </div>
         </div>
       </div>
