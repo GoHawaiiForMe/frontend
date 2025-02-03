@@ -52,12 +52,14 @@ const NavBar = () => {
   const [userImage, setUserImage] = useState<string>(user_img.src);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const notificationRef = useRef<HTMLDivElement | null>(null);
+  const sideBarRef = useRef<HTMLDivElement | null>(null);
 
   const router = useRouter();
 
   const handleOpenSidebar = () => {
     setIsOpenSidebar(true);
   };
+
   const handleOpenNotification = () => {
     setIsOpenNotification((prev) => !prev);
   };
@@ -100,6 +102,7 @@ const NavBar = () => {
             <li key={index}>
               <Link
                 href={link.href}
+                onClick={() => setIsOpenSidebar(false)}
                 className={`${
                   isCurrentUrlRelated
                     ? isActive
@@ -169,13 +172,21 @@ const NavBar = () => {
       ) {
         setIsOpenNotification(false);
       }
+
+      if (
+        isOpenSidebar &&
+        sideBarRef.current &&
+        !sideBarRef.current.contains(event.target as Node)
+      ) {
+        setIsOpenSidebar(false);
+      }
     };
 
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [isOpenUserMenu, isOpenNotification]);
+  }, [isOpenUserMenu, isOpenNotification, isOpenSidebar]);
 
   const hasUnreadNotifications = notificationData.some((notification) => !notification.isRead);
 
@@ -278,7 +289,7 @@ const NavBar = () => {
       {/* 사이드바 */}
       {isOpenSidebar && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-end bg-black bg-opacity-50">
-          <div className="flex h-full w-[220px] flex-col bg-white p-4 shadow-lg">
+          <div className="flex h-full w-[220px] flex-col bg-white p-4 shadow-lg" ref={sideBarRef}>
             <div className="mb-4 flex justify-end">
               <Image
                 src={closeIcon}
