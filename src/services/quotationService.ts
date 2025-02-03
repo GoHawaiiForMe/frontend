@@ -55,7 +55,6 @@ export const getQuotations = async ({
 
 export const getQuotationDetail = async (id: string): Promise<QuotationItem> => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     const response = await api.get<QuotationItem, {}>(`/quotes/${id}`);
     return response;
   } catch (error) {

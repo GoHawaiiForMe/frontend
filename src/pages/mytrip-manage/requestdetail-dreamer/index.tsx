@@ -1,8 +1,6 @@
 "use client";
 //useEffect, useState등을 사용할 수 있게 함(CSR로 전환)
 
-
-
 import Image from "next/image";
 import Label from "@/components/Common/Label";
 import icon_like_red from "@public/assets/icon_like_red.png";
