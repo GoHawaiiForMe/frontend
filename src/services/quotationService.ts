@@ -52,3 +52,14 @@ export const getQuotations = async ({
     throw error;
   }
 };
+
+export const getQuotationDetail = async (id: string): Promise<QuotationItem> => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    const response = await api.get<QuotationItem, {}>(`/quotes/${id}`);
+    return response;
+  } catch (error) {
+    console.error("견적 상세 조회 실패", error);
+    throw error;
+  }
+};

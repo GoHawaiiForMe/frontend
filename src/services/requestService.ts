@@ -116,11 +116,9 @@ const ReceiveRequest = async ({
     queryString = params.length > 0 ? `?${params.join("&")}` : "";
 
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-    console.log("쿼리스트링", queryString);
     const response = await api.get<PlanResponse, {}>(`/plans/maker${queryString}`);
 
     if (!response) {
-      console.log("쿼리스트링", queryString);
       console.warn("데이터가 없습니다. 빈 데이터를 반환합니다.");
       return { totalCount: 0, groupByCount: [], list: [] };
     }
@@ -142,7 +140,6 @@ const submitQuote = async (
   quoteData: QuoteRequest,
 ): Promise<{ success: boolean; message: string }> => {
   try {
-    console.log("견적 제출 시작");
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     await api.post<QuoteRequest, {}>(`/plans/${planId}/quotes`, quoteData);
     return { success: true, message: "견적이 성공적으로 보내졌습니다." };

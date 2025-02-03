@@ -22,8 +22,6 @@ export function PlanDetail() {
   const { id } = router.query;
   const [quotationIsOpen, setQuotationIsOpen] = useState(false);
 
-  console.log("아이디 ", id);
-
   const { data: planDetail, isLoading } = useQuery({
     queryKey: ["planDetail", id],
     queryFn: () => getPlanDetail(id as string),
@@ -83,7 +81,7 @@ export function PlanDetail() {
     <>
       <p className="mb-6 py-8 text-2xl font-semibold">플랜 상세</p>
       <div className="flex justify-between mobile-tablet:flex-col mobile-tablet:gap-6">
-        <div className="mr-[117px]">
+        <div className="mr-[117px] w-full">
           {planDetail && (
             <RequestDetails
               data={planDetail}
