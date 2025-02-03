@@ -37,8 +37,7 @@ const notificationService = {
     }
   },
   realTimeNotification: (callback: (notification: NotificationProps) => void) => {
-    const eventSource = new EventSource("/notifications/stream");
-
+    const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_URL}/notifications/stream`);
     eventSource.onmessage = (event) => {
       const notification = JSON.parse(event.data);
       console.log(notification);

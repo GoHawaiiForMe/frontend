@@ -321,7 +321,7 @@ const NavBar = () => {
       )}
       {isNotificationVisible && realTimeNotifications.length > 0 && (
         <div className="animate-fadeInOut fixed bottom-0 left-0 w-full rounded-xl bg-color-red-100 p-4 text-center">
-          <p>{realTimeNotifications[realTimeNotifications.length - 1]?.content}</p>
+          <p>{realTimeNotifications[realTimeNotifications.length - 1]?.payload}</p>
         </div>
       )}
       <RealTimeNotification setRealTimeNotifications={setRealTimeNotifications} />
