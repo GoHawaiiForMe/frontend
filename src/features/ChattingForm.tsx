@@ -42,11 +42,14 @@ export default function ChattingForm() {
   };
 
   const renderMessages = () => {
-    return messages.map((msg) => (
-      <Bubble key={msg.id} type={msg.senderId === userId ? "right" : "left_say"}>
-        {msg.content}
-      </Bubble>
-    ));
+    return messages
+      .slice()
+      .reverse()
+      .map((msg) => (
+        <Bubble key={msg.id} type={msg.senderId === userId ? "right" : "left_say"}>
+          {msg.content}
+        </Bubble>
+      ));
   };
 
   const handleChatRoomClick = (chatRoom: ChatRoom) => {
@@ -126,7 +129,7 @@ export default function ChattingForm() {
                 <div
                   key={room.id}
                   onClick={() => handleChatRoomClick(room)}
-                  className="flex gap-4 rounded-xl border border-color-line-100 p-4"
+                  className="flex cursor-pointer gap-4 rounded-xl border border-color-line-100 p-4"
                 >
                   <div>
                     <Image
