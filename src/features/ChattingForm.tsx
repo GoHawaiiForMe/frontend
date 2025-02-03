@@ -8,6 +8,7 @@ import avatarImages from "@/utils/formatImage";
 import { useQuery } from "@tanstack/react-query";
 import userService from "@/services/userService";
 import { formatToDetailedDate } from "@/utils/formatDate";
+import coconut from "@public/assets/icon_coconut.svg";
 
 const getUserId = async (): Promise<string> => {
   const userInfo = await userService.getUserInfo();
@@ -151,21 +152,32 @@ export default function ChattingForm() {
           </div>
           {/* 채팅창 */}
           <div className="col-span-5 rounded-xl bg-color-gray-50 p-8 mobile-tablet:col-span-7 card:col-span-7">
-            <div className="mb-4 rounded-lg border border-color-line-100 p-4">
-              <p className="semibold text-2xl text-color-black-300 mobile-tablet:text-xl">
-                {selectedChatRoom?.planTitle}
-              </p>
-              <div className="flex gap-4">
-                <p className="regular text-xl text-color-gray-500 mobile-tablet:text-2lg">여행일</p>
-                <p className="medium text-color-balck-400 text-xl mobile-tablet:text-2lg">
-                  {formatToDetailedDate(selectedChatRoom?.planTripDate || "")}
+            {selectedChatRoom === null ? (
+              ""
+            ) : (
+              <div className="mb-4 rounded-lg border border-color-line-100 p-4">
+                <p className="semibold text-2xl text-color-black-300 mobile-tablet:text-xl">
+                  {selectedChatRoom?.planTitle}
                 </p>
-                <p className="regular text-xl text-color-gray-500 mobile-tablet:text-2lg">플랜가</p>
-                <p className="medium text-color-balck-400 text-xl mobile-tablet:text-2lg">
-                  {selectedChatRoom?.quotePrice}
-                </p>
+                <div className="flex gap-4">
+                  <p className="regular text-xl text-color-gray-500 mobile-tablet:text-2lg">
+                    여행일
+                  </p>
+                  <p className="medium text-color-balck-400 text-xl mobile-tablet:text-2lg">
+                    {formatToDetailedDate(selectedChatRoom?.planTripDate || "")}
+                  </p>
+                  <div className="flex flex-row">
+                    <p className="regular text-xl text-color-gray-500 mobile-tablet:text-2lg">
+                      플랜가
+                    </p>
+                    <Image src={coconut} alt="코코넛" width={30} />
+                  </div>
+                  <p className="medium text-color-balck-400 text-xl mobile-tablet:text-2lg">
+                    {selectedChatRoom?.quotePrice} P
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
             <div className="h-[600px] mobile-tablet:h-[650px]">{renderMessages()}</div>
             <div className="flex flex-col gap-5">
               <input

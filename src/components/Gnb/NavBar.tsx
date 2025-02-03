@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import avatarImages from "@/utils/formatImage";
 import { useRef } from "react";
+import RealTimeNotification from "./RealTimeNotification";
 
 interface LinkItem {
   href: string;
@@ -49,6 +50,8 @@ const NavBar = () => {
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<any>(null);
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
+  const [realTimeNotifications, setRealTimeNotifications] = useState<NotificationProps[]>([]);
+  const [isNotificationVisible, setIsNotificationVisible] = useState<boolean>(false);
   const [userImage, setUserImage] = useState<string>(user_img.src);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const notificationRef = useRef<HTMLDivElement | null>(null);
@@ -154,6 +157,15 @@ const NavBar = () => {
       fetchUserInfo();
     }
   }, [setLogin]);
+
+  useEffect(() => {
+    if (realTimeNotifications.length > 0) {
+      setIsNotificationVisible(true);
+      setTimeout(() => {
+        setIsNotificationVisible(false);
+      }, 5000);
+    }
+  }, [realTimeNotifications]);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -307,6 +319,12 @@ const NavBar = () => {
           </div>
         </div>
       )}
+      {isNotificationVisible && realTimeNotifications.length > 0 && (
+        <div className="animate-fadeInOut fixed bottom-0 left-0 w-full rounded-xl bg-color-red-100 p-4 text-center">
+          <p>{realTimeNotifications[realTimeNotifications.length - 1]?.content}</p>
+        </div>
+      )}
+      <RealTimeNotification setRealTimeNotifications={setRealTimeNotifications} />
     </div>
   );
 };
