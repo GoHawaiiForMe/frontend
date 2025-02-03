@@ -16,6 +16,7 @@ interface QuotationProps {
 export default function Quotation({ data, closeModal }: QuotationProps) {
   const [price, setPrice] = useState<number>(0);
   const [comment, setComment] = useState<string>("");
+  const [showError, setShowError] = useState<boolean>(false);
   const queryClient = useQueryClient();
 
   const { data: userInfo } = useQuery<UserInfo>({
@@ -54,12 +55,12 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
   return (
     <>
       <div>
-        <div className="flex items-center gap-[12px]">
+        <div className="flex items-center gap-3">
           <Label labelType={data.tripType} />
           {specifyMaker}
         </div>
-        <div className="mb-[32px] mt-[24px] w-[560px] rounded-[8px] border border-color-line-200 py-[24px] mobile:mt-[24px] mobile:w-[327px] mobile:border-none mobile:py-[10px] tablet:mt-[24px] tablet:w-[327px] tablet:border-none tablet:py-[10px]">
-          <p className="mb-[8px] px-[18px] text-2xl font-semibold mobile:px-0 mobile:text-2lg tablet:pl-0 tablet:text-2lg">
+        <div className="mb-8 mt-6 w-[560px] rounded-[8px] border border-color-line-200 py-6 mobile:mt-6 mobile:w-[327px] mobile:border-none mobile:py-[10px] tablet:mt-6 tablet:w-[327px] tablet:border-none tablet:py-[10px]">
+          <p className="mb-2 px-[18px] text-2xl font-semibold mobile:px-0 mobile:text-2lg tablet:pl-0 tablet:text-2lg">
             {data.title}
           </p>
           <p className="mb-[18px] border-b border-color-line-200 pb-[18px] pl-[18px] text-md font-medium text-color-gray-500 mobile:px-0 mobile:text-sm tablet:pl-0 tablet:text-sm">
@@ -70,12 +71,12 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
               <p className="whitespace-nowrap rounded-[4px] bg-color-background-400 px-[6px] py-1 text-2lg text-color-gray-500 mobile:text-md tablet:text-md">
                 여행일
               </p>
-              <p className="medium text-[18px] leading-[26px] text-color-black-300 mobile:text-md tablet:text-md">
+              <p className="medium text-2lg text-color-black-300 mobile:text-md tablet:text-md">
                 {tripDate}
               </p>
             </div>
 
-            <div className="mobile-tablet:gap2 flex items-center gap-[12px] pl-[14px] mobile-tablet:pl-0">
+            <div className="mobile-tablet:gap2 flex items-center gap-3 pl-[14px] mobile-tablet:pl-0">
               <p className="whitespace-nowrap rounded-[4px] bg-color-background-400 px-[6px] py-1 text-2lg text-color-gray-500 mobile:text-md tablet:text-md">
                 여행지
               </p>
@@ -86,29 +87,38 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
           </div>
         </div>
       </div>
-      <div className="mb-[64px] mobile:mb-[40px] tablet:mb-[40px]">
-        <p className="text-2xl font-semibold">견적가를 입력해 주세요</p>
+      <div className="mb-[64px] mobile:mb-10 tablet:mb-10">
+        <p className="text-2xl font-semibold">견적 코코넛을 입력해 주세요</p>
         <input
           type="number"
-          placeholder="견적가 입력"
+          placeholder="코코넛 갯수 입력"
           value={price || ""}
           onChange={(e) => setPrice(Number(e.target.value))}
-          className="mt-[16px] h-[64x] w-[560px] rounded-[16px] bg-color-background-200 p-[14px] text-xl mobile:h-[48px] mobile:w-[327px] mobile:text-lg tablet:h-[54px] tablet:w-[327px] tablet:text-lg"
+          className="mt-4 h-[64x] w-[560px] rounded-[16px] bg-color-background-200 p-[14px] text-xl mobile:h-[48px] mobile:w-[327px] mobile:text-lg tablet:h-[54px] tablet:w-[327px] tablet:text-lg"
         />
       </div>
-      <div className="mb-[40px] mobile:mb-[24px] tablet:mb-[24px]">
+      <div className="mb-10 mobile:mb-6 tablet:mb-6">
         <p className="text-2xl font-semibold mobile:text-2lg tablet:text-2lg">
           코멘트를 입력해 주세요
         </p>
         <textarea
           placeholder="최소 10글자 이상 입력해 주세요"
           value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          className="mt-[16px] h-[160px] w-[560px] resize-none rounded-[16px] bg-color-background-200 p-[14px] text-xl mobile:h-[160px] mobile:w-[327px] mobile:text-lg tablet:h-[160px] tablet:w-[327px] tablet:text-lg"
+          onChange={(e) => {
+            setComment(e.target.value);
+            setShowError(false);
+          }}
+          onBlur={() => {
+            if (comment.length < 10) {
+              setShowError(true);
+            }
+          }}
+          className="mt-4 h-[160px] w-[560px] resize-none rounded-[16px] bg-color-background-200 p-[14px] text-xl mobile:h-[160px] mobile:w-[327px] mobile:text-lg tablet:h-[160px] tablet:w-[327px] tablet:text-lg"
         />
+        {showError && <p className="text-md font-bold text-red-500">10글자 이상 작성해 주세요</p>}
       </div>
       <button
-        className={`h-[64px] w-[560px] rounded-[16px] text-[20px] font-semibold leading-[32px] text-white ${
+        className={`h-[64px] w-[560px] rounded-[16px] text-xl font-semibold text-white ${
           isButtonEnabled ? "bg-color-blue-300" : "cursor-not-allowed bg-color-gray-100"
         } mobile:h-[48px] mobile:w-[327px] mobile:text-lg tablet:h-[54px] tablet:w-[327px] tablet:text-lg`}
         disabled={!isButtonEnabled || quoteMutation.isPending}

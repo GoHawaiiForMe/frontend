@@ -39,8 +39,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjNDU3N
 
 ### 받은요청
 
-GET http://localhost:4000/plans/maker?isAssigned=true
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMzJkN2JkNC0xMTZjLTQ2N2ItOTM1Mi1hMTRiMGQ0OTRlZjkiLCJyb2xlIjoiTUFLRVIiLCJpYXQiOjE3Mzc3OTA0NTksImV4cCI6MTczNzg3Njg1OX0.uv2p3SygiuQsa18I76W6Odf_-bOMVcVpO2lIRDaWc04
+GET http://localhost:4000/plans/maker?isAssigned=true&tripType=FOOD_TOUR&tripType=SHOPPING&tripType=RELAXATION&tripType=CULTURE&tripType=ACTIVITY&tripType=FESTIVAL&orderBy=SCHEDULE_FIRST&page=1&pageSize=5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMzJkN2JkNC0xMTZjLTQ2N2ItOTM1Mi1hMTRiMGQ0OTRlZjkiLCJyb2xlIjoiTUFLRVIiLCJpYXQiOjE3Mzc5NTg3ODUsImV4cCI6MTczODA0NTE4NX0.yqZkkI_nKwTa7pGegMneVO4Yld8VJJirQQ_s6TQdSus
 
 ###
 
@@ -62,4 +62,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMzJkN
 
 GET http://localhost:4000/quotes?isSent=true&page=1&pageSize=10
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMzJkN2JkNC0xMTZjLTQ2N2ItOTM1Mi1hMTRiMGQ0OTRlZjkiLCJyb2xlIjoiTUFLRVIiLCJpYXQiOjE3Mzc4Nzk5ODAsImV4cCI6MTczNzk2NjM4MH0.0rtZC-DSJDYEBu0e_Msm5dj4FkRFxE-HFKO3bFKKBxE
+
+###
+
+GET http://localhost:4000/plans/16865772-f792-4bb6-8ac8-504fcb4064e3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMzJkN2JkNC0xMTZjLTQ2N2ItOTM1Mi1hMTRiMGQ0OTRlZjkiLCJyb2xlIjoiTUFLRVIiLCJpYXQiOjE3Mzc5NTg3ODUsImV4cCI6MTczODA0NTE4NX0.yqZkkI_nKwTa7pGegMneVO4Yld8VJJirQQ_s6TQdSus
 
