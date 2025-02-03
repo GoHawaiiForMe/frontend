@@ -10,6 +10,7 @@ import QuotationDetailsContainer from "@/components/Receive/QuotationDetailsCont
 import { convertRegionToKorean } from "@/utils/formatRegion";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import { formatTripType } from "@/utils/formatTripType";
+import { useEffect } from "react";
 
 export function QuotationDetail() {
   const router = useRouter();
@@ -20,6 +21,44 @@ export function QuotationDetail() {
     queryFn: () => getQuotationDetail(id as string),
     enabled: !!id,
   });
+
+  const handleCopyUrl = () => {
+    navigator.clipboard.writeText(window.location.href);
+    alert("URL이 복사되었습니다.");
+  };
+
+  useEffect(() => {
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
+    }
+  }, []);
+
+  const handleKakaoShare = () => {
+    let currentUrl = window.location.href;
+    if (typeof window !== "undefined" && window.Kakao) {
+      const Kakao = window.Kakao;
+      Kakao.Share.createDefaultButton({
+        container: "#kakaotalk-sharing-btn",
+        objectType: "feed",
+        content: {
+          title: quotationDetail?.plan.title || "여행 플랜 ",
+          description: quotationDetail?.plan.details || "여행 플랜 상세내용보기",
+          imageUrl:
+            "https://scontent-ssn1-1.cdninstagram.com/v/t51.29350-15/440535983_1166519591460822_7666710914928913519_n.jpg?stp=dst-jpg_e35_s1080x1080_tt6&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=106&_nc_ohc=CzF6FbL6gvEQ7kNvgHzHfiF&_nc_gid=947375cfb83d43c5abb8aeacb63ed59a&edm=ANTKIIoBAAAA&ccb=7-5&oh=00_AYDtqZ0h00aA8oATSGX48sg79D3ROGTLYUaZSjkcbYafCQ&oe=67A60D41&_nc_sid=d885a2",
+          link: {
+            mobileWebUrl: currentUrl,
+            webUrl: currentUrl,
+          },
+        },
+      });
+    }
+  };
+
+  const handleFacebookShare = () => {
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
+    );
+  };
 
   if (isLoading) {
     return <div>로딩중...</div>;
@@ -53,13 +92,7 @@ export function QuotationDetail() {
             <Image
               src={clipshare}
               alt="clipshare"
-              className="rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
-              width={64}
-              height={64}
-            />
-            <Image
-              src={facebook}
-              alt="facebook"
+              onClick={handleCopyUrl}
               className="rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
               width={64}
               height={64}
@@ -67,6 +100,15 @@ export function QuotationDetail() {
             <Image
               src={kakao}
               alt="kakao"
+              onClick={handleKakaoShare}
+              className="rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
+              width={64}
+              height={64}
+            />
+            <Image
+              src={facebook}
+              alt="facebook"
+              onClick={handleFacebookShare}
               className="rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
               width={64}
               height={64}
