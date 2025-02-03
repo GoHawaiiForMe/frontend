@@ -44,7 +44,7 @@ export function PlanDetail() {
   }, []);
 
   const handleKakaoShare = () => {
-    let currentUrl = window.location.href;
+    const currentUrl = window.location.href;
     if (typeof window !== "undefined" && window.Kakao) {
       const Kakao = window.Kakao;
       Kakao.Share.createDefaultButton({

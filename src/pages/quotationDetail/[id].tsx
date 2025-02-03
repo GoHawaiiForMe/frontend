@@ -34,7 +34,7 @@ export function QuotationDetail() {
   }, []);
 
   const handleKakaoShare = () => {
-    let currentUrl = window.location.href;
+    const currentUrl = window.location.href;
     if (typeof window !== "undefined" && window.Kakao) {
       const Kakao = window.Kakao;
       Kakao.Share.createDefaultButton({
@@ -116,7 +116,6 @@ export function QuotationDetail() {
               width={64}
               height={64}
             />
-
           </div>
         </div>
       </div>

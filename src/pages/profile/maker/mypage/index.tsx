@@ -7,13 +7,11 @@ import { useState } from "react";
 import Pagination from "@/components/Common/Pagination";
 import Link from "next/link";
 import withAuthAccess from "@/stores/withAuthAccess";
-import userService from "@/services/userService";
-import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 
 export function MyPage() {
-  const router = useRouter();
-  const { id } = router.query;
+  // const router = useRouter();
+  // const { id } = router.query;
 
 
   const reviewStats = {
@@ -25,10 +23,10 @@ export function MyPage() {
 
   };
 
-  const { data: makerMypage } = useQuery({
-    queryKey: ["makerMypage"],
-    queryFn: () => userService.getMakerMypage(id as string),
-  });
+  // const { data: makerMypage } = useQuery({
+  //   queryKey: ["makerMypage"],
+  //   queryFn: () => userService.getMakerMypage(id as string),
+  // });
 
 
   // 현재 페이지를 저장할 state (처음에는 1페이지)

@@ -167,7 +167,7 @@ const userService = {
     try {
       const { page = 1, pageSize = 5 } = params;
       const queryString = `?page=${page}&pageSize=${pageSize}`;
-
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
       const response = await api.get<MakerReviewResponse, {}>(`/reviews/maker${queryString}`);
       return response;
     } catch (error) {
