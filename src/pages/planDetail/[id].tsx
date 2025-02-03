@@ -38,24 +38,27 @@ export function PlanDetail() {
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.Kakao) {
-      const Kakao = window.Kakao;
-      if (!Kakao.isInitialized()) {
-        Kakao.init("5e3eefd6a319ccc0a53dfef858a5ffc8");
-      }
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
     }
   }, []);
 
   const handleKakaoShare = () => {
+    let currentUrl = window.location.href;
     if (typeof window !== "undefined" && window.Kakao) {
       const Kakao = window.Kakao;
       Kakao.Share.createDefaultButton({
         container: "#kakaotalk-sharing-btn",
-        objectType: "text",
-        text: "니가가라 하와이 공유하기 입니다. 현재는 테스트 버전입니다.!",
-        link: {
-          mobileWebUrl: "https://developers.kakao.com",
-          webUrl: "https://developers.kakao.com",
+        objectType: "feed",
+        content: {
+          title: planDetail?.title || "여행 플랜 ",
+          description: planDetail?.details || "여행 플랜 상세내용보기",
+          imageUrl:
+            "https://scontent-ssn1-1.cdninstagram.com/v/t51.29350-15/440535983_1166519591460822_7666710914928913519_n.jpg?stp=dst-jpg_e35_s1080x1080_tt6&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=106&_nc_ohc=CzF6FbL6gvEQ7kNvgHzHfiF&_nc_gid=947375cfb83d43c5abb8aeacb63ed59a&edm=ANTKIIoBAAAA&ccb=7-5&oh=00_AYDtqZ0h00aA8oATSGX48sg79D3ROGTLYUaZSjkcbYafCQ&oe=67A60D41&_nc_sid=d885a2",
+          link: {
+            mobileWebUrl: currentUrl,
+            webUrl: currentUrl,
+          },
         },
       });
     }

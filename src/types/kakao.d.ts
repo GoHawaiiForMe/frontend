@@ -4,20 +4,25 @@ interface KakaoSDK {
   Share: {
     sendScrap: (options: { requestUrl: string }) => void;
     createDefaultButton: (options: {
-      container: string;
-      objectType?: "text";
-      text: string;
-      link: {
-        mobileWebUrl?: string;
-        webUrl?: string;
+      container: string | HTMLElement;
+      objectType?: "feed";
+      content: {
+        title: string;
+        description: string;
+        imageUrl: string;
+        link: {
+          mobileWebUrl: string;
+          webUrl: string;
+        };
       };
     }) => void;
+
   };
 }
 
 declare global {
   interface Window {
-    Kakao: KakaoSDK;
+    Kakao: any;
   }
 }
 
