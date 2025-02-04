@@ -45,4 +45,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1NTVkN
 
 ### 리프레시 토큰
 POST https://www.goforme.duckdns.org/users/refresh/token
-Cookie: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1NTVkNDYzZS0zN2I2LTQxMGItOTA2MS0xMWE5ZDY4MjJiZGQiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczNzYxNzY2MywiZXhwIjoxNzM3NzA0MDYzfQ.YOUGCcJJ-TYPKGS4X9F3_0mdVGZOwaBS8vJOXspfBeA
+Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczODU2NjY3MiwiZXhwIjoxNzM5MTcxNDcyfQ.PcJi_UulHX7BgCQzbVVER5jezoesd8HHvEazq9Nwxe8; Max-Age=604800; Path=/user/token/refresh; Expires=Mon, 10 Feb 2025 07:11:12 GMT; HttpOnly; Secure; SameSite=None
+
+### 실시간 알림
+POST https://goforme.duckdns.org/notifications
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczODU3MTAzNSwiZXhwIjoxNzM4NjU3NDM1fQ.AyxnnK68YvG5IPNmCK-yhtLhCSpF1-OhQ5MMX-hQFLw

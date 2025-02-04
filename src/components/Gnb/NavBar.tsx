@@ -17,7 +17,6 @@ import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import avatarImages from "@/utils/formatImage";
 import { useRef } from "react";
-import RealTimeNotification from "./RealTimeNotification";
 
 interface LinkItem {
   href: string;
@@ -50,13 +49,14 @@ const NavBar = () => {
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<any>(null);
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
-  const [realTimeNotifications, setRealTimeNotifications] = useState<NotificationProps[]>([]);
-  const [isNotificationVisible, setIsNotificationVisible] = useState<boolean>(false);
   const [userImage, setUserImage] = useState<string>(user_img.src);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const notificationRef = useRef<HTMLDivElement | null>(null);
   const sideBarRef = useRef<HTMLDivElement | null>(null);
-
+  const [realTimeNotification, setRealTimeNotification] = useState<string>("");
+  const [realTimeNotifications, setRealTimeNotifications] = useState<
+    { id: string; content: string; timestamp: number }[]
+  >([]);
   const router = useRouter();
 
   const handleOpenSidebar = () => {
@@ -159,15 +159,6 @@ const NavBar = () => {
   }, [setLogin]);
 
   useEffect(() => {
-    if (realTimeNotifications.length > 0) {
-      setIsNotificationVisible(true);
-      setTimeout(() => {
-        setIsNotificationVisible(false);
-      }, 5000);
-    }
-  }, [realTimeNotifications]);
-
-  useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (
         isOpenUserMenu &&
@@ -199,6 +190,32 @@ const NavBar = () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [isOpenUserMenu, isOpenNotification, isOpenSidebar]);
+
+  useEffect(() => {
+    const eventSource = notificationService.realTimeNotification(setRealTimeNotification);
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (realTimeNotification) {
+      const newNotification = {
+        id: new Date().toISOString(),
+        content: realTimeNotification,
+        timestamp: Date.now(),
+      };
+
+      setRealTimeNotifications((prevNotifications) => [...prevNotifications, newNotification]);
+
+      setTimeout(() => {
+        setRealTimeNotifications((prevNotifications) => {
+          return prevNotifications.filter((notification) => notification.id !== newNotification.id);
+        });
+      }, 5000);
+    }
+  }, [realTimeNotification]);
 
   const hasUnreadNotifications = notificationData.some((notification) => !notification.isRead);
 
@@ -319,12 +336,19 @@ const NavBar = () => {
           </div>
         </div>
       )}
-      {isNotificationVisible && realTimeNotifications.length > 0 && (
-        <div className="animate-fadeInOut fixed bottom-0 left-0 w-full rounded-xl bg-color-red-100 p-4 text-center">
-          <p>{realTimeNotifications[realTimeNotifications.length - 1]?.payload}</p>
+      {/* 실시간 알림 */}
+      {realTimeNotifications.length > 0 && (
+        <div className="fixed left-0 top-20 z-50 flex w-full flex-col gap-2 px-4 py-2">
+          {realTimeNotifications.map((notification) => (
+            <div
+              key={notification.id}
+              className="bold w-full rounded-xl bg-color-red-100 p-4 text-center text-color-black-500"
+            >
+              <p>🔔 {notification.content}</p>
+            </div>
+          ))}
         </div>
       )}
-      <RealTimeNotification setRealTimeNotifications={setRealTimeNotifications} />
     </div>
   );
 };

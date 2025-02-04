@@ -1,4 +1,5 @@
 import { api } from "./api";
+import { EventSourcePolyfill } from "event-source-polyfill";
 
 export interface NotificationProps {
   id: string;
@@ -36,17 +37,24 @@ const notificationService = {
       throw error;
     }
   },
-  realTimeNotification: (callback: (notification: NotificationProps) => void) => {
-    const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_URL}/notifications/stream`);
+  realTimeNotification: (setRealTimeNotification: React.Dispatch<React.SetStateAction<string>>) => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    const eventSource = new EventSourcePolyfill(
+      `${process.env.NEXT_PUBLIC_API_URL}/notifications/stream`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      },
+    );
     eventSource.onmessage = (event) => {
-      const notification = JSON.parse(event.data);
-      console.log(notification);
-      callback(notification);
+      const notification = event.data;
+      setRealTimeNotification(notification);
     };
 
-    eventSource.onopen = () => console.log("✅ SSE 연결 ON");
+    eventSource.onopen = () => console.log(" SSE 연결 ON ✅");
+
     eventSource.onerror = (err) => {
-      console.error("❌ SSE 연결 ERROR", err);
+      console.error(" SSE 연결 ERROR ❌", err);
       eventSource.close();
     };
 

@@ -63,7 +63,6 @@ export default function ChattingForm() {
     const getChatRooms = async () => {
       try {
         const data = await chatService.getChatRooms();
-        console.log(data);
         setChatRooms(data);
       } catch (error) {
         console.error("채팅방을 가져오는데 실패했습니다.");
