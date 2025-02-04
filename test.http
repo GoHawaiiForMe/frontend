@@ -50,3 +50,9 @@ Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NW
 ### 실시간 알림
 POST https://goforme.duckdns.org/notifications
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczODU3MTAzNSwiZXhwIjoxNzM4NjU3NDM1fQ.AyxnnK68YvG5IPNmCK-yhtLhCSpF1-OhQ5MMX-hQFLw
+
+### 실시간 알림
+
+POST https://goforme.duckdns.org/notifications/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczODU3MTAzNSwiZXhwIjoxNzM4NjU3NDM1fQ.AyxnnK68YvG5IPNmCK-yhtLhCSpF1-OhQ5MMX-hQFLw
+

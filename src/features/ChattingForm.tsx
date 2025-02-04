@@ -1,8 +1,8 @@
 import Layout from "@/components/Common/Layout";
 import Image from "next/image";
 import Bubble from "@/components/Common/Bubble";
-import { useEffect, useState } from "react";
-import { ChatRoom, Messagge } from "@/types/chatData";
+import { useEffect, useRef, useState } from "react";
+import { ChatRoom, Message } from "@/types/chatData";
 import chatService from "@/services/chatService";
 import avatarImages from "@/utils/formatImage";
 import { useQuery } from "@tanstack/react-query";
@@ -17,28 +17,68 @@ const getUserId = async (): Promise<string> => {
 };
 
 export default function ChattingForm() {
-  const [messages, setMessages] = useState<Messagge[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
   const [chatRooms, setChatRooms] = useState<any[]>([]);
   const [selectedChatRoom, setSelectedChatRoom] = useState<ChatRoom | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null);
+  const [page, setPage] = useState(1);
 
   const { data: userId = [] } = useQuery({
     queryKey: ["userId"],
     queryFn: getUserId,
   });
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   const handleSendMessage = () => {
     if (message.trim() && socket && selectedChatRoom) {
+      const newMessage = {
+        id: Date.now().toString(),
+        senderId: Array.isArray(userId) ? userId[0] : userId,
+        chatRoomId: selectedChatRoom.id,
+        content: message,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      setMessages((prevMessages) => [newMessage, ...prevMessages]);
       chatService.sendMessage(socket, selectedChatRoom.id, message);
       setMessage("");
     }
   };
 
-  const fetchMessages = async (chatRoomId: string) => {
+  // 스크롤 관련
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleScroll = () => {
+    if (messagesContainerRef.current) {
+      const { scrollTop } = messagesContainerRef.current;
+      if (scrollTop === 0) {
+        setPage((prevPage) => prevPage + 1);
+        if (selectedChatRoom) {
+          fetchMessages(selectedChatRoom.id, page + 1);
+        }
+      }
+    }
+  };
+
+  const fetchMessages = async (chatRoomId: string, page: number) => {
     try {
-      const data = await chatService.getMessages(chatRoomId, 1, 5);
-      setMessages(data);
+      const data = await chatService.getMessages(chatRoomId, page, 5);
+      setMessages((prevMessages) => [...data, ...prevMessages]);
+      scrollToBottom();
     } catch (error) {
       console.error("메시지를 가져오는데 실패했습니다.", error);
     }
@@ -57,7 +97,7 @@ export default function ChattingForm() {
 
   const handleChatRoomClick = (chatRoom: ChatRoom) => {
     setSelectedChatRoom(chatRoom);
-    fetchMessages(chatRoom.id);
+    fetchMessages(chatRoom.id, 1);
   };
 
   useEffect(() => {
@@ -76,8 +116,8 @@ export default function ChattingForm() {
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
-      const newSocket = chatService.connectWebSocket(accessToken, (newMessage: Messagge) => {
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      const newSocket = chatService.connectWebSocket(accessToken, (newMessage: Message) => {
+        setMessages((prevMessages) => [newMessage, ...prevMessages]);
       });
       setSocket(newSocket);
 
@@ -88,6 +128,27 @@ export default function ChattingForm() {
       };
     }
   }, []);
+
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      if (messagesContainerRef.current) {
+        messagesContainerRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [messagesContainerRef]);
+
+  useEffect(() => {
+    if (selectedChatRoom) {
+      fetchMessages(selectedChatRoom.id, page);
+    }
+  }, [selectedChatRoom]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   return (
     <>
@@ -172,13 +233,19 @@ export default function ChattingForm() {
                 </div>
               </div>
             )}
-            <div className="h-[600px] mobile-tablet:h-[650px]">{renderMessages()}</div>
-            <div className="flex flex-col gap-5">
+            <div
+              className="h-[600px] overflow-y-auto mobile-tablet:h-[650px]"
+              ref={messagesContainerRef}
+            >
+              {renderMessages()}
+            </div>
+            <div className="flex flex-col gap-5" ref={messagesEndRef}>
               <input
                 className="h-16 w-full rounded-xl bg-color-background-200 indent-5 text-color-black-500 outline-none mobile-tablet:h-10"
                 placeholder="텍스트를 입력해 주세요."
                 onChange={(e) => setMessage(e.target.value)}
                 value={message}
+                onKeyDown={handleKeyDown}
               />
               <div className="flex justify-between">
                 <button className="rounded-xl border border-color-blue-300 bg-color-blue-100 px-6 py-3 text-lg text-color-blue-300 mobile-tablet:px-4 mobile-tablet:py-1">

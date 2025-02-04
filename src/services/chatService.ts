@@ -1,4 +1,4 @@
-import { ChatRoom, Messagge, User } from "@/types/chatData";
+import { ChatRoom, Message, User } from "@/types/chatData";
 import { api } from "./api";
 import { io, Socket } from "socket.io-client";
 
@@ -36,7 +36,7 @@ const chatService = {
     chatRoomId: string,
     page: number = 1,
     pageSize: number = 5,
-  ): Promise<Messagge[]> => {
+  ): Promise<Message[]> => {
     try {
       const response = await api.get<{ totalCount: number; list: any[] }, Record<string, unknown>>(
         `/chatRooms/${chatRoomId}/chats?page=${page}&pageSize=${pageSize}`,
@@ -57,19 +57,15 @@ const chatService = {
       throw error;
     }
   },
-  connectWebSocket: (token: string, onMessage: (message: Messagge) => void) => {
+  connectWebSocket: (token: string, onMessage: (message: Message) => void) => {
     const socket = io(process.env.NEXT_PUBLIC_WEB_URL, {
       transports: ["websocket"],
-      transportOptions: {
-        polling: {
-          extraHeaders: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+      auth: {
+        token: `${token}`,
       },
     });
 
-    socket.on("ServerToClientMessage", (newMessage: Messagge) => {
+    socket.on("ServerToClientMessage", (newMessage: Message) => {
       onMessage(newMessage);
     });
 
