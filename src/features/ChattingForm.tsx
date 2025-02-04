@@ -39,7 +39,7 @@ export default function ChattingForm() {
 
       setMessages(data);
     } catch (error) {
-      console.error("메시지를 가져오는데 실패했습니다.");
+      console.error("메시지를 가져오는데 실패했습니다.", error);
     }
   };
 
@@ -65,7 +65,7 @@ export default function ChattingForm() {
         const data = await chatService.getChatRooms();
         setChatRooms(data);
       } catch (error) {
-        console.error("채팅방을 가져오는데 실패했습니다.");
+        console.error("채팅방을 가져오는데 실패했습니다.", error);
       }
     };
     getChatRooms();
