@@ -65,7 +65,7 @@ const CardFindMaker = ({
         />
       </div>
 
-      <h2 className={`mb-4 text-2xl semibold text-color-black-300 ${titleSize} ${cardSize === 'sm' ? 'text-sm !mb-1' : ''}mobile-tablet:text-sm`}>Dreamer의 여행을 행복하게 이루어 드립니다.</h2>
+      <h2 className={`mb-4 text-2xl semibold text-color-black-300 ${titleSize} ${cardSize === 'sm' ? 'text-md !mb-1' : ''} mobile-tablet:text-sm`}>Dreamer의 여행을 행복하게 이루어 드립니다.</h2>
 
       <div className={`w-full h-[92px] flex items-center   rounded-md border-color-line-100 border py-4 px-[18px] shadow-sm 
         ${innerboxClassName} ${cardSize === 'sm' ? 'h-[78px] !p-[10px] ' : ''} mobile-tablet:h-[78px] mobile-tablet:p-[10px]`}>
