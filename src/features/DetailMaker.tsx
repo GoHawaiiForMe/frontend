@@ -61,14 +61,14 @@ export default function RequestDetailDreamer() {
     if (typeof window !== "undefined" && window.Kakao) {
       const Kakao = window.Kakao;
       Kakao.Share.sendScrap({
-        requestUrl: "http://localhost:3000",
+        requestUrl: window.location.href,
       });
     }
   };
   //requestUrl부분에 사용할 도메인 입력(현재 테스트중으로 로컬도메인)
 
   const btnShareFb = () => {
-    const pageUrl = "http://localhost:3000";
+    const pageUrl = window.location.href;
     window.open(`http://www.facebook.com/sharer/sharer.php?u=${pageUrl}`);
   };
 

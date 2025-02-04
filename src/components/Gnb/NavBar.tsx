@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import avatarImages from "@/utils/formatImage";
 import { useRef } from "react";
+import useRealTimeNotification from "@/stores/useRealTimeNotification";
 
 interface LinkItem {
   href: string;
@@ -55,6 +56,7 @@ const NavBar = () => {
   const sideBarRef = useRef<HTMLDivElement | null>(null);
 
   const router = useRouter();
+  const { realTimeNotifications } = useRealTimeNotification();
 
   const handleOpenSidebar = () => {
     setIsOpenSidebar(true);
@@ -305,6 +307,19 @@ const NavBar = () => {
               {renderLinks()}
             </ul>
           </div>
+        </div>
+      )}
+      {/* 실시간 알림 */}
+      {realTimeNotifications.length > 0 && (
+        <div className="fixed left-0 top-20 z-50 flex w-full flex-col gap-2 px-4 py-2">
+          {realTimeNotifications.map((notification) => (
+            <div
+              key={notification.id}
+              className="bold w-full rounded-xl bg-color-red-100 p-4 text-center text-color-black-500"
+            >
+              <p>🔔 {notification.content}</p>
+            </div>
+          ))}
         </div>
       )}
     </div>
