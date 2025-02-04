@@ -1,5 +1,6 @@
 import { ChatRoom, Messagge, User } from "@/types/chatData";
 import { api } from "./api";
+import { io, Socket } from "socket.io-client";
 
 const chatService = {
   getChatRooms: async (page: number = 1, pageSize: number = 5): Promise<ChatRoom[]> => {
@@ -55,6 +56,38 @@ const chatService = {
       console.error("메시지 목록 get 실패", error);
       throw error;
     }
+  },
+  connectWebSocket: (token: string, onMessage: (message: Messagge) => void) => {
+    const socket = io(process.env.NEXT_PUBLIC_WEB_URL, {
+      transports: ["websocket"],
+      transportOptions: {
+        polling: {
+          extraHeaders: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      },
+    });
+
+    socket.on("ServerToClientMessage", (newMessage: Messagge) => {
+      onMessage(newMessage);
+    });
+
+    socket.on("connect", () => {
+      console.log("웹소켓 연결 성공 ✅");
+    });
+
+    socket.on("disconnect", () => {
+      console.log("웹소켓 연결 종료 ❌");
+    });
+
+    return socket;
+  },
+  sendMessage: (socket: Socket, chatRoomId: string, content: string) => {
+    socket.emit("ClientToServerMessage", {
+      chatRoomId,
+      content,
+    });
   },
 };
 

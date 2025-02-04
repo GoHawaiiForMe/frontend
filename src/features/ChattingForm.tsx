@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import userService from "@/services/userService";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import coconut from "@public/assets/icon_coconut.svg";
+import { Socket } from "socket.io-client";
 
 const getUserId = async (): Promise<string> => {
   const userInfo = await userService.getUserInfo();
@@ -16,10 +17,11 @@ const getUserId = async (): Promise<string> => {
 };
 
 export default function ChattingForm() {
-  const [messages, setMessages] = useState<Messagge[]>([]); //전체 메시지 보기
-  const [message, setMessage] = useState<string>(""); //전송할 메세지 관리
+  const [messages, setMessages] = useState<Messagge[]>([]);
+  const [message, setMessage] = useState<string>("");
   const [chatRooms, setChatRooms] = useState<any[]>([]);
   const [selectedChatRoom, setSelectedChatRoom] = useState<ChatRoom | null>(null);
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   const { data: userId = [] } = useQuery({
     queryKey: ["userId"],
@@ -27,8 +29,8 @@ export default function ChattingForm() {
   });
 
   const handleSendMessage = () => {
-    if (message.trim()) {
-      console.log("메시지 전송 내용 =>", message);
+    if (message.trim() && socket && selectedChatRoom) {
+      chatService.sendMessage(socket, selectedChatRoom.id, message);
       setMessage("");
     }
   };
@@ -36,7 +38,6 @@ export default function ChattingForm() {
   const fetchMessages = async (chatRoomId: string) => {
     try {
       const data = await chatService.getMessages(chatRoomId, 1, 5);
-
       setMessages(data);
     } catch (error) {
       console.error("메시지를 가져오는데 실패했습니다.", error);
@@ -72,27 +73,21 @@ export default function ChattingForm() {
   }, []);
 
   // 웹소켓 연결 부분
-  // useEffect(() => {
-  // const socket = new WebSocket("ws://url-미정");
-  // socket.onopen = () => {
-  // console.log("웹소켓 연결 성공");
-  // };
-  //
-  // socket.onmessage = (event) => {
-  // const newMessage = event.data;
-  // setMessages((prevMessages) => [...prevMessages, newMessage]);
-  // };
-  //
-  // socket.onclose = () => {
-  // console.log("웹소켓 연결 종료");
-  // };
-  //
-  // setWs(socket);
-  //
-  // return () => {
-  // socket.close();
-  // };
-  // }, []);
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      const newSocket = chatService.connectWebSocket(accessToken, (newMessage: Messagge) => {
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      });
+      setSocket(newSocket);
+
+      return () => {
+        if (newSocket) {
+          newSocket.close();
+        }
+      };
+    }
+  }, []);
 
   return (
     <>
@@ -183,6 +178,7 @@ export default function ChattingForm() {
                 className="h-16 w-full rounded-xl bg-color-background-200 indent-5 text-color-black-500 outline-none mobile-tablet:h-10"
                 placeholder="텍스트를 입력해 주세요."
                 onChange={(e) => setMessage(e.target.value)}
+                value={message}
               />
               <div className="flex justify-between">
                 <button className="rounded-xl border border-color-blue-300 bg-color-blue-100 px-6 py-3 text-lg text-color-blue-300 mobile-tablet:px-4 mobile-tablet:py-1">
