@@ -54,7 +54,6 @@ const NavBar = () => {
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const notificationRef = useRef<HTMLDivElement | null>(null);
   const sideBarRef = useRef<HTMLDivElement | null>(null);
-  const [realTimeNotification, setRealTimeNotification] = useState<string>("");
 
   const router = useRouter();
   const { realTimeNotifications } = useRealTimeNotification();
@@ -190,16 +189,6 @@ const NavBar = () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [isOpenUserMenu, isOpenNotification, isOpenSidebar]);
-
-  useEffect(() => {
-    const eventSource = notificationService.realTimeNotification(setRealTimeNotification);
-
-    return () => {
-      if (eventSource) {
-        eventSource.close();
-      }
-    };
-  }, []);
 
   const hasUnreadNotifications = notificationData.some((notification) => !notification.isRead);
 

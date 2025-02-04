@@ -2,7 +2,7 @@ import Layout from "@/components/Common/Layout";
 import Image from "next/image";
 import Bubble from "@/components/Common/Bubble";
 import { useEffect, useState } from "react";
-import { ChatRoom, Messagge, User } from "@/types/chatData";
+import { ChatRoom, Messagge } from "@/types/chatData";
 import chatService from "@/services/chatService";
 import avatarImages from "@/utils/formatImage";
 import { useQuery } from "@tanstack/react-query";
