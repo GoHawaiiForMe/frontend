@@ -1,5 +1,4 @@
 import { api } from "./api";
-import { EventSourcePolyfill } from "event-source-polyfill";
 
 export interface NotificationProps {
   id: string;
