@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import avatarImages from "@/utils/formatImage";
 import { useRef } from "react";
+import useRealTimeNotification from "@/stores/useRealTimeNotification";
 
 interface LinkItem {
   href: string;
@@ -54,10 +55,9 @@ const NavBar = () => {
   const notificationRef = useRef<HTMLDivElement | null>(null);
   const sideBarRef = useRef<HTMLDivElement | null>(null);
   const [realTimeNotification, setRealTimeNotification] = useState<string>("");
-  const [realTimeNotifications, setRealTimeNotifications] = useState<
-    { id: string; content: string; timestamp: number }[]
-  >([]);
+
   const router = useRouter();
+  const { realTimeNotifications } = useRealTimeNotification();
 
   const handleOpenSidebar = () => {
     setIsOpenSidebar(true);
@@ -195,27 +195,11 @@ const NavBar = () => {
     const eventSource = notificationService.realTimeNotification(setRealTimeNotification);
 
     return () => {
-      eventSource.close();
+      if (eventSource) {
+        eventSource.close();
+      }
     };
   }, []);
-
-  useEffect(() => {
-    if (realTimeNotification) {
-      const newNotification = {
-        id: new Date().toISOString(),
-        content: realTimeNotification,
-        timestamp: Date.now(),
-      };
-
-      setRealTimeNotifications((prevNotifications) => [...prevNotifications, newNotification]);
-
-      setTimeout(() => {
-        setRealTimeNotifications((prevNotifications) => {
-          return prevNotifications.filter((notification) => notification.id !== newNotification.id);
-        });
-      }, 5000);
-    }
-  }, [realTimeNotification]);
 
   const hasUnreadNotifications = notificationData.some((notification) => !notification.isRead);
 
