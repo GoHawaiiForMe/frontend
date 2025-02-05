@@ -10,6 +10,7 @@ import userService from "@/services/userService";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import coconut from "@public/assets/icon_coconut.svg";
 import { Socket } from "socket.io-client";
+import { v4 as uuidv4 } from "uuid";
 
 const getUserId = async (): Promise<string> => {
   const userInfo = await userService.getUserInfo();
@@ -44,7 +45,7 @@ export default function ChattingForm() {
   const handleSendMessage = () => {
     if (message.trim() && socket && selectedChatRoom) {
       const newMessage = {
-        id: Date.now().toString(),
+        id: uuidv4(),
         senderId: Array.isArray(userId) ? userId[0] : userId,
         chatRoomId: selectedChatRoom.id,
         content: message,
@@ -62,15 +63,22 @@ export default function ChattingForm() {
 
   // 스크롤 관련
   const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
+  };
+
+  const scrollBrowserToBottom = () => {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth",
+    });
   };
 
   const handleScroll = () => {
     if (messagesContainerRef.current) {
       const { scrollTop } = messagesContainerRef.current;
-      if (scrollTop === 0) {
+      if (scrollTop === 0 && selectedChatRoom) {
         setPage((prevPage) => prevPage + 1);
         if (selectedChatRoom) {
           fetchMessages(selectedChatRoom.id, page + 1);
@@ -88,15 +96,40 @@ export default function ChattingForm() {
         messagesContainerRef.current.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [messagesContainerRef]);
+  }, [messagesContainerRef, page]);
 
-  const fetchMessages = async (chatRoomId: string, page: number) => {
+  const fetchMessages = async (chatRoomId: string, page: number, isOldMessages = false) => {
     try {
-      const data = await chatService.getMessages(chatRoomId, page, 5);
-      setMessages((prevMessages) => [...data, ...prevMessages]);
-      scrollToBottom();
+      const data = await chatService.getMessages(chatRoomId, page, 10);
+      setMessages((prevMessages) => {
+        const newMessages = data.filter(
+          (msg) => !prevMessages.some((existingMsg) => existingMsg.id === msg.id),
+        );
+        if (isOldMessages) {
+          return [...newMessages, ...prevMessages];
+        } else {
+          return [...prevMessages, ...newMessages];
+        }
+      });
+
+      if (!isOldMessages) {
+        requestAnimationFrame(() => {
+          scrollToBottom();
+        });
+      } else {
+        maintainScrollPosition();
+      }
     } catch (error) {
       console.error("메시지를 가져오는데 실패했습니다.", error);
+    }
+  };
+
+  const maintainScrollPosition = () => {
+    if (messagesContainerRef.current) {
+      const { scrollHeight, clientHeight } = messagesContainerRef.current;
+      requestAnimationFrame(() => {
+        messagesContainerRef.current!.scrollTop = scrollHeight - clientHeight;
+      });
     }
   };
 
@@ -111,9 +144,13 @@ export default function ChattingForm() {
       ));
   };
 
-  const handleChatRoomClick = (chatRoom: ChatRoom) => {
+  const handleChatRoomClick = async (chatRoom: ChatRoom) => {
     setSelectedChatRoom(chatRoom);
-    fetchMessages(chatRoom.id, 1);
+    setMessages([]);
+    await fetchMessages(chatRoom.id, 1, false);
+
+    scrollToBottom();
+    scrollBrowserToBottom();
   };
 
   useEffect(() => {
@@ -133,7 +170,12 @@ export default function ChattingForm() {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       const newSocket = chatService.connectWebSocket(accessToken, (newMessage: Message) => {
-        setMessages((prevMessages) => [newMessage, ...prevMessages]);
+        setMessages((prevMessages) => {
+          if (!prevMessages.find((msg) => msg.id === newMessage.id)) {
+            return [newMessage, ...prevMessages];
+          }
+          return prevMessages;
+        });
       });
       setSocket(newSocket);
 
@@ -147,12 +189,15 @@ export default function ChattingForm() {
 
   useEffect(() => {
     if (selectedChatRoom) {
-      fetchMessages(selectedChatRoom.id, page);
+      fetchMessages(selectedChatRoom.id, 1, false);
     }
   }, [selectedChatRoom]);
 
   useEffect(() => {
-    scrollToBottom();
+    if (messages.length > 0) {
+      scrollToBottom();
+      scrollBrowserToBottom();
+    }
   }, [messages]);
 
   //이미지
