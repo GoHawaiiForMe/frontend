@@ -22,9 +22,12 @@ export default function ChattingForm() {
   const [chatRooms, setChatRooms] = useState<any[]>([]);
   const [selectedChatRoom, setSelectedChatRoom] = useState<ChatRoom | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
+  const [page, setPage] = useState(1);
+  const [filePreview, setFilePreview] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
-  const [page, setPage] = useState(1);
 
   const { data: userId = [] } = useQuery({
     queryKey: ["userId"],
@@ -45,6 +48,7 @@ export default function ChattingForm() {
         senderId: Array.isArray(userId) ? userId[0] : userId,
         chatRoomId: selectedChatRoom.id,
         content: message,
+        file: file ? file.name : null,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -52,6 +56,7 @@ export default function ChattingForm() {
       setMessages((prevMessages) => [newMessage, ...prevMessages]);
       chatService.sendMessage(socket, selectedChatRoom.id, message);
       setMessage("");
+      handleFileRemove();
     }
   };
 
@@ -73,6 +78,17 @@ export default function ChattingForm() {
       }
     }
   };
+
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      if (messagesContainerRef.current) {
+        messagesContainerRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [messagesContainerRef]);
 
   const fetchMessages = async (chatRoomId: string, page: number) => {
     try {
@@ -130,17 +146,6 @@ export default function ChattingForm() {
   }, []);
 
   useEffect(() => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.addEventListener("scroll", handleScroll);
-    }
-    return () => {
-      if (messagesContainerRef.current) {
-        messagesContainerRef.current.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [messagesContainerRef]);
-
-  useEffect(() => {
     if (selectedChatRoom) {
       fetchMessages(selectedChatRoom.id, page);
     }
@@ -149,6 +154,64 @@ export default function ChattingForm() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  //이미지
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files ? e.target.files[0] : null;
+    if (selectedFile) {
+      if (filePreview) {
+        URL.revokeObjectURL(filePreview);
+      }
+      const fileUrl = URL.createObjectURL(selectedFile);
+      setFile(selectedFile);
+      setFilePreview(fileUrl);
+
+      e.target.value = "";
+    }
+  };
+  const handleFileRemove = () => {
+    if (filePreview) {
+      URL.revokeObjectURL(filePreview);
+    }
+    setFilePreview(null);
+    setFile(null);
+  };
+
+  const renderFilePreview = () => {
+    if (!filePreview) return null;
+
+    const fileExtension = file?.name.split(".").pop()?.toLowerCase();
+
+    if (fileExtension === "jpg" || fileExtension === "jpeg" || fileExtension === "png") {
+      return (
+        <div className="relative h-auto w-full">
+          <img src={filePreview} alt="file-preview" className="h-auto w-28 rounded-lg" />
+          <button
+            onClick={handleFileRemove}
+            className="absolute left-[85px] top-1 rounded-full bg-color-red-200 px-2 text-color-gray-50 hover:bg-color-red-100"
+          >
+            <p>x</p>
+          </button>
+        </div>
+      );
+    } else if (fileExtension === "mp4" || fileExtension === "mov") {
+      return (
+        <div className="relative h-auto w-full">
+          <video controls className="h-auto w-full rounded-lg">
+            <source src={filePreview} type={`video/${fileExtension}`} />
+          </video>
+          <button
+            onClick={handleFileRemove}
+            className="absolute right-2 top-2 rounded-full bg-white p-2 text-color-red-200 hover:bg-gray-200"
+          >
+            <span className="text-xl">×</span>
+          </button>
+        </div>
+      );
+    } else {
+      return <p>지원되지 않는 파일 형식입니다.</p>;
+    }
+  };
 
   return (
     <>
@@ -164,7 +227,7 @@ export default function ChattingForm() {
               <div
                 key={room.id}
                 onClick={() => handleChatRoomClick(room)}
-                className="flex cursor-pointer flex-col"
+                className={`flex cursor-pointer flex-col rounded-lg p-3 ${selectedChatRoom?.id === room.id ? "bg-color-blue-100" : "bg-color-gray-50"}`}
               >
                 <Image
                   src={avatarImages.find((avatar) => avatar.key === room.users[1]?.image)?.src}
@@ -187,7 +250,7 @@ export default function ChattingForm() {
                 <div
                   key={room.id}
                   onClick={() => handleChatRoomClick(room)}
-                  className="flex cursor-pointer gap-4 rounded-xl border border-color-line-100 p-4"
+                  className={`flex cursor-pointer gap-4 rounded-xl border border-color-line-100 p-4 ${selectedChatRoom?.id === room.id ? "bg-color-blue-100" : "bg-white"}`}
                 >
                   <div>
                     <Image
@@ -247,8 +310,9 @@ export default function ChattingForm() {
                 value={message}
                 onKeyDown={handleKeyDown}
               />
+
               <div className="flex justify-between">
-                <input type="file" className="hidden" id="fileUpload" />
+                <input type="file" className="hidden" id="fileUpload" onChange={handleFileChange} />
                 <label
                   htmlFor="fileUpload"
                   className="cursor-pointer rounded-xl border border-color-blue-300 bg-color-blue-100 px-6 py-3 text-lg text-color-blue-300 mobile-tablet:px-4 mobile-tablet:py-1"
@@ -263,6 +327,7 @@ export default function ChattingForm() {
                   전송
                 </button>
               </div>
+              {filePreview && <div className="mb-3 mt-3">{renderFilePreview()}</div>}
             </div>
           </div>
         </div>
