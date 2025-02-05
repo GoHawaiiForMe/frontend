@@ -12,6 +12,8 @@ import { formatToDetailedDate } from "@/utils/formatDate";
 import { formatTripType } from "@/utils/formatTripType";
 import { useEffect } from "react";
 
+// Facebook SDK 타입 정의
+
 export function QuotationDetail() {
   const router = useRouter();
   const { id } = router.query;
@@ -53,11 +55,34 @@ export function QuotationDetail() {
       });
     }
   };
+  useEffect(() => {
+    console.log("FB SDK 상태:", {
+      exists: !!window.FB,
+      initialized: window.FB?.getAuthResponse?.(),
+      appId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID,
+    });
+  }, []);
 
   const handleFacebookShare = () => {
-    window.open(
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
-    );
+    if (typeof window !== "undefined" && window.FB) {
+      const shareUrl = `https://fs2-4-team2-go-for-me.vercel.app/quotationDetail/${id}`;
+
+      window.FB.ui(
+        {
+          method: "share",
+          href: shareUrl,
+        },
+
+        (response) => {
+          console.log({ response });
+          if (response) {
+            console.log("공유 성공");
+          } else {
+            console.error("공유 실패 - URL:", shareUrl);
+          }
+        },
+      );
+    }
   };
 
   if (isLoading) {
@@ -111,6 +136,7 @@ export function QuotationDetail() {
             <Image
               src={facebook}
               alt="facebook"
+              id="facebook-sharing-btn"
               onClick={handleFacebookShare}
               className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
               width={64}

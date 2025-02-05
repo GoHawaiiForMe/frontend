@@ -20,7 +20,7 @@ export default function UserMenu({ userId, closeMenu }: UserMenuProps) {
         { href: "/follow-maker", label: "찜한 Maker" },
         { href: "/myreview-manage/completed-trip", label: "여행 리뷰" },
       ],
-      MAKER: [{ href: "/profile/maker/mypage", label: "마이페이지" }],
+      MAKER: [{ href: userId ? `/profile/maker/mypage/${userId}` : "", label: "마이페이지" }],
     };
 
     return (
