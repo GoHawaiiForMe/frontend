@@ -248,9 +248,14 @@ export default function ChattingForm() {
                 onKeyDown={handleKeyDown}
               />
               <div className="flex justify-between">
-                <button className="rounded-xl border border-color-blue-300 bg-color-blue-100 px-6 py-3 text-lg text-color-blue-300 mobile-tablet:px-4 mobile-tablet:py-1">
+                <input type="file" className="hidden" id="fileUpload" />
+                <label
+                  htmlFor="fileUpload"
+                  className="cursor-pointer rounded-xl border border-color-blue-300 bg-color-blue-100 px-6 py-3 text-lg text-color-blue-300 mobile-tablet:px-4 mobile-tablet:py-1"
+                >
                   첨부파일
-                </button>
+                </label>
+
                 <button
                   onClick={handleSendMessage}
                   className="rounded-xl bg-color-blue-300 px-6 py-3 text-lg text-color-gray-50 mobile-tablet:px-4 mobile-tablet:py-1"

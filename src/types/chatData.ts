@@ -17,7 +17,7 @@ export interface ChatRoom {
   users: User[];
 }
 
-export interface Messagge {
+export interface Message {
   id: string;
   createdAt: string;
   updatedAt: string;
