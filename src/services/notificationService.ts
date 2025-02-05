@@ -7,6 +7,7 @@ export interface NotificationProps {
   createdAt: string;
   updatedAt: string;
   event: string;
+  content: string;
 }
 
 const notificationService = {
