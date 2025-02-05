@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import star_filled from "@public/assets/icon_star.svg";
 import star_empty from "@public/assets/icon_star_empty.svg";
@@ -18,12 +18,17 @@ export default function StarRating({
   onRatingChange,
   readonly = false,
 }: StarRatingProps) {
-  const [rating, setRating] = useState(initialRating);
+  const [rating, setRating] = useState(Number(initialRating));
   const [hover, setHover] = useState(0);
+
+  useEffect(() => {
+    setRating(Number(initialRating));
+  }, [initialRating]);
 
   const handleClick = (value: number) => {
     if (!readonly) {
       setRating(value);
+
       if (onRatingChange) {
         onRatingChange(value);
       }
