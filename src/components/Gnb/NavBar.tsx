@@ -127,11 +127,11 @@ const NavBar = () => {
     enabled: isLoggedIn,
   });
 
-  useEffect(() => {
-    if (isLoggedIn || notificationData) {
-      setNotifications(notificationData);
-    }
-  }, [isLoggedIn, notificationData]);
+  // useEffect(() => {
+  // if (isLoggedIn || notificationData) {
+  // setNotifications(notificationData);
+  // }
+  // }, [isLoggedIn, notificationData]);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
