@@ -12,6 +12,9 @@ import coconut from "@public/assets/icon_coconut.svg";
 import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+const MAX_VIDEO_SIZE = 100 * 1024 * 1024;
+
 const getUserId = async (): Promise<string> => {
   const userInfo = await userService.getUserInfo();
   return userInfo.id;
@@ -60,10 +63,7 @@ export default function ChattingForm() {
         updatedAt: new Date().toISOString(),
       };
 
-      console.log("보내는 메시지", newMessage);
-
       if (file) {
-        console.log("업로드한 파일", file);
         await handleFileUpload(selectedChatRoom.id, file, newMessage);
       } else {
         setMessages((prevMessages) => [newMessage, ...prevMessages]);
@@ -153,7 +153,6 @@ export default function ChattingForm() {
   const fetchMessages = async (chatRoomId: string, currentPage: number, isOldMessages = false) => {
     try {
       const data = await chatService.getMessages(chatRoomId, currentPage, 10);
-      console.log(data);
       if (data.length === 0) {
         setHasMoreMessages(false);
         if (currentPage !== 1) {
@@ -293,7 +292,21 @@ export default function ChattingForm() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files ? e.target.files[0] : null;
     if (selectedFile) {
-      console.log(selectedFile.name);
+      const isImage = selectedFile.name.match(/\.(jpg|jpeg|png)$/i);
+      const isVideo = selectedFile.name.match(/\.(mp4|mov)$/i);
+
+      if (isImage && selectedFile.size > MAX_IMAGE_SIZE) {
+        alert("이미지는 5MB 이하로 업로드할 수 있습니다.");
+        e.target.value = "";
+        return;
+      }
+
+      if (isVideo && selectedFile.size > MAX_VIDEO_SIZE) {
+        alert("비디오는 100MB 이하로 업로드할 수 있습니다.");
+        e.target.value = "";
+        return;
+      }
+
       if (filePreview) {
         URL.revokeObjectURL(filePreview);
       }
@@ -456,10 +469,7 @@ export default function ChattingForm() {
                 </label>
 
                 <button
-                  onClick={() => {
-                    console.log("전송 버튼 클릭됨");
-                    handleSendMessage();
-                  }}
+                  onClick={handleSendMessage}
                   className="rounded-xl bg-color-blue-300 px-6 py-3 text-lg text-color-gray-50 mobile-tablet:px-4 mobile-tablet:py-1"
                 >
                   전송
