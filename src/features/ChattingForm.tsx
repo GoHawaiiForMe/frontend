@@ -45,22 +45,47 @@ export default function ChattingForm() {
     }
   };
 
-  const handleSendMessage = () => {
-    if (message.trim() && socket && selectedChatRoom) {
+  const handleSendMessage = async () => {
+    console.log("현재 파일 상태:", file);
+    if ((message.trim() || file) && selectedChatRoom) {
       const newMessage = {
         id: uuidv4(),
         senderId: Array.isArray(userId) ? userId[0] : userId,
         chatRoomId: selectedChatRoom.id,
-        content: message,
-        file: file ? file.name : null,
+        content: file ? null : message.trim(),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-
+      console.log("현재 파일 상태22:", file);
       setMessages((prevMessages) => [newMessage, ...prevMessages]);
-      chatService.sendMessage(socket, selectedChatRoom.id, message);
+      if (file) {
+        console.log("파일 전송 중::", file.name);
+        await handleFileUpload(selectedChatRoom.id, file, newMessage);
+      }
+
       setMessage("");
       handleFileRemove();
+    }
+  };
+
+  const handleFileUpload = async (chatRoomId: string, file: File, newMessage: any) => {
+    const fileType = file.name.match(/\.(jpg|jpeg|png)$/i) ? "IMAGE" : "VIDEO";
+
+    try {
+      const data = await chatService.fileUpload(chatRoomId, fileType, file);
+      console.log("파일 업로드 완료, URL:", data); // 업로드된 URL 로그
+
+      // 파일 URL을 포함한 새로운 메시지 생성
+      const updatedMessage = {
+        ...newMessage,
+        content: data.content, // URL을 메시지의 content에 설정
+      };
+
+      // 메시지 업데이트
+      setMessages((prevMessages) => [updatedMessage, ...prevMessages]);
+      console.log("현재 파일 상태3:", file); // 상태3 로그 추가
+    } catch (error) {
+      console.error("파일 업로드 실패::", error);
     }
   };
 
@@ -176,7 +201,16 @@ export default function ChattingForm() {
             </div>
           )}
           <Bubble key={msg.id} type={msg.senderId === userId ? "right" : "left_say"}>
-            {msg.content}
+            {msg.content &&
+              (msg.content.match(/\.(jpg|jpeg|png)$/i) ? (
+                <img src={msg.content} alt="file" className="w-28 rounded-lg" />
+              ) : msg.content.match(/\.(mp4|mov)$/i) ? (
+                <video controls className="w-full rounded-lg">
+                  <source src={msg.content} type="video/mp4" />
+                </video>
+              ) : (
+                <p>{msg.content}</p>
+              ))}
           </Bubble>
         </div>
       ));
@@ -253,6 +287,7 @@ export default function ChattingForm() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files ? e.target.files[0] : null;
     if (selectedFile) {
+      console.log(selectedFile.name);
       if (filePreview) {
         URL.revokeObjectURL(filePreview);
       }
@@ -415,7 +450,10 @@ export default function ChattingForm() {
                 </label>
 
                 <button
-                  onClick={handleSendMessage}
+                  onClick={() => {
+                    console.log("전송 버튼 클릭됨");
+                    handleSendMessage();
+                  }}
                   className="rounded-xl bg-color-blue-300 px-6 py-3 text-lg text-color-gray-50 mobile-tablet:px-4 mobile-tablet:py-1"
                 >
                   전송

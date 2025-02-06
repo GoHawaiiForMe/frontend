@@ -23,7 +23,8 @@ export interface Message {
   updatedAt: string;
   senderId: string;
   chatRoomId: string;
-  content: string;
+  content: string | null;
+  type?: string;
 }
 
 export interface GetChatRoomsParams {

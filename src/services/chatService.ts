@@ -2,6 +2,21 @@ import { ChatRoom, Message, User } from "@/types/chatData";
 import { api } from "./api";
 import { io, Socket } from "socket.io-client";
 
+interface FileUploadResponse {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  senderId: string;
+  type: "IMAGE" | "VIDEO";
+  chatRoomId: string;
+  content: string;
+}
+
+interface FormData {
+  type: string;
+  file: File;
+}
+
 const chatService = {
   getChatRooms: async (page: number = 1, pageSize: number = 5): Promise<ChatRoom[]> => {
     try {
@@ -50,14 +65,17 @@ const chatService = {
         chatRoomId: item.chatRoomId,
         content: item.content,
       }));
-      console.log("전체메시지", messages);
       return messages;
     } catch (error) {
       console.error("메시지 목록 get 실패", error);
       throw error;
     }
   },
-  connectWebSocket: (token: string, onMessage: (message: Message) => void) => {
+  connectWebSocket: (
+    token: string,
+    onMessage: (message: Message) => void,
+    onError: (error: { statusCode: number; message: string }) => void,
+  ) => {
     const socket = io(process.env.NEXT_PUBLIC_WEB_URL, {
       transports: ["websocket"],
       auth: {
@@ -67,6 +85,11 @@ const chatService = {
 
     socket.on("ServerToClientMessage", (newMessage: Message) => {
       onMessage(newMessage);
+    });
+
+    socket.on("ERROR", (error: { statusCode: number; message: string }) => {
+      onError(error);
+      console.error(`에러발생! ${error.message}`);
     });
 
     socket.on("connect", () => {
@@ -84,6 +107,44 @@ const chatService = {
       chatRoomId,
       content,
     });
+  },
+
+  fileUpload: async (chatRoomId: string, type: "IMAGE" | "VIDEO", file: File) => {
+    const formData = new FormData();
+    formData.append("type", type);
+    formData.append("file", file);
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+    try {
+      const response = await api.post<FileUploadResponse, any>(
+        `/chatRooms/${chatRoomId}/chats`,
+        formData as any,
+      );
+      console.log("서버 응답:", response);
+      const {
+        id,
+        createdAt,
+        updatedAt,
+        senderId,
+        type: fileType,
+        chatRoomId: roomId,
+        content,
+      } = response;
+
+      return {
+        id,
+        createdAt,
+        updatedAt,
+        senderId,
+        type: fileType,
+        chatRoomId: roomId,
+        content,
+      };
+    } catch (error) {
+      console.error("파일 업로드 실패", error);
+      throw error;
+    }
   },
 };
 
