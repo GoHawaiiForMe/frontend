@@ -35,7 +35,7 @@ const chatService = {
   getMessages: async (
     chatRoomId: string,
     page: number = 1,
-    pageSize: number = 5,
+    pageSize: number = 10,
   ): Promise<Message[]> => {
     try {
       const response = await api.get<{ totalCount: number; list: any[] }, Record<string, unknown>>(
@@ -50,7 +50,7 @@ const chatService = {
         chatRoomId: item.chatRoomId,
         content: item.content,
       }));
-
+      console.log("전체메시지", messages);
       return messages;
     } catch (error) {
       console.error("메시지 목록 get 실패", error);

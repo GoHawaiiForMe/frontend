@@ -26,6 +26,9 @@ export default function ChattingForm() {
   const [page, setPage] = useState(1);
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [isFetchingOldMessages, setIsFetchingOldMessages] = useState(false);
+  const [isFirstMessage, setIsFirstMessage] = useState(false);
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
@@ -66,6 +69,7 @@ export default function ChattingForm() {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
+    console.log("아래로 내려가는 동작 발생");
   };
 
   const scrollBrowserToBottom = () => {
@@ -75,41 +79,59 @@ export default function ChattingForm() {
     });
   };
 
+  useEffect(() => {
+    if (!selectedChatRoom) {
+      return;
+    }
+
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+      return () => {
+        container.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [selectedChatRoom]);
+
   const handleScroll = () => {
-    if (messagesContainerRef.current) {
-      const { scrollTop } = messagesContainerRef.current;
-      if (scrollTop === 0 && selectedChatRoom) {
-        setPage((prevPage) => prevPage + 1);
-        if (selectedChatRoom) {
-          fetchMessages(selectedChatRoom.id, page + 1);
-        }
-      }
+    if (!messagesContainerRef.current || !selectedChatRoom) return;
+    const { scrollTop, scrollHeight } = messagesContainerRef.current;
+
+    if (scrollTop === 0 && !isFetchingOldMessages) {
+      console.log("🔄 이전 메시지 불러오기 시작");
+      setIsFetchingOldMessages(true);
+      const previousScrollHeight = scrollHeight;
+
+      fetchMessages(selectedChatRoom.id, page + 1, true).then(() => {
+        setPage((prev) => prev + 1);
+        setIsFetchingOldMessages(false);
+
+        requestAnimationFrame(() => {
+          if (messagesContainerRef.current) {
+            // 추가된 메시지 높이만큼 스크롤 유지
+            messagesContainerRef.current.scrollTop =
+              messagesContainerRef.current.scrollHeight - previousScrollHeight;
+          }
+        });
+      });
     }
   };
 
-  useEffect(() => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.addEventListener("scroll", handleScroll);
-    }
-    return () => {
-      if (messagesContainerRef.current) {
-        messagesContainerRef.current.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [messagesContainerRef, page]);
-
-  const fetchMessages = async (chatRoomId: string, page: number, isOldMessages = false) => {
+  const fetchMessages = async (chatRoomId: string, currentPage: number, isOldMessages = false) => {
     try {
-      const data = await chatService.getMessages(chatRoomId, page, 10);
+      const data = await chatService.getMessages(chatRoomId, currentPage, 10);
+      console.log(data);
+
+      if (data.length === 0) {
+        setHasMoreMessages(false);
+        return;
+      }
+
       setMessages((prevMessages) => {
         const newMessages = data.filter(
           (msg) => !prevMessages.some((existingMsg) => existingMsg.id === msg.id),
         );
-        if (isOldMessages) {
-          return [...newMessages, ...prevMessages];
-        } else {
-          return [...prevMessages, ...newMessages];
-        }
+        return [...prevMessages, ...newMessages];
       });
 
       if (!isOldMessages) {
@@ -119,6 +141,14 @@ export default function ChattingForm() {
       } else {
         maintainScrollPosition();
       }
+
+      if (data.length < 0) {
+        setHasMoreMessages(true);
+      }
+
+      if (data.length > 0 && currentPage > 1) {
+        setIsFirstMessage(true);
+      }
     } catch (error) {
       console.error("메시지를 가져오는데 실패했습니다.", error);
     }
@@ -126,10 +156,12 @@ export default function ChattingForm() {
 
   const maintainScrollPosition = () => {
     if (messagesContainerRef.current) {
-      const { scrollHeight, clientHeight } = messagesContainerRef.current;
-      requestAnimationFrame(() => {
-        messagesContainerRef.current!.scrollTop = scrollHeight - clientHeight;
-      });
+      const { scrollTop } = messagesContainerRef.current;
+      if (scrollTop === 0) {
+        messagesContainerRef.current.scrollTop = 10;
+      } else {
+        messagesContainerRef.current.scrollTop = scrollTop;
+      }
     }
   };
 
@@ -137,10 +169,17 @@ export default function ChattingForm() {
     return messages
       .slice()
       .reverse()
-      .map((msg) => (
-        <Bubble key={msg.id} type={msg.senderId === userId ? "right" : "left_say"}>
-          {msg.content}
-        </Bubble>
+      .map((msg, index) => (
+        <div key={msg.id}>
+          {index === 0 && isFirstMessage && hasMoreMessages && (
+            <div className="text-color-blue-500 semibold my-4 text-center">
+              첫 번째 메시지입니다.
+            </div>
+          )}
+          <Bubble key={msg.id} type={msg.senderId === userId ? "right" : "left_say"}>
+            {msg.content}
+          </Bubble>
+        </div>
       ));
   };
 
@@ -189,13 +228,16 @@ export default function ChattingForm() {
 
   useEffect(() => {
     if (selectedChatRoom) {
+      setMessages([]);
+      setPage(1);
+      setIsFirstMessage(false);
+      setHasMoreMessages(true);
       fetchMessages(selectedChatRoom.id, 1, false);
     }
   }, [selectedChatRoom]);
 
   useEffect(() => {
     if (messages.length > 0) {
-      scrollToBottom();
       scrollBrowserToBottom();
     }
   }, [messages]);
@@ -249,7 +291,7 @@ export default function ChattingForm() {
             onClick={handleFileRemove}
             className="absolute right-2 top-2 rounded-full bg-white p-2 text-color-red-200 hover:bg-gray-200"
           >
-            <span className="text-xl">×</span>
+            <span className="text-xl">x</span>
           </button>
         </div>
       );
