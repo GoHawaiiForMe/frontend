@@ -1,7 +1,7 @@
 import Layout from "@/components/Common/Layout";
 import Image from "next/image";
 import Bubble from "@/components/Common/Bubble";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChatRoom, Message } from "@/types/chatData";
 import chatService from "@/services/chatService";
 import avatarImages from "@/utils/formatImage";
@@ -69,7 +69,6 @@ export default function ChattingForm() {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
-    console.log("아래로 내려가는 동작 발생");
   };
 
   const scrollBrowserToBottom = () => {
@@ -79,11 +78,38 @@ export default function ChattingForm() {
     });
   };
 
+  const handleScroll = useCallback(() => {
+    if (
+      !messagesContainerRef.current ||
+      !selectedChatRoom ||
+      isFetchingOldMessages ||
+      !hasMoreMessages
+    )
+      return;
+    const { scrollTop, scrollHeight } = messagesContainerRef.current;
+
+    if (scrollTop === 0 && !isFetchingOldMessages) {
+      setIsFetchingOldMessages(true);
+
+      const previousScrollHeight = scrollHeight;
+      fetchMessages(selectedChatRoom.id, page + 1, true).then(() => {
+        setPage((prev) => prev + 1);
+        setIsFetchingOldMessages(false);
+
+        requestAnimationFrame(() => {
+          if (messagesContainerRef.current) {
+            messagesContainerRef.current.scrollTop =
+              messagesContainerRef.current.scrollHeight - previousScrollHeight;
+          }
+        });
+      });
+    }
+  }, [isFetchingOldMessages, hasMoreMessages, page, selectedChatRoom]);
+
   useEffect(() => {
     if (!selectedChatRoom) {
       return;
     }
-
     const container = messagesContainerRef.current;
     if (container) {
       container.addEventListener("scroll", handleScroll);
@@ -91,40 +117,21 @@ export default function ChattingForm() {
         container.removeEventListener("scroll", handleScroll);
       };
     }
-  }, [selectedChatRoom]);
-
-  const handleScroll = () => {
-    if (!messagesContainerRef.current || !selectedChatRoom) return;
-    const { scrollTop, scrollHeight } = messagesContainerRef.current;
-
-    if (scrollTop === 0 && !isFetchingOldMessages) {
-      console.log("🔄 이전 메시지 불러오기 시작");
-      setIsFetchingOldMessages(true);
-      const previousScrollHeight = scrollHeight;
-
-      fetchMessages(selectedChatRoom.id, page + 1, true).then(() => {
-        setPage((prev) => prev + 1);
-        setIsFetchingOldMessages(false);
-
-        requestAnimationFrame(() => {
-          if (messagesContainerRef.current) {
-            // 추가된 메시지 높이만큼 스크롤 유지
-            messagesContainerRef.current.scrollTop =
-              messagesContainerRef.current.scrollHeight - previousScrollHeight;
-          }
-        });
-      });
-    }
-  };
+  }, [selectedChatRoom, handleScroll]);
 
   const fetchMessages = async (chatRoomId: string, currentPage: number, isOldMessages = false) => {
     try {
       const data = await chatService.getMessages(chatRoomId, currentPage, 10);
-      console.log(data);
-
       if (data.length === 0) {
         setHasMoreMessages(false);
+        if (currentPage !== 1) {
+          setIsFirstMessage(true);
+        }
         return;
+      }
+
+      if (data.length > 0 && currentPage > 1) {
+        setIsFirstMessage(false);
       }
 
       setMessages((prevMessages) => {
@@ -141,14 +148,6 @@ export default function ChattingForm() {
       } else {
         maintainScrollPosition();
       }
-
-      if (data.length < 0) {
-        setHasMoreMessages(true);
-      }
-
-      if (data.length > 0 && currentPage > 1) {
-        setIsFirstMessage(true);
-      }
     } catch (error) {
       console.error("메시지를 가져오는데 실패했습니다.", error);
     }
@@ -158,7 +157,7 @@ export default function ChattingForm() {
     if (messagesContainerRef.current) {
       const { scrollTop } = messagesContainerRef.current;
       if (scrollTop === 0) {
-        messagesContainerRef.current.scrollTop = 10;
+        messagesContainerRef.current.scrollTop = 0;
       } else {
         messagesContainerRef.current.scrollTop = scrollTop;
       }
@@ -171,7 +170,7 @@ export default function ChattingForm() {
       .reverse()
       .map((msg, index) => (
         <div key={msg.id}>
-          {index === 0 && isFirstMessage && hasMoreMessages && (
+          {index === 0 && isFirstMessage && !hasMoreMessages && (
             <div className="text-color-blue-500 semibold my-4 text-center">
               첫 번째 메시지입니다.
             </div>
