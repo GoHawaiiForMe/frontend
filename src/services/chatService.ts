@@ -7,14 +7,9 @@ interface FileUploadResponse {
   createdAt: string;
   updatedAt: string;
   senderId: string;
-  type: "IMAGE" | "VIDEO";
+  type?: "IMAGE" | "VIDEO";
   chatRoomId: string;
   content: string;
-}
-
-interface FormData {
-  type: string;
-  file: File;
 }
 
 const chatService = {
@@ -64,7 +59,9 @@ const chatService = {
         senderId: item.senderId,
         chatRoomId: item.chatRoomId,
         content: item.content,
+        type: item.type,
       }));
+      console.log(messages);
       return messages;
     } catch (error) {
       console.error("메시지 목록 get 실패", error);
@@ -109,17 +106,18 @@ const chatService = {
     });
   },
 
-  fileUpload: async (chatRoomId: string, type: "IMAGE" | "VIDEO", file: File) => {
-    const formData = new FormData();
-    formData.append("type", type);
-    formData.append("file", file);
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
+  fileUpload: async (chatRoomId: string, formData: globalThis.FormData) => {
+    console.log(formData);
     try {
       const response = await api.post<FileUploadResponse, any>(
         `/chatRooms/${chatRoomId}/chats`,
-        formData as any,
+        formData,
+        false,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
       );
       console.log("서버 응답:", response);
       const {

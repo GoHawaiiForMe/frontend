@@ -46,20 +46,25 @@ export default function ChattingForm() {
   };
 
   const handleSendMessage = async () => {
-    console.log("현재 파일 상태:", file);
     if ((message.trim() || file) && selectedChatRoom) {
+      const isImage = file && file.name.match(/\.(jpg|jpeg|png)$/i);
+      const isVideo = file && file.name.match(/\.(mp4|mov)$/i);
+
       const newMessage = {
         id: uuidv4(),
         senderId: Array.isArray(userId) ? userId[0] : userId,
         chatRoomId: selectedChatRoom.id,
+        type: isImage ? "IMAGE" : isVideo ? "VIDEO" : "TEXT",
         content: file ? null : message.trim(),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      console.log("현재 파일 상태22:", file);
+
+      console.log("보내는 메시지", newMessage);
+
       setMessages((prevMessages) => [newMessage, ...prevMessages]);
       if (file) {
-        console.log("파일 전송 중::", file.name);
+        console.log("업로드한 파일", file);
         await handleFileUpload(selectedChatRoom.id, file, newMessage);
       }
 
@@ -71,19 +76,19 @@ export default function ChattingForm() {
   const handleFileUpload = async (chatRoomId: string, file: File, newMessage: any) => {
     const fileType = file.name.match(/\.(jpg|jpeg|png)$/i) ? "IMAGE" : "VIDEO";
 
-    try {
-      const data = await chatService.fileUpload(chatRoomId, fileType, file);
-      console.log("파일 업로드 완료, URL:", data); // 업로드된 URL 로그
+    const formData = new FormData();
+    formData.append("type", fileType);
+    formData.append("file", file);
 
-      // 파일 URL을 포함한 새로운 메시지 생성
+    try {
+      const data = await chatService.fileUpload(chatRoomId, formData);
+
       const updatedMessage = {
         ...newMessage,
-        content: data.content, // URL을 메시지의 content에 설정
+        content: data.content,
       };
 
-      // 메시지 업데이트
       setMessages((prevMessages) => [updatedMessage, ...prevMessages]);
-      console.log("현재 파일 상태3:", file); // 상태3 로그 추가
     } catch (error) {
       console.error("파일 업로드 실패::", error);
     }
@@ -147,6 +152,7 @@ export default function ChattingForm() {
   const fetchMessages = async (chatRoomId: string, currentPage: number, isOldMessages = false) => {
     try {
       const data = await chatService.getMessages(chatRoomId, currentPage, 10);
+      console.log(data);
       if (data.length === 0) {
         setHasMoreMessages(false);
         if (currentPage !== 1) {
@@ -201,16 +207,15 @@ export default function ChattingForm() {
             </div>
           )}
           <Bubble key={msg.id} type={msg.senderId === userId ? "right" : "left_say"}>
-            {msg.content &&
-              (msg.content.match(/\.(jpg|jpeg|png)$/i) ? (
-                <img src={msg.content} alt="file" className="w-28 rounded-lg" />
-              ) : msg.content.match(/\.(mp4|mov)$/i) ? (
-                <video controls className="w-full rounded-lg">
-                  <source src={msg.content} type="video/mp4" />
-                </video>
-              ) : (
-                <p>{msg.content}</p>
-              ))}
+            {msg.type === "IMAGE" ? (
+              <img src={msg.content || ""} alt="file" className="w-28 rounded-lg" />
+            ) : msg.type === "VIDEO" ? (
+              <video controls className="w-full rounded-lg">
+                <source src={msg.content || ""} type="video/mp4" />
+              </video>
+            ) : (
+              <p>{msg.content}</p>
+            )}
           </Bubble>
         </div>
       ));

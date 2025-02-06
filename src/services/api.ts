@@ -1,4 +1,5 @@
 import apiClient from "./apiClient";
+import { AxiosRequestConfig } from "axios";
 
 export const api = {
   get: async <T, P extends Record<string, unknown>>(url: string, params?: P): Promise<T> => {
@@ -6,13 +7,17 @@ export const api = {
     return response.data;
   },
 
-  post: async <T, D extends Record<string, unknown>>(
+  post: async <T, D>(
     url: string,
     data?: D,
     withCredentials: boolean = false,
+    config?: AxiosRequestConfig,
   ): Promise<T> => {
-    const config = withCredentials ? { withCredentials: true } : {};
-    const response = await apiClient.post<T>(url, data, config);
+    const axiosConfig: AxiosRequestConfig = {
+      ...config,
+      withCredentials,
+    };
+    const response = await apiClient.post<T>(url, data, axiosConfig);
     return response.data;
   },
   patch: async <T, D extends Record<string, unknown>>(url: string, data?: D): Promise<T> => {

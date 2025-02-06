@@ -31,3 +31,7 @@ export interface GetChatRoomsParams {
   page?: number;
   pageSize?: number;
 }
+export interface FormData {
+  type: string;
+  file: File;
+}
