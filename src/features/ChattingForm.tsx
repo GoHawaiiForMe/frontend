@@ -62,10 +62,11 @@ export default function ChattingForm() {
 
       console.log("보내는 메시지", newMessage);
 
-      setMessages((prevMessages) => [newMessage, ...prevMessages]);
       if (file) {
         console.log("업로드한 파일", file);
         await handleFileUpload(selectedChatRoom.id, file, newMessage);
+      } else {
+        setMessages((prevMessages) => [newMessage, ...prevMessages]);
       }
 
       setMessage("");
