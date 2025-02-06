@@ -7,7 +7,7 @@ interface FileUploadResponse {
   createdAt: string;
   updatedAt: string;
   senderId: string;
-  type?: "IMAGE" | "VIDEO";
+  type?: "IMAGE" | "VIDEO" | "TEXT";
   chatRoomId: string;
   content: string;
 }
@@ -61,7 +61,6 @@ const chatService = {
         content: item.content,
         type: item.type,
       }));
-      console.log(messages);
       return messages;
     } catch (error) {
       console.error("메시지 목록 get 실패", error);
@@ -99,15 +98,15 @@ const chatService = {
 
     return socket;
   },
-  sendMessage: (socket: Socket, chatRoomId: string, content: string) => {
+  sendMessage: (socket: Socket, chatRoomId: string, content: string, type: string) => {
     socket.emit("ClientToServerMessage", {
       chatRoomId,
+      type,
       content,
     });
   },
 
   fileUpload: async (chatRoomId: string, formData: globalThis.FormData) => {
-    console.log(formData);
     try {
       const response = await api.post<FileUploadResponse, any>(
         `/chatRooms/${chatRoomId}/chats`,
@@ -119,7 +118,6 @@ const chatService = {
           },
         },
       );
-      console.log("서버 응답:", response);
       const {
         id,
         createdAt,

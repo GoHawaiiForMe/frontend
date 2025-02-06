@@ -49,6 +49,12 @@ export default function ChattingForm() {
   };
 
   const handleSendMessage = async () => {
+    if (!selectedChatRoom) return;
+    if (!socket) {
+      console.error("소켓이 연결되어 있지 않습니다.");
+      return;
+    }
+
     if ((message.trim() || file) && selectedChatRoom) {
       const isImage = file && file.name.match(/\.(jpg|jpeg|png)$/i);
       const isVideo = file && file.name.match(/\.(mp4|mov)$/i);
@@ -66,11 +72,14 @@ export default function ChattingForm() {
       if (file) {
         await handleFileUpload(selectedChatRoom.id, file, newMessage);
       } else {
+        chatService.sendMessage(socket, selectedChatRoom.id, message.trim(), "TEXT");
         setMessages((prevMessages) => [newMessage, ...prevMessages]);
       }
 
       setMessage("");
       handleFileRemove();
+
+      scrollToBottom();
     }
   };
 
@@ -284,7 +293,7 @@ export default function ChattingForm() {
 
   useEffect(() => {
     if (messages.length > 0) {
-      scrollBrowserToBottom();
+      scrollToBottom();
     }
   }, [messages]);
 
