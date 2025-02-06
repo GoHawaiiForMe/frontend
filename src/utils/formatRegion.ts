@@ -1,4 +1,4 @@
-type ServiceArea =
+export type ServiceArea =
   | "SEOUL"
   | "BUSAN"
   | "INCHEON"

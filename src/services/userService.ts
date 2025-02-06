@@ -16,8 +16,12 @@ export interface UserInfo {
 
 interface ProfileInfo {
   userId: string;
+  nickName?: string;
   image: string;
   serviceArea: string[];
+  averageRating?: number;
+  totalReviews?: number;
+  totalConfirms?: number;
   tripTypes?: string[];
   serviceTypes?: string[];
   gallery?: string;
@@ -105,9 +109,10 @@ const userService = {
     }
   },
 
-  getProfileInfo: async (): Promise<ProfileInfo> => {
+  getProfileInfo: async (makerId?: string): Promise<ProfileInfo> => {
     try {
-      const response = await api.get<ProfileInfo, Record<string, unknown>>("/users/profile");
+      const endpoint = makerId ? `/users/profile/${makerId}` : "/users/profile";
+      const response = await api.get<ProfileInfo, Record<string, unknown>>(endpoint);
       return response;
     } catch (error) {
       console.error("프로필 정보 조회 실패", error);
@@ -167,7 +172,7 @@ const userService = {
     try {
       const { page = 1, pageSize = 5 } = params;
       const queryString = `?page=${page}&pageSize=${pageSize}`;
-      const response = await api.get<MakerReviewResponse, {}>(`/reviews/maker${queryString}`);
+      const response = await api.get<MakerReviewResponse, {}>(`/reviews/${makerId}${queryString}`);
       return response;
     } catch (error) {
       console.error("메이커 마이페이지 조회 실패", error);

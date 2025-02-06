@@ -11,7 +11,7 @@ module.exports = {
       tablet: { min: "744px", max: "1023px" },
       pc: { min: "1024px" },
       "mobile-tablet": { max: "1023px" },
-      card: { min: "1024px", max: "1460px" }
+      card: { min: "1024px", max: "1460px" },
     },
     extend: {
       colors: {
@@ -58,8 +58,16 @@ module.exports = {
         xs: ["12px", "20px"],
         "2xs": ["10px", "18px"],
       },
+      animation: {
+        pulse: "pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      },
+      keyframes: {
+        pulse: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: ".5" },
+        },
+      },
     },
   },
   plugins: ["prettier-plugin-tailwindcss"],
 };
-

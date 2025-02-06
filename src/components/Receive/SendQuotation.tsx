@@ -71,9 +71,11 @@ export default function SendQuotation({ data }: SendQuotationProps) {
           <>
             <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-4 rounded-[16px] bg-color-black-400 bg-opacity-50 text-white">
               <p>여행 완료된 플랜입니다.</p>
-              <button className="z-40 rounded-[16px] border border-color-blue-200 bg-color-blue-100 px-[18px] py-[10px] text-lg font-semibold text-color-blue-300">
-                견적 상세 보기
-              </button>
+              <Link href={`/quotationDetail/${data.id}`}>
+                <button className="z-40 rounded-[16px] border border-color-blue-200 bg-color-blue-100 px-[18px] py-[10px] text-lg font-semibold text-color-blue-300">
+                  견적 상세 보기
+                </button>
+              </Link>
             </div>
           </>
         )}

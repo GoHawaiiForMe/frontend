@@ -1,4 +1,4 @@
-type TripType = "SHOPPING" | "FOOD_TOUR" | "ACTIVITY" | "CULTURE" | "FESTIVAL" | "RELAXATION";
+export type TripType = "SHOPPING" | "FOOD_TOUR" | "ACTIVITY" | "CULTURE" | "FESTIVAL" | "RELAXATION";
 
 export const formatTripType = (tripType: TripType | undefined): string => {
   if (!tripType) return "";

@@ -34,8 +34,8 @@ Content-Type: application/json
 
 
 ### 프로필 조회
-GET http://goforme.duckdns.org/user/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjNDU3NGRjYy0wYmJkLTQ1NTktOTQ3ZS0zZjY2ZTExNDcyNGUiLCJyb2xlIjoiTUFLRVIiLCJpYXQiOjE3MzczNzg5MzQsImV4cCI6MTczNzQ2NTMzNH0.bCgTHVdLxr8nou4qMJ082lu-n8NEOvOyBpzszRKbWL4
+GET http://localhost:4000/users/profile/032d7bd4-116c-467b-9352-a14b0d494ef9
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMzJkN2JkNC0xMTZjLTQ2N2ItOTM1Mi1hMTRiMGQ0OTRlZjkiLCJyb2xlIjoiTUFLRVIiLCJpYXQiOjE3Mzg1NzgwNDksImV4cCI6MTczODY2NDQ0OX0.yDCZo-C0jUQcU-AQWfiQkoGQ1-ig_X3rKO4fIQ-ey9M
 
 ### 받은요청
 
@@ -68,3 +68,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMzJkN
 GET http://localhost:4000/plans/16865772-f792-4bb6-8ac8-504fcb4064e3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMzJkN2JkNC0xMTZjLTQ2N2ItOTM1Mi1hMTRiMGQ0OTRlZjkiLCJyb2xlIjoiTUFLRVIiLCJpYXQiOjE3Mzc5NTg3ODUsImV4cCI6MTczODA0NTE4NX0.yqZkkI_nKwTa7pGegMneVO4Yld8VJJirQQ_s6TQdSus
 
+###
+
+
+GET http://localhost:4000/reviews/032d7bd4-116c-467b-9352-a14b0d494ef9
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMzJkN2JkNC0xMTZjLTQ2N2ItOTM1Mi1hMTRiMGQ0OTRlZjkiLCJyb2xlIjoiTUFLRVIiLCJpYXQiOjE3Mzg1NzgwNDksImV4cCI6MTczODY2NDQ0OX0.yDCZo-C0jUQcU-AQWfiQkoGQ1-ig_X3rKO4fIQ-ey9M
