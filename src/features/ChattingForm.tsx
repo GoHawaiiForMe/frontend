@@ -207,14 +207,22 @@ export default function ChattingForm() {
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
-      const newSocket = chatService.connectWebSocket(accessToken, (newMessage: Message) => {
-        setMessages((prevMessages) => {
-          if (!prevMessages.find((msg) => msg.id === newMessage.id)) {
-            return [newMessage, ...prevMessages];
-          }
-          return prevMessages;
-        });
-      });
+      const handleError = (error: { statusCode: number; message: string }) => {
+        alert(`${error.message}`);
+      };
+
+      const newSocket = chatService.connectWebSocket(
+        accessToken,
+        (newMessage: Message) => {
+          setMessages((prevMessages) => {
+            if (!prevMessages.find((msg) => msg.id === newMessage.id)) {
+              return [newMessage, ...prevMessages];
+            }
+            return prevMessages;
+          });
+        },
+        handleError,
+      );
       setSocket(newSocket);
 
       return () => {
