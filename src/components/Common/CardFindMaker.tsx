@@ -85,13 +85,19 @@ const CardFindMaker = ({
         ${innerboxClassName} ${cardSize === 'sm' ? 'h-[78px] !p-[10px] ' : ''} mobile-tablet:h-[78px] mobile-tablet:p-[10px]`}>
           <div className={`flex items-center w-20 h-20 ${profileClassName} ${cardSize === 'sm' ? 'min-w-12 min-h-12' : ''} mobile-tablet:min-w-12 mobile-tablet:min-h-12`}>
             <Image
-              src={image}
+              src={avatarImage ? avatarImage.src : image}
               alt="maker 이미지"
               width={parseInt(computedPhotoSize)}
               height={parseInt(computedPhotoSize)}
               className="border-2 border-color-blue-400 rounded-full mobile-tablet:hidden"
             />
-            <Image src={image} alt="파일이미지" width={46} height={46} className="border-2 border-color-blue-400 rounded-full pc:hidden" />
+            <Image 
+              src={avatarImage ? avatarImage.src : image}
+              alt="파일이미지" 
+              width={46} 
+              height={46} 
+              className="border-2 border-color-blue-400 rounded-full pc:hidden" 
+            />
           </div>
           <div className="flex flex-col w-full py-1">
             <div className="w-full flex justify-between ">
@@ -111,7 +117,7 @@ const CardFindMaker = ({
                   className="mobile-tablet:hidden"
                 />
                 <Image src={star} alt="별이미지" width={20} height={20} className="pc:hidden" />
-                <p className=" text-color-black-300">{averageRating.toFixed(1)}</p>
+                <p className=" text-color-black-300">{averageRating}</p>
                 <p className=" text-color-gray-300">({totalReviews})</p>
               </div>
               <div className="h-5 border border-line-200" />
