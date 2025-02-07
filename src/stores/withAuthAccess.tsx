@@ -16,9 +16,11 @@ const withAuthAccess = (WrappedComponent: React.ComponentType) => {
         }
         setAccessToken(token);
       } else {
-        router.push("/login");
+        if (router.pathname !== "/login" && router.pathname !== "/signup") {
+          router.push("/login");
+        }
       }
-    }, [router]);
+    }, [router, accessToken]);
 
     if (!accessToken && !(router.pathname === "/login" || router.pathname === "/signup")) {
       return null;
