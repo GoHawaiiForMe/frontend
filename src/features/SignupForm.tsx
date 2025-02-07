@@ -5,11 +5,16 @@ import { useState } from "react";
 import { signUpSchema, SignUpFormData } from "@/utils/validate";
 import logo from "@public/assets/icon_logo_img.svg";
 import Image from "next/image";
+import google_icon from "@public/assets/icon_google.svg";
+import kakao_icon from "@public/assets/icon_kakao.svg";
+import naver_icon from "@public/assets/icon_naver.svg";
 import Button from "@/components/Common/Button";
 import Link from "next/link";
 import { useSignUp } from "@/stores/SignUpContext";
 import { useRouter } from "next/router";
 import userService from "@/services/userService";
+import authService from "@/services/authService";
+import { access } from "fs";
 
 interface CheckResponse {
   data: boolean;
@@ -94,6 +99,15 @@ export default function SignUpForm() {
     } catch {
       setError("email", { message: "이메일 체크 중 오류가 발생했습니다." });
       setIsEmailValid(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const googleData = await authService.googleLogin();
+      console.log(googleData);
+    } catch (error) {
+      console.error("구글 로그인 중 오류 발생", error);
     }
   };
 
@@ -196,11 +210,26 @@ export default function SignUpForm() {
             className="text-color-gray-50"
           />
         </form>
-        <div className="mb-40 flex justify-center">
+        <div className="mb-4 flex justify-center">
           <p className="mr-2">이미 니가가라하와이 회원이신가요?</p>
           <Link href="/login" className="text-color-blue-300 underline">
             로그인
           </Link>
+        </div>
+
+        <div className="mb-40 flex flex-col items-center gap-8">
+          <h2 className="pc:text-xl mobile-tablet:text-xs">SNS 계정으로 간편 가입하기</h2>
+          <div className="flex gap-4">
+            <div onClick={handleGoogleLogin} className="cursor-pointer">
+              <Image src={google_icon} alt="구글 아이콘" width={50} height={50} />
+            </div>
+            <div className="cursor-pointer">
+              <Image src={kakao_icon} alt="카카오 아이콘" width={50} height={50} />
+            </div>
+            <div className="cursor-pointer">
+              <Image src={naver_icon} alt="네이버 아이콘" width={50} height={50} />
+            </div>
+          </div>
         </div>
       </div>
     </div>

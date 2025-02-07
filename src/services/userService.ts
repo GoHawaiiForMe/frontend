@@ -62,7 +62,7 @@ interface MakerReviewParams {
 const userService = {
   signUp: async (data: any) => {
     try {
-      const response = await api.post("/users/signup", data);
+      const response = await api.post("/auth/signup", data);
       return response;
     } catch (error) {
       console.error("회원가입 실패", error);
@@ -71,7 +71,7 @@ const userService = {
   },
   checkNickName: async (data: { nickName: string }) => {
     try {
-      const response = await api.post("/users/check/nickName", data);
+      const response = await api.post("/auth/check/nickName", data);
       return response;
     } catch (error) {
       console.error("닉네임 체크 불가", error);
@@ -79,7 +79,7 @@ const userService = {
   },
   checkEmail: async (data: { email: string }) => {
     try {
-      const response = await api.post("/users/check/email", data);
+      const response = await api.post("/auth/check/email", data);
       return response;
     } catch (error) {
       console.error("이메일 체크 불가", error);
@@ -88,7 +88,7 @@ const userService = {
   login: async (data: { email: string; password: string }): Promise<LoginResponse> => {
     try {
       const response = await api.post<LoginResponse, { email: string; password: string }>(
-        "/users/login",
+        "/auth/login",
         data,
       );
       localStorage.setItem("accessToken", response.accessToken);
