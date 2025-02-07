@@ -1,16 +1,37 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import DreamerFilter from '../components/Common/DreamerFilter';
 import DropdownSort from "@/components/Common/DropdownSort";
 import CardFindMaker from "@/components/Common/CardFindMaker";
 import SearchBar from "@/components/Common/SearchBar";
 import Link from 'next/link';
 import useAuthStore from "@/stores/useAuthStore";
+import { getMakers } from '@/services/findMaker';
 
 export default function FindingMaker() {
   const [searchValue, setSearchValue] = useState('');
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [resetFilters, setResetFilters] = useState(false);
+  const [makers, setMakers] = useState([]);
   const { isLoggedIn, setLogin } = useAuthStore();
+
+  // Define
+  const orderBy = 'RATINGS'; 
+  const serviceArea = 'SEOUL'; 
+  const serviceType = 'SHOPPING'; 
+  const keyword = searchValue; 
+
+  useEffect(() => {
+    const fetchMakers = async () => {
+      try {
+        const data = await getMakers(orderBy, serviceArea, serviceType, keyword); // 파라미터에 채워 주는 것으로 진행 .  가 각 값이 어디에 있는지 찾아서 넣으면 된다. 
+        setMakers(data.list);
+      } catch (error) {
+        console.error('Failed to fetch makers:', error);
+      }
+    };
+
+    fetchMakers();
+  }, []);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -26,23 +47,23 @@ export default function FindingMaker() {
   };
 
   return (
-   <>
-   <style>
-    {`
-      @media (min-width: 1024px) and (max-width: 1800px) {
-        .main-container {
-          padding: 0 72px;
-        }
-      }
-      .flash {
-        animation: flash-animation 0.3s ease-in-out;
-      }
-      @keyframes flash-animation {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0; }
-      }
-    `}
-   </style>
+    <>
+      <style>
+        {`
+          @media (min-width: 1024px) and (max-width: 1800px) {
+            .main-container {
+              padding: 0 72px;
+            }
+          }
+          .flash {
+            animation: flash-animation 0.3s ease-in-out;
+          }
+          @keyframes flash-animation {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+          }
+        `}
+      </style>
       <div className="mx-auto overflow-hidden mobile:mx-auto mobile:w-[327px] tablet:mx-auto tablet:w-[600px]">
         <p className="text-2xl py-8 semibold mobile-tablet:hidden pc:block">Maker 찾기</p>
       </div> 
@@ -107,24 +128,26 @@ export default function FindingMaker() {
               className="w-full mobile-tablet:w-full" 
               value={searchValue}
               onChange={handleSearchChange}
-            
             />
-            
           </div>
           
           <div className="w-full flex flex-col gap-4">
-            <Link href="/maker-detail">
-              <CardFindMaker
-                firstLabelType="SHOPPING"
-                secondLabelType="REQUEST"
-              />
-            </Link>
-            <Link href="/maker-detail">
-              <CardFindMaker
-                firstLabelType="SHOPPING"
-                secondLabelType="REQUEST"
-              />
-            </Link>
+            {makers.map((maker) => (
+              <Link href={`/maker-detail/${maker.id}`} key={maker.id}>
+                <CardFindMaker
+                  key={maker.id}
+                  firstLabelType={maker.serviceTypes[0]}
+                  secondLabelType={maker.serviceTypes[1]}
+                  nickName={maker.nickName}
+                  image={maker.image} // default 4 라는 값이 서버에서 온다 , 왜 오는지  
+                  description={maker.description}
+                  averageRating={maker.averageRating}
+                  totalReviews={maker.totalReviews}
+                  totalFollows={maker.totalFollows}
+                  totalConfirms={maker.totalConfirms}
+                />
+              </Link>
+            ))}
           </div>
           
           <div className="flex min-h-[200px] items-center justify-center">
@@ -138,5 +161,5 @@ export default function FindingMaker() {
         </div>
       </div>
     </>
-  )
+  );
 }
