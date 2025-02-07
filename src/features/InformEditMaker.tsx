@@ -13,7 +13,6 @@ const fetchUserInfo = async () => {
   const userData = await userService.getUserInfo();
   return userData;
 };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const updateUserInfo = async (UpdateData: any): Promise<void> => {
   return userService.patchBasicInfo(UpdateData);
 };
