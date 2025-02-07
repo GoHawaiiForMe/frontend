@@ -1,14 +1,19 @@
 import Layout from "@/components/Common/Layout";
 import Image from "next/image";
 import Bubble from "@/components/Common/Bubble";
-import { useEffect, useState } from "react";
-import { ChatRoom, Messagge } from "@/types/chatData";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ChatRoom, Message } from "@/types/chatData";
 import chatService from "@/services/chatService";
 import avatarImages from "@/utils/formatImage";
 import { useQuery } from "@tanstack/react-query";
 import userService from "@/services/userService";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import coconut from "@public/assets/icon_coconut.svg";
+import { Socket } from "socket.io-client";
+import { v4 as uuidv4 } from "uuid";
+
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+const MAX_VIDEO_SIZE = 100 * 1024 * 1024;
 
 const getUserId = async (): Promise<string> => {
   const userInfo = await userService.getUserInfo();
@@ -16,30 +21,186 @@ const getUserId = async (): Promise<string> => {
 };
 
 export default function ChattingForm() {
-  const [messages, setMessages] = useState<Messagge[]>([]); //전체 메시지 보기
-  const [message, setMessage] = useState<string>(""); //전송할 메세지 관리
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [message, setMessage] = useState<string>("");
   const [chatRooms, setChatRooms] = useState<any[]>([]);
   const [selectedChatRoom, setSelectedChatRoom] = useState<ChatRoom | null>(null);
+  const [socket, setSocket] = useState<Socket | null>(null);
+  const [page, setPage] = useState(1);
+  const [filePreview, setFilePreview] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [isFetchingOldMessages, setIsFetchingOldMessages] = useState(false);
+  const [isFirstMessage, setIsFirstMessage] = useState(false);
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);
+
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null);
 
   const { data: userId = [] } = useQuery({
     queryKey: ["userId"],
     queryFn: getUserId,
   });
 
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      console.log("메시지 전송 내용 =>", message);
-      setMessage("");
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSendMessage();
     }
   };
 
-  const fetchMessages = async (chatRoomId: string) => {
-    try {
-      const data = await chatService.getMessages(chatRoomId, 1, 5);
+  const handleSendMessage = async () => {
+    if (!selectedChatRoom) return;
+    if (!socket) {
+      console.error("소켓이 연결되어 있지 않습니다.");
+      return;
+    }
 
-      setMessages(data);
+    if ((message.trim() || file) && selectedChatRoom) {
+      const isImage = file && file.name.match(/\.(jpg|jpeg|png)$/i);
+      const isVideo = file && file.name.match(/\.(mp4|mov)$/i);
+
+      const newMessage = {
+        id: uuidv4(),
+        senderId: Array.isArray(userId) ? userId[0] : userId,
+        chatRoomId: selectedChatRoom.id,
+        type: isImage ? "IMAGE" : isVideo ? "VIDEO" : "TEXT",
+        content: file ? null : message.trim(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      if (file) {
+        await handleFileUpload(selectedChatRoom.id, file, newMessage);
+      } else {
+        chatService.sendMessage(socket, selectedChatRoom.id, message.trim(), "TEXT");
+        setMessages((prevMessages) => [newMessage, ...prevMessages]);
+      }
+
+      setMessage("");
+      handleFileRemove();
+
+      scrollToBottom();
+    }
+  };
+
+  const handleFileUpload = async (chatRoomId: string, file: File, newMessage: any) => {
+    const fileType = file.name.match(/\.(jpg|jpeg|png)$/i) ? "IMAGE" : "VIDEO";
+
+    const formData = new FormData();
+    formData.append("type", fileType);
+    formData.append("file", file);
+
+    try {
+      const data = await chatService.fileUpload(chatRoomId, formData);
+
+      const updatedMessage = {
+        ...newMessage,
+        content: data.content,
+      };
+
+      setMessages((prevMessages) => [updatedMessage, ...prevMessages]);
+    } catch (error) {
+      console.error("파일 업로드 실패::", error);
+    }
+  };
+
+  // 스크롤 관련
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  };
+
+  const scrollBrowserToBottom = () => {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth",
+    });
+  };
+
+  const handleScroll = useCallback(() => {
+    if (
+      !messagesContainerRef.current ||
+      !selectedChatRoom ||
+      isFetchingOldMessages ||
+      !hasMoreMessages
+    )
+      return;
+    const { scrollTop, scrollHeight } = messagesContainerRef.current;
+
+    if (scrollTop === 0 && !isFetchingOldMessages) {
+      setIsFetchingOldMessages(true);
+
+      const previousScrollHeight = scrollHeight;
+      fetchMessages(selectedChatRoom.id, page + 1, true).then(() => {
+        setPage((prev) => prev + 1);
+        setIsFetchingOldMessages(false);
+
+        requestAnimationFrame(() => {
+          if (messagesContainerRef.current) {
+            messagesContainerRef.current.scrollTop =
+              messagesContainerRef.current.scrollHeight - previousScrollHeight;
+          }
+        });
+      });
+    }
+  }, [isFetchingOldMessages, hasMoreMessages, page, selectedChatRoom]);
+
+  useEffect(() => {
+    if (!selectedChatRoom) {
+      return;
+    }
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+      return () => {
+        container.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [selectedChatRoom, handleScroll]);
+
+  const fetchMessages = async (chatRoomId: string, currentPage: number, isOldMessages = false) => {
+    try {
+      const data = await chatService.getMessages(chatRoomId, currentPage, 10);
+      if (data.length === 0) {
+        setHasMoreMessages(false);
+        if (currentPage !== 1) {
+          setIsFirstMessage(true);
+        }
+        return;
+      }
+
+      if (data.length > 0 && currentPage > 1) {
+        setIsFirstMessage(false);
+      }
+
+      setMessages((prevMessages) => {
+        const newMessages = data.filter(
+          (msg) => !prevMessages.some((existingMsg) => existingMsg.id === msg.id),
+        );
+        return [...prevMessages, ...newMessages];
+      });
+
+      if (!isOldMessages) {
+        requestAnimationFrame(() => {
+          scrollToBottom();
+        });
+      } else {
+        maintainScrollPosition();
+      }
     } catch (error) {
       console.error("메시지를 가져오는데 실패했습니다.", error);
+    }
+  };
+
+  const maintainScrollPosition = () => {
+    if (messagesContainerRef.current) {
+      const { scrollTop } = messagesContainerRef.current;
+      if (scrollTop === 0) {
+        messagesContainerRef.current.scrollTop = 0;
+      } else {
+        messagesContainerRef.current.scrollTop = scrollTop;
+      }
     }
   };
 
@@ -47,16 +208,35 @@ export default function ChattingForm() {
     return messages
       .slice()
       .reverse()
-      .map((msg) => (
-        <Bubble key={msg.id} type={msg.senderId === userId ? "right" : "left_say"}>
-          {msg.content}
-        </Bubble>
+      .map((msg, index) => (
+        <div key={msg.id}>
+          {index === 0 && isFirstMessage && !hasMoreMessages && (
+            <div className="text-color-blue-500 semibold my-4 text-center">
+              첫 번째 메시지입니다.
+            </div>
+          )}
+          <Bubble key={msg.id} type={msg.senderId === userId ? "right" : "left_say"}>
+            {msg.type === "IMAGE" ? (
+              <img src={msg.content || ""} alt="file" className="w-28 rounded-lg" />
+            ) : msg.type === "VIDEO" ? (
+              <video controls className="w-full rounded-lg">
+                <source src={msg.content || ""} type="video/mp4" />
+              </video>
+            ) : (
+              <p>{msg.content}</p>
+            )}
+          </Bubble>
+        </div>
       ));
   };
 
-  const handleChatRoomClick = (chatRoom: ChatRoom) => {
+  const handleChatRoomClick = async (chatRoom: ChatRoom) => {
     setSelectedChatRoom(chatRoom);
-    fetchMessages(chatRoom.id);
+    setMessages([]);
+    await fetchMessages(chatRoom.id, 1, false);
+
+    scrollToBottom();
+    scrollBrowserToBottom();
   };
 
   useEffect(() => {
@@ -72,27 +252,123 @@ export default function ChattingForm() {
   }, []);
 
   // 웹소켓 연결 부분
-  // useEffect(() => {
-  // const socket = new WebSocket("ws://url-미정");
-  // socket.onopen = () => {
-  // console.log("웹소켓 연결 성공");
-  // };
-  //
-  // socket.onmessage = (event) => {
-  // const newMessage = event.data;
-  // setMessages((prevMessages) => [...prevMessages, newMessage]);
-  // };
-  //
-  // socket.onclose = () => {
-  // console.log("웹소켓 연결 종료");
-  // };
-  //
-  // setWs(socket);
-  //
-  // return () => {
-  // socket.close();
-  // };
-  // }, []);
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      const handleError = (error: { statusCode: number; message: string }) => {
+        alert(`${error.message}`);
+      };
+
+      const newSocket = chatService.connectWebSocket(
+        accessToken,
+        (newMessage: Message) => {
+          setMessages((prevMessages) => {
+            if (!prevMessages.find((msg) => msg.id === newMessage.id)) {
+              return [newMessage, ...prevMessages];
+            }
+            return prevMessages;
+          });
+        },
+        handleError,
+      );
+      setSocket(newSocket);
+
+      return () => {
+        if (newSocket) {
+          newSocket.close();
+        }
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedChatRoom) {
+      setMessages([]);
+      setPage(1);
+      setIsFirstMessage(false);
+      setHasMoreMessages(true);
+      fetchMessages(selectedChatRoom.id, 1, false);
+    }
+  }, [selectedChatRoom]);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      scrollToBottom();
+    }
+  }, [messages]);
+
+  //이미지
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files ? e.target.files[0] : null;
+    if (selectedFile) {
+      const isImage = selectedFile.name.match(/\.(jpg|jpeg|png)$/i);
+      const isVideo = selectedFile.name.match(/\.(mp4|mov)$/i);
+
+      if (isImage && selectedFile.size > MAX_IMAGE_SIZE) {
+        alert("이미지는 5MB 이하로 업로드할 수 있습니다.");
+        e.target.value = "";
+        return;
+      }
+
+      if (isVideo && selectedFile.size > MAX_VIDEO_SIZE) {
+        alert("비디오는 100MB 이하로 업로드할 수 있습니다.");
+        e.target.value = "";
+        return;
+      }
+
+      if (filePreview) {
+        URL.revokeObjectURL(filePreview);
+      }
+      const fileUrl = URL.createObjectURL(selectedFile);
+      setFile(selectedFile);
+      setFilePreview(fileUrl);
+
+      e.target.value = "";
+    }
+  };
+  const handleFileRemove = () => {
+    if (filePreview) {
+      URL.revokeObjectURL(filePreview);
+    }
+    setFilePreview(null);
+    setFile(null);
+  };
+
+  const renderFilePreview = () => {
+    if (!filePreview) return null;
+
+    const fileExtension = file?.name.split(".").pop()?.toLowerCase();
+
+    if (fileExtension === "jpg" || fileExtension === "jpeg" || fileExtension === "png") {
+      return (
+        <div className="relative h-auto w-full">
+          <img src={filePreview} alt="file-preview" className="h-auto w-28 rounded-lg" />
+          <button
+            onClick={handleFileRemove}
+            className="absolute left-[85px] top-1 rounded-full bg-color-red-200 px-2 text-color-gray-50 hover:bg-color-red-100"
+          >
+            <p>x</p>
+          </button>
+        </div>
+      );
+    } else if (fileExtension === "mp4" || fileExtension === "mov") {
+      return (
+        <div className="relative h-auto w-full">
+          <video controls className="h-auto w-full rounded-lg">
+            <source src={filePreview} type={`video/${fileExtension}`} />
+          </video>
+          <button
+            onClick={handleFileRemove}
+            className="absolute right-2 top-2 rounded-full bg-white p-2 text-color-red-200 hover:bg-gray-200"
+          >
+            <span className="text-xl">x</span>
+          </button>
+        </div>
+      );
+    } else {
+      return <p>지원되지 않는 파일 형식입니다.</p>;
+    }
+  };
 
   return (
     <>
@@ -108,7 +384,7 @@ export default function ChattingForm() {
               <div
                 key={room.id}
                 onClick={() => handleChatRoomClick(room)}
-                className="flex cursor-pointer flex-col"
+                className={`flex cursor-pointer flex-col rounded-lg p-3 ${selectedChatRoom?.id === room.id ? "bg-color-blue-100" : "bg-color-gray-50"}`}
               >
                 <Image
                   src={avatarImages.find((avatar) => avatar.key === room.users[1]?.image)?.src}
@@ -131,7 +407,7 @@ export default function ChattingForm() {
                 <div
                   key={room.id}
                   onClick={() => handleChatRoomClick(room)}
-                  className="flex cursor-pointer gap-4 rounded-xl border border-color-line-100 p-4"
+                  className={`flex cursor-pointer gap-4 rounded-xl border border-color-line-100 p-4 ${selectedChatRoom?.id === room.id ? "bg-color-blue-100" : "bg-white"}`}
                 >
                   <div>
                     <Image
@@ -177,17 +453,30 @@ export default function ChattingForm() {
                 </div>
               </div>
             )}
-            <div className="h-[600px] mobile-tablet:h-[650px]">{renderMessages()}</div>
-            <div className="flex flex-col gap-5">
+            <div
+              className="h-[600px] overflow-y-auto mobile-tablet:h-[650px]"
+              ref={messagesContainerRef}
+            >
+              {renderMessages()}
+            </div>
+            <div className="flex flex-col gap-5" ref={messagesEndRef}>
               <input
                 className="h-16 w-full rounded-xl bg-color-background-200 indent-5 text-color-black-500 outline-none mobile-tablet:h-10"
                 placeholder="텍스트를 입력해 주세요."
                 onChange={(e) => setMessage(e.target.value)}
+                value={message}
+                onKeyDown={handleKeyDown}
               />
+
               <div className="flex justify-between">
-                <button className="rounded-xl border border-color-blue-300 bg-color-blue-100 px-6 py-3 text-lg text-color-blue-300 mobile-tablet:px-4 mobile-tablet:py-1">
+                <input type="file" className="hidden" id="fileUpload" onChange={handleFileChange} />
+                <label
+                  htmlFor="fileUpload"
+                  className="cursor-pointer rounded-xl border border-color-blue-300 bg-color-blue-100 px-6 py-3 text-lg text-color-blue-300 mobile-tablet:px-4 mobile-tablet:py-1"
+                >
                   첨부파일
-                </button>
+                </label>
+
                 <button
                   onClick={handleSendMessage}
                   className="rounded-xl bg-color-blue-300 px-6 py-3 text-lg text-color-gray-50 mobile-tablet:px-4 mobile-tablet:py-1"
@@ -195,6 +484,7 @@ export default function ChattingForm() {
                   전송
                 </button>
               </div>
+              {filePreview && <div className="mb-3 mt-3">{renderFilePreview()}</div>}
             </div>
           </div>
         </div>

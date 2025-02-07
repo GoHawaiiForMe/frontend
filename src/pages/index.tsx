@@ -9,7 +9,7 @@ export default function Home() {
         <title>니가가라하와이</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex flex-col items-center justify-center min-h-screen py-2">
+      <main className="flex min-h-screen flex-col items-center justify-center py-2">
         <Image src={logo} width={400} height={400} alt="로고" />
         안녕하세요. 임시 랜딩페이지입니다.
       </main>

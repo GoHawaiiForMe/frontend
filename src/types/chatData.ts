@@ -17,16 +17,21 @@ export interface ChatRoom {
   users: User[];
 }
 
-export interface Messagge {
+export interface Message {
   id: string;
   createdAt: string;
   updatedAt: string;
   senderId: string;
   chatRoomId: string;
-  content: string;
+  content: string | null;
+  type?: string;
 }
 
 export interface GetChatRoomsParams {
   page?: number;
   pageSize?: number;
+}
+export interface FormData {
+  type: string;
+  file: File;
 }
