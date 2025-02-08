@@ -103,6 +103,12 @@ const handleOrderByChange = (selectedOrder: string) => {
   const handleButtonClick = () => {
     setIsButtonClicked(true);
     setResetFilters(true);
+
+    setOrderBy('');
+    setServiceArea('');
+    setServiceType('');
+    setSearchTerm('');
+
     setTimeout(() => {
       setIsButtonClicked(false);
       setResetFilters(false);
