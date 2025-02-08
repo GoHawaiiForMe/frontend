@@ -11,9 +11,10 @@ const items2 = ['기념품/쇼핑형', '맛집 탐방형', '액티비티/탐험�
 interface DreamerFilterProps {
   type: 'location' | 'service';
   reset: boolean;
+  onSelect: (selectedItem: string) => void;
 }
 
-const DreamerFilter = ({ type, reset }: DreamerFilterProps) => {
+const DreamerFilter = ({ type, reset, onSelect }: DreamerFilterProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -43,6 +44,12 @@ const DreamerFilter = ({ type, reset }: DreamerFilterProps) => {
 
   const itemsToDisplay = type === 'location' ? items : items2;
   const placeholderText = type === 'location' ? placeholder : placeholder2;
+
+  const handleItemClick = (item: string) => {
+    setSelectedItem(item);
+    setIsOpen(false);
+    onSelect(item);
+  };
 
   return (
     <div ref={dropdownRef} className="w-full relative">
@@ -79,10 +86,7 @@ const DreamerFilter = ({ type, reset }: DreamerFilterProps) => {
             {itemsToDisplay.map(item => (
               <button
                 key={item}
-                onClick={() => {
-                  setSelectedItem(item);
-                  setIsOpen(false);
-                }}
+                onClick={() => handleItemClick(item)}
                 className={`h-[64px] justify-between px-[24px] py-[16px] font-medium text-color-black-400 cursor-pointer transition duration-200 hover:bg-gray-100
                   mobile-tablet:w-full mobile-tablet:h-auto mobile-tablet:px-[14px] mobile-tablet:py-[8px]
   

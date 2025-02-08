@@ -6,24 +6,52 @@ import SearchBar from "@/components/Common/SearchBar";
 import Link from 'next/link';
 import useAuthStore from "@/stores/useAuthStore";
 import { getMakers } from '@/services/findMaker';
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
 
 export default function FindingMaker() {
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [resetFilters, setResetFilters] = useState(false);
   const [makers, setMakers] = useState([]);
   const { isLoggedIn, setLogin } = useAuthStore();
+  const [orderBy, setOrderBy] = useState<string>('리뷰 많은순');
+  const [serviceArea, setServiceArea] = useState<string>('SEOUL'); 
+  const [serviceType, setServiceType] = useState<string>('SHOPPING');  // 초기값이 없으면 API 작동 안함 
 
-  // Define
-  const orderBy = 'RATINGS'; 
-  const serviceArea = 'SEOUL'; 
-  const serviceType = 'SHOPPING'; 
-  const keyword = searchValue; 
+  const { ref, inView } = useInView();
+
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: ["makers", { orderBy, serviceArea, serviceType, searchTerm }],
+    initialPageParam: 1,
+    queryFn: ({ pageParam = 1 }) =>
+      getMakers(orderBy, serviceArea, serviceType, searchTerm || undefined, pageParam, 5),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.list.length === 5 ? allPages.length + 1 : undefined;
+    },
+  });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, hasNextPage]);
+
+  const allMakers = data?.pages.flatMap((page) => page.list) || [];
+
+  const handleServiceAreaChange = (selectedArea: string) => {
+    setServiceArea(selectedArea);
+  };
+
+  const handleServiceTypeChange = (selectedType: string) => {
+    setServiceType(selectedType);
+  };
 
   useEffect(() => {
     const fetchMakers = async () => {
       try {
-        const data = await getMakers(orderBy, serviceArea, serviceType, keyword); // 파라미터에 채워 주는 것으로 진행 .  가 각 값이 어디에 있는지 찾아서 넣으면 된다. 
+        const data = await getMakers(orderBy, serviceArea, serviceType, searchTerm || undefined);
         setMakers(data.list);
       } catch (error) {
         console.error('Failed to fetch makers:', error);
@@ -31,10 +59,18 @@ export default function FindingMaker() {
     };
 
     fetchMakers();
-  }, []);
+  }, [searchTerm, orderBy, serviceArea, serviceType]);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
+    if (e.target.value === "") {
+      setSearchTerm("");
+    }
+  };
+
+  const handleSearch = (value: string) => {
+    setSearchValue(value);
+    setSearchTerm(value);
   };
 
   const handleButtonClick = () => {
@@ -84,11 +120,11 @@ export default function FindingMaker() {
               <div className="flex flex-col gap-8">
                 <div className="flex flex-col gap-4">
                   <p className="text-2lg semibold">지역을 선택해 주세요</p>
-                  <DreamerFilter type="location" reset={resetFilters} />
+                  <DreamerFilter type="location" reset={resetFilters} onSelect={handleServiceAreaChange} />
                 </div>
                 <div className="flex flex-col gap-4">
                   <p className="text-2lg semibold">어떤 서비스가 필요하세요?</p>
-                  <DreamerFilter type="service" reset={resetFilters} />
+                  <DreamerFilter type="service" reset={resetFilters} onSelect={handleServiceTypeChange} />
                 </div>
               </div>
             </div>
@@ -120,7 +156,7 @@ export default function FindingMaker() {
                 <DreamerFilter type="location" reset={resetFilters} />
               </div>
               <div className="pc:ml-auto">
-                <DropdownSort />
+                <DropdownSort onSort={setOrderBy} currentSort={orderBy} />
               </div>
             </div>
             <SearchBar 
@@ -128,34 +164,39 @@ export default function FindingMaker() {
               className="w-full mobile-tablet:w-full" 
               value={searchValue}
               onChange={handleSearchChange}
+              onSearch={handleSearch}
             />
           </div>
           
           <div className="w-full flex flex-col gap-4">
-            {makers.map((maker) => (
-              <Link href={`/maker-detail/${maker.id}`} key={maker.id}>
-                <CardFindMaker
-                  key={maker.id}
-                  firstLabelType={maker.serviceTypes[0]}
-                  secondLabelType={maker.serviceTypes[1]}
-                  nickName={maker.nickName}
-                  image={maker.image} // default 4 라는 값이 서버에서 온다 , 왜 오는지  
-                  description={maker.description}
-                  averageRating={maker.averageRating}
-                  totalReviews={maker.totalReviews}
-                  totalFollows={maker.totalFollows}
-                  totalConfirms={maker.totalConfirms}
-                />
-              </Link>
-            ))}
-          </div>
-          
-          <div className="flex min-h-[200px] items-center justify-center">
-            <span>Loading...</span>
-          </div>
-          <div className="h-10">
-            <div className="flex items-center justify-center py-4">
-              <span>Loading more...</span>
+            {isLoading ? (
+              <div className="flex min-h-[200px] items-center justify-center">
+                <span>Loading...</span>
+              </div>
+            ) : (
+              allMakers.map((maker) => (
+                <Link href={`/maker-detail/${maker.id}`} key={maker.id}>
+                  <CardFindMaker
+                    key={maker.id}
+                    firstLabelType={maker.serviceTypes[0]}
+                    secondLabelType={maker.serviceTypes[1]}
+                    nickName={maker.nickName}
+                    image={maker.image}
+                    description={maker.description}
+                    averageRating={maker.averageRating}
+                    totalReviews={maker.totalReviews}
+                    totalFollows={maker.totalFollows}
+                    totalConfirms={maker.totalConfirms}
+                  />
+                </Link>
+              ))
+            )}
+            <div ref={ref} className="h-10">
+              {isFetchingNextPage && (
+                <div className="flex items-center justify-center py-4">
+                  <span>Loading more...</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
