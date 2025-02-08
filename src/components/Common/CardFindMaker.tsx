@@ -4,7 +4,8 @@ import like from "@public/assets/icon_like_black.svg";
 import like_pink from "@public/assets/icon_like_pink.svg";
 import star from "@public/assets/icon_star_md.svg";
 import avatarImages from "@/utils/formatImage";
-
+import Link from "next/link";
+import link from "@public/assets/icon_link.svg";
 interface CardFindMakerProps {
   firstLabelType?: 'SHOPPING' | 'FOOD_TOUR' | 'ACTIVITY' | 'CULTURE' | 'FESTIVAL' | 'RELAXATION' | 'REQUEST' | 'PENDING' | 'CONFIRMED';
   secondLabelType?: 'SHOPPING' | 'FOOD_TOUR' | 'ACTIVITY' | 'CULTURE' | 'FESTIVAL' | 'RELAXATION' | 'REQUEST' | 'PENDING' | 'CONFIRMED';
@@ -29,6 +30,7 @@ interface CardFindMakerProps {
   totalReviews: number;
   totalFollows: number;
   totalConfirms: number;
+  gallery?: string;
 }
 const CardFindMaker = ({
   firstLabelType,
@@ -53,7 +55,8 @@ const CardFindMaker = ({
   averageRating,
   totalReviews,
   totalFollows,
-  totalConfirms
+  totalConfirms,
+  gallery
 }: CardFindMakerProps) => {
   const avatarImage = avatarImages.find((avatar) => avatar.key === image);
   const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 1023; 
@@ -122,8 +125,15 @@ const CardFindMaker = ({
               </div>
               <div className="h-5 border border-line-200" />
               <div className="flex gap-1 items-center">
-                <p className=" text-color-gray-300">경력</p>
-                <p className=" text-color-black-300">7년</p>
+              <Link
+                  href="https://www.instagram.com/codeit_kr/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex"
+                >
+                  <Image src={link} alt="링크이미지" width={30} height={30} />
+                  <p className="text-color-gray-400">SNS</p>
+                </Link>
               </div>
               <div className="h-5 border border-line-200" />
               <div className="flex gap-2 items-center">

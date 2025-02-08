@@ -8,6 +8,28 @@ const items = ['전체', '서울', '경기', '인천', '강원', '충북', '충�
 const placeholder2 = '서비스';
 const items2 = ['기념품/쇼핑형', '맛집 탐방형', '액티비티/탐험형', '문화/역사탐방형', '축제참여형', '휴양형'];
 
+const serviceTypeMapping: Record<string, string> = {
+  '기념품/쇼핑형': 'SHOPPING',
+  '맛집 탐방형': 'FOOD_TOUR',
+  '액티비티/탐험형': 'ACTIVITY',
+  '문화/역사탐방형': 'CULTURE',
+  '축제참여형': 'FESTIVAL',
+  '휴양형': 'RELAXATION',
+};
+
+const areaMapping: Record<string, string> = {
+  '전체': '',
+  '서울': 'SEOUL',
+  '경기': 'GYEONGGI',
+  '인천': 'INCHEON',
+  '강원': 'GANGWON',
+  '충북': 'CHUNGBUK',
+  '충남': 'CHUNGNAM',
+  '세종': 'SEJONG',
+  '대전': 'DAEJEON',
+  '전북': 'JEONBUK',
+};
+
 interface DreamerFilterProps {
   type: 'location' | 'service';
   reset: boolean;
@@ -46,9 +68,12 @@ const DreamerFilter = ({ type, reset, onSelect }: DreamerFilterProps) => {
   const placeholderText = type === 'location' ? placeholder : placeholder2;
 
   const handleItemClick = (item: string) => {
-    setSelectedItem(item);
-    setIsOpen(false);
-    onSelect(item);
+    if (itemsToDisplay.includes(item)) {
+      setSelectedItem(item);
+      setIsOpen(false);
+      const mappedValue = type === 'service' ? serviceTypeMapping[item] : areaMapping[item];
+      onSelect(mappedValue);
+    }
   };
 
   return (

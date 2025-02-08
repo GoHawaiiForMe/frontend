@@ -16,9 +16,10 @@ export default function FindingMaker() {
   const [resetFilters, setResetFilters] = useState(false);
   const [makers, setMakers] = useState([]);
   const { isLoggedIn, setLogin } = useAuthStore();
-  const [orderBy, setOrderBy] = useState<string>('리뷰 많은순');
-  const [serviceArea, setServiceArea] = useState<string>('SEOUL'); 
-  const [serviceType, setServiceType] = useState<string>('SHOPPING');  // 초기값이 없으면 API 작동 안함 
+  const [orderBy, setOrderBy] = useState<string>('');
+  const [serviceArea, setServiceArea] = useState<string>(''); 
+  const [serviceType, setServiceType] = useState<string>(''); 
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
   const { ref, inView } = useInView();
 
@@ -39,14 +40,22 @@ export default function FindingMaker() {
   }, [inView, fetchNextPage, hasNextPage]);
 
   const allMakers = data?.pages.flatMap((page) => page.list) || [];
+const handleOrderByChange = (selectedOrder: string) => {
+  setOrderBy(selectedOrder);
+};
 
   const handleServiceAreaChange = (selectedArea: string) => {
-    setServiceArea(selectedArea);
+    
+      setServiceArea(selectedArea);
+    
   };
 
   const handleServiceTypeChange = (selectedType: string) => {
-    setServiceType(selectedType);
+    
+      setServiceType(selectedType);
+    
   };
+
 
   useEffect(() => {
     const fetchMakers = async () => {
@@ -156,7 +165,7 @@ export default function FindingMaker() {
                 <DreamerFilter type="location" reset={resetFilters} />
               </div>
               <div className="pc:ml-auto">
-                <DropdownSort onSort={setOrderBy} currentSort={orderBy} />
+                <DropdownSort onSort={handleOrderByChange} />
               </div>
             </div>
             <SearchBar 
