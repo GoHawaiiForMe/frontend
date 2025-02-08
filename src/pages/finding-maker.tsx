@@ -10,6 +10,23 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import followService from "@/services/followService";
 
+interface CardFindMakerProps {
+  serviceTypes: string[];
+  image: string;
+  nickName: string;
+  gallery: string[];
+  averageRating: number;
+  totalReviews: number;
+  totalFollows: number;
+  totalConfirms: number;
+  labelSize: string;
+  cardSize: string;
+}
+
+interface MakerData {
+  list: CardFindMakerProps[];
+}
+
 export default function FindingMaker() {
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -20,7 +37,6 @@ export default function FindingMaker() {
   const [orderBy, setOrderBy] = useState<string>('');
   const [serviceArea, setServiceArea] = useState<string>(''); 
   const [serviceType, setServiceType] = useState<string>(''); 
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [followedItems, setFollowedItems] = useState<CardFindMakerProps[]>([]);
 
   const { ref, inView } = useInView();
@@ -62,7 +78,7 @@ const handleOrderByChange = (selectedOrder: string) => {
   useEffect(() => {
     const fetchMakers = async () => {
       try {
-        const data = await getMakers(orderBy, serviceArea, serviceType, searchTerm || undefined);
+        const data: MakerData = await getMakers(orderBy, serviceArea, serviceType, searchTerm || undefined);
         setMakers(data.list);
       } catch (error) {
         console.error('Failed to fetch makers:', error);
@@ -100,6 +116,7 @@ const handleOrderByChange = (selectedOrder: string) => {
         setFollowedItems(data);
       } catch (error) {
         console.error('Failed to fetch followed items:', error);
+        setFollowedItems([]);
       }
     };
 
@@ -155,7 +172,7 @@ const handleOrderByChange = (selectedOrder: string) => {
               </div>
             </div>
 
-            {isLoggedIn && (
+            {isLoggedIn && followedItems.length > 0 && (
               <div className="flex flex-col gap-4">
                 <p className="text-xl semibold">최근에 찜한 Maker</p>
                 {followedItems.map((item, index) => (
@@ -168,7 +185,7 @@ const handleOrderByChange = (selectedOrder: string) => {
                       totalReviews={item.totalReviews}
                       totalFollows={item.totalFollows}
                       totalConfirms={item.totalConfirms}
-                      serviceTypes={item.serviceTypes}
+                      serviceTypes={item.serviceTypes || []}
                       labelSize="sm"
                       cardSize="sm"
                     />
@@ -182,8 +199,8 @@ const handleOrderByChange = (selectedOrder: string) => {
           <div className="gap-6">
             <div className="pc:ml-auto pc:flex pc:justify-between mobile-tablet:flex mobile-tablet:justify-between">
               <div className="pc:hidden mobile-tablet:flex mobile-tablet:gap-4">
-                <DreamerFilter type="service" reset={resetFilters} />
-                <DreamerFilter type="location" reset={resetFilters} />
+                <DreamerFilter type="service" reset={resetFilters} onSelect={handleServiceTypeChange} />
+                <DreamerFilter type="location" reset={resetFilters} onSelect={handleServiceAreaChange} />
               </div>
               <div className="pc:ml-auto">
                 <DropdownSort onSort={handleOrderByChange} />
