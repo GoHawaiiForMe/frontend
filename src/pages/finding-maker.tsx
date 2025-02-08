@@ -8,6 +8,7 @@ import useAuthStore from "@/stores/useAuthStore";
 import { getMakers } from '@/services/findMaker';
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
+import followService from "@/services/followService";
 
 export default function FindingMaker() {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -20,6 +21,7 @@ export default function FindingMaker() {
   const [serviceArea, setServiceArea] = useState<string>(''); 
   const [serviceType, setServiceType] = useState<string>(''); 
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [followedItems, setFollowedItems] = useState<CardFindMakerProps[]>([]);
 
   const { ref, inView } = useInView();
 
@@ -91,6 +93,21 @@ const handleOrderByChange = (selectedOrder: string) => {
     }, 300);
   };
 
+  useEffect(() => {
+    const fetchFollowedItems = async () => {
+      try {
+        const data = await followService.getFollow();
+        setFollowedItems(data);
+      } catch (error) {
+        console.error('Failed to fetch followed items:', error);
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchFollowedItems();
+    }
+  }, [isLoggedIn]);
+
   return (
     <>
       <style>
@@ -139,24 +156,28 @@ const handleOrderByChange = (selectedOrder: string) => {
             </div>
 
             {isLoggedIn && (
-              <div className="flex flex-col gap-4 ">
+              <div className="flex flex-col gap-4">
                 <p className="text-xl semibold">최근에 찜한 Maker</p>
-                <CardFindMaker 
-                  firstLabelType="FOOD_TOUR"
-                  secondLabelType="REQUEST"
-                  labelSize="sm"
-                  cardSize="sm"
-                />
-                <CardFindMaker 
-                  firstLabelType="SHOPPING"
-                  secondLabelType="REQUEST"
-                  labelSize="sm"
-                  cardSize="sm"
-                />
+                {followedItems.map((item, index) => (
+                  <div key={index}>
+                    <CardFindMaker 
+                      image={item.image}
+                      nickName={item.nickName}
+                      gallery={item.gallery}
+                      averageRating={item.averageRating}
+                      totalReviews={item.totalReviews}
+                      totalFollows={item.totalFollows}
+                      totalConfirms={item.totalConfirms}
+                      serviceTypes={item.serviceTypes}
+                      labelSize="sm"
+                      cardSize="sm"
+                    />
+                  </div>
+                ))}
               </div>
             )}
           </div>
-        </div>
+        </div>  
         <div className="w-3/4 flex flex-col gap-[32px] mobile-tablet:w-full mobile:mx-[auto] mobile:w-[327px] tablet:mx-[auto] tablet:w-[600px] tablet:px-[10px] tablet:py-[12px]">
           <div className="gap-6">
             <div className="pc:ml-auto pc:flex pc:justify-between mobile-tablet:flex mobile-tablet:justify-between">

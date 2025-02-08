@@ -56,7 +56,7 @@ const CardFindMaker = ({
   totalReviews,
   totalFollows,
   totalConfirms,
-  gallery
+  
 }: CardFindMakerProps) => {
   const avatarImage = avatarImages.find((avatar) => avatar.key === image);
   const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 1023; 
@@ -110,7 +110,7 @@ const CardFindMaker = ({
                 <p className={`text-2lg medium text-color-blue-400 ${heartNumberSize} ${cardSize === 'sm' ? 'text-xs' : ''} mobile-tablet:text-xs`}>{totalFollows}</p>
               </div>
             </div>
-            <div className={`flex gap-2 items-center text-lg medium ${otherText} ${cardSize === 'sm' ? '!text-[10px]' : ''} mobile-tablet:text-[10px]`}>
+            <div className={`flex gap-4 items-center text-lg medium ${otherText} ${cardSize === 'sm' ? '!text-[10px] !gap-2' : ''} mobile-tablet:text-[10px] mobile-tablet:gap-2`}>
               <div className="flex gap-2 items-center">
                 <Image
                   src={star}
