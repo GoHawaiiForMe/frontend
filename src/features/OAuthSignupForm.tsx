@@ -2,48 +2,41 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Common/Input";
 import { useEffect, useState } from "react";
-import { signUpSchema, SignUpFormData } from "@/utils/validate";
+import { SignUpOAuthData, signUpOAuthSchema } from "@/utils/validate";
 import logo from "@public/assets/icon_logo_img.svg";
 import Image from "next/image";
-import google_icon from "@public/assets/icon_google.svg";
-import kakao_icon from "@public/assets/icon_kakao.svg";
-import naver_icon from "@public/assets/icon_naver.svg";
 import Button from "@/components/Common/Button";
 import Link from "next/link";
 import { useSignUp } from "@/stores/SignUpContext";
 import { useRouter } from "next/router";
 import userService from "@/services/userService";
-import authService from "@/services/authService";
 
 interface CheckResponse {
   data: boolean;
 }
 
-export default function SignUpForm() {
-  const { setUserData } = useSignUp();
+export default function OAuthSignUpForm() {
+  const { setOAuthUserData, oAuthUserData } = useSignUp();
   const {
     register,
     handleSubmit,
     watch,
     setError,
     formState: { errors },
-  } = useForm<SignUpFormData>({
-    resolver: zodResolver(signUpSchema),
+  } = useForm<SignUpOAuthData>({
+    resolver: zodResolver(signUpOAuthSchema),
     mode: "onBlur",
   });
   const [nickNameMessage, setNickNameMessage] = useState<string | null>(null);
-  const [emailMessage, setEmailMessage] = useState<string | null>(null);
   const [isNickNameValid, setIsNickNameValid] = useState(false);
-  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [authCode, setAuthCode] = useState<string | null>(null);
 
   const router = useRouter();
 
-  const onSubmit = (data: SignUpFormData) => {
-    setUserData({
+  const onSubmit = (data: SignUpOAuthData) => {
+    setOAuthUserData({
       role: data.role,
       nickName: data.nickName,
-      email: data.email,
-      password: data.password,
       phoneNumber: data.phoneNumber,
     });
     if (data.role === "DREAMER") {
@@ -58,8 +51,7 @@ export default function SignUpForm() {
   const isFormValid =
     Object.keys(errors).length === 0 &&
     Object.values(watchFields).every((value) => value?.toString().trim() !== "") &&
-    isNickNameValid &&
-    isEmailValid;
+    isNickNameValid;
 
   const ErrorMessage = ({ message }: { message: string | undefined }) => {
     return <p className="absolute right-0 mt-1 text-color-red-200">{message}</p>;
@@ -83,44 +75,20 @@ export default function SignUpForm() {
     }
   };
 
-  const checkEmail = async () => {
-    const email = watchFields.email;
-    try {
-      const response = (await userService.checkEmail({ email })) as CheckResponse;
-      if (response) {
-        setEmailMessage("사용 가능한 이메일입니다!");
-        setIsEmailValid(true);
-      } else {
-        setError("email", { message: "이메일이 중복되었습니다!" });
-        setEmailMessage("");
-        setIsEmailValid(false);
+  useEffect(() => {
+    if (router.isReady) {
+      const codeFromQuery = router.query.auth as string;
+      if (codeFromQuery) {
+        setAuthCode(codeFromQuery);
+        console.log("OAuth 인증 코드::", codeFromQuery);
+        localStorage.setItem("Token", codeFromQuery);
       }
-    } catch {
-      setError("email", { message: "이메일 체크 중 오류가 발생했습니다." });
-      setIsEmailValid(false);
     }
-  };
+  }, [router.isReady, router.query.code]);
 
-  const handleGoogleLogin = async () => {
-    try {
-      const googleData = await authService.googleLogin();
-      console.log(googleData);
-    } catch (error) {
-      console.error("구글 로그인 중 오류 발생", error);
-    }
-  };
-
-  const handleKakaoLogin = async () => {
-    try {
-      const redirectUrl = await authService.kakaoLogin();
-      window.location.href = redirectUrl;
-
-      // window.open(redirectUrl, "_blank");
-    } catch (error) {
-      console.error("구글 로그인 중 오류 발생", error);
-      alert("카카오 로그인에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
+  useEffect(() => {
+    console.log("oAuthUserData 상태 변경:", oAuthUserData);
+  }, [oAuthUserData]);
 
   return (
     <div className="flex justify-center">
@@ -148,26 +116,6 @@ export default function SignUpForm() {
             {nickNameMessage && <p className="text-color-blue-300">{nickNameMessage}</p>}
           </div>
 
-          <div className="relative">
-            <Input
-              type="text"
-              label="이메일"
-              placeholder="이메일을 입력해 주세요"
-              {...register("email")}
-              error={!!errors.email}
-              className="pr-16"
-            />
-            <button
-              type="button"
-              onClick={checkEmail}
-              className="bold absolute right-2 top-[60px] rounded-lg bg-color-blue-300 px-2 py-2 text-lg text-color-gray-50 mobile-tablet:top-[53px]"
-            >
-              이메일 확인
-            </button>
-            {errors.email && <ErrorMessage message={errors.email.message} />}
-            {emailMessage && <p className="text-color-blue-300">{emailMessage}</p>}
-          </div>
-
           <div>
             <Input
               type="text"
@@ -179,27 +127,6 @@ export default function SignUpForm() {
             {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
           </div>
 
-          <div>
-            <Input
-              type="password"
-              label="비밀번호"
-              placeholder="비밀번호를 입력해 주세요"
-              {...register("password")}
-              error={!!errors.password}
-            />
-            {errors.password && <ErrorMessage message={errors.password.message} />}
-          </div>
-
-          <div>
-            <Input
-              type="password"
-              label="비밀번호 확인"
-              placeholder="비밀번호를 다시 한번 입력해 주세요"
-              {...register("confirmPassword")}
-              error={!!errors.confirmPassword}
-            />
-            {errors.confirmPassword && <ErrorMessage message={errors.confirmPassword.message} />}
-          </div>
           <div className="mb-2">
             <p className="pc:text-xl">역할</p>
             <div className="flex justify-around">
@@ -222,25 +149,10 @@ export default function SignUpForm() {
           />
         </form>
         <div className="mb-4 flex justify-center">
-          <p className="mr-2">이미 니가가라하와이 회원이신가요?</p>
+          <p className="mr-2">니가가라하와이 전용회원이신가요?</p>
           <Link href="/login" className="text-color-blue-300 underline">
             로그인
           </Link>
-        </div>
-
-        <div className="mb-40 flex flex-col items-center gap-8">
-          <h2 className="pc:text-xl mobile-tablet:text-xs">SNS 계정으로 간편 가입하기</h2>
-          <div className="flex gap-4">
-            <div onClick={handleGoogleLogin} className="cursor-pointer">
-              <Image src={google_icon} alt="구글 아이콘" width={50} height={50} />
-            </div>
-            <div onClick={handleKakaoLogin} className="cursor-pointer">
-              <Image src={kakao_icon} alt="카카오 아이콘" width={50} height={50} />
-            </div>
-            <div className="cursor-pointer">
-              <Image src={naver_icon} alt="네이버 아이콘" width={50} height={50} />
-            </div>
-          </div>
         </div>
       </div>
     </div>

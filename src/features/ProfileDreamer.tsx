@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Selector from "@/components/Common/Selector";
 import Image from "next/image";
 import profileImgDefault from "@public/assets/icon_default_profile.svg";
@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
 
 export default function ProfileDreamer() {
-  const { userData, setProfileData } = useSignUp();
+  const { userData, setProfileData, oAuthUserData } = useSignUp();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [isOpenImageModal, setIsOpenImageModal] = useState(false);
@@ -37,8 +37,13 @@ export default function ProfileDreamer() {
   };
 
   const profileDreamerMutation = useMutation({
-    mutationFn: (data: any) => userService.signUp(data),
+    mutationFn: (data: any) => {
+      const oauthToken = localStorage.getItem("Token");
+      console.log("프로필 부분 oauth::", oauthToken);
+      return userService.signUp(data, oauthToken || undefined);
+    },
     onSuccess: () => {
+      localStorage.removeItem("Token");
       router.push("/login");
     },
     onError: (error: any) => {
@@ -46,6 +51,10 @@ export default function ProfileDreamer() {
       alert("회원가입에 실패하셨습니다.");
     },
   });
+
+  useEffect(() => {
+    console.log("oAuthUserData 상태:", oAuthUserData);
+  }, []);
 
   const handleSubmit = async () => {
     const profileData = {
@@ -55,11 +64,11 @@ export default function ProfileDreamer() {
     };
 
     setProfileData(profileData);
-
     const payload = {
-      user: { ...userData },
+      user: userData && userData.role ? { ...userData } : { ...oAuthUserData },
       profile: profileData,
     };
+    console.log(payload);
 
     profileDreamerMutation.mutate(payload);
   };

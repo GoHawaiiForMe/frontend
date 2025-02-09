@@ -1,26 +1,27 @@
 import { api } from "./api";
-interface GoogleRespose {
+interface LoginRespose {
   provider?: string;
   providerId?: string;
   accessToken?: string;
-  headers?: any;
+  redirectUrl: string;
 }
 
 const authService = {
-  googleLogin: async (): Promise<GoogleRespose> => {
+  googleLogin: async (): Promise<LoginRespose> => {
     try {
-      const response = await api.get<GoogleRespose, Record<string, unknown>>("/auth/google");
-      //   const redirectUrl = response.headers.location;
-      //   console.log("리다이렉트 주소::", redirectUrl);
-      //   if (redirectUrl) {
-      // window.open(redirectUrl, "_blank");
-      //   }
+      const response = await api.get<LoginRespose, Record<string, unknown>>("/auth/google");
+      const redirectUrl = response.redirectUrl;
 
-      //   if (response.accessToken) {
-      // localStorage.setItem("accessToken", response.accessToken);
-      //   }
+      window.addEventListener("message", (event) => {
+        if (event.origin === window.location.origin) {
+          const userData = event.data;
+          if (userData) {
+            console.log("사용자 데이터:", userData);
+            localStorage.setItem("userData", JSON.stringify(userData));
+          }
+        }
+      });
 
-      console.log("api 쪽 리스폰스::", response);
       return response;
     } catch (error) {
       console.error("구글 로그인 실패", error);
@@ -29,9 +30,8 @@ const authService = {
   },
   kakaoLogin: async () => {
     try {
-      const response = await api.get("/auth/kakao");
-      console.log("api 쪽 리스폰스::", response);
-      return response;
+      const response = await api.get<LoginRespose, Record<string, unknown>>("/auth/kakao");
+      return response.redirectUrl;
     } catch (error) {
       console.error("카카오 로그인 실패", error);
       throw error;

@@ -60,10 +60,16 @@ interface MakerReviewParams {
 }
 
 const userService = {
-  signUp: async (data: any) => {
+  signUp: async (data: any, oauthToken?: string) => {
     try {
-      const response = await api.post("/auth/signup", data);
-      return response;
+      const config = oauthToken ? { headers: { Authorization: `Bearer ${oauthToken}` } } : {};
+      if (config) {
+        const response = await api.post("/auth/signup", data, true, config);
+        return response;
+      } else {
+        const response = await api.post("/auth/signup");
+        return response;
+      }
     } catch (error) {
       console.error("회원가입 실패", error);
       throw error;
