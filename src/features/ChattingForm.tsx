@@ -203,6 +203,27 @@ export default function ChattingForm() {
       }
     }
   };
+  //메시지 삭제
+  const handleDeleteMessage = async (messageId: string, senderId: string) => {
+    if (senderId !== userId) {
+      alert("자신의 메시지만 삭제할 수 있습니다.");
+      return;
+    }
+  
+    if (window.confirm("메시지를 삭제하시겠습니까?")) {
+      try {
+        await chatService.deleteMessage(messageId);
+        setMessages((prevMessages) => 
+          prevMessages.map((msg) => 
+            msg.id === messageId ? { ...msg, isDeleted: true } : msg
+          )
+        );
+      } catch (error) {
+        console.error("메시지 삭제 실패:", error);
+        alert("메시지 삭제에 실패했습니다.");
+      }
+    }
+  };
 
   const renderMessages = () => {
     return messages
@@ -215,8 +236,15 @@ export default function ChattingForm() {
               첫 번째 메시지입니다.
             </div>
           )}
+          <div onClick={() => !msg. isDeleted && handleDeleteMessage(msg.id, msg.senderId)} className="cursor-pointer">
           <Bubble key={msg.id} type={msg.senderId === userId ? "right" : "left_say"}>
-            {msg.type === "IMAGE" ? (
+          {msg.isDeleted ? (
+              <p className="text-color-gray-50">
+                {msg.type === "TEXT" && "삭제된 메시지입니다."}
+                {msg.type === "IMAGE" && "삭제된 이미지입니다."}
+                {msg.type === "VIDEO" && "삭제된 동영상입니다."}
+              </p>
+            ) : msg.type === "IMAGE" ? (
               <img src={msg.content || ""} alt="file" className="w-28 rounded-lg" />
             ) : msg.type === "VIDEO" ? (
               <video controls className="w-full rounded-lg">
@@ -226,6 +254,7 @@ export default function ChattingForm() {
               <p>{msg.content}</p>
             )}
           </Bubble>
+          </div>
         </div>
       ));
   };
