@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const MAX_VIDEO_SIZE = 100 * 1024 * 1024;
+const DELETE_TIME = 5 * 60 * 1000;
 
 const getUserId = async (): Promise<string> => {
   const userInfo = await userService.getUserInfo();
@@ -35,6 +36,8 @@ export default function ChattingForm() {
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
+
+  
 
   const { data: userId = [] } = useQuery({
     queryKey: ["userId"],
@@ -204,7 +207,17 @@ export default function ChattingForm() {
     }
   };
   //메시지 삭제
-  const handleDeleteMessage = async (messageId: string, senderId: string) => {
+  const handleDeleteMessage = async (messageId: string, senderId: string, createdAt: string) => {
+
+    const currentTime = new Date();
+    const messageTime = new Date(createdAt);
+    const timeDifference = currentTime.getTime() - messageTime.getTime();
+
+    if (timeDifference > DELETE_TIME) {
+      alert("메시지는 5분 이내에만 삭제할 수 있습니다.");
+      return;
+    }
+
     if (senderId !== userId) {
       alert("자신의 메시지만 삭제할 수 있습니다.");
       return;
@@ -236,7 +249,7 @@ export default function ChattingForm() {
               첫 번째 메시지입니다.
             </div>
           )}
-          <div onClick={() => !msg. isDeleted && handleDeleteMessage(msg.id, msg.senderId)} className="cursor-pointer">
+          <div onClick={() => !msg. isDeleted && handleDeleteMessage(msg.id, msg.senderId, msg.createdAt)} className="cursor-pointer">
           <Bubble key={msg.id} type={msg.senderId === userId ? "right" : "left_say"}>
           {msg.isDeleted ? (
               <p className="text-color-gray-50">
