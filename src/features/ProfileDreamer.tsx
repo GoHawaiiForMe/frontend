@@ -5,7 +5,7 @@ import profileImgDefault from "@public/assets/icon_default_profile.svg";
 import Button from "@/components/Common/Button";
 import ImageModal from "@/components/Common/ImageModal";
 import { useSignUp } from "@/stores/SignUpContext";
-import userService from "@/services/userService";
+import authService from "@/services/authService";
 import planData from "@/types/planData";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
@@ -39,7 +39,7 @@ export default function ProfileDreamer() {
   const profileDreamerMutation = useMutation({
     mutationFn: (data: any) => {
       const oauthToken = localStorage.getItem("Token");
-      return userService.signUp(data, oauthToken || undefined);
+      return authService.signUp(data, oauthToken || undefined);
     },
     onSuccess: () => {
       localStorage.removeItem("Token");

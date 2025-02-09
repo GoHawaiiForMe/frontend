@@ -26,7 +26,7 @@ const getUserInfo = async () => {
 };
 
 const postLogin = async (LoginData: LoginProps) => {
-  return userService.login(LoginData);
+  return authService.login(LoginData);
 };
 
 export default function LoginForm() {

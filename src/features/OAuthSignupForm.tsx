@@ -9,7 +9,7 @@ import Button from "@/components/Common/Button";
 import Link from "next/link";
 import { useSignUp } from "@/stores/SignUpContext";
 import { useRouter } from "next/router";
-import userService from "@/services/userService";
+import authService from "@/services/authService";
 
 interface CheckResponse {
   data: boolean;
@@ -60,7 +60,7 @@ export default function OAuthSignUpForm() {
   const checkNickName = async () => {
     const nickName = watchFields.nickName;
     try {
-      const response = (await userService.checkNickName({ nickName })) as CheckResponse;
+      const response = (await authService.checkNickName({ nickName })) as CheckResponse;
       if (response) {
         setIsNickNameValid(true);
         setNickNameMessage("사용 가능한 닉네임입니다!");

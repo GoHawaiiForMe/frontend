@@ -68,7 +68,7 @@ export default function SignUpForm() {
   const checkNickName = async () => {
     const nickName = watchFields.nickName;
     try {
-      const response = (await userService.checkNickName({ nickName })) as CheckResponse;
+      const response = (await authService.checkNickName({ nickName })) as CheckResponse;
       if (response) {
         setIsNickNameValid(true);
         setNickNameMessage("사용 가능한 닉네임입니다!");
@@ -86,7 +86,7 @@ export default function SignUpForm() {
   const checkEmail = async () => {
     const email = watchFields.email;
     try {
-      const response = (await userService.checkEmail({ email })) as CheckResponse;
+      const response = (await authService.checkEmail({ email })) as CheckResponse;
       if (response) {
         setEmailMessage("사용 가능한 이메일입니다!");
         setIsEmailValid(true);
