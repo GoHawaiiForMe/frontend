@@ -12,6 +12,7 @@ export default function Home() {
       const aceessToken = router.query.auth as string;
       if (aceessToken) {
         localStorage.setItem("accessToken", aceessToken);
+        router.push("/");
       }
     }
   }, [router.isReady, router.query.auth]);

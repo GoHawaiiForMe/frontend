@@ -60,6 +60,7 @@ const userService = {
   getUserInfo: async (): Promise<UserInfo> => {
     try {
       const response = await api.get<UserInfo, Record<string, unknown>>("/users/me");
+      console.log(response);
       return response;
     } catch (error) {
       console.error("유저 정보 조회 실패", error);
