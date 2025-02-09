@@ -6,7 +6,7 @@ import icon_active_star from "@public/assets/icon_active_star.svg";
 import link from "@public/assets/icon_link.svg";
 import Link from "next/link";
 
-export default function RequestCardCompleted() {
+export default function QuotationCardCompleted() {
   return (
     <div className="mb-[32px] flex flex-col rounded-2xl bg-color-gray-50 px-6 py-7 shadow mobile-tablet:px-3 mobile-tablet:py-4">
       <div className="justify-left flex items-center gap-[12px] mobile-tablet:mt-[6px]">

@@ -1,20 +1,7 @@
 import { forwardRef } from "react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-
-interface Plan {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  title: string;
-  tripDate: string;
-  tripType: string;
-  serviceArea: string;
-  details: string;
-  status: string;
-  assignees: [];
-  dreamer: {};
-}
+import { Plan } from "@/services/planService";
 
 interface MyPlanListProps {
   visiblePlans: Plan[];

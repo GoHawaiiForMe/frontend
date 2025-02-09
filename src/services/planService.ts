@@ -1,6 +1,6 @@
 import { api } from "./api";
 
-interface Plan {
+export interface Plan {
   id: string;
   createdAt: string;
   updatedAt: string;
@@ -9,6 +9,7 @@ interface Plan {
   tripType: string;
   serviceArea: string;
   details: string;
+  address?: string;
   status: string;
   assignees: [];
   dreamer: {};

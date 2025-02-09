@@ -1,16 +1,4 @@
-interface Plan {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  title: string;
-  tripDate: string;
-  tripType: string;
-  serviceArea: string;
-  details: string;
-  status: string;
-  assignees: [];
-  dreamer: {};
-}
+import { Plan } from "@/services/planService";
 
 interface PlanData {
   planDetail: Plan;

@@ -1,7 +1,7 @@
 import MyPlanNav from "./MyPlanNav";
 import Layout from "../Common/Layout";
 import PlanCard from "./Cards/PlanCard";
-import RequestCardListCompleted from "./RequestCardListCompleted";
+import QuotationCardListCompleted from "./QuotationCardListCompleted";
 import { useRouter } from "next/router";
 import planService from "@/services/planService";
 import { useQuery } from "@tanstack/react-query";
@@ -36,7 +36,7 @@ export default function MyPlanDetailCompleted() {
           </div>
           <div className="flex-col">
             <p className="semibold mb-10 text-2xl">견적 정보</p>
-            <RequestCardListCompleted />
+            <QuotationCardListCompleted />
           </div>
         </div>
       </Layout>

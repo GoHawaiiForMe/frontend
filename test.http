@@ -66,3 +66,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4N
 ### 플랜 데이터 불러오기(dreamer)
 GET https://www.goforme.duckdns.org/plans/0f61f8b9-7b29-4b82-86c7-f7ce8e418baa
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTAzNDY3OSwiZXhwIjoxNzM5MTIxMDc5fQ.Q2fR2Np0O0uF1BznlyPL0z48hZeELsk4Ziro2SLrRaQ
+
+
+### 견적 리스트 불러오기(dreamer)
+GET https://www.goforme.duckdns.org/plans/181b2ef5-a7c6-4d62-a17e-542581693736/quotes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTAzNDY3OSwiZXhwIjoxNzM5MTIxMDc5fQ.Q2fR2Np0O0uF1BznlyPL0z48hZeELsk4Ziro2SLrRaQ

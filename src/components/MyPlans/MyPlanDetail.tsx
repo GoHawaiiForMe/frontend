@@ -1,21 +1,8 @@
 import MyPlanNav from "./MyPlanNav";
 import Layout from "../Common/Layout";
 import PlanCard from "./Cards/PlanCard";
-import RequestCardList from "./RequestCardList";
-
-interface Plan {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  title: string;
-  tripDate: string;
-  tripType: string;
-  serviceArea: string;
-  details: string;
-  status: string;
-  assignees: [];
-  dreamer: {};
-}
+import QuotationCardList from "./QuotationCardList";
+import { Plan } from "@/services/planService";
 
 interface PlanData {
   planDetail: Plan;
@@ -36,7 +23,7 @@ export default function MyPlanDetail({ planDetail }: PlanData) {
             <PlanCard planDetail={planDetail} />
           </div>
         </div>
-        <RequestCardList />
+        <QuotationCardList />
       </Layout>
     </>
   );
