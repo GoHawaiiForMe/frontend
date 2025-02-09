@@ -53,7 +53,7 @@ export default function ProfileEditDreamer() {
   };
 
   const handleCancel = () => {
-    router.push("/plan-request"); //임시 url
+    router.push("/signup");
   };
 
   const onSubmit = async (data: EditDreamerData) => {

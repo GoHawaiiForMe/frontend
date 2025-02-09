@@ -7,22 +7,10 @@ interface LoginRespose {
 }
 
 const authService = {
-  googleLogin: async (): Promise<LoginRespose> => {
+  googleLogin: async () => {
     try {
       const response = await api.get<LoginRespose, Record<string, unknown>>("/auth/google");
-      const redirectUrl = response.redirectUrl;
-
-      window.addEventListener("message", (event) => {
-        if (event.origin === window.location.origin) {
-          const userData = event.data;
-          if (userData) {
-            console.log("사용자 데이터:", userData);
-            localStorage.setItem("userData", JSON.stringify(userData));
-          }
-        }
-      });
-
-      return response;
+      return response.redirectUrl;
     } catch (error) {
       console.error("구글 로그인 실패", error);
       throw error;
@@ -39,8 +27,8 @@ const authService = {
   },
   naverLogin: async () => {
     try {
-      const response = await api.post("/auth/naver");
-      return response;
+      const response = await api.get<LoginRespose, Record<string, unknown>>("/auth/naver");
+      return response.redirectUrl;
     } catch (error) {
       console.error("네이버 로그인 실패", error);
       throw error;

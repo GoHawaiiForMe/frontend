@@ -16,7 +16,7 @@ interface CheckResponse {
 }
 
 export default function OAuthSignUpForm() {
-  const { setOAuthUserData, oAuthUserData } = useSignUp();
+  const { setOAuthUserData } = useSignUp();
   const {
     register,
     handleSubmit,
@@ -80,15 +80,10 @@ export default function OAuthSignUpForm() {
       const codeFromQuery = router.query.auth as string;
       if (codeFromQuery) {
         setAuthCode(codeFromQuery);
-        console.log("OAuth 인증 코드::", codeFromQuery);
         localStorage.setItem("Token", codeFromQuery);
       }
     }
   }, [router.isReady, router.query.code]);
-
-  useEffect(() => {
-    console.log("oAuthUserData 상태 변경:", oAuthUserData);
-  }, [oAuthUserData]);
 
   return (
     <div className="flex justify-center">

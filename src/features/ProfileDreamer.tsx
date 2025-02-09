@@ -39,7 +39,6 @@ export default function ProfileDreamer() {
   const profileDreamerMutation = useMutation({
     mutationFn: (data: any) => {
       const oauthToken = localStorage.getItem("Token");
-      console.log("프로필 부분 oauth::", oauthToken);
       return userService.signUp(data, oauthToken || undefined);
     },
     onSuccess: () => {
@@ -51,10 +50,6 @@ export default function ProfileDreamer() {
       alert("회원가입에 실패하셨습니다.");
     },
   });
-
-  useEffect(() => {
-    console.log("oAuthUserData 상태:", oAuthUserData);
-  }, []);
 
   const handleSubmit = async () => {
     const profileData = {
@@ -68,8 +63,6 @@ export default function ProfileDreamer() {
       user: userData && userData.role ? { ...userData } : { ...oAuthUserData },
       profile: profileData,
     };
-    console.log(payload);
-
     profileDreamerMutation.mutate(payload);
   };
 

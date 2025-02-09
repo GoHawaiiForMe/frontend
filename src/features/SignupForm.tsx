@@ -103,10 +103,11 @@ export default function SignUpForm() {
 
   const handleGoogleLogin = async () => {
     try {
-      const googleData = await authService.googleLogin();
-      console.log(googleData);
+      const redirectUrl = await authService.googleLogin();
+      window.location.href = redirectUrl;
     } catch (error) {
       console.error("구글 로그인 중 오류 발생", error);
+      alert("구글 로그인에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -114,11 +115,19 @@ export default function SignUpForm() {
     try {
       const redirectUrl = await authService.kakaoLogin();
       window.location.href = redirectUrl;
-
-      // window.open(redirectUrl, "_blank");
     } catch (error) {
-      console.error("구글 로그인 중 오류 발생", error);
+      console.error("카카오 로그인 중 오류 발생", error);
       alert("카카오 로그인에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  const handleNaverLogin = async () => {
+    try {
+      const redirectUrl = await authService.naverLogin();
+      window.location.href = redirectUrl;
+    } catch (error) {
+      console.error("네이버 로그인 중 오류 발생", error);
+      alert("네이버 로그인에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -237,7 +246,7 @@ export default function SignUpForm() {
             <div onClick={handleKakaoLogin} className="cursor-pointer">
               <Image src={kakao_icon} alt="카카오 아이콘" width={50} height={50} />
             </div>
-            <div className="cursor-pointer">
+            <div onClick={handleNaverLogin} className="cursor-pointer">
               <Image src={naver_icon} alt="네이버 아이콘" width={50} height={50} />
             </div>
           </div>
