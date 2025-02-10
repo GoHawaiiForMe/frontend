@@ -118,7 +118,7 @@ const handleOrderByChange = (selectedOrder: string) => {
   useEffect(() => {
     const fetchFollowedItems = async () => {
       try {
-        const data = await followService.getFollow();
+        const data = await followService.getFollow(1, 2);
         setFollowedItems(data);
       } catch (error) {
         console.error('Failed to fetch followed items:', error);
@@ -184,6 +184,9 @@ const handleOrderByChange = (selectedOrder: string) => {
                 {followedItems.map((item, index) => (
                   <div key={index}>
                     <CardFindMaker 
+                      firstLabelType={item.serviceTypes[0]}
+                      secondLabelType={item.serviceTypes[1]}
+                      description={item.description}
                       image={item.image}
                       nickName={item.nickName}
                       gallery={item.gallery}
@@ -194,6 +197,7 @@ const handleOrderByChange = (selectedOrder: string) => {
                       serviceTypes={item.serviceTypes || []}
                       labelSize="sm"
                       cardSize="sm"
+                      likeIcon={item.isFollowed ? 'pink' : 'gray'}
                     />
                   </div>
                 ))}
@@ -236,6 +240,7 @@ const handleOrderByChange = (selectedOrder: string) => {
                     nickName={maker.nickName}
                     image={maker.image}
                     description={maker.description}
+                    gallery={maker.gallery}
                     averageRating={maker.averageRating}
                     totalReviews={maker.totalReviews}
                     totalFollows={maker.totalFollows}
