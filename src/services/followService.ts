@@ -35,6 +35,22 @@ const followService = {
       throw error;
     }
   },
+  postFollow: async (makerId: string) => {
+    try {
+      const response = await api.post("/follow", { makerId });
+      return response;
+    } catch (error) {
+      console.error("찜하기를 실패했습니다", error);
+    }
+  },
+  deleteFollow: async (makerId: string) => {
+    try {
+      const response = await api.delete("/follow");
+      return response;
+    } catch (error) {
+      console.error("찜하기 취소를 실패했습니다", error);
+    }
+  },
 };
 
 export default followService;
