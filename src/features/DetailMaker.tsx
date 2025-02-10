@@ -413,7 +413,10 @@ export default function RequestDetailDreamer() {
               <p>{isFollowed ? " Maker 찜하기 취소" : " Maker 찜하기"}</p>
             </button>
             <div className="flex w-full mobile:px-6 tablet:px-[72px] mobile-tablet:fixed mobile-tablet:inset-x-0 mobile-tablet:bottom-0 mobile-tablet:flex-grow mobile-tablet:gap-2 mobile-tablet:bg-color-gray-50 mobile-tablet:py-7">
-              <button className="flex rounded-2xl border-[1px] p-2 pc:hidden">
+              <button
+                onClick={handleFollowToggle}
+                className="flex rounded-2xl border-[1px] p-2 pc:hidden"
+              >
                 <Image
                   src={isFollowed ? icon_like_red : icon_like_black}
                   alt="좋아요"
@@ -454,26 +457,28 @@ export default function RequestDetailDreamer() {
           <ModalLayout label="지정 플랜 요청하기" closeModal={() => setIsListModalOpen(false)}>
             <div className="flex flex-col items-center gap-8">
               {pendingPlanTitles.length > 0 ? (
-                pendingPlanTitles.map((title, index) => (
-                  <>
-                    <div
-                      key={index}
-                      className={`w-full justify-between rounded-2xl border p-5 ${selectedPlan === index ? "border-color-blue-300 bg-color-blue-100" : "border-color-gray-300"}`}
-                    >
-                      <label>
-                        <div className="flex gap-4">
-                          <input
-                            type="radio"
-                            name="plan"
-                            value={title}
-                            onChange={() => setSelectedPlan(index)}
-                          />
-                          <p className="bold text-xl mobile-tablet:text-lg">{title}</p>
-                        </div>
-                      </label>
-                    </div>
-                  </>
-                ))
+                <div className="flex max-h-80 w-full flex-col gap-8 overflow-y-auto">
+                  {pendingPlanTitles.map((title, index) => (
+                    <>
+                      <div
+                        key={index}
+                        className={`rounded-2xl border p-5 ${selectedPlan === index ? "border-color-blue-300 bg-color-blue-100" : "border-color-gray-300"}`}
+                      >
+                        <label>
+                          <div className="flex gap-4">
+                            <input
+                              type="radio"
+                              name="plan"
+                              value={title}
+                              onChange={() => setSelectedPlan(index)}
+                            />
+                            <p className="bold text-xl mobile-tablet:text-lg">{title}</p>
+                          </div>
+                        </label>
+                      </div>
+                    </>
+                  ))}
+                </div>
               ) : (
                 <p className="text-lg">일반 플랜 요청을 먼저 진행해주세요.</p>
               )}
