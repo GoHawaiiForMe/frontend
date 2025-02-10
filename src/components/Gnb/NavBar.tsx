@@ -56,7 +56,6 @@ const NavBar = () => {
   const notificationRef = useRef<HTMLDivElement | null>(null);
   const sideBarRef = useRef<HTMLDivElement | null>(null);
   const [isChargeModalOpen, setIsChargeModalOpen] = useState(false);
-  
 
   const router = useRouter();
   const { realTimeNotifications } = useRealTimeNotification();
