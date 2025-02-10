@@ -8,11 +8,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useInView } from "react-intersection-observer";
 
-export default function OngoingPlan() {
+export default function OverduePlan() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const { ref, inView } = useInView();
+  const { inView } = useInView();
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -34,11 +34,11 @@ export default function OngoingPlan() {
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["ongoingPlans", { status: ["PENDING", "CONFIRMED"] }],
+    queryKey: ["ongoingPlans", { status: ["OVERDUE"] }],
     initialPageParam: 1, // 처음 페이지는 1로 시작
     queryFn: ({ pageParam = 1 }) =>
       planService.getPlanList({
-        status: ["PENDING", "CONFIRMED"],
+        status: ["OVERDUE"],
         page: pageParam,
         pageSize: 5,
       }),
@@ -62,21 +62,14 @@ export default function OngoingPlan() {
       <MyPlanNav />
       <Layout bodyClass="bg-gray">
         <MyPlanList
-          title="진행 중인"
-          status="ongoing"
+          title="만료된"
+          status="overdue"
           visiblePlans={planData}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
         />
       </Layout>
-      <div ref={ref} className="h-10">
-        {isFetchingNextPage && (
-          <div className="flex items-center justify-center py-4">
-            <span>플랜을 불러오는 중...</span>
-          </div>
-        )}
-      </div>
       {isModalOpen && (
         <ReceiveModalLayout label="로그인 필요" closeModal={() => setIsModalOpen(false)}>
           <p className="text-lg">로그인이 필요한 서비스입니다.</p>
