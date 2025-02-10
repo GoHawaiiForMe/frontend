@@ -60,7 +60,9 @@ const chatService = {
         chatRoomId: item.chatRoomId,
         content: item.content,
         type: item.type,
+        isDeleted: item.isDeleted,
       }));
+      console.log(messages);
       return messages;
     } catch (error) {
       console.error("메시지 목록 get 실패", error);
@@ -140,6 +142,14 @@ const chatService = {
     } catch (error) {
       console.error("파일 업로드 실패", error);
       throw error;
+    }
+  },
+  deleteMessage: async (chatId: string) => {
+    try {
+      const response = await api.delete(`/chats/${chatId}`);
+      return response;
+    } catch (error) {
+      console.error("메시지 삭제 실패", error);
     }
   },
 };

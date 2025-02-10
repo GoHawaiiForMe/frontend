@@ -53,7 +53,7 @@ export default function ProfileEditDreamer() {
   };
 
   const handleCancel = () => {
-    router.push("/plan-request"); //임시 url
+    router.push("/signup");
   };
 
   const onSubmit = async (data: EditDreamerData) => {
@@ -169,19 +169,21 @@ export default function ProfileEditDreamer() {
               {errors.nickName && <ErrorMessage message={errors.nickName.message} />}
             </div>
             <div className="my-4 h-0.5 bg-color-line-100"></div>
-
-            <div>
-              <Input
-                type="text"
-                label="이메일"
-                value={userInfo?.email}
-                disabled={true}
-                placeholder="이메일을 입력해주세요"
-                className="border-0 bg-color-background-200 text-color-gray-300"
-              />
-            </div>
-            <div className="my-4 h-0.5 bg-color-line-100"></div>
-
+            {userInfo?.email ? (
+              <>
+                <div>
+                  <Input
+                    type="text"
+                    label="이메일"
+                    value={userInfo?.email}
+                    disabled={true}
+                    placeholder="이메일을 입력해주세요"
+                    className="border-0 bg-color-background-200 text-color-gray-300"
+                  />
+                </div>
+                <div className="my-4 h-0.5 bg-color-line-100"></div>
+              </>
+            ) : null}
             <div>
               <Input
                 type="text"
@@ -195,43 +197,47 @@ export default function ProfileEditDreamer() {
               {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
             </div>
             <div className="my-4 h-0.5 bg-color-line-100"></div>
-            <div>
-              <Input
-                type="password"
-                label="현재 비밀번호"
-                placeholder="현재 비밀번호를 입력해 주세요"
-                className="border-0 bg-color-background-200"
-                {...register("password")}
-              />
-            </div>
-            <div className="my-4 h-0.5 bg-color-line-100"></div>
-            <div>
-              <Input
-                type="password"
-                label="새 비밀번호"
-                placeholder="비밀번호를 입력해 주세요"
-                className="border-0 bg-color-background-200"
-                {...register("newPassword")}
-                error={!!errors.newPassword}
-              />
-              {errors.newPassword && <ErrorMessage message={errors.newPassword.message} />}
-            </div>
-            <div className="my-4 h-0.5 bg-color-line-100"></div>
-            <div>
-              <Input
-                type="password"
-                label="새 비밀번호 확인"
-                placeholder="비밀번호를 다시 한번 입력해 주세요"
-                className="border-0 bg-color-background-200"
-                {...register("newConfirmPassword")}
-                error={!!errors.newConfirmPassword}
-              />
-            </div>
-            <div className="mb-8">
-              {errors.newConfirmPassword && (
-                <ErrorMessage message={errors.newConfirmPassword.message} />
-              )}
-            </div>
+            {userInfo?.email && (
+              <>
+                <div>
+                  <Input
+                    type="password"
+                    label="현재 비밀번호"
+                    placeholder="현재 비밀번호를 입력해 주세요"
+                    className="border-0 bg-color-background-200"
+                    {...register("password")}
+                  />
+                </div>
+                <div className="my-4 h-0.5 bg-color-line-100"></div>
+                <div>
+                  <Input
+                    type="password"
+                    label="새 비밀번호"
+                    placeholder="비밀번호를 입력해 주세요"
+                    className="border-0 bg-color-background-200"
+                    {...register("newPassword")}
+                    error={!!errors.newPassword}
+                  />
+                  {errors.newPassword && <ErrorMessage message={errors.newPassword.message} />}
+                </div>
+                <div className="my-4 h-0.5 bg-color-line-100"></div>
+                <div>
+                  <Input
+                    type="password"
+                    label="새 비밀번호 확인"
+                    placeholder="비밀번호를 다시 한번 입력해 주세요"
+                    className="border-0 bg-color-background-200"
+                    {...register("newConfirmPassword")}
+                    error={!!errors.newConfirmPassword}
+                  />
+                </div>
+                <div className="mb-8">
+                  {errors.newConfirmPassword && (
+                    <ErrorMessage message={errors.newConfirmPassword.message} />
+                  )}
+                </div>
+              </>
+            )}
           </div>
 
           {/* 오른쪽 폼 */}

@@ -1,15 +1,19 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Common/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signUpSchema, SignUpFormData } from "@/utils/validate";
 import logo from "@public/assets/icon_logo_img.svg";
 import Image from "next/image";
+import google_icon from "@public/assets/icon_google.svg";
+import kakao_icon from "@public/assets/icon_kakao.svg";
+import naver_icon from "@public/assets/icon_naver.svg";
 import Button from "@/components/Common/Button";
 import Link from "next/link";
 import { useSignUp } from "@/stores/SignUpContext";
 import { useRouter } from "next/router";
 import userService from "@/services/userService";
+import authService from "@/services/authService";
 
 interface CheckResponse {
   data: boolean;
@@ -64,7 +68,7 @@ export default function SignUpForm() {
   const checkNickName = async () => {
     const nickName = watchFields.nickName;
     try {
-      const response = (await userService.checkNickName({ nickName })) as CheckResponse;
+      const response = (await authService.checkNickName({ nickName })) as CheckResponse;
       if (response) {
         setIsNickNameValid(true);
         setNickNameMessage("사용 가능한 닉네임입니다!");
@@ -82,7 +86,7 @@ export default function SignUpForm() {
   const checkEmail = async () => {
     const email = watchFields.email;
     try {
-      const response = (await userService.checkEmail({ email })) as CheckResponse;
+      const response = (await authService.checkEmail({ email })) as CheckResponse;
       if (response) {
         setEmailMessage("사용 가능한 이메일입니다!");
         setIsEmailValid(true);
@@ -94,6 +98,36 @@ export default function SignUpForm() {
     } catch {
       setError("email", { message: "이메일 체크 중 오류가 발생했습니다." });
       setIsEmailValid(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const redirectUrl = await authService.googleLogin();
+      window.location.href = redirectUrl;
+    } catch (error) {
+      console.error("구글 로그인 중 오류 발생", error);
+      alert("구글 로그인에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  const handleKakaoLogin = async () => {
+    try {
+      const redirectUrl = await authService.kakaoLogin();
+      window.location.href = redirectUrl;
+    } catch (error) {
+      console.error("카카오 로그인 중 오류 발생", error);
+      alert("카카오 로그인에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  const handleNaverLogin = async () => {
+    try {
+      const redirectUrl = await authService.naverLogin();
+      window.location.href = redirectUrl;
+    } catch (error) {
+      console.error("네이버 로그인 중 오류 발생", error);
+      alert("네이버 로그인에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -196,11 +230,26 @@ export default function SignUpForm() {
             className="text-color-gray-50"
           />
         </form>
-        <div className="mb-40 flex justify-center">
+        <div className="mb-4 flex justify-center">
           <p className="mr-2">이미 니가가라하와이 회원이신가요?</p>
           <Link href="/login" className="text-color-blue-300 underline">
             로그인
           </Link>
+        </div>
+
+        <div className="mb-40 flex flex-col items-center gap-8">
+          <h2 className="pc:text-xl mobile-tablet:text-xs">SNS 계정으로 간편 가입하기</h2>
+          <div className="flex gap-4">
+            <div onClick={handleGoogleLogin} className="cursor-pointer">
+              <Image src={google_icon} alt="구글 아이콘" width={50} height={50} />
+            </div>
+            <div onClick={handleKakaoLogin} className="cursor-pointer">
+              <Image src={kakao_icon} alt="카카오 아이콘" width={50} height={50} />
+            </div>
+            <div onClick={handleNaverLogin} className="cursor-pointer">
+              <Image src={naver_icon} alt="네이버 아이콘" width={50} height={50} />
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -28,7 +28,6 @@ const MyPlanList = forwardRef<HTMLDivElement, MyPlanListProps>(
         basePath = "/mytrip-manage/overdue-plan/detail";
       }
       const targetPath = `${basePath}/${planId}`;
-      // console.log("Navigating to:", targetPath); // 경로 디버깅
       router.push(targetPath);
     };
 
