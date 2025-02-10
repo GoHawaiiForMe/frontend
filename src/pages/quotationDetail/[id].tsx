@@ -30,34 +30,28 @@ export function QuotationDetail() {
   };
 
   useEffect(() => {
-    // 카카오 API 키가 있는지 확인
-    const kakaoApiKey = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
-
-    if (typeof window !== "undefined" && kakaoApiKey) {
-      // console.log("Kakao API Key:", kakaoApiKey); // 개발 시에만 사용, 배포 전 제거
-      if (!window.Kakao?.isInitialized()) {
-        try {
-          window.Kakao?.init(kakaoApiKey);
-          console.log("카카오 초기화 성공");
-        } catch (error) {
-          console.error("카카오 초기화 실패:", error);
-        }
+    // 카카오 초기화 한 번만 실행
+    if (typeof window !== "undefined" && !window.Kakao?.isInitialized()) {
+      const kakaoApiKey = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
+      if (kakaoApiKey) {
+        window.Kakao?.init(kakaoApiKey);
+        console.log("카카오 초기화 성공");
       }
     }
-  }, []);
+  }, []); // 빈 배열로 설정하여 마운트 시 한 번만 실행
 
   const handleKakaoShare = () => {
     if (typeof window === "undefined") return;
+
     const currentUrl = window.location.href;
     if (window.Kakao) {
-      window.Kakao.Share.createDefaultButton({
-        container: "#kakaotalk-sharing-btn",
+      window.Kakao.Share.sendDefault({
+        // createDefaultButton 대신 sendDefault 사용
         objectType: "feed",
         content: {
           title: quotationDetail?.plan.title || "여행 플랜 ",
           description: quotationDetail?.plan.details || "여행 플랜 상세내용보기",
-          imageUrl:
-            "https://scontent-ssn1-1.cdninstagram.com/v/t51.29350-15/440535983_1166519591460822_7666710914928913519_n.jpg?stp=dst-jpg_e35_s1080x1080_tt6&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=106&_nc_ohc=CzF6FbL6gvEQ7kNvgHzHfiF&_nc_gid=947375cfb83d43c5abb8aeacb63ed59a&edm=ANTKIIoBAAAA&ccb=7-5&oh=00_AYDtqZ0h00aA8oATSGX48sg79D3ROGTLYUaZSjkcbYafCQ&oe=67A60D41&_nc_sid=d885a2",
+          imageUrl: "https://ifh.cc/g/wvkbqP.png",
           link: {
             mobileWebUrl: currentUrl,
             webUrl: currentUrl,
@@ -68,13 +62,12 @@ export function QuotationDetail() {
   };
 
   const handleFacebookShare = () => {
+    const currentUrl = window.location.href;
     if (typeof window !== "undefined" && window.FB) {
-      const shareUrl = `https://fs2-4-team2-go-for-me.vercel.app/quotationDetail/${id}`;
-
       window.FB.ui(
         {
           method: "share",
-          href: shareUrl,
+          href: currentUrl,
         },
 
         (response) => {
@@ -82,7 +75,7 @@ export function QuotationDetail() {
           if (response) {
             console.log("공유 성공");
           } else {
-            console.error("공유 실패 - URL:", shareUrl);
+            console.error("공유 실패 - URL:", currentUrl);
           }
         },
       );
