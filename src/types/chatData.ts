@@ -25,6 +25,7 @@ export interface Message {
   chatRoomId: string;
   content: string | null;
   type?: string;
+  isDeleted?: boolean;
 }
 
 export interface GetChatRoomsParams {

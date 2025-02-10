@@ -2,9 +2,6 @@ import { api } from "./api";
 
 type Role = "DREAMER" | "MAKER";
 
-interface LoginResponse {
-  accessToken: string;
-}
 export interface UserInfo {
   id: string;
   role: Role;
@@ -60,48 +57,10 @@ interface MakerReviewParams {
 }
 
 const userService = {
-  signUp: async (data: any) => {
-    try {
-      const response = await api.post("/auth/signup", data);
-      return response;
-    } catch (error) {
-      console.error("회원가입 실패", error);
-      throw error;
-    }
-  },
-  checkNickName: async (data: { nickName: string }) => {
-    try {
-      const response = await api.post("/auth/check/nickName", data);
-      return response;
-    } catch (error) {
-      console.error("닉네임 체크 불가", error);
-    }
-  },
-  checkEmail: async (data: { email: string }) => {
-    try {
-      const response = await api.post("/auth/check/email", data);
-      return response;
-    } catch (error) {
-      console.error("이메일 체크 불가", error);
-    }
-  },
-  login: async (data: { email: string; password: string }): Promise<LoginResponse> => {
-    try {
-      const response = await api.post<LoginResponse, { email: string; password: string }>(
-        "/auth/login",
-        data,
-      );
-      localStorage.setItem("accessToken", response.accessToken);
-      return response;
-    } catch (error) {
-      console.error("로그인 실패:", error);
-      throw error;
-    }
-  },
-
   getUserInfo: async (): Promise<UserInfo> => {
     try {
       const response = await api.get<UserInfo, Record<string, unknown>>("/users/me");
+      console.log(response);
       return response;
     } catch (error) {
       console.error("유저 정보 조회 실패", error);

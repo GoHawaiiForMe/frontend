@@ -5,13 +5,13 @@ import profileImgDefault from "@public/assets/icon_default_profile.svg";
 import Button from "@/components/Common/Button";
 import ImageModal from "@/components/Common/ImageModal";
 import { useSignUp } from "@/stores/SignUpContext";
-import userService from "@/services/userService";
+import authService from "@/services/authService";
 import planData from "@/types/planData";
 import Input from "@/components/Common/Input";
 import router from "next/router";
 
 export default function ProfileMaker() {
-  const { userData, setMakerProfileData } = useSignUp();
+  const { userData, setMakerProfileData, oAuthUserData } = useSignUp();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [isOpenImageModal, setIsOpenImageModal] = useState(false);
@@ -63,12 +63,14 @@ export default function ProfileMaker() {
     setMakerProfileData(profileMakerData);
 
     try {
+      const oauthToken = localStorage.getItem("Token");
       const payload = {
-        user: { ...userData },
+        user: userData && userData.role ? { ...userData } : { ...oAuthUserData },
         profile: profileMakerData,
       };
-      await userService.signUp(payload);
+      await authService.signUp(payload, oauthToken || undefined);
       alert("Maker님 가입을 축하드립니다!");
+      localStorage.removeItem("Token");
       router.push("/login");
     } catch (error) {
       console.error("회원가입 실패", error);
@@ -86,7 +88,7 @@ export default function ProfileMaker() {
 
   return (
     <div className="mb-20 flex w-full justify-center">
-      <div className="flex w-full flex-col gap-5 ">
+      <div className="flex w-full flex-col gap-5">
         <div className="flex flex-col">
           <p className="bold text-3xl mobile-tablet:text-2lg">Maker 프로필 등록</p>
           <p className="regular my-8 text-xl text-color-black-300 mobile-tablet:text-xs">
@@ -94,7 +96,7 @@ export default function ProfileMaker() {
           </p>
           <div className="mb-8 h-0.5 bg-color-line-100"></div>
         </div>
-        <div className="flex gap-[72px] mobile-tablet:flex-col mobile-tablet:justify-center ">
+        <div className="flex gap-[72px] mobile-tablet:flex-col mobile-tablet:justify-center">
           <div className="w-full">
             <p className="semibold mb-3 text-xl mobile-tablet:text-lg">프로필 이미지</p>
             <div onClick={() => setIsOpenImageModal(true)} className="w-[160px] cursor-pointer">
@@ -115,18 +117,18 @@ export default function ProfileMaker() {
                 onClose={() => setIsOpenImageModal(false)}
               />
             )}
-            <div className="my-8 h-0.5 bg-color-line-100 "></div>
+            <div className="my-8 h-0.5 bg-color-line-100"></div>
             <div>
               <Input
                 label="SNS 주소"
-                className="mb-8 border-none border-color-line-100 bg-color-background-200 "
+                className="mb-8 border-none border-color-line-100 bg-color-background-200"
                 type="text"
                 placeholder="SNS 주소를 입력해주세요."
                 value={snsAddress}
                 onChange={handleSnsAddressChange}
               />
               <Input
-                className="border-none bg-color-background-200 "
+                className="border-none bg-color-background-200"
                 label="한 줄 소개*"
                 type="text"
                 placeholder="한 줄 소개를 입력해주세요."
@@ -140,7 +142,7 @@ export default function ProfileMaker() {
           <div className="w-full">
             <p className="semibold mb-4 text-xl mobile-tablet:text-lg">상세 소개</p>
             <textarea
-              className="mb-4 h-40 w-full resize-none rounded-xl border border-none bg-color-background-200 p-4 "
+              className="mb-4 h-40 w-full resize-none rounded-xl border border-none bg-color-background-200 p-4"
               placeholder="서비스를 제공 할 정보에 대해 상세 내용을 입력해주세요."
               value={detailDescription}
               onChange={handleDetailDescriptionChange}

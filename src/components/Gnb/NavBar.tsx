@@ -128,7 +128,7 @@ const NavBar = () => {
   });
 
   useEffect(() => {
-    if (isLoggedIn || notificationData) {
+    if (isLoggedIn && notificationData) {
       setNotifications(notificationData);
     }
   }, [isLoggedIn, notificationData]);
