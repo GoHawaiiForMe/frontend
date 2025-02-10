@@ -1,17 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Selector from "@/components/Common/Selector";
 import Image from "next/image";
 import profileImgDefault from "@public/assets/icon_default_profile.svg";
 import Button from "@/components/Common/Button";
 import ImageModal from "@/components/Common/ImageModal";
 import { useSignUp } from "@/stores/SignUpContext";
-import userService from "@/services/userService";
+import authService from "@/services/authService";
 import planData from "@/types/planData";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
 
 export default function ProfileDreamer() {
-  const { userData, setProfileData } = useSignUp();
+  const { userData, setProfileData, oAuthUserData } = useSignUp();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [isOpenImageModal, setIsOpenImageModal] = useState(false);
@@ -37,12 +37,14 @@ export default function ProfileDreamer() {
   };
 
   const profileDreamerMutation = useMutation({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mutationFn: (data: any) => userService.signUp(data),
+    mutationFn: (data: any) => {
+      const oauthToken = localStorage.getItem("Token");
+      return authService.signUp(data, oauthToken || undefined);
+    },
     onSuccess: () => {
+      localStorage.removeItem("Token");
       router.push("/login");
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       console.error("회원가입 실패", error);
       alert("회원가입에 실패하셨습니다.");
@@ -57,12 +59,10 @@ export default function ProfileDreamer() {
     };
 
     setProfileData(profileData);
-
     const payload = {
-      user: { ...userData },
+      user: userData && userData.role ? { ...userData } : { ...oAuthUserData },
       profile: profileData,
     };
-
     profileDreamerMutation.mutate(payload);
   };
 

@@ -1,5 +1,6 @@
 import useAuthStore from "@/stores/useAuthStore";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export interface UserMenuProps {
   userId: string;
@@ -8,6 +9,7 @@ export interface UserMenuProps {
 
 export default function UserMenu({ userId, closeMenu }: UserMenuProps) {
   const { nickName, role, setLogout } = useAuthStore();
+  const router = useRouter();
 
   if (role === "guest") return null;
 
@@ -18,7 +20,7 @@ export default function UserMenu({ userId, closeMenu }: UserMenuProps) {
         { href: "/follow-maker", label: "찜한 Maker" },
         { href: "/myreview-manage/completed-trip", label: "여행 리뷰" },
       ],
-      MAKER: [{ href: "/profile/maker/mypage", label: "마이페이지" }],
+      MAKER: [{ href: userId ? `/profile/maker/mypage/${userId}` : "", label: "마이페이지" }],
     };
 
     return (
@@ -36,7 +38,7 @@ export default function UserMenu({ userId, closeMenu }: UserMenuProps) {
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-
+    router.reload();
     setLogout();
   };
 

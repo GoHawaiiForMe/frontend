@@ -98,3 +98,13 @@ export const editMakerSchema = z
   });
 
 export type EditMakerData = z.infer<typeof editMakerSchema>;
+
+export const signUpOAuthSchema = z.object({
+  nickName: z.string().min(1, { message: "닉네임을 입력해 주세요." }),
+  phoneNumber: z
+    .string()
+    .regex(/^010\d{8}$/, { message: "010으로 시작하고 숫자만 입력해 주세요." }),
+  role: z.enum(["MAKER", "DREAMER"], { message: "역할을 선택해 주세요." }),
+});
+
+export type SignUpOAuthData = z.infer<typeof signUpOAuthSchema>;

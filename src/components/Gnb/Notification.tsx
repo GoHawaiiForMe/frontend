@@ -99,7 +99,6 @@ export default function Notification({ closeModal }: { closeModal: () => void })
   const [notificationData, setNotificationData] =
     useState<NotificationProps[]>(initialNotificationData);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const patchNotiMutation = useMutation<NotificationProps, any, string>({
     mutationFn: readNotification,
     onSuccess: (notification) => {
@@ -107,7 +106,6 @@ export default function Notification({ closeModal }: { closeModal: () => void })
         prev.map((n) => (n.id === notification.id ? { ...n, isRead: true } : n)),
       );
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       console.error(error);
     },
@@ -143,27 +141,31 @@ export default function Notification({ closeModal }: { closeModal: () => void })
           ) : notificationData.length === 0 ? (
             <p className="mb-8 px-5 text-lg">새로운 알림이 없습니다.</p>
           ) : (
-            <ul>
-              {notificationData.map((notification, index) => (
-                <div key={notification.id}>
-                  <li
-                    onClick={() => handleRead(notification.id)}
-                    className={`cursor-pointer pt-4 ${notification.isRead ? "bg-[#f1f1f1]" : "bg-color-gray-50"}`}
-                  >
-                    <p className="px-5 text-lg">
-                      {getNotificationMessage(notification.event, notification.payload)}
-                    </p>
-                    <p className="px-5 pb-4 text-md text-color-gray-300">
-                      {formatRelativeTime(notification.createdAt)}
-                    </p>
+            <div
+              className={`max-h-[300px] overflow-y-auto ${notificationData.length >= 4 ? "h-[300px]" : ""}`}
+            >
+              <ul>
+                {notificationData.map((notification, index) => (
+                  <div key={notification.id}>
+                    <li
+                      onClick={() => handleRead(notification.id)}
+                      className={`cursor-pointer pt-4 ${notification.isRead ? "bg-[#f1f1f1]" : "bg-color-gray-50"}`}
+                    >
+                      <p className="px-5 text-lg">
+                        {getNotificationMessage(notification.event, notification.payload)}
+                      </p>
+                      <p className="px-5 pb-4 text-md text-color-gray-300">
+                        {formatRelativeTime(notification.createdAt)}
+                      </p>
 
-                    {index < notificationData.length - 1 && (
-                      <div className="h-0.5 bg-color-line-100"></div>
-                    )}
-                  </li>
-                </div>
-              ))}
-            </ul>
+                      {index < notificationData.length - 1 && (
+                        <div className="h-0.5 bg-color-line-100"></div>
+                      )}
+                    </li>
+                  </div>
+                ))}
+              </ul>
+            </div>
           )}
         </div>
       </div>

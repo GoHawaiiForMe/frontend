@@ -21,6 +21,7 @@ interface QuotationParams {
   isSent?: boolean;
   page?: number;
   pageSize?: number;
+  planId?: string;
 }
 
 export const getQuotations = async ({
@@ -49,6 +50,16 @@ export const getQuotations = async ({
     return response;
   } catch (error) {
     console.error("견적 목록 조회 실패", error);
+    throw error;
+  }
+};
+
+export const getQuotationDetail = async (id: string): Promise<QuotationItem> => {
+  try {
+    const response = await api.get<QuotationItem, {}>(`/quotes/${id}`);
+    return response;
+  } catch (error) {
+    console.error("견적 상세 조회 실패", error);
     throw error;
   }
 };

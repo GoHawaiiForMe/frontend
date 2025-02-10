@@ -1,5 +1,8 @@
 import Button from "./Button";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import luggage from "@public/assets/icon_luggage.svg";
+import Layout from "./Layout";
 
 export default function ConfirmedPlan({ onReset }: { onReset: () => void }) {
   const router = useRouter();
@@ -11,27 +14,30 @@ export default function ConfirmedPlan({ onReset }: { onReset: () => void }) {
 
   const handleGoToSeePlans = () => {
     onReset();
-    console.log("이동할 페이지 넣기"); //임시
+    router.push("/mytrip-manage/ongoing-plan");
   };
 
   return (
     <>
-      <div className="flex gap-2">
-        <div>
-          <Button
-            label="새로운 여행 계획하기"
-            className="text-color-gray-50"
-            onClick={handleNewPlanRequest}
-          />
+      <Layout bodyClass="bg-gray">
+        <Image src={luggage} alt="캐리어 아이콘" width={500} />
+        <div className="flex gap-4">
+          <div>
+            <Button
+              label="새로운 여행 계획하기"
+              className="px-5 text-color-gray-50"
+              onClick={handleNewPlanRequest}
+            />
+          </div>
+          <div>
+            <Button
+              label="신청한 여행 보러가기"
+              className="px-5 text-color-gray-50"
+              onClick={handleGoToSeePlans}
+            />
+          </div>
         </div>
-        <div>
-          <Button
-            label="신청한 여행 보러가기"
-            className="text-color-gray-50"
-            onClick={handleGoToSeePlans}
-          />
-        </div>
-      </div>
+      </Layout>
     </>
   );
 }

@@ -2,23 +2,30 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 const withAuthAccess = (WrappedComponent: React.ComponentType) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const AuthComponent = (props: any) => {
     const router = useRouter();
     const [accessToken, setAccessToken] = useState<string | null>(null);
 
     useEffect(() => {
       const token = localStorage.getItem("accessToken");
-      if (!token) {
-        router.push("/login");
-      } else {
-        setAccessToken(token);
-      }
-    }, [router]);
 
-    if (!accessToken) {
+      if (token) {
+        if (router.pathname === "/login" || router.pathname === "/signup") {
+          router.push("/");
+          return;
+        }
+        setAccessToken(token);
+      } else {
+        if (router.pathname !== "/login" && router.pathname !== "/signup") {
+          router.push("/login");
+        }
+      }
+    }, [router, accessToken]);
+
+    if (!accessToken && !(router.pathname === "/login" || router.pathname === "/signup")) {
       return null;
     }
+
     return <WrappedComponent {...props} />;
   };
   return AuthComponent;

@@ -13,6 +13,7 @@ import naver_icon from "@public/assets/icon_naver.svg";
 import userService from "@/services/userService";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
+import authService from "@/services/authService";
 
 interface LoginProps {
   email: string;
@@ -25,7 +26,7 @@ const getUserInfo = async () => {
 };
 
 const postLogin = async (LoginData: LoginProps) => {
-  return userService.login(LoginData);
+  return authService.login(LoginData);
 };
 
 export default function LoginForm() {
@@ -43,7 +44,6 @@ export default function LoginForm() {
         console.error("유저 정보 가져오기 실패", error);
       }
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       if (error.response) {
         console.error("Error response", error.response);
@@ -78,6 +78,36 @@ export default function LoginForm() {
   const ErrorMessage = ({ message }: { message: string | undefined }) => (
     <p className="absolute right-0 mt-1 text-color-red-200">{message}</p>
   );
+
+  const handleGoogleLogin = async () => {
+    try {
+      const redirectUrl = await authService.googleLogin();
+      window.location.href = redirectUrl;
+    } catch (error) {
+      console.error("구글 로그인 중 오류 발생", error);
+      alert("구글 로그인에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  const handleKakaoLogin = async () => {
+    try {
+      const redirectUrl = await authService.kakaoLogin();
+      window.location.href = redirectUrl;
+    } catch (error) {
+      console.error("카카오 로그인 중 오류 발생", error);
+      alert("카카오 로그인에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  const handleNaverLogin = async () => {
+    try {
+      const redirectUrl = await authService.naverLogin();
+      window.location.href = redirectUrl;
+    } catch (error) {
+      console.error("네이버 로그인 중 오류 발생", error);
+      alert("네이버 로그인에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
 
   return (
     <div className="my-24 flex justify-center">
@@ -127,9 +157,15 @@ export default function LoginForm() {
         <div className="flex flex-col items-center gap-8">
           <h2 className="tablet:text-xs pc:text-xl">SNS 계정으로 간편 가입하기</h2>
           <div className="flex gap-4">
-            <Image src={google_icon} alt="구글 아이콘" width={50} height={50} />
-            <Image src={kakao_icon} alt="카카오 아이콘" width={50} height={50} />
-            <Image src={naver_icon} alt="네이버 아이콘" width={50} height={50} />
+            <div onClick={handleGoogleLogin} className="cursor-pointer">
+              <Image src={google_icon} alt="구글 아이콘" width={50} height={50} />
+            </div>
+            <div onClick={handleKakaoLogin} className="cursor-pointer">
+              <Image src={kakao_icon} alt="카카오 아이콘" width={50} height={50} />
+            </div>
+            <div onClick={handleNaverLogin} className="cursor-pointer">
+              <Image src={naver_icon} alt="네이버 아이콘" width={50} height={50} />
+            </div>
           </div>
         </div>
       </div>

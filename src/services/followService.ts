@@ -14,9 +14,8 @@ interface FollowedCardProps {
 const followService = {
   getFollow: async (page: number = 1, pageSize: number = 10): Promise<FollowedCardProps[]> => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const response = await api.get<{ totalCount: number; list: any[] }, Record<string, unknown>>(
-        `/follow?page=${page}&pageSize=${pageSize}`,
+        `/users/following?page=${page}&pageSize=${pageSize}`,
       );
 
       const followedItems = response.list.map((item) => ({

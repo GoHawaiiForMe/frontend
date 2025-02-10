@@ -38,7 +38,7 @@ const SearchBar = ({
 
   return (
     <div
-      className={`relative flex w-[955px] items-center mobile:mx-[auto] mobile:w-[327px] tablet:mx-[auto] tablet:w-[600px] tablet:px-[10px] tablet:py-[12px] ${className}`}
+      className={`relative flex w-full items-center mobile:mx-[auto]  tablet:mx-[auto] tablet:px-[10px] tablet:py-[12px] ${className}`}
     >
       <Image
         className="absolute left-[18px] cursor-pointer"

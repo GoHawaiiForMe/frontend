@@ -36,7 +36,7 @@ export default function RequestDetails({
 
   return (
     <>
-      <div className="mb-12 w-[955px] rounded-[16px] border border-color-line-100 px-4 pb-[12px] pt-[20px] shadow-md mobile:mx-[auto] mobile:mb-6 mobile:w-[328px] mobile:px-[14px] mobile:py-[16px] tablet:mx-[auto] tablet:mb-8 tablet:w-[600px]">
+      <div className="mb-12 w-full rounded-[16px] border border-color-line-100 px-4 pb-[12px] pt-[20px] shadow-md mobile:mx-[auto] mobile:mb-6 mobile:px-[14px] mobile:py-[16px] tablet:mx-[auto] tablet:mb-8 ">
         <div className="flex flex-col">
           <Link href={`/planDetail/${data.id}`}>
             <div className="mb-4 flex items-center justify-between text-xs text-color-gray-500">

@@ -25,11 +25,11 @@ Content-Type: application/json
 
 ### 로그인 요청 테스트
 
-POST https://go-for-me.onrender.com/user/login
+POST https://www.goforme.duckdns.org/users/login
 Content-Type: application/json
 
 {
-  "email": "dreamer2@test.com",
+  "email": "dreamer1@test.com",
   "password": "12345678"
 }
 
@@ -42,3 +42,32 @@ GET https://go-for-me.onrender.com/notifications
 ### 찜한 메이커 조회
 GET https://www.goforme.duckdns.org/follow?page=1&pageSize=10
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1NTVkNDYzZS0zN2I2LTQxMGItOTA2MS0xMWE5ZDY4MjJiZGQiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczNzYxNzY2MywiZXhwIjoxNzM3NzA0MDYzfQ.YOUGCcJJ-TYPKGS4X9F3_0mdVGZOwaBS8vJOXspfBeA
+
+### 리프레시 토큰
+POST https://www.goforme.duckdns.org/users/refresh/token
+Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczODU2NjY3MiwiZXhwIjoxNzM5MTcxNDcyfQ.PcJi_UulHX7BgCQzbVVER5jezoesd8HHvEazq9Nwxe8; Max-Age=604800; Path=/user/token/refresh; Expires=Mon, 10 Feb 2025 07:11:12 GMT; HttpOnly; Secure; SameSite=None
+
+### 실시간 알림
+POST https://goforme.duckdns.org/notifications
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczODU3MTAzNSwiZXhwIjoxNzM4NjU3NDM1fQ.AyxnnK68YvG5IPNmCK-yhtLhCSpF1-OhQ5MMX-hQFLw
+
+### 실시간 알림
+
+POST https://goforme.duckdns.org/notifications/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczODU3MTAzNSwiZXhwIjoxNzM4NjU3NDM1fQ.AyxnnK68YvG5IPNmCK-yhtLhCSpF1-OhQ5MMX-hQFLw
+
+
+### 플랜 리스트 불러오기(dreamer)
+
+GET https://www.goforme.duckdns.org/plans/dreamer?status=PENDING&status=CONFIRMED
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczODkwMjA2MywiZXhwIjoxNzM4OTg4NDYzfQ.Z552RQPGxWAdIon2aXEZ5z9D_OSfmEPcNTDYi9VEoYk
+
+
+### 플랜 데이터 불러오기(dreamer)
+GET https://www.goforme.duckdns.org/plans/0f61f8b9-7b29-4b82-86c7-f7ce8e418baa
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTAzNDY3OSwiZXhwIjoxNzM5MTIxMDc5fQ.Q2fR2Np0O0uF1BznlyPL0z48hZeELsk4Ziro2SLrRaQ
+
+
+### 견적 리스트 불러오기(dreamer)
+GET https://www.goforme.duckdns.org/plans/181b2ef5-a7c6-4d62-a17e-542581693736/quotes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTAzNDY3OSwiZXhwIjoxNzM5MTIxMDc5fQ.Q2fR2Np0O0uF1BznlyPL0z48hZeELsk4Ziro2SLrRaQ
