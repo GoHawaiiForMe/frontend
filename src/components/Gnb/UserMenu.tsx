@@ -1,35 +1,55 @@
 import useAuthStore from "@/stores/useAuthStore";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import ModalLayout from "../Common/ModalLayout";
 
 export interface UserMenuProps {
   userId: string;
   closeMenu: () => void;
+  onChargeClick: () => void;
 }
 
-export default function UserMenu({ userId, closeMenu }: UserMenuProps) {
+interface MenuItem {
+  href: string;
+  label: string;
+  onClick?: () => void;
+}
+
+export default function UserMenu({ userId, closeMenu, onChargeClick }: UserMenuProps) {
   const { nickName, role, setLogout } = useAuthStore();
   const router = useRouter();
 
   if (role === "guest") return null;
 
-  const renderMenus = () => {
-    const menuItems = {
-      DREAMER: [
-        { href: userId ? `/profile/dreamer/edit/${userId}` : "", label: "프로필 수정" },
-        { href: "/follow-maker", label: "찜한 Maker" },
-        { href: "/myreview-manage/completed-trip", label: "여행 리뷰" },
-      ],
-      MAKER: [{ href: userId ? `/profile/maker/mypage/${userId}` : "", label: "마이페이지" }],
-    };
+  const menuItems: Record<string, MenuItem[]> = {
+    DREAMER: [
+      { href: userId ? `/profile/dreamer/edit/${userId}` : "", label: "프로필 수정" },
+      { href: "/follow-maker", label: "찜한 Maker" },
+      { href: "/myreview-manage/completed-trip", label: "여행 리뷰" },
+      {
+        href: "#",
+        label: "코코넛 충전",
+        onClick: onChargeClick,
+      },
+    ],
+    MAKER: [{ href: userId ? `/profile/maker/mypage/${userId}` : "", label: "마이페이지" }],
+  };
 
+  const renderMenus = () => {
     return (
       <>
         {menuItems[role ? role : "DREAMER"].map((link, index) => (
           <li key={index}>
-            <Link href={link.href} onClick={closeMenu}>
-              {link.label}
-            </Link>
+            {link.onClick ? (
+              <button onClick={link.onClick} className="w-full text-left">
+                {link.label}
+              </button>
+            ) : (
+              <Link href={link.href} onClick={closeMenu}>
+                {link.label}
+              </Link>
+            )}
           </li>
         ))}
       </>
