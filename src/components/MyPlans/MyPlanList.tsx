@@ -1,29 +1,22 @@
 import { forwardRef } from "react";
 import { useRouter } from "next/router";
-
-interface Plan {
-  id: number;
-  name: string;
-  requestDate: string;
-  tripType: string;
-  tripPeriod: string;
-  serviceArea: string;
-  details: string;
-}
+import { useEffect } from "react";
+import { Plan } from "@/services/planService";
 
 interface MyPlanListProps {
   visiblePlans: Plan[];
-  loadedCount: number;
-  totalPlans: number;
-  title: string; //불러온 페이지 이름(진행중, 종료된, 만료된)
-  status: string; //플랜의 상태 값 (ongoing, completed, expired)
+  title: string;
+  status: string;
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
 }
 
 const MyPlanList = forwardRef<HTMLDivElement, MyPlanListProps>(
-  ({ visiblePlans, loadedCount, totalPlans, title }, ref) => {
+  ({ visiblePlans, title, fetchNextPage, hasNextPage, isFetchingNextPage }, ref) => {
     const router = useRouter();
 
-    const handleDetailClick = (planId: number) => {
+    const handleDetailClick = (planId: string) => {
       const currentPath = router.pathname;
       let basePath = "/";
 
@@ -31,12 +24,28 @@ const MyPlanList = forwardRef<HTMLDivElement, MyPlanListProps>(
         basePath = "/mytrip-manage/ongoing-plan/detail";
       } else if (currentPath.includes("completed-plan")) {
         basePath = "/mytrip-manage/completed-plan/detail";
-      } else if (currentPath.includes("expired-plan")) {
-        basePath = "/mytrip-manage/expired-plan/detail";
+      } else if (currentPath.includes("overdue-plan")) {
+        basePath = "/mytrip-manage/overdue-plan/detail";
       }
       const targetPath = `${basePath}/${planId}`;
       router.push(targetPath);
     };
+
+    useEffect(() => {
+      if (!ref || !("current" in ref) || !ref.current || !hasNextPage) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        },
+        { threshold: 1.0 },
+      );
+
+      observer.observe(ref.current);
+      return () => observer.disconnect();
+    }, [ref, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
     return (
       <div className="my-12 flex flex-col rounded-2xl border-color-gray-300 bg-color-gray-50 shadow">
@@ -48,7 +57,7 @@ const MyPlanList = forwardRef<HTMLDivElement, MyPlanListProps>(
               className="mb-3 flex justify-between rounded-2xl border-color-gray-300 bg-color-gray-50 p-2 shadow"
             >
               <div>
-                <div className="semibold px-2 pt-2 text-2lg">{plan.name}</div>
+                <div className="semibold px-2 pt-2 text-2lg">{plan.title}</div>
                 <div className="semibold px-2 pt-2 text-lg">{plan.serviceArea}</div>
               </div>
               <button
@@ -59,9 +68,9 @@ const MyPlanList = forwardRef<HTMLDivElement, MyPlanListProps>(
               </button>
             </div>
           ))}
-          {loadedCount < totalPlans && (
+          {hasNextPage && !isFetchingNextPage && (
             <div ref={ref} className="h-12 content-center rounded-xl bg-gray-200 text-center">
-              로딩 중...
+              아래로 내려서 더 보기
             </div>
           )}
         </div>
