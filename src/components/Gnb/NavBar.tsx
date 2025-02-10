@@ -145,7 +145,7 @@ const NavBar = () => {
           setUserInfo(userData);
           const avatarImage = avatarImages.find((avatar) => avatar.key === profileData.image);
           setUserImage(avatarImage ? avatarImage.src : user_img.src);
-          setLogin(userData.nickName, userData.role, userData.coconut);
+          setLogin(userData.nickName, userData.role, userData.coconut, profileData.image);
         } catch (error) {
           console.error(error);
         }
@@ -218,8 +218,6 @@ const NavBar = () => {
                   className="cursor-pointer"
                 />
               </Link>
-              <span className="absolute right-0 top-0 h-2 w-2 animate-ping rounded-full bg-color-red-200"></span>
-              <span className="absolute right-0 top-0 h-2 w-2 rounded-full bg-color-red-200"></span>
             </div>
             <div className="relative">
               <Image

@@ -60,7 +60,7 @@ export default function InformEditMaker() {
   const isEmailExist = !!userInfo?.email;
 
   const handleCancel = () => {
-    router.push("/plan-request"); //임시 url
+    router.back();
   };
 
   const onSubmit = async (data: EditMakerData) => {

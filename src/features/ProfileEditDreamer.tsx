@@ -88,7 +88,12 @@ export default function ProfileEditDreamer() {
 
       alert("프로필이 성공적으로 수정되었습니다!");
       if (userInfo?.nickName !== data.nickName) {
-        setLogin(data.nickName, userInfo?.role || "guest", userInfo?.coconut || 0);
+        setLogin(
+          data.nickName,
+          userInfo?.role || "guest",
+          userInfo?.coconut || 0,
+          profileInfo.image,
+        );
       }
       router.reload();
     } catch (error) {
