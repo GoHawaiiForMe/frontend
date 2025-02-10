@@ -21,6 +21,7 @@ interface QuotationParams {
   isSent?: boolean;
   page?: number;
   pageSize?: number;
+  planId?: string;
 }
 
 export const getQuotations = async ({
