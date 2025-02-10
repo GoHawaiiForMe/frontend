@@ -24,6 +24,7 @@ import { TripType } from "@/utils/formatTripType";
 import Link from "next/link";
 import followService from "@/services/followService";
 import ModalLayout from "@/components/Common/ModalLayout";
+import planService from "@/services/planService";
 
 export default function RequestDetailDreamer() {
   const router = useRouter();
@@ -31,8 +32,10 @@ export default function RequestDetailDreamer() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isListModalOpen, setIsListModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<number>(1);
   const queryClient = useQueryClient();
   const itemsPerPage = 5;
+  const [pendingPlanTitles, setPendingPlanTitles] = useState<string[]>([]);
 
   const { data: makerProfileInfo, isPlaceholderData } = useQuery({
     queryKey: ["makerProfileInfo", makerId],
@@ -77,6 +80,17 @@ export default function RequestDetailDreamer() {
     if (!accessToken) {
       setIsLoginModalOpen(true);
       return;
+    }
+    try {
+      const titles = await planService.getPendingPlan();
+      if (titles) {
+        setPendingPlanTitles(titles.map((plan) => plan.title));
+      } else {
+        setPendingPlanTitles([]);
+      }
+      setIsListModalOpen(true);
+    } catch (error) {
+      console.error("지정 플랜 요청 실패", error);
     }
   };
 
@@ -431,6 +445,47 @@ export default function RequestDetailDreamer() {
                   로그인하러 가기
                 </button>
               </Link>
+            </div>
+          </ModalLayout>
+        </div>
+      )}
+      {isListModalOpen && (
+        <div>
+          <ModalLayout label="지정 플랜 요청하기" closeModal={() => setIsListModalOpen(false)}>
+            <div className="flex flex-col items-center gap-8">
+              {pendingPlanTitles.length > 0 ? (
+                pendingPlanTitles.map((title, index) => (
+                  <>
+                    <div
+                      key={index}
+                      className={`w-full justify-between rounded-2xl border p-5 ${selectedPlan === index ? "border-color-blue-300 bg-color-blue-100" : "border-color-gray-300"}`}
+                    >
+                      <label>
+                        <div className="flex gap-4">
+                          <input
+                            type="radio"
+                            name="plan"
+                            value={title}
+                            onChange={() => setSelectedPlan(index)}
+                          />
+                          <p className="bold text-xl mobile-tablet:text-lg">{title}</p>
+                        </div>
+                      </label>
+                    </div>
+                  </>
+                ))
+              ) : (
+                <p className="text-lg">일반 플랜 요청을 먼저 진행해주세요.</p>
+              )}
+              {pendingPlanTitles.length > 0 ? (
+                <button className="mt-8 w-full rounded-2xl bg-color-blue-300 p-4 text-xl text-color-gray-50 mobile-tablet:text-lg">
+                  선택한 플랜 견적 요청하기
+                </button>
+              ) : (
+                <button className="mt-8 w-full rounded-2xl bg-color-blue-300 p-4 text-xl text-color-gray-50 mobile-tablet:text-lg">
+                  일반 플랜 요청하기
+                </button>
+              )}
             </div>
           </ModalLayout>
         </div>
