@@ -30,16 +30,27 @@ export function QuotationDetail() {
   };
 
   useEffect(() => {
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
+    // 카카오 API 키가 있는지 확인
+    const kakaoApiKey = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
+
+    if (typeof window !== "undefined" && kakaoApiKey) {
+      // console.log("Kakao API Key:", kakaoApiKey); // 개발 시에만 사용, 배포 전 제거
+      if (!window.Kakao?.isInitialized()) {
+        try {
+          window.Kakao?.init(kakaoApiKey);
+          console.log("카카오 초기화 성공");
+        } catch (error) {
+          console.error("카카오 초기화 실패:", error);
+        }
+      }
     }
   }, []);
 
   const handleKakaoShare = () => {
+    if (typeof window === "undefined") return;
     const currentUrl = window.location.href;
-    if (typeof window !== "undefined" && window.Kakao) {
-      const Kakao = window.Kakao;
-      Kakao.Share.createDefaultButton({
+    if (window.Kakao) {
+      window.Kakao.Share.createDefaultButton({
         container: "#kakaotalk-sharing-btn",
         objectType: "feed",
         content: {
@@ -55,13 +66,6 @@ export function QuotationDetail() {
       });
     }
   };
-  useEffect(() => {
-    console.log("FB SDK 상태:", {
-      exists: !!window.FB,
-      initialized: window.FB?.getAuthResponse?.(),
-      appId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID,
-    });
-  }, []);
 
   const handleFacebookShare = () => {
     if (typeof window !== "undefined" && window.FB) {

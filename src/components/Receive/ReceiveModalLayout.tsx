@@ -18,7 +18,7 @@ export default function ReceiveModalLayout({ label, children, closeModal }: Moda
   return (
     <div className="mobile-tablet::pt-0 mobile-tablet:pb-0 fixed inset-0 z-50 flex items-center justify-center overflow-y-scroll bg-black bg-opacity-50 pb-[30px] pt-[100px] mobile:items-end">
       <div className="rounded-2xl bg-white px-[24px] py-[32px] mobile:rounded-b-none mobile:pb-[32px]">
-        <div className="mb-10 flex items-center justify-between text-2xl font-bold mobile:mb-[24px] tablet:mb-[24px] tablet:text-2lg">
+        <div className=" flex items-center justify-between text-2xl font-bold tablet:text-2lg">
           {label}
           <Image
             src={closeIcon}

@@ -38,16 +38,28 @@ export function PlanDetail() {
   };
 
   useEffect(() => {
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
+    // 카카오 API 키가 있는지 확인
+    const kakaoApiKey = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
+
+    if (typeof window !== "undefined" && kakaoApiKey) {
+      // console.log("Kakao API Key:", kakaoApiKey); // 개발 시에만 사용, 배포 전 제거
+      if (!window.Kakao?.isInitialized()) {
+        try {
+          window.Kakao?.init(kakaoApiKey);
+          console.log("카카오 초기화 성공");
+        } catch (error) {
+          console.error("카카오 초기화 실패:", error);
+        }
+      }
     }
   }, []);
 
   const handleKakaoShare = () => {
+    if (typeof window === "undefined") return;
+
     const currentUrl = window.location.href;
-    if (typeof window !== "undefined" && window.Kakao) {
-      const Kakao = window.Kakao;
-      Kakao.Share.createDefaultButton({
+    if (window.Kakao) {
+      window.Kakao.Share.createDefaultButton({
         container: "#kakaotalk-sharing-btn",
         objectType: "feed",
         content: {
@@ -65,9 +77,25 @@ export function PlanDetail() {
   };
 
   const handleFacebookShare = () => {
-    window.open(
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
-    );
+    if (typeof window !== "undefined" && window.FB) {
+      const shareUrl = `https://fs2-4-team2-go-for-me.vercel.app/planDetail/${id}`;
+
+      window.FB.ui(
+        {
+          method: "share",
+          href: shareUrl,
+        },
+
+        (response) => {
+          console.log({ response });
+          if (response) {
+            console.log("공유 성공");
+          } else {
+            console.error("공유 실패 - URL:", shareUrl);
+          }
+        },
+      );
+    }
   };
 
   if (isLoading) {

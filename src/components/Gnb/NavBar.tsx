@@ -18,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import avatarImages from "@/utils/formatImage";
 import { useRef } from "react";
 import useRealTimeNotification from "@/stores/useRealTimeNotification";
+import ChargeModal from "./ChargeModal";
 
 interface LinkItem {
   href: string;
@@ -54,6 +55,8 @@ const NavBar = () => {
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const notificationRef = useRef<HTMLDivElement | null>(null);
   const sideBarRef = useRef<HTMLDivElement | null>(null);
+  const [isChargeModalOpen, setIsChargeModalOpen] = useState(false);
+  
 
   const router = useRouter();
   const { realTimeNotifications } = useRealTimeNotification();
@@ -261,7 +264,14 @@ const NavBar = () => {
             </div>
             {isOpenUserMenu && (
               <div ref={userMenuRef} className="absolute z-50">
-                <UserMenu userId={userInfo?.id} closeMenu={handleCloseUserMenu} />
+                <UserMenu
+                  userId={userInfo?.id}
+                  closeMenu={handleCloseUserMenu}
+                  onChargeClick={() => {
+                    setIsChargeModalOpen(true);
+                    handleCloseUserMenu();
+                  }}
+                />
               </div>
             )}
           </>
@@ -317,6 +327,14 @@ const NavBar = () => {
             </div>
           ))}
         </div>
+      )}
+
+      {isChargeModalOpen && (
+        <ChargeModal
+          coconut={coconut}
+          isChargeModalOpen={isChargeModalOpen}
+          setIsChargeModalOpen={setIsChargeModalOpen}
+        />
       )}
     </div>
   );
