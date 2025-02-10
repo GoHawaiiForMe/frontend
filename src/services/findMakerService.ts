@@ -1,14 +1,21 @@
 import { api } from './api';
 
-export const getMakers = async (orderBy: string, serviceArea: string, serviceType: string, keyword: string) => {
+export const getMakers = async (
+  orderBy: string, 
+  serviceArea: string, 
+  serviceType: string, 
+  keyword: string, 
+  isFollowed: boolean
+) => {
   //함수 파라미터, 여기서 페스 에서 참조
   try {
-    // Construct the URL with conditional 
+    // Construct the URL with conditional parameters
     const url = `/users/makers?page=1&pageSize=5` +
                 `${orderBy ? `&orderBy=${orderBy}` : ''}` +
                 `${serviceArea ? `&serviceArea=${serviceArea}` : ''}` +
                 `${serviceType ? `&serviceType=${serviceType}` : ''}` +
-                `${keyword ? `&keyword=${keyword}` : ''}`;
+                `${keyword ? `&keyword=${keyword}` : ''}` +
+                `${isFollowed !== undefined ? `&isFollowed=${isFollowed}` : ''}`;
 //keyword 빈 값으로. '' 기본 값으로 
     const response = await api.get(url);
 

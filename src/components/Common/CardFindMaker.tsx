@@ -22,7 +22,7 @@ interface CardFindMakerProps {
   otherText?: string;
   starSize?: string;
   heartNumberSize?: string;
-  likeIcon?: 'pink';
+  likeIcon?: 'pink' | 'gray';
   nickName: string;
   image: string;
   description: string;
@@ -63,6 +63,7 @@ const CardFindMaker = ({
   const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 1023; 
   const computedPhotoSize = cardSize === 'sm' || isSmallScreen ? "46" : photoSize;
   const computedStarSize = cardSize === 'sm' || isSmallScreen ? "20" : starSize;
+  const imageSource = isFollowed === true || likeIcon === 'pink' ? like_pink : like;
   return (
     <div className={`w-full h-[230px] border border-color-line-100 rounded-lg py-5 px-6 shadow-[2px_2px_10px_rgba(220,220,220,0.14),-2px_-2px_10px_rgba(220,220,220,0.14)]
      ${cardClassName} ${cardSize === 'sm' ? '!w-[327px] !h-[188px] py-4 px-[14px]' : ''} tablet:w-full tablet:h-[188px] mobile:w-full mobile:h-[188px]`}>
@@ -109,7 +110,7 @@ const CardFindMaker = ({
               <button className="flex gap-1 items-center">
                 <div className=" transition-all duration-300">
                   <Image
-                    src={isFollowed ? like_pink : like} || {likeIcon === 'pink' ? like_pink : like}
+                    src={imageSource}
                     alt="heart"
                     width={24}
                     height={24}

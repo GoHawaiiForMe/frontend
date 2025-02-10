@@ -5,7 +5,7 @@ import CardFindMaker from "@/components/Common/CardFindMaker";
 import SearchBar from "@/components/Common/SearchBar";
 import Link from 'next/link';
 import useAuthStore from "@/stores/useAuthStore";
-import { getMakers } from '@/services/findMaker';
+import { getMakers } from '@/services/findMakerService';
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import followService from "@/services/followService";
@@ -21,6 +21,8 @@ interface CardFindMakerProps {
   totalConfirms: number;
   labelSize: string;
   cardSize: string;
+  isFollowed?: boolean;
+  likeIcon?: 'pink';
 }
 
 interface MakerData {
@@ -197,7 +199,7 @@ const handleOrderByChange = (selectedOrder: string) => {
                       serviceTypes={item.serviceTypes || []}
                       labelSize="sm"
                       cardSize="sm"
-                      likeIcon={item.isFollowed ? 'pink' : 'gray'}
+                      isFollowed={true}
                     />
                   </div>
                 ))}
@@ -245,6 +247,7 @@ const handleOrderByChange = (selectedOrder: string) => {
                     totalReviews={maker.totalReviews}
                     totalFollows={maker.totalFollows}
                     totalConfirms={maker.totalConfirms}
+                    isFollowed={maker.isFollowed}
                   />
                 </Link>
               ))
