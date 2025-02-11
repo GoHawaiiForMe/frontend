@@ -1,5 +1,6 @@
 import axios from "axios";
-import { getAccessToken } from "@/utils/tokenUtils";
+import { getAccessToken, setAccessToken } from "@/utils/tokenUtils";
+import authService from "./authService";
 
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -25,9 +26,19 @@ apiClient.interceptors.request.use(
 // response
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      console.error("accessToken 만료");
+  async (error) => {
+    if (error.response && error.response?.status === 401) {
+      try {
+        const response = await authService.refreshToken();
+        const accessToken = response;
+        setAccessToken(accessToken);
+
+        error.config.headers["Authorization"] = `Bearer ${accessToken}`;
+        return apiClient(error.config);
+      } catch (error) {
+        console.error("리프레시 토큰 발급 실패", error);
+        return Promise.reject(error);
+      }
     }
     return Promise.reject(error);
   },
