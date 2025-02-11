@@ -25,7 +25,6 @@ const getUserId = async (): Promise<string> => {
 export default function ChattingForm() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
-  const [chatRooms, setChatRooms] = useState<any[]>([]);
   const [selectedChatRoom, setSelectedChatRoom] = useState<ChatRoom | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [page, setPage] = useState(1);
@@ -34,7 +33,6 @@ export default function ChattingForm() {
   const [isFetchingOldMessages, setIsFetchingOldMessages] = useState(false);
   const [isFirstMessage, setIsFirstMessage] = useState(false);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
@@ -42,6 +40,13 @@ export default function ChattingForm() {
   const { data: userId = [] } = useQuery({
     queryKey: ["userId"],
     queryFn: getUserId,
+  });
+
+  const { data: chatRooms = [], isLoading } = useQuery({
+    queryKey: ["chatRooms"],
+    queryFn: async () => {
+      return await chatService.getChatRooms();
+    },
   });
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -282,21 +287,6 @@ export default function ChattingForm() {
     scrollToBottom();
     scrollBrowserToBottom();
   };
-
-  useEffect(() => {
-    setIsLoading(true);
-    const getChatRooms = async () => {
-      try {
-        const data = await chatService.getChatRooms();
-        setChatRooms(data);
-      } catch (error) {
-        console.error("채팅방을 가져오는데 실패했습니다.", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getChatRooms();
-  }, []);
 
   // 웹소켓 연결 부분
   useEffect(() => {
