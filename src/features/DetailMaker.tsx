@@ -507,14 +507,15 @@ export default function RequestDetailDreamer() {
                 <button
                   onClick={() => handlePlanRequest(selectedPlan)}
                   disabled={selectedPlan === null}
-                  className={`mt-8 w-full rounded-2xl p-4 text-xl text-color-gray-50 mobile-tablet:text-lg ${selectedPlan !== null ? "bg-color-blue-300" : "cursor-not-allowed bg-color-gray-300"}`}
+                  className={`mt-8 w-full rounded-2xl p-4 text-xl text-color-gray-50 mobile-tablet:text-lg ${selectedPlan !== "" ? "bg-color-blue-300" : "cursor-not-allowed bg-color-gray-300"}`}
                 >
                   선택한 플랜 견적 요청하기
                 </button>
               ) : (
                 <button
-                  disabled={selectedPlan === null}
-                  className={`mt-8 w-full rounded-2xl p-4 text-xl text-color-gray-50 mobile-tablet:text-lg ${selectedPlan !== null ? "bg-color-blue-300" : "cursor-not-allowed bg-color-gray-300"}`}
+                  className={
+                    "mt-8 w-full rounded-2xl bg-color-blue-300 p-4 text-xl text-color-gray-50 mobile-tablet:text-lg"
+                  }
                   onClick={() => {
                     router.push("/plan-request");
                   }}
