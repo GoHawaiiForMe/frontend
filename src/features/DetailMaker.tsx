@@ -483,10 +483,10 @@ export default function RequestDetailDreamer() {
                     <>
                       <div
                         key={plan.id}
-                        className={`rounded-2xl border p-5 ${selectedPlan === plan.id ? "border-color-blue-300 bg-color-blue-100" : "border-color-gray-300"}`}
+                        className={`cursor-pointer rounded-2xl border p-5 ${selectedPlan === plan.id ? "border-color-blue-300 bg-color-blue-100" : "border-color-gray-300"}`}
                       >
                         <label>
-                          <div className="flex gap-4">
+                          <div className="flex cursor-pointer gap-4">
                             <input
                               type="radio"
                               name="plan"
@@ -506,7 +506,7 @@ export default function RequestDetailDreamer() {
               {pendingPlanTitles.length > 0 ? (
                 <button
                   onClick={() => handlePlanRequest(selectedPlan)}
-                  disabled={selectedPlan === null}
+                  disabled={selectedPlan === ""}
                   className={`mt-8 w-full rounded-2xl p-4 text-xl text-color-gray-50 mobile-tablet:text-lg ${selectedPlan !== "" ? "bg-color-blue-300" : "cursor-not-allowed bg-color-gray-300"}`}
                 >
                   선택한 플랜 견적 요청하기
