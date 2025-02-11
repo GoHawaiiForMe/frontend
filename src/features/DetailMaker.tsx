@@ -14,7 +14,7 @@ import ReviewGraph from "@/components/Receive/ReviewGraph";
 import Pagination from "@/components/Common/Pagination";
 import userService from "@/services/userService";
 import { useRouter } from "next/router";
-import { useQuery, keepPreviousData, useQueryClient } from "@tanstack/react-query";
+import { useQuery, keepPreviousData, useQueryClient, useMutation } from "@tanstack/react-query";
 import avatarImages from "@/utils/formatImage";
 import { formatToSimpleDate } from "@/utils/formatDate";
 import clipshare from "@public/assets/icon_outline.png";
@@ -103,19 +103,18 @@ export default function RequestDetailDreamer() {
     }
   };
 
-  const handlePlanRequest = async (planId: string) => {
-    try {
-      const response = await planService.postPlanRequest(planId, makerId as string);
+  const planRequestMutation = useMutation({
+    mutationFn: (planId: string) => planService.postPlanRequest(planId, makerId as string),
+    onSuccess: () => {
       setIsListModalOpen(false);
-      if (response) {
-        setIsRequestSuccessModalOpen(true);
-      }
-    } catch (error: any) {
+      setIsRequestSuccessModalOpen(true);
+    },
+    onError: (error: any) => {
       if (error.message === "이미 지정 견적을 요청하셨습니다!") {
         alert(error.message);
       }
-    }
-  };
+    },
+  });
 
   const totalItems = findMakerReview?.totalCount ?? 0;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -505,7 +504,7 @@ export default function RequestDetailDreamer() {
               )}
               {pendingPlanTitles.length > 0 ? (
                 <button
-                  onClick={() => handlePlanRequest(selectedPlan)}
+                  onClick={() => planRequestMutation.mutate(selectedPlan)}
                   disabled={selectedPlan === ""}
                   className={`mt-8 w-full rounded-2xl p-4 text-xl text-color-gray-50 mobile-tablet:text-lg ${selectedPlan !== "" ? "bg-color-blue-300" : "cursor-not-allowed bg-color-gray-300"}`}
                 >
