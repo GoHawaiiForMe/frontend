@@ -32,9 +32,11 @@ export default function RequestDetailDreamer() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isListModalOpen, setIsListModalOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<number>(1);
+  const [isRequestSuccessModalOpen, setIsRequestSuccessModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState("");
   const queryClient = useQueryClient();
   const itemsPerPage = 5;
+  const [pendingPlans, setPendingPlans] = useState<{ id: string; title: string }[]>([]);
   const [pendingPlanTitles, setPendingPlanTitles] = useState<string[]>([]);
 
   const { data: makerProfileInfo, isPlaceholderData } = useQuery({
@@ -81,7 +83,7 @@ export default function RequestDetailDreamer() {
     }
   };
 
-  const handlePlanRequest = async () => {
+  const handlePendingPlan = async () => {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
       setIsLoginModalOpen(true);
@@ -90,13 +92,28 @@ export default function RequestDetailDreamer() {
     try {
       const titles = await planService.getPendingPlan();
       if (titles) {
+        setPendingPlans(titles);
         setPendingPlanTitles(titles.map((plan) => plan.title));
       } else {
         setPendingPlanTitles([]);
       }
       setIsListModalOpen(true);
     } catch (error) {
-      console.error("지정 플랜 요청 실패", error);
+      console.error("지정 플랜 조회 실패", error);
+    }
+  };
+
+  const handlePlanRequest = async (planId: string) => {
+    try {
+      const response = await planService.postPlanRequest(planId, makerId as string);
+      setIsListModalOpen(false);
+      if (response) {
+        setIsRequestSuccessModalOpen(true);
+      }
+    } catch (error: any) {
+      if (error.message === "이미 지정 견적을 요청하셨습니다!") {
+        alert(error.message);
+      }
     }
   };
 
@@ -429,7 +446,7 @@ export default function RequestDetailDreamer() {
                 />
               </button>
               <button
-                onClick={handlePlanRequest}
+                onClick={handlePendingPlan}
                 className="semibold flex w-[354px] items-center justify-center rounded-2xl bg-color-blue-300 py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:w-full mobile-tablet:max-w-full mobile-tablet:px-4 mobile-tablet:py-[11px]"
               >
                 지정 플랜 요청하기
@@ -462,21 +479,21 @@ export default function RequestDetailDreamer() {
             <div className="flex flex-col items-center gap-8">
               {pendingPlanTitles.length > 0 ? (
                 <div className="flex max-h-80 w-full flex-col gap-8 overflow-y-auto">
-                  {pendingPlanTitles.map((title, index) => (
+                  {pendingPlans.map((plan) => (
                     <>
                       <div
-                        key={index}
-                        className={`rounded-2xl border p-5 ${selectedPlan === index ? "border-color-blue-300 bg-color-blue-100" : "border-color-gray-300"}`}
+                        key={plan.id}
+                        className={`rounded-2xl border p-5 ${selectedPlan === plan.id ? "border-color-blue-300 bg-color-blue-100" : "border-color-gray-300"}`}
                       >
                         <label>
                           <div className="flex gap-4">
                             <input
                               type="radio"
                               name="plan"
-                              value={title}
-                              onChange={() => setSelectedPlan(index)}
+                              value={plan.title}
+                              onChange={() => setSelectedPlan(plan.id)}
                             />
-                            <p className="bold text-xl mobile-tablet:text-lg">{title}</p>
+                            <p className="bold text-xl mobile-tablet:text-lg">{plan.title}</p>
                           </div>
                         </label>
                       </div>
@@ -487,14 +504,33 @@ export default function RequestDetailDreamer() {
                 <p className="text-lg">일반 플랜 요청을 먼저 진행해주세요.</p>
               )}
               {pendingPlanTitles.length > 0 ? (
-                <button className="mt-8 w-full rounded-2xl bg-color-blue-300 p-4 text-xl text-color-gray-50 mobile-tablet:text-lg">
+                <button
+                  onClick={() => handlePlanRequest(selectedPlan)}
+                  disabled={selectedPlan === null}
+                  className={`mt-8 w-full rounded-2xl p-4 text-xl text-color-gray-50 mobile-tablet:text-lg ${selectedPlan !== null ? "bg-color-blue-300" : "cursor-not-allowed bg-color-gray-300"}`}
+                >
                   선택한 플랜 견적 요청하기
                 </button>
               ) : (
-                <button className="mt-8 w-full rounded-2xl bg-color-blue-300 p-4 text-xl text-color-gray-50 mobile-tablet:text-lg">
+                <button
+                  disabled={selectedPlan === null}
+                  className={`mt-8 w-full rounded-2xl p-4 text-xl text-color-gray-50 mobile-tablet:text-lg ${selectedPlan !== null ? "bg-color-blue-300" : "cursor-not-allowed bg-color-gray-300"}`}
+                  onClick={() => {
+                    router.push("/plan-request");
+                  }}
+                >
                   일반 플랜 요청하기
                 </button>
               )}
+            </div>
+          </ModalLayout>
+        </div>
+      )}
+      {isRequestSuccessModalOpen && (
+        <div>
+          <ModalLayout label="지정 플랜" closeModal={() => setIsRequestSuccessModalOpen(false)}>
+            <div className="flex flex-col items-center gap-8">
+              <p>요청이 완료되었습니다!</p>
             </div>
           </ModalLayout>
         </div>
