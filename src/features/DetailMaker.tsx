@@ -66,9 +66,15 @@ export default function RequestDetailDreamer() {
       if (isFollowed) {
         await followService.deleteFollow(id);
         setIsFollowed(false);
+        if (makerProfileInfo) {
+          makerProfileInfo.totalFollows -= 1;
+        }
       } else {
         await followService.postFollow(id);
         setIsFollowed(true);
+        if (makerProfileInfo) {
+          makerProfileInfo.totalFollows += 1;
+        }
       }
     } catch (error) {
       console.error("찜하기 상태 변경 실패", error);
@@ -170,12 +176,10 @@ export default function RequestDetailDreamer() {
     }
   };
   useEffect(() => {
-    console.log("FB SDK 상태:", {
-      exists: !!window.FB,
-      initialized: window.FB?.getAuthResponse?.(),
-      appId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID,
-    });
-  }, []);
+    if (makerProfileInfo) {
+      setIsFollowed(makerProfileInfo.isFollowed);
+    }
+  }, [makerProfileInfo]);
 
   const handleFacebookShare = () => {
     if (typeof window !== "undefined" && window.FB) {
