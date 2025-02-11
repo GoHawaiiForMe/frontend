@@ -529,9 +529,9 @@ export default function RequestDetailDreamer() {
       )}
       {isRequestSuccessModalOpen && (
         <div>
-          <ModalLayout label="지정 플랜" closeModal={() => setIsRequestSuccessModalOpen(false)}>
-            <div className="flex flex-col items-center gap-8">
-              <p>요청이 완료되었습니다!</p>
+          <ModalLayout label="ㅤ" closeModal={() => setIsRequestSuccessModalOpen(false)}>
+            <div className="flex flex-col items-center">
+              <p className="mb-5 text-2xl mobile-tablet:text-2lg">⭐ 요청이 완료되었습니다! ⭐</p>
             </div>
           </ModalLayout>
         </div>
