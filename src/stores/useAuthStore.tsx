@@ -8,7 +8,8 @@ interface AuthState {
   nickName: string;
   role: Role;
   coconut: number;
-  setLogin: (userName: string, role: Role, coconut: number) => void;
+  image?: string;
+  setLogin: (userName: string, role: Role, coconut: number, image?: string) => void;
   setLogout: () => void;
 }
 
@@ -19,8 +20,9 @@ const useAuthStore = create<AuthState>()(
       nickName: "게스트",
       role: "guest",
       coconut: 0,
-      setLogin: (nickName: string, role: Role, coconut: number) =>
-        set({ isLoggedIn: true, nickName, role, coconut }),
+      image: "",
+      setLogin: (nickName: string, role: Role, coconut: number, image?: string) =>
+        set({ isLoggedIn: true, nickName, role, coconut, image }),
       setLogout: () => set({ isLoggedIn: false, nickName: "게스트", role: "guest", coconut: 0 }),
     }),
     {

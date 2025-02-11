@@ -11,6 +11,21 @@ export interface UserInfo {
   coconut: number;
 }
 
+export interface MakerProfileResponse {
+  nickName: string;
+  image: string;
+  gallery: string;
+  serviceTypes: string[];
+  serviceArea: string[];
+  description: string;
+  detailDescription: string;
+  isFollowed: boolean;
+  averageRating: number;
+  totalReviews: number;
+  totalFollows: number;
+  totalConfirms: number;
+}
+
 interface ProfileInfo {
   userId: string;
   nickName?: string;
@@ -60,7 +75,6 @@ const userService = {
   getUserInfo: async (): Promise<UserInfo> => {
     try {
       const response = await api.get<UserInfo, Record<string, unknown>>("/users/me");
-      console.log(response);
       return response;
     } catch (error) {
       console.error("유저 정보 조회 실패", error);
@@ -136,6 +150,15 @@ const userService = {
     } catch (error) {
       console.error("메이커 마이페이지 조회 실패", error);
       throw error;
+    }
+  },
+
+  getMakerProfile: async (makerId: string): Promise<MakerProfileResponse | undefined> => {
+    try {
+      const response = await api.get<MakerProfileResponse, {}>(`/users/profile/${makerId}`);
+      return response;
+    } catch (error) {
+      console.error("메이커 프로필 조회 실패", error);
     }
   },
 };
