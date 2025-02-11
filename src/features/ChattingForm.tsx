@@ -12,6 +12,7 @@ import coconut from "@public/assets/icon_coconut.svg";
 import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import loading from "@public/assets/icon_loading.gif";
+import { getAccessToken } from "@/utils/tokenUtils";
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const MAX_VIDEO_SIZE = 100 * 1024 * 1024;
@@ -86,7 +87,6 @@ export default function ChattingForm() {
 
       setMessage("");
       handleFileRemove();
-
       scrollToBottom();
     }
   };
@@ -290,7 +290,7 @@ export default function ChattingForm() {
 
   // 웹소켓 연결 부분
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = getAccessToken();
     if (accessToken) {
       const handleError = (error: { statusCode: number; message: string }) => {
         alert(`${error.message}`);

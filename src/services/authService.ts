@@ -1,3 +1,4 @@
+import { setAccessToken } from "@/utils/tokenUtils";
 import { api } from "./api";
 
 interface LoginRespose {
@@ -49,7 +50,8 @@ const authService = {
         "/auth/login",
         data,
       );
-      localStorage.setItem("accessToken", response.accessToken);
+      setAccessToken(response.accessToken);
+
       return response;
     } catch (error) {
       console.error("로그인 실패:", error);

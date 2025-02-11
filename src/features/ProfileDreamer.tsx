@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Selector from "@/components/Common/Selector";
 import Image from "next/image";
 import profileImgDefault from "@public/assets/icon_default_profile.svg";
@@ -9,6 +9,7 @@ import authService from "@/services/authService";
 import planData from "@/types/planData";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
+import { getOAuthToken } from "@/utils/tokenUtils";
 
 export default function ProfileDreamer() {
   const { userData, setProfileData, oAuthUserData } = useSignUp();
@@ -38,7 +39,7 @@ export default function ProfileDreamer() {
 
   const profileDreamerMutation = useMutation({
     mutationFn: (data: any) => {
-      const oauthToken = localStorage.getItem("Token");
+      const oauthToken = getOAuthToken();
       return authService.signUp(data, oauthToken || undefined);
     },
     onSuccess: () => {

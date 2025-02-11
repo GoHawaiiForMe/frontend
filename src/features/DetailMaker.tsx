@@ -25,6 +25,7 @@ import Link from "next/link";
 import followService from "@/services/followService";
 import ModalLayout from "@/components/Common/ModalLayout";
 import planService from "@/services/planService";
+import { getAccessToken } from "@/utils/tokenUtils";
 
 export default function RequestDetailDreamer() {
   const router = useRouter();
@@ -57,7 +58,7 @@ export default function RequestDetailDreamer() {
 
   const handleFollowToggle = async () => {
     const id = makerId as string;
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = getAccessToken();
     if (!accessToken) {
       setIsLoginModalOpen(true);
       return;
@@ -84,7 +85,7 @@ export default function RequestDetailDreamer() {
   };
 
   const handlePendingPlan = async () => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = getAccessToken();
     if (!accessToken) {
       setIsLoginModalOpen(true);
       return;

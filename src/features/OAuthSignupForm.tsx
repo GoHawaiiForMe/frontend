@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useSignUp } from "@/stores/SignUpContext";
 import { useRouter } from "next/router";
 import authService from "@/services/authService";
+import { setOAuthToken } from "@/utils/tokenUtils";
 
 interface CheckResponse {
   data: boolean;
@@ -77,10 +78,10 @@ export default function OAuthSignUpForm() {
 
   useEffect(() => {
     if (router.isReady) {
-      const codeFromQuery = router.query.auth as string;
-      if (codeFromQuery) {
-        setAuthCode(codeFromQuery);
-        localStorage.setItem("Token", codeFromQuery);
+      const Token = router.query.auth as string;
+      if (Token) {
+        setAuthCode(Token);
+        setOAuthToken(Token);
       }
     }
   }, [router.isReady, router.query.code]);

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { EventSourcePolyfill } from "event-source-polyfill"; // Polyfill 사용
+import { EventSourcePolyfill } from "event-source-polyfill";
+import { getAccessToken } from "@/utils/tokenUtils";
 
 const useRealTimeNotification = () => {
   const [realTimeNotifications, setRealTimeNotifications] = useState<
@@ -7,8 +8,7 @@ const useRealTimeNotification = () => {
   >([]);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-
+    const accessToken = getAccessToken();
     const eventSource = new EventSourcePolyfill(
       `${process.env.NEXT_PUBLIC_API_URL}/notifications/stream`,
       {
