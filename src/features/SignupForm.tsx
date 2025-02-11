@@ -14,6 +14,7 @@ import { useSignUp } from "@/stores/SignUpContext";
 import { useRouter } from "next/router";
 import userService from "@/services/userService";
 import authService from "@/services/authService";
+import SocialLogin from "@/components/Common/SocialLogin";
 
 interface CheckResponse {
   data: boolean;
@@ -98,36 +99,6 @@ export default function SignUpForm() {
     } catch {
       setError("email", { message: "이메일 체크 중 오류가 발생했습니다." });
       setIsEmailValid(false);
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    try {
-      const redirectUrl = await authService.googleLogin();
-      window.location.href = redirectUrl;
-    } catch (error) {
-      console.error("구글 로그인 중 오류 발생", error);
-      alert("구글 로그인에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
-
-  const handleKakaoLogin = async () => {
-    try {
-      const redirectUrl = await authService.kakaoLogin();
-      window.location.href = redirectUrl;
-    } catch (error) {
-      console.error("카카오 로그인 중 오류 발생", error);
-      alert("카카오 로그인에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
-
-  const handleNaverLogin = async () => {
-    try {
-      const redirectUrl = await authService.naverLogin();
-      window.location.href = redirectUrl;
-    } catch (error) {
-      console.error("네이버 로그인 중 오류 발생", error);
-      alert("네이버 로그인에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -236,20 +207,8 @@ export default function SignUpForm() {
             로그인
           </Link>
         </div>
-
-        <div className="mb-40 flex flex-col items-center gap-8">
-          <h2 className="pc:text-xl mobile-tablet:text-xs">SNS 계정으로 간편 가입하기</h2>
-          <div className="flex gap-4">
-            <div onClick={handleGoogleLogin} className="cursor-pointer">
-              <Image src={google_icon} alt="구글 아이콘" width={50} height={50} />
-            </div>
-            <div onClick={handleKakaoLogin} className="cursor-pointer">
-              <Image src={kakao_icon} alt="카카오 아이콘" width={50} height={50} />
-            </div>
-            <div onClick={handleNaverLogin} className="cursor-pointer">
-              <Image src={naver_icon} alt="네이버 아이콘" width={50} height={50} />
-            </div>
-          </div>
+        <div className="mb-40">
+          <SocialLogin />
         </div>
       </div>
     </div>
