@@ -34,8 +34,8 @@ export default function FindingMaker() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [resetFilters, setResetFilters] = useState(false);
-  const [makers, setMakers] = useState([]);
-  const { isLoggedIn, setLogin } = useAuthStore();
+  const [, setMakers] = useState([]);
+  const { isLoggedIn, } = useAuthStore();
   const [orderBy, setOrderBy] = useState<string>('');
   const [serviceArea, setServiceArea] = useState<string>(''); 
   const [serviceType, setServiceType] = useState<string>(''); 
@@ -47,7 +47,7 @@ export default function FindingMaker() {
     queryKey: ["makers", { orderBy, serviceArea, serviceType, searchTerm }],
     initialPageParam: 1,
     queryFn: ({ pageParam = 1 }) =>
-      getMakers(orderBy, serviceArea, serviceType, searchTerm || undefined, pageParam, 5),
+      getMakers(orderBy, serviceArea, serviceType, pageParam, searchTerm || undefined),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.list.length === 5 ? allPages.length + 1 : undefined;
     },
