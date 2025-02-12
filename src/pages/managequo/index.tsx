@@ -40,7 +40,7 @@ export function ManageQuo() {
               보낸 견적 조회
             </p>
           </Link>
-          <Link href="/rejectlist">
+          <Link href="/reject-list">
             <p className="text-4 cursor-pointer font-semibold">반려된 견적</p>
           </Link>
         </div>
