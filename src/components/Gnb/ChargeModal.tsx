@@ -98,7 +98,6 @@ export default function ChargeModal({
 
     try {
       const res: { status: string } = await chargeService.completePayment(payId);
-      console.log(res);
       setPaymentStatus({
         status: res.status,
         message: "결제가 완료되었습니다.",

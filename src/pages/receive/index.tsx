@@ -12,7 +12,7 @@ import SearchBar from "@/components/Common/SearchBar";
 import { useInfiniteQuery, keepPreviousData } from "@tanstack/react-query";
 import ReceiveRequest from "@/services/requestService";
 import { useInView } from "react-intersection-observer";
-import request_empty from "@public/assets/icon_luggage.svg";
+import request_empty from "@public/assets/icon_luggage_frown.svg";
 import Link from "next/link";
 import withAuthAccess from "@/stores/withAuthAccess";
 import { PlanItem } from "@/services/requestService";
@@ -87,7 +87,7 @@ export function Receive() {
   };
   return (
     <div>
-      <div className="mx-[auto] w-full  mobile:mx-[auto] tablet:mx-[auto]">
+      <div className="mx-[auto] w-full mobile:mx-[auto] tablet:mx-[auto]">
         <div className="mb-8 flex items-center gap-8 border-b border-color-line-200">
           <Link href="/receive">
             <p className="text-4 cursor-pointer border-b-[3px] border-black py-6 font-semibold">
@@ -147,9 +147,11 @@ export function Receive() {
                   </div>
                 ))
               ) : (
-                <div className=" flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center">
                   <Image src={request_empty} alt="request_empty" width={300} height={300} />
-                  <p className="text-xl font-semibold text-color-gray-300">아직 받은 요청이 없어요!</p>
+                  <p className="text-xl font-semibold text-color-gray-300">
+                    아직 받은 요청이 없어요!
+                  </p>
                 </div>
               )}
 
