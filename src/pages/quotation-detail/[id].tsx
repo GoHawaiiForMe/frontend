@@ -52,6 +52,8 @@ export function QuotationDetail() {
           title: quotationDetail?.plan.title || "여행 플랜 ",
           description: quotationDetail?.plan.details || "여행 플랜 상세내용보기",
           imageUrl: "https://ifh.cc/g/wvkbqP.png",
+          imageWidth: 400, // 이미지 가로 크기 (픽셀)
+          imageHeight: 200, // 이미지 세로 크기 (픽셀)
           link: {
             mobileWebUrl: currentUrl,
             webUrl: currentUrl,
@@ -61,32 +63,10 @@ export function QuotationDetail() {
     }
   };
 
-  // const handleFacebookShare = () => {
-  //   const currentUrl = window.location.href;
-  //   if (typeof window !== "undefined" && window.FB) {
-  //     window.FB.ui(
-  //       {
-  //         method: "share",
-  //         href: currentUrl,
-  //       },
-
-  //       (response) => {
-  //         console.log({ response });
-  //         if (response) {
-  //           console.log("공유 성공");
-  //         } else {
-  //           console.error("공유 실패 - URL:", currentUrl);
-  //         }
-  //       },
-  //     );
-  //   }
-  // };
-
-
   const handleFacebookShare = () => {
     return window.open(`http://www.facebook.com/sharer/sharer.php?u=${location.href}`);
   };
-  
+
   if (isLoading) {
     return <div>로딩중...</div>;
   }

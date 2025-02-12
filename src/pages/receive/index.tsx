@@ -1,5 +1,5 @@
 import Image from "next/image";
-import CheckFilter from "../../components/Receive/CheckFilter";
+import CheckFilter from "@/components/Receive/CheckFilter";
 import FastDropdown from "@/components/Receive/FastDropdown";
 import RequestDetails from "@/components/Receive/RequestDetails";
 import mobilefilter from "@public/assets/icon_filterbutton.png";
@@ -12,7 +12,7 @@ import SearchBar from "@/components/Common/SearchBar";
 import { useInfiniteQuery, keepPreviousData } from "@tanstack/react-query";
 import ReceiveRequest from "@/services/requestService";
 import { useInView } from "react-intersection-observer";
-import request_empty from "@public/assets/icon_request_empty.png";
+import request_empty from "@public/assets/icon_luggage.svg";
 import Link from "next/link";
 import withAuthAccess from "@/stores/withAuthAccess";
 import { PlanItem } from "@/services/requestService";
@@ -147,8 +147,9 @@ export function Receive() {
                   </div>
                 ))
               ) : (
-                <div className="my-[180px] flex items-center justify-center">
-                  <Image src={request_empty} alt="request_empty" width={180} height={180} />
+                <div className=" flex flex-col items-center justify-center">
+                  <Image src={request_empty} alt="request_empty" width={300} height={300} />
+                  <p className="text-xl font-semibold text-color-gray-300">아직 받은 요청이 없어요!</p>
                 </div>
               )}
 
