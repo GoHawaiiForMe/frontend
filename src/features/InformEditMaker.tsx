@@ -79,7 +79,13 @@ export default function InformEditMaker() {
     mutation.mutate(UpdateData);
 
     if (userInfo?.nickName !== data.nickName) {
-      setLogin(data.nickName, userInfo?.role || "guest", userInfo?.coconut || 0,userInfo?.email,userInfo?.phoneNumber);
+      setLogin(
+        data.nickName,
+        userInfo?.role || "guest",
+        userInfo?.coconut || 0,
+        userInfo?.email,
+        userInfo?.phoneNumber,
+      );
     }
   };
 

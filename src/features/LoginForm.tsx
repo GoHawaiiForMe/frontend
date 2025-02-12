@@ -41,6 +41,7 @@ export default function LoginForm() {
     onSuccess: async () => {
       try {
         const userInfo = await getUserInfo();
+
         setLogin(
           userInfo.nickName,
           userInfo.role as "DREAMER" | "MAKER",
