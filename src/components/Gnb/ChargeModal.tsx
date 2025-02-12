@@ -1,23 +1,114 @@
 import ReceiveModalLayout from "../Receive/ReceiveModalLayout";
 import Image from "next/image";
 import coconut_icon from "@public/assets/icon_coconut.svg";
-import { useState } from "react";
+import * as PortOne from "@portone/browser-sdk/v2";
+import { FormEventHandler, useState } from "react";
+import { randomId } from "@/utils/random";
+import chargeService from "@/services/chargeService";
+
+export type Item = {
+  name: string;
+  amount: number;
+  currency: string;
+};
+
+export type PaymentFormProps = {
+  storeId: string;
+  channelKey: string;
+  completePaymentAction: (paymentId: string) => Promise<PaymentStatus>;
+};
+
+export type PaymentStatus = {
+  status: string;
+  message?: string;
+};
 
 export default function ChargeModal({
   coconut,
-  isChargeModalOpen,
+  
   setIsChargeModalOpen,
 }: {
   coconut: number;
-  isChargeModalOpen: boolean;
+
   setIsChargeModalOpen: (isOpen: boolean) => void;
 }) {
   const [amount, setAmount] = useState<number | "">("");
+  const [showError, setShowError] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>({
+    status: "IDLE",
+  });
 
+  const handleClose = () =>
+    setPaymentStatus({
+      status: "IDLE",
+    });
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+
+    if (Number(amount) <= 0) {
+      setPaymentStatus({
+        status: "FAILED",
+        message: "충전 금액을 입력해주세요.",
+      });
+      return;
+    }
+    const paymentId = randomId();
+    const payId = await chargeService.createPayment(Number(amount) * 100, paymentId);
+
+    setPaymentStatus({
+      status: "PENDING",
+    });
+
+    const STORE_ID = process.env.NEXT_PUBLIC_STORE_ID;
+    const CHANNEL_KEY = process.env.NEXT_PUBLIC_CHANNEL_KEY;
+
+    if (!STORE_ID || !CHANNEL_KEY) {
+      throw new Error("Missing store ID or channel key");
+    }
+
+    const payment = await PortOne.requestPayment({
+      storeId: STORE_ID,
+      channelKey: CHANNEL_KEY,
+      paymentId,
+      orderName: "포인트 충전",
+      totalAmount: Number(amount) * 100,
+      currency: "CURRENCY_KRW",
+      payMethod: "CARD",
+      customer: {
+        fullName: "홍길동",
+        email: "user@example.com",
+        phoneNumber: "01012341234",
+      },
+      customData: {
+        amount: amount,
+      },
+    });
+
+    if (payment == null || payment?.code != null) {
+      setPaymentStatus({
+        status: "FAILED",
+        message: payment?.message,
+      });
+      return;
+    }
+
+    try {
+      const res: { status: string } = await chargeService.completePayment(payId);
+
+      setPaymentStatus({
+        status: res.status,
+        message: "결제가 완료되었습니다.",
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const isWaitingPayment = paymentStatus.status !== "IDLE";
   return (
     <>
       <ReceiveModalLayout label="코코넛 충전" closeModal={() => setIsChargeModalOpen(false)}>
-        <div className="mt-3 flex flex-col gap-8 p-4">
+        <form onSubmit={handleSubmit} className="mt-3 flex flex-col gap-8 p-4">
           <div className="flex flex-col gap-4">
             <p className="text-lg font-semibold">현재 보유중인 코코넛</p>
             <div className="flex items-center gap-2">
@@ -28,27 +119,81 @@ export default function ChargeModal({
 
           <div className="flex flex-col gap-4">
             <p className="text-lg font-semibold">충전할 코코넛</p>
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                id="amount"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value === "" ? "" : Number(e.target.value))}
-                min="1"
-                placeholder="코코넛 갯수 입력"
-                className="w-[288px] mobile:w-full rounded-lg border border-color-gray-200 px-4 py-3 text-lg focus:border-color-blue-300 focus:outline-none"
-              />
-              <span className="text-lg">개</span>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  id="amount"
+                  value={amount}
+                  onChange={(e) => {
+                    const value = e.target.value === "" ? "" : Number(e.target.value);
+                    if (value === "" || Number(value) >= 0) {
+                      if (Number(value) > 10000) {
+                        setAmount(10000);
+                        setShowError(true);
+                        setTimeout(() => {
+                          setShowError(false);
+                        }, 2000);
+                        return;
+                      }
+                      setAmount(value);
+                      setShowError(false);
+                    }
+                  }}
+                  onBlur={() => setShowError(false)}
+                  min="1"
+                  max="10000"
+                  placeholder="코코넛 갯수 입력 (최대 10,000개)"
+                  className={`w-[288px] rounded-lg border ${
+                    showError ? "border-red-500" : "border-color-gray-200"
+                  } px-4 py-3 text-lg focus:border-color-blue-300 focus:outline-none mobile:w-full`}
+                />
+                <span className="text-lg">개</span>
+              </div>
+              {showError && (
+                <p className="mt-1 text-sm text-red-500">최대 10,000개까지만 충전 가능합니다.</p>
+              )}
             </div>
           </div>
-          <div className="flex items-center justify-end gap-2">
+          <div className="flex items-center justify-between gap-2">
             <p className="text-lg font-semibold">충전 갯수</p>
-            <p className="text-lg font-semibold">{amount ? amount.toLocaleString() : 0}개</p>
+            <div className="flex items-center gap-2">
+              <p className="text-md font-semibold">{amount ? amount.toLocaleString() : 0}개 /</p>
+              <p className="text-xl font-bold text-color-blue-300">
+                {amount ? (amount * 100).toLocaleString() : 0}원
+              </p>
+            </div>
           </div>
-          <button className="w-full rounded-lg bg-color-blue-300 py-4 text-lg font-semibold text-white hover:bg-color-blue-200">
+          <button
+            type="submit"
+            aria-busy={isWaitingPayment}
+            disabled={isWaitingPayment}
+            className="w-full rounded-lg bg-color-blue-300 py-4 text-lg font-semibold text-white hover:bg-color-blue-200"
+          >
             충전하기
           </button>
-        </div>
+        </form>
+
+        {paymentStatus.status === "FAILED" && (
+          <dialog open>
+            <header>
+              <h1>결제 실패</h1>
+            </header>
+            <p>{paymentStatus.message}</p>
+            <button type="button" onClick={handleClose}>
+              닫기
+            </button>
+          </dialog>
+        )}
+        <dialog open={paymentStatus.status === "PAID"}>
+          <header>
+            <h1>결제 성공</h1>
+          </header>
+          <p>결제에 성공했습니다.</p>
+          <button type="button" onClick={handleClose}>
+            닫기
+          </button>
+        </dialog>
       </ReceiveModalLayout>
     </>
   );

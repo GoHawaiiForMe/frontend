@@ -56,7 +56,6 @@ const NavBar = () => {
   const notificationRef = useRef<HTMLDivElement | null>(null);
   const sideBarRef = useRef<HTMLDivElement | null>(null);
   const [isChargeModalOpen, setIsChargeModalOpen] = useState(false);
-  
 
   const router = useRouter();
   const { realTimeNotifications } = useRealTimeNotification();
@@ -148,7 +147,7 @@ const NavBar = () => {
           setUserInfo(userData);
           const avatarImage = avatarImages.find((avatar) => avatar.key === profileData.image);
           setUserImage(avatarImage ? avatarImage.src : user_img.src);
-          setLogin(userData.nickName, userData.role, userData.coconut);
+          setLogin(userData.nickName, userData.role, userData.coconut,userData.email,userData.phoneNumber);
         } catch (error) {
           console.error(error);
         }
@@ -332,11 +331,7 @@ const NavBar = () => {
       )}
 
       {isChargeModalOpen && (
-        <ChargeModal
-          coconut={coconut}
-          isChargeModalOpen={isChargeModalOpen}
-          setIsChargeModalOpen={setIsChargeModalOpen}
-        />
+        <ChargeModal coconut={coconut} setIsChargeModalOpen={setIsChargeModalOpen} />
       )}
     </div>
   );

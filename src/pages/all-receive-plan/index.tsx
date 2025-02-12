@@ -1,5 +1,5 @@
 import Image from "next/image";
-import CheckFilter from "../components/Receive/CheckFilter";
+import CheckFilter from "@/components/Receive/CheckFilter";
 import FastDropdown from "@/components/Receive/FastDropdown";
 import RequestDetails from "@/components/Receive/RequestDetails";
 import mobilefilter from "@public/assets/icon_filterbutton.png";
