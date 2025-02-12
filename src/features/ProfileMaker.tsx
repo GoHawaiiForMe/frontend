@@ -9,6 +9,7 @@ import authService from "@/services/authService";
 import planData from "@/types/planData";
 import Input from "@/components/Common/Input";
 import router from "next/router";
+import { removeOAuthToken } from "@/utils/tokenUtils";
 
 export default function ProfileMaker() {
   const { userData, setMakerProfileData, oAuthUserData } = useSignUp();
@@ -70,7 +71,7 @@ export default function ProfileMaker() {
       };
       await authService.signUp(payload, oauthToken || undefined);
       alert("Maker님 가입을 축하드립니다!");
-      localStorage.removeItem("Token");
+      removeOAuthToken();
       router.push("/login");
     } catch (error) {
       console.error("회원가입 실패", error);

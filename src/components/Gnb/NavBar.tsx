@@ -19,6 +19,7 @@ import avatarImages from "@/utils/formatImage";
 import { useRef } from "react";
 import useRealTimeNotification from "@/stores/useRealTimeNotification";
 import ChargeModal from "./ChargeModal";
+import { getAccessToken } from "@/utils/tokenUtils";
 
 interface LinkItem {
   href: string;
@@ -136,8 +137,7 @@ const NavBar = () => {
   }, [isLoggedIn, notificationData]);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-
+    const accessToken = getAccessToken();
     if (accessToken) {
       const fetchUserInfo = async () => {
         try {
