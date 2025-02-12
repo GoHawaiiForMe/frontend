@@ -7,10 +7,8 @@ const useRealTimeNotification = () => {
   >([]);
 
   useEffect(() => {
-    // accessToken을 로컬스토리지에서 가져오기
     const accessToken = localStorage.getItem("accessToken");
 
-    // 이벤트 소스 생성
     const eventSource = new EventSourcePolyfill(
       `${process.env.NEXT_PUBLIC_API_URL}/notifications/stream`,
       {

@@ -62,7 +62,6 @@ const chatService = {
         type: item.type,
         isDeleted: item.isDeleted,
       }));
-      console.log(messages);
       return messages;
     } catch (error) {
       console.error("메시지 목록 get 실패", error);
