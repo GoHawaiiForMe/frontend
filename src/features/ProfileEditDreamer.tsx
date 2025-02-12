@@ -13,6 +13,7 @@ import planData from "@/types/planData";
 import userService from "@/services/userService";
 import useAuthStore from "@/stores/useAuthStore";
 import avatarImages from "@/utils/formatImage";
+import { getAccessToken } from "@/utils/tokenUtils";
 
 export default function ProfileEditDreamer() {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
@@ -129,8 +130,7 @@ export default function ProfileEditDreamer() {
   );
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-
+    const accessToken = getAccessToken();
     if (accessToken) {
       const fetchUserInfo = async () => {
         try {

@@ -14,7 +14,7 @@ import ReviewGraph from "@/components/Receive/ReviewGraph";
 import Pagination from "@/components/Common/Pagination";
 import userService from "@/services/userService";
 import { useRouter } from "next/router";
-import { useQuery, keepPreviousData, useQueryClient } from "@tanstack/react-query";
+import { useQuery, keepPreviousData, useQueryClient, useMutation } from "@tanstack/react-query";
 import avatarImages from "@/utils/formatImage";
 import { formatToSimpleDate } from "@/utils/formatDate";
 import clipshare from "@public/assets/icon_outline.png";
@@ -25,6 +25,7 @@ import Link from "next/link";
 import followService from "@/services/followService";
 import ModalLayout from "@/components/Common/ModalLayout";
 import planService from "@/services/planService";
+import { getAccessToken } from "@/utils/tokenUtils";
 
 export default function RequestDetailDreamer() {
   const router = useRouter();
@@ -32,9 +33,11 @@ export default function RequestDetailDreamer() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isListModalOpen, setIsListModalOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<number>(1);
+  const [isRequestSuccessModalOpen, setIsRequestSuccessModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState("");
   const queryClient = useQueryClient();
   const itemsPerPage = 5;
+  const [pendingPlans, setPendingPlans] = useState<{ id: string; title: string }[]>([]);
   const [pendingPlanTitles, setPendingPlanTitles] = useState<string[]>([]);
 
   const { data: makerProfileInfo, isPlaceholderData } = useQuery({
@@ -55,7 +58,7 @@ export default function RequestDetailDreamer() {
 
   const handleFollowToggle = async () => {
     const id = makerId as string;
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = getAccessToken();
     if (!accessToken) {
       setIsLoginModalOpen(true);
       return;
@@ -66,17 +69,23 @@ export default function RequestDetailDreamer() {
       if (isFollowed) {
         await followService.deleteFollow(id);
         setIsFollowed(false);
+        if (makerProfileInfo) {
+          makerProfileInfo.totalFollows -= 1;
+        }
       } else {
         await followService.postFollow(id);
         setIsFollowed(true);
+        if (makerProfileInfo) {
+          makerProfileInfo.totalFollows += 1;
+        }
       }
     } catch (error) {
       console.error("찜하기 상태 변경 실패", error);
     }
   };
 
-  const handlePlanRequest = async () => {
-    const accessToken = localStorage.getItem("accessToken");
+  const handlePendingPlan = async () => {
+    const accessToken = getAccessToken();
     if (!accessToken) {
       setIsLoginModalOpen(true);
       return;
@@ -84,15 +93,29 @@ export default function RequestDetailDreamer() {
     try {
       const titles = await planService.getPendingPlan();
       if (titles) {
+        setPendingPlans(titles);
         setPendingPlanTitles(titles.map((plan) => plan.title));
       } else {
         setPendingPlanTitles([]);
       }
       setIsListModalOpen(true);
     } catch (error) {
-      console.error("지정 플랜 요청 실패", error);
+      console.error("지정 플랜 조회 실패", error);
     }
   };
+
+  const planRequestMutation = useMutation({
+    mutationFn: (planId: string) => planService.postPlanRequest(planId, makerId as string),
+    onSuccess: () => {
+      setIsListModalOpen(false);
+      setIsRequestSuccessModalOpen(true);
+    },
+    onError: (error: any) => {
+      if (error.message === "이미 지정 견적을 요청하셨습니다!") {
+        alert(error.message);
+      }
+    },
+  });
 
   const totalItems = findMakerReview?.totalCount ?? 0;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -170,12 +193,10 @@ export default function RequestDetailDreamer() {
     }
   };
   useEffect(() => {
-    console.log("FB SDK 상태:", {
-      exists: !!window.FB,
-      initialized: window.FB?.getAuthResponse?.(),
-      appId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID,
-    });
-  }, []);
+    if (makerProfileInfo) {
+      setIsFollowed(makerProfileInfo.isFollowed);
+    }
+  }, [makerProfileInfo]);
 
   const handleFacebookShare = () => {
     if (typeof window !== "undefined" && window.FB) {
@@ -425,7 +446,7 @@ export default function RequestDetailDreamer() {
                 />
               </button>
               <button
-                onClick={handlePlanRequest}
+                onClick={handlePendingPlan}
                 className="semibold flex w-[354px] items-center justify-center rounded-2xl bg-color-blue-300 py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:w-full mobile-tablet:max-w-full mobile-tablet:px-4 mobile-tablet:py-[11px]"
               >
                 지정 플랜 요청하기
@@ -458,21 +479,21 @@ export default function RequestDetailDreamer() {
             <div className="flex flex-col items-center gap-8">
               {pendingPlanTitles.length > 0 ? (
                 <div className="flex max-h-80 w-full flex-col gap-8 overflow-y-auto">
-                  {pendingPlanTitles.map((title, index) => (
+                  {pendingPlans.map((plan) => (
                     <>
                       <div
-                        key={index}
-                        className={`rounded-2xl border p-5 ${selectedPlan === index ? "border-color-blue-300 bg-color-blue-100" : "border-color-gray-300"}`}
+                        key={plan.id}
+                        className={`cursor-pointer rounded-2xl border p-5 ${selectedPlan === plan.id ? "border-color-blue-300 bg-color-blue-100" : "border-color-gray-300"}`}
                       >
                         <label>
-                          <div className="flex gap-4">
+                          <div className="flex cursor-pointer gap-4">
                             <input
                               type="radio"
                               name="plan"
-                              value={title}
-                              onChange={() => setSelectedPlan(index)}
+                              value={plan.title}
+                              onChange={() => setSelectedPlan(plan.id)}
                             />
-                            <p className="bold text-xl mobile-tablet:text-lg">{title}</p>
+                            <p className="bold text-xl mobile-tablet:text-lg">{plan.title}</p>
                           </div>
                         </label>
                       </div>
@@ -483,14 +504,34 @@ export default function RequestDetailDreamer() {
                 <p className="text-lg">일반 플랜 요청을 먼저 진행해주세요.</p>
               )}
               {pendingPlanTitles.length > 0 ? (
-                <button className="mt-8 w-full rounded-2xl bg-color-blue-300 p-4 text-xl text-color-gray-50 mobile-tablet:text-lg">
+                <button
+                  onClick={() => planRequestMutation.mutate(selectedPlan)}
+                  disabled={selectedPlan === ""}
+                  className={`mt-8 w-full rounded-2xl p-4 text-xl text-color-gray-50 mobile-tablet:text-lg ${selectedPlan !== "" ? "bg-color-blue-300" : "cursor-not-allowed bg-color-gray-300"}`}
+                >
                   선택한 플랜 견적 요청하기
                 </button>
               ) : (
-                <button className="mt-8 w-full rounded-2xl bg-color-blue-300 p-4 text-xl text-color-gray-50 mobile-tablet:text-lg">
+                <button
+                  className={
+                    "mt-8 w-full rounded-2xl bg-color-blue-300 p-4 text-xl text-color-gray-50 mobile-tablet:text-lg"
+                  }
+                  onClick={() => {
+                    router.push("/plan-request");
+                  }}
+                >
                   일반 플랜 요청하기
                 </button>
               )}
+            </div>
+          </ModalLayout>
+        </div>
+      )}
+      {isRequestSuccessModalOpen && (
+        <div>
+          <ModalLayout label="ㅤ" closeModal={() => setIsRequestSuccessModalOpen(false)}>
+            <div className="flex flex-col items-center">
+              <p className="mb-5 text-2xl mobile-tablet:text-2lg">⭐ 요청이 완료되었습니다! ⭐</p>
             </div>
           </ModalLayout>
         </div>

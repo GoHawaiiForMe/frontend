@@ -7,13 +7,11 @@ import logo from "@public/assets/icon_logo_img.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LoginFormData, loginSchema } from "@/utils/validate";
-import google_icon from "@public/assets/icon_google.svg";
-import kakao_icon from "@public/assets/icon_kakao.svg";
-import naver_icon from "@public/assets/icon_naver.svg";
 import userService from "@/services/userService";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
 import authService from "@/services/authService";
+import SocialLogin from "@/components/Common/SocialLogin";
 
 interface LoginProps {
   email: string;
@@ -43,6 +41,7 @@ export default function LoginForm() {
     onSuccess: async () => {
       try {
         const userInfo = await getUserInfo();
+
         setLogin(
           userInfo.nickName,
           userInfo.role as "DREAMER" | "MAKER",
@@ -90,36 +89,6 @@ export default function LoginForm() {
     <p className="absolute right-0 mt-1 text-color-red-200">{message}</p>
   );
 
-  const handleGoogleLogin = async () => {
-    try {
-      const redirectUrl = await authService.googleLogin();
-      window.location.href = redirectUrl;
-    } catch (error) {
-      console.error("구글 로그인 중 오류 발생", error);
-      alert("구글 로그인에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
-
-  const handleKakaoLogin = async () => {
-    try {
-      const redirectUrl = await authService.kakaoLogin();
-      window.location.href = redirectUrl;
-    } catch (error) {
-      console.error("카카오 로그인 중 오류 발생", error);
-      alert("카카오 로그인에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
-
-  const handleNaverLogin = async () => {
-    try {
-      const redirectUrl = await authService.naverLogin();
-      window.location.href = redirectUrl;
-    } catch (error) {
-      console.error("네이버 로그인 중 오류 발생", error);
-      alert("네이버 로그인에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
-
   return (
     <div className="my-24 flex justify-center">
       <div className="flex flex-col items-center gap-8 pc:w-[640px] mobile-tablet:w-[372px]">
@@ -165,20 +134,7 @@ export default function LoginForm() {
             이메일로 회원가입하기
           </Link>
         </div>
-        <div className="flex flex-col items-center gap-8">
-          <h2 className="tablet:text-xs pc:text-xl">SNS 계정으로 간편 가입하기</h2>
-          <div className="flex gap-4">
-            <div onClick={handleGoogleLogin} className="cursor-pointer">
-              <Image src={google_icon} alt="구글 아이콘" width={50} height={50} />
-            </div>
-            <div onClick={handleKakaoLogin} className="cursor-pointer">
-              <Image src={kakao_icon} alt="카카오 아이콘" width={50} height={50} />
-            </div>
-            <div onClick={handleNaverLogin} className="cursor-pointer">
-              <Image src={naver_icon} alt="네이버 아이콘" width={50} height={50} />
-            </div>
-          </div>
-        </div>
+        <SocialLogin />
       </div>
     </div>
   );

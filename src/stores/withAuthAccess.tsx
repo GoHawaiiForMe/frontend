@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { getAccessToken } from "@/utils/tokenUtils";
 
 const withAuthAccess = (WrappedComponent: React.ComponentType) => {
   const AuthComponent = (props: any) => {
@@ -10,14 +11,13 @@ const withAuthAccess = (WrappedComponent: React.ComponentType) => {
     useEffect(() => {
       if (typeof window === "undefined") return;
 
-      const token = localStorage.getItem("accessToken");
-
-      if (token) {
+      const accessToken = getAccessToken();
+      if (accessToken) {
         if (router.pathname === "/login" || router.pathname === "/signup") {
           router.push("/");
           return;
         }
-        setAccessToken(token);
+        setAccessToken(accessToken);
       } else {
         if (router.pathname !== "/login" && router.pathname !== "/signup") {
           router.push("/login");

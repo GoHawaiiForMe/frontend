@@ -86,6 +86,16 @@ const planService = {
       console.error("지정 플랜 조회 실패", error);
     }
   },
+  postPlanRequest: async (planId: string, assigneeId: string) => {
+    try {
+      const response = await api.post(`/plans/${planId}/assign`, { assigneeId });
+      return response;
+    } catch (error: any) {
+      if (error.response && error.response.status === 409) {
+        throw new Error("이미 지정 견적을 요청하셨습니다!");
+      }
+    }
+  },
 };
 
 export default planService;

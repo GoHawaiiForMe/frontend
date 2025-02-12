@@ -1,6 +1,7 @@
+import { setAccessToken } from "@/utils/tokenUtils";
 import { api } from "./api";
 
-interface LoginRespose {
+interface OAuthResponse {
   provider?: string;
   providerId?: string;
   accessToken?: string;
@@ -8,6 +9,10 @@ interface LoginRespose {
 }
 
 interface LoginResponse {
+  accessToken: string;
+}
+
+interface RefreshTokenResponse {
   accessToken: string;
 }
 
@@ -49,7 +54,8 @@ const authService = {
         "/auth/login",
         data,
       );
-      localStorage.setItem("accessToken", response.accessToken);
+      setAccessToken(response.accessToken);
+
       return response;
     } catch (error) {
       console.error("로그인 실패:", error);
@@ -58,7 +64,7 @@ const authService = {
   },
   googleLogin: async () => {
     try {
-      const response = await api.get<LoginRespose, Record<string, unknown>>("/auth/google");
+      const response = await api.get<OAuthResponse, Record<string, unknown>>("/auth/google");
       return response.redirectUrl;
     } catch (error) {
       console.error("구글 로그인 실패", error);
@@ -67,7 +73,7 @@ const authService = {
   },
   kakaoLogin: async () => {
     try {
-      const response = await api.get<LoginRespose, Record<string, unknown>>("/auth/kakao");
+      const response = await api.get<OAuthResponse, Record<string, unknown>>("/auth/kakao");
       return response.redirectUrl;
     } catch (error) {
       console.error("카카오 로그인 실패", error);
@@ -76,10 +82,19 @@ const authService = {
   },
   naverLogin: async () => {
     try {
-      const response = await api.get<LoginRespose, Record<string, unknown>>("/auth/naver");
+      const response = await api.get<OAuthResponse, Record<string, unknown>>("/auth/naver");
       return response.redirectUrl;
     } catch (error) {
       console.error("네이버 로그인 실패", error);
+      throw error;
+    }
+  },
+  refreshToken: async (): Promise<string> => {
+    try {
+      const response: RefreshTokenResponse = await api.post("/auth/refresh/token", true);
+      return response.accessToken;
+    } catch (error) {
+      console.error("리프레시 토큰 발급 실패", error);
       throw error;
     }
   },

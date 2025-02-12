@@ -9,6 +9,7 @@ import planData from "@/types/planData";
 import Input from "@/components/Common/Input";
 import router from "next/router";
 import avatarImages from "@/utils/formatImage";
+import { getAccessToken } from "@/utils/tokenUtils";
 
 export default function ProfileEditorMaker() {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
@@ -20,8 +21,7 @@ export default function ProfileEditorMaker() {
   const [snsAddress, setSnsAddress] = useState<string>("");
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-
+    const accessToken = getAccessToken();
     if (accessToken) {
       const fetchMakerProfile = async () => {
         try {
