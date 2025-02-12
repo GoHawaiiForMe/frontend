@@ -57,8 +57,10 @@ export default function InformEditMaker() {
     },
   });
 
+  const isEmailExist = !!userInfo?.email;
+
   const handleCancel = () => {
-    router.push("/plan-request"); //임시 url
+    router.back();
   };
 
   const onSubmit = async (data: EditMakerData) => {
@@ -77,7 +79,7 @@ export default function InformEditMaker() {
     mutation.mutate(UpdateData);
 
     if (userInfo?.nickName !== data.nickName) {
-      setLogin(data.nickName, userInfo?.role || "guest", userInfo?.coconut || 0);
+      setLogin(data.nickName, userInfo?.role || "guest", userInfo?.coconut || 0,userInfo?.email,userInfo?.phoneNumber);
     }
   };
 
@@ -113,7 +115,7 @@ export default function InformEditMaker() {
       <h1 className="semibold mt-16 text-3xl">기본정보 수정</h1>
       <div className="my-8 h-0.5 bg-color-line-100"></div>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-        <div className="${userInfo?.email ? 'pc:grid-cols-2' : 'pc:grid-cols-1'} grid w-full pc:gap-16 mobile-tablet:flex mobile-tablet:flex-col mobile-tablet:gap-4">
+        <div className="grid w-full pc:grid-cols-2 pc:gap-16 mobile-tablet:flex mobile-tablet:flex-col mobile-tablet:gap-4">
           <div className="flex flex-col gap-4">
             <div>
               <Input
@@ -127,21 +129,17 @@ export default function InformEditMaker() {
               {errors.nickName && <ErrorMessage message={errors.nickName.message} />}
             </div>
             <div className="my-4 h-0.5 bg-color-line-100"></div>
-            {userInfo?.email ? (
-              <>
-                <div>
-                  <Input
-                    type="text"
-                    label="이메일"
-                    value={userInfo?.email}
-                    disabled={true}
-                    className="border-0 bg-color-background-200 text-color-gray-300"
-                  />
-                </div>
-                <div className="my-4 h-0.5 bg-color-line-100"></div>
-              </>
-            ) : null}
-
+            <div>
+              <Input
+                type="text"
+                label="이메일"
+                value={userInfo?.email}
+                disabled={true}
+                placeholder="[이메일과 비밀번호는 비활성화] 간편로그인 회원입니다. "
+                className="border-0 bg-color-background-200 text-color-gray-300"
+              />
+            </div>
+            <div className="my-4 h-0.5 bg-color-line-100"></div>
             <div className="mb-16 mobile-tablet:m-0">
               <Input
                 type="text"
@@ -155,47 +153,47 @@ export default function InformEditMaker() {
             </div>
             <div className="h-0.5 bg-color-line-100 pc:hidden"></div>
           </div>
-          {userInfo?.email && (
-            <>
-              <div className="flex flex-col gap-4">
-                <div>
-                  <Input
-                    type="password"
-                    label="현재 비밀번호"
-                    placeholder="현재 비밀번호를 입력해 주세요"
-                    className="border-0 bg-color-background-200"
-                    {...register("password")}
-                  />
-                </div>
-                <div className="my-4 h-0.5 bg-color-line-100"></div>
-                <div>
-                  <Input
-                    type="password"
-                    label="새 비밀번호"
-                    placeholder="비밀번호를 입력해 주세요"
-                    className="border-0 bg-color-background-200"
-                    {...register("newPassword")}
-                    error={!!errors.password}
-                  />
-                  {errors.password && <ErrorMessage message={errors.password.message} />}
-                </div>
-                <div className="my-4 h-0.5 bg-color-line-100"></div>
-                <div className="mb-16">
-                  <Input
-                    type="password"
-                    label="새 비밀번호 확인"
-                    placeholder="비밀번호를 다시 한번 입력해 주세요"
-                    className="border-0 bg-color-background-200"
-                    {...register("newConfirmPassword")}
-                    error={!!errors.newConfirmPassword}
-                  />
-                  {errors.newConfirmPassword && (
-                    <ErrorMessage message={errors.newConfirmPassword.message} />
-                  )}
-                </div>
-              </div>
-            </>
-          )}
+
+          <div className="flex flex-col gap-4">
+            <div>
+              <Input
+                type="password"
+                label="현재 비밀번호"
+                placeholder="현재 비밀번호를 입력해 주세요"
+                className="border-0 bg-color-background-200"
+                disabled={!isEmailExist}
+                {...register("password")}
+              />
+            </div>
+            <div className="my-4 h-0.5 bg-color-line-100"></div>
+            <div>
+              <Input
+                type="password"
+                label="새 비밀번호"
+                placeholder="비밀번호를 입력해 주세요"
+                className="border-0 bg-color-background-200"
+                disabled={!isEmailExist}
+                {...register("newPassword")}
+                error={!!errors.password}
+              />
+              {errors.password && <ErrorMessage message={errors.password.message} />}
+            </div>
+            <div className="my-4 h-0.5 bg-color-line-100"></div>
+            <div className="mb-16">
+              <Input
+                type="password"
+                label="새 비밀번호 확인"
+                placeholder="비밀번호를 다시 한번 입력해 주세요"
+                className="border-0 bg-color-background-200"
+                disabled={!isEmailExist}
+                {...register("newConfirmPassword")}
+                error={!!errors.newConfirmPassword}
+              />
+              {errors.newConfirmPassword && (
+                <ErrorMessage message={errors.newConfirmPassword.message} />
+              )}
+            </div>
+          </div>
         </div>
         <div className="grid gap-8 pb-16 pc:grid-cols-2 mobile-tablet:flex mobile-tablet:flex-col mobile-tablet:gap-4">
           <Button

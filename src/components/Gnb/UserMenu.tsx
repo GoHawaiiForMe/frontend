@@ -1,8 +1,7 @@
 import useAuthStore from "@/stores/useAuthStore";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import ModalLayout from "../Common/ModalLayout";
+
 
 export interface UserMenuProps {
   userId: string;

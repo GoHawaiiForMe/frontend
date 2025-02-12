@@ -69,25 +69,29 @@ export function PlanDetail() {
     }
   };
 
-  const handleFacebookShare = () => {
-    const currentUrl = window.location.href;
-    if (typeof window !== "undefined" && window.FB) {
-      window.FB.ui(
-        {
-          method: "share",
-          href: currentUrl,
-        },
+  // const handleFacebookShare = () => {
+  //   const currentUrl = `https://fs2-4-team2-go-for-me.vercel.app/planDetail/${id}`;
+  //   if (typeof window !== "undefined" && window.FB) {
+  //     window.FB.ui(
+  //       {
+  //         method: "share",
+  //         href: currentUrl,
+  //       },
 
-        (response) => {
-          console.log({ response });
-          if (response) {
-            console.log("공유 성공");
-          } else {
-            console.error("공유 실패 - URL:", currentUrl);
-          }
-        },
-      );
-    }
+  //       (response) => {
+  //         console.log({ response });
+  //         if (response) {
+  //           console.log("공유 성공");
+  //         } else {
+  //           console.error("공유 실패 - URL:", currentUrl);
+  //         }
+  //       },
+  //     );
+  //   }
+  // };
+
+  const handleFacebookShare = () => {
+    return window.open(`http://www.facebook.com/sharer/sharer.php?u=${location.href}`);
   };
 
   if (isLoading) {

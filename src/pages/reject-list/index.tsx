@@ -38,7 +38,7 @@ export function RejectList() {
           <Link href="/managequo">
             <p className="text-4 cursor-pointer font-semibold">보낸 견적 조회</p>
           </Link>
-          <Link href="/rejectlist">
+          <Link href="/reject-list">
             <p className="text-4 cursor-pointer border-b-[3px] border-black py-6 font-semibold">
               반려된 견적
             </p>

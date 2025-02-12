@@ -2,10 +2,19 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import NavBar from "@/components/Gnb/NavBar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  if (!isHydrated) return null;
+
   return (
     <>
       <QueryClientProvider client={queryClient}>
