@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import ModalLayout from "../Common/ModalLayout";
+import { removeAccessToken } from "@/utils/tokenUtils";
 
 export interface UserMenuProps {
   userId: string;
@@ -57,7 +58,7 @@ export default function UserMenu({ userId, closeMenu, onChargeClick }: UserMenuP
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
+    removeAccessToken();
     router.reload();
     setLogout();
   };

@@ -9,7 +9,7 @@ import authService from "@/services/authService";
 import planData from "@/types/planData";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
-import { getOAuthToken } from "@/utils/tokenUtils";
+import { getOAuthToken, removeOAuthToken } from "@/utils/tokenUtils";
 
 export default function ProfileDreamer() {
   const { userData, setProfileData, oAuthUserData } = useSignUp();
@@ -43,7 +43,7 @@ export default function ProfileDreamer() {
       return authService.signUp(data, oauthToken || undefined);
     },
     onSuccess: () => {
-      localStorage.removeItem("Token");
+      removeOAuthToken();
       router.push("/login");
     },
     onError: (error: any) => {

@@ -3,6 +3,7 @@ import Image from "next/image";
 import logo from "@public/assets/icon_logo_img.svg";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { setAccessToken } from "@/utils/tokenUtils";
 
 export default function Home() {
   const router = useRouter();
@@ -11,7 +12,7 @@ export default function Home() {
     if (router.isReady) {
       const aceessToken = router.query.auth as string;
       if (aceessToken) {
-        localStorage.setItem("accessToken", aceessToken);
+        setAccessToken(aceessToken);
         router.push("/");
       }
     }
