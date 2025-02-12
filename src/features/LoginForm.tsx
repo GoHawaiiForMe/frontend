@@ -43,13 +43,12 @@ export default function LoginForm() {
     onSuccess: async () => {
       try {
         const userInfo = await getUserInfo();
-        const profileInfo = await getProfileInfo();
-
         setLogin(
           userInfo.nickName,
           userInfo.role as "DREAMER" | "MAKER",
           userInfo.coconut,
-          profileInfo.image,
+          userInfo.email,
+          userInfo.phoneNumber,
         );
         router.push("/");
       } catch (error) {

@@ -61,27 +61,32 @@ export function QuotationDetail() {
     }
   };
 
+  // const handleFacebookShare = () => {
+  //   const currentUrl = window.location.href;
+  //   if (typeof window !== "undefined" && window.FB) {
+  //     window.FB.ui(
+  //       {
+  //         method: "share",
+  //         href: currentUrl,
+  //       },
+
+  //       (response) => {
+  //         console.log({ response });
+  //         if (response) {
+  //           console.log("공유 성공");
+  //         } else {
+  //           console.error("공유 실패 - URL:", currentUrl);
+  //         }
+  //       },
+  //     );
+  //   }
+  // };
+
+
   const handleFacebookShare = () => {
-    const currentUrl = window.location.href;
-    if (typeof window !== "undefined" && window.FB) {
-      window.FB.ui(
-        {
-          method: "share",
-          href: currentUrl,
-        },
-
-        (response) => {
-          console.log({ response });
-          if (response) {
-            console.log("공유 성공");
-          } else {
-            console.error("공유 실패 - URL:", currentUrl);
-          }
-        },
-      );
-    }
+    return window.open(`http://www.facebook.com/sharer/sharer.php?u=${location.href}`);
   };
-
+  
   if (isLoading) {
     return <div>로딩중...</div>;
   }
