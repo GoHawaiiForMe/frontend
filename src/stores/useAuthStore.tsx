@@ -10,7 +10,7 @@ interface AuthState {
   coconut: number;
   email?: string;
   phoneNumber?: string;
-  setLogin: (userName: string, role: Role, coconut: number,email:string,phoneNumber:string) => void;
+  setLogin: (userName: string, role: Role, coconut: number,email?:string,phoneNumber?:string) => void;
   setLogout: () => void;
 }
 
@@ -23,7 +23,7 @@ const useAuthStore = create<AuthState>()(
       coconut: 0,
       email: "",
       phoneNumber: "",
-      setLogin: (nickName: string, role: Role, coconut: number,email:string,phoneNumber:string) =>
+      setLogin: (nickName: string, role: Role, coconut: number,email?:string,phoneNumber?:string) =>
         set({ isLoggedIn: true, nickName, role, coconut,email,phoneNumber }),
       setLogout: () => set({ isLoggedIn: false, nickName: "게스트", role: "guest", coconut: 0,email:"",phoneNumber:"" }),
     }),

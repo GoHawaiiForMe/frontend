@@ -43,18 +43,13 @@ export default function LoginForm() {
     onSuccess: async () => {
       try {
         const userInfo = await getUserInfo();
-<<<<<<< HEAD
-        setLogin(userInfo.nickName, userInfo.role as "DREAMER" | "MAKER", userInfo.coconut,userInfo.email,userInfo.phoneNumber);
-=======
-        const profileInfo = await getProfileInfo();
-
         setLogin(
           userInfo.nickName,
           userInfo.role as "DREAMER" | "MAKER",
           userInfo.coconut,
-          profileInfo.image,
+          userInfo.email,
+          userInfo.phoneNumber,
         );
->>>>>>> fe88de1e8a3c5b0466a5424aa093fcd7fcce045d
         router.push("/");
       } catch (error) {
         console.error("유저 정보 가져오기 실패", error);
