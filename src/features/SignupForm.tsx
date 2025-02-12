@@ -1,18 +1,14 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Common/Input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { signUpSchema, SignUpFormData } from "@/utils/validate";
 import logo from "@public/assets/icon_logo_img.svg";
 import Image from "next/image";
-import google_icon from "@public/assets/icon_google.svg";
-import kakao_icon from "@public/assets/icon_kakao.svg";
-import naver_icon from "@public/assets/icon_naver.svg";
 import Button from "@/components/Common/Button";
 import Link from "next/link";
 import { useSignUp } from "@/stores/SignUpContext";
 import { useRouter } from "next/router";
-import userService from "@/services/userService";
 import authService from "@/services/authService";
 import SocialLogin from "@/components/Common/SocialLogin";
 
