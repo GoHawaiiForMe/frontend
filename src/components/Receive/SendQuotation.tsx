@@ -33,7 +33,7 @@ export default function SendQuotation({ data }: SendQuotationProps) {
             {specifyMaker}
           </div>
         </div>
-        <Link href={`/quotationDetail/${data.id}`}>
+        <Link href={`/quotation-detail/${data.id}`}>
           <div>
             <p className="text-xl font-semibold">{data.plan.title}</p>
             <p className="mb-[18px] border-b border-color-line-200 pb-[18px] text-md font-medium">
@@ -71,7 +71,7 @@ export default function SendQuotation({ data }: SendQuotationProps) {
           <>
             <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-4 rounded-[16px] bg-color-black-400 bg-opacity-50 text-white">
               <p>여행 완료된 플랜입니다.</p>
-              <Link href={`/quotationDetail/${data.id}`}>
+              <Link href={`/quotation-detail/${data.id}`}>
                 <button className="z-40 rounded-[16px] border border-color-blue-200 bg-color-blue-100 px-[18px] py-[10px] text-lg font-semibold text-color-blue-300">
                   견적 상세 보기
                 </button>

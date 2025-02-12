@@ -5,6 +5,7 @@ import * as PortOne from "@portone/browser-sdk/v2";
 import { FormEventHandler, useState } from "react";
 import { randomId } from "@/utils/random";
 import chargeService from "@/services/chargeService";
+import useAuthStore from "@/stores/useAuthStore";
 
 export type Item = {
   name: string;
@@ -25,23 +26,26 @@ export type PaymentStatus = {
 
 export default function ChargeModal({
   coconut,
-  
   setIsChargeModalOpen,
 }: {
   coconut: number;
-
   setIsChargeModalOpen: (isOpen: boolean) => void;
 }) {
+  const { nickName, email, phoneNumber } = useAuthStore();
   const [amount, setAmount] = useState<number | "">("");
   const [showError, setShowError] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>({
     status: "IDLE",
   });
 
-  const handleClose = () =>
+  const handleClose = () => {
     setPaymentStatus({
       status: "IDLE",
     });
+    if (paymentStatus.status === "PAID") {
+      setIsChargeModalOpen(false);
+    }
+  };
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
@@ -75,9 +79,9 @@ export default function ChargeModal({
       currency: "CURRENCY_KRW",
       payMethod: "CARD",
       customer: {
-        fullName: "홍길동",
-        email: "user@example.com",
-        phoneNumber: "01012341234",
+        fullName: nickName,
+        email: email || "user@example.com",
+        phoneNumber: phoneNumber || "01012341234",
       },
       customData: {
         amount: amount,
@@ -94,7 +98,6 @@ export default function ChargeModal({
 
     try {
       const res: { status: string } = await chargeService.completePayment(payId);
-
       setPaymentStatus({
         status: res.status,
         message: "결제가 완료되었습니다.",
@@ -174,26 +177,24 @@ export default function ChargeModal({
           </button>
         </form>
 
-        {paymentStatus.status === "FAILED" && (
-          <dialog open>
-            <header>
-              <h1>결제 실패</h1>
-            </header>
-            <p>{paymentStatus.message}</p>
-            <button type="button" onClick={handleClose}>
-              닫기
-            </button>
-          </dialog>
+        {(paymentStatus.status === "FAILED" || paymentStatus.status === "PAID") && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="w-80 rounded-lg bg-white p-6 shadow-lg">
+              <h2 className="mb-4 text-xl font-bold">
+                {paymentStatus.status === "FAILED" ? "결제 실패" : "결제 성공"}
+              </h2>
+              <p className="mb-6 text-gray-600">
+                {paymentStatus.status === "FAILED" ? paymentStatus.message : "결제에 성공했습니다."}
+              </p>
+              <button
+                onClick={handleClose}
+                className="w-full rounded-lg bg-color-blue-300 py-2 text-white hover:bg-color-blue-200"
+              >
+                확인
+              </button>
+            </div>
+          </div>
         )}
-        <dialog open={paymentStatus.status === "PAID"}>
-          <header>
-            <h1>결제 성공</h1>
-          </header>
-          <p>결제에 성공했습니다.</p>
-          <button type="button" onClick={handleClose}>
-            닫기
-          </button>
-        </dialog>
       </ReceiveModalLayout>
     </>
   );
