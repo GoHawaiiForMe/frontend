@@ -89,36 +89,6 @@ export default function LoginForm() {
     <p className="absolute right-0 mt-1 text-color-red-200">{message}</p>
   );
 
-  const handleGoogleLogin = async () => {
-    try {
-      const redirectUrl = await authService.googleLogin();
-      window.location.href = redirectUrl;
-    } catch (error) {
-      console.error("구글 로그인 중 오류 발생", error);
-      alert("구글 로그인에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
-
-  const handleKakaoLogin = async () => {
-    try {
-      const redirectUrl = await authService.kakaoLogin();
-      window.location.href = redirectUrl;
-    } catch (error) {
-      console.error("카카오 로그인 중 오류 발생", error);
-      alert("카카오 로그인에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
-
-  const handleNaverLogin = async () => {
-    try {
-      const redirectUrl = await authService.naverLogin();
-      window.location.href = redirectUrl;
-    } catch (error) {
-      console.error("네이버 로그인 중 오류 발생", error);
-      alert("네이버 로그인에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
-
   return (
     <div className="my-24 flex justify-center">
       <div className="flex flex-col items-center gap-8 pc:w-[640px] mobile-tablet:w-[372px]">
