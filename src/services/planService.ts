@@ -109,11 +109,9 @@ const planService = {
   getStatistics: async (serviceArea?: string): Promise<StatisticResponse> => {
     try {
       const queryString = serviceArea ? `?serviceArea=${serviceArea}` : "";
-      console.log(queryString);
       const response = await api.get<StatisticResponse, Record<string, unknown>>(
         `/plans/groupCount${queryString}`,
       );
-      console.log(response);
       return response;
     } catch (error) {
       console.error("통계 자료 조회 실패", error);

@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
-import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Tooltip, Cell } from "recharts";
 import planService from "@/services/planService";
-import { useQuery } from "@tanstack/react-query";
 import planData from "@/types/planData";
 
 const regionNames = planData.locations.reduce(
@@ -43,7 +42,7 @@ const markers = [
   { name: "제주", code: "JEJU", coordinates: [126.501, 33.35] },
 ];
 
-const COLORS = ["#845ec2", "#d65db1", "#ff6f91", "#ff9671", "#ffc75f", "#f9f871", "#00c9a7"];
+const COLORS = ["#845ec2", "#d65db1", "#ff6f91", "#ff9671", "#FCC737", "#A7D477", "#00c9a7"];
 
 export default function MapMarker() {
   const [selectedRegion, setSelectedRegion] = useState<{
@@ -54,21 +53,11 @@ export default function MapMarker() {
 
   const [geoData, setGeoData] = useState(null);
 
-  const fetchStatistics = async (serviceArea: string) => {
-    const response = await planService.getStatistics(serviceArea);
-    return response;
-  };
-
-  const { data } = useQuery({
-    queryKey: ["statistics"],
-    queryFn: () => fetchStatistics,
-  });
-
   const getStatistics = async (serviceArea: string) => {
     try {
       const data = await planService.getStatistics(serviceArea);
       if (data) {
-        const details = data.groupByCount.map((item: any) => {
+        const details = data.groupByCount.map((item: any, index: number) => {
           const regionName = regionNames[item.serviceArea];
 
           const serviceName = serviceNames[item.tripType];
@@ -76,7 +65,7 @@ export default function MapMarker() {
           return {
             name: regionName || serviceName,
             value: item.count,
-            fill: COLORS[Math.floor(Math.random() * COLORS.length)],
+            fill: COLORS[index % COLORS.length],
           };
         });
         setSelectedRegion({
@@ -140,13 +129,21 @@ export default function MapMarker() {
               coordinates={coordinates as [number, number]}
               onClick={() => handleMarkerClick(name)}
             >
-              <text textAnchor="middle" x={10} y={0} fontSize={10} fill="#0F171F">
+              <text
+                textAnchor="middle"
+                x={10}
+                y={0}
+                fontSize={10}
+                fill="#0F171F"
+                className="cursor-pointer"
+              >
                 {name}
               </text>
               <path
                 d="M0,0 C6,-12 6,-18 0,-20 C-6,-18 -6,-12 0,0 Z"
                 fill="#FF8383"
                 transform="translate(-8, 5)"
+                className="cursor-pointer"
               />
             </Marker>
           ))}
@@ -157,26 +154,26 @@ export default function MapMarker() {
       <div className="w-1/3 p-4">
         {selectedRegion ? (
           <>
-            <h2 className="text-lg font-bold">{selectedRegion.name} 통계</h2>
+            <h2 className="text-lg font-bold">{regionNames[selectedRegion.name]} 통계</h2>
             <p>총 서비스 수: {selectedRegion.totalCount}</p>
-            <ResponsiveContainer width={300} height={300}>
-              <PieChart>
-                <Pie
-                  data={selectedRegion.details}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  label
-                >
-                  {selectedRegion.details.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+
+            <PieChart width={300} height={300}>
+              <Pie
+                data={selectedRegion.details}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                label
+              >
+                {selectedRegion.details.map((entry, index) => (
+                  <Cell key={`cell${index}`} fill={entry.fill} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+            <p className="text-sm">마커를 클릭하면 해당 지역 통계를 볼 수 있습니다.</p>
           </>
         ) : (
           <p>마커를 클릭하면 해당 지역 통계를 볼 수 있습니다.</p>
