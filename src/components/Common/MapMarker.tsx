@@ -3,205 +3,92 @@
 import { useEffect, useState } from "react";
 import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from "recharts";
+import planService from "@/services/planService";
+import { useQuery } from "@tanstack/react-query";
+import planData from "@/types/planData";
 
-const markers: { name: string; coordinates: [number, number]; data: any }[] = [
-  {
-    name: "서울",
-    coordinates: [126.978, 37.5665],
-    data: {
-      total: 100,
-      details: [
-        { name: "맛집탐방", value: 40 },
-        { name: "기념품", value: 60 },
-      ],
-    },
+const regionNames = planData.locations.reduce(
+  (acc, { name, mapping }) => {
+    acc[mapping] = name;
+    return acc;
   },
-  {
-    name: "부산",
-    coordinates: [129.0756, 35.1796],
-    data: {
-      total: 90,
-      details: [
-        { name: "맛집탐방", value: 50 },
-        { name: "기념품", value: 40 },
-      ],
-    },
+  {} as Record<string, string>,
+);
+
+const serviceNames = planData.services.reduce(
+  (acc, { name, mapping }) => {
+    acc[mapping] = name;
+    return acc;
   },
-  {
-    name: "인천",
-    coordinates: [126.7052, 37.4563],
-    data: {
-      total: 70,
-      details: [
-        { name: "맛집탐방", value: 30 },
-        { name: "기념품", value: 40 },
-      ],
-    },
-  },
-  {
-    name: "대구",
-    coordinates: [128.6014, 35.8684],
-    data: {
-      total: 60,
-      details: [
-        { name: "맛집탐방", value: 35 },
-        { name: "기념품", value: 25 },
-      ],
-    },
-  },
-  {
-    name: "대전",
-    coordinates: [127.3845, 36.3504],
-    data: {
-      total: 85,
-      details: [
-        { name: "맛집탐방", value: 45 },
-        { name: "기념품", value: 40 },
-      ],
-    },
-  },
-  {
-    name: "광주",
-    coordinates: [126.8515, 35.1595],
-    data: {
-      total: 75,
-      details: [
-        { name: "맛집탐방", value: 30 },
-        { name: "기념품", value: 45 },
-      ],
-    },
-  },
-  {
-    name: "울산",
-    coordinates: [129.3114, 35.5381],
-    data: {
-      total: 65,
-      details: [
-        { name: "맛집탐방", value: 25 },
-        { name: "기념품", value: 40 },
-      ],
-    },
-  },
-  {
-    name: "세종",
-    coordinates: [127.289, 36.4804],
-    data: {
-      total: 50,
-      details: [
-        { name: "맛집탐방", value: 20 },
-        { name: "기념품", value: 30 },
-      ],
-    },
-  },
-  {
-    name: "경기",
-    coordinates: [127.01, 37.275],
-    data: {
-      total: 80,
-      details: [
-        { name: "맛집탐방", value: 50 },
-        { name: "기념품", value: 30 },
-      ],
-    },
-  },
-  {
-    name: "강원",
-    coordinates: [128.208, 37.766],
-    data: {
-      total: 65,
-      details: [
-        { name: "맛집탐방", value: 30 },
-        { name: "기념품", value: 35 },
-      ],
-    },
-  },
-  {
-    name: "충북",
-    coordinates: [127.635, 36.6291],
-    data: {
-      total: 55,
-      details: [
-        { name: "맛집탐방", value: 25 },
-        { name: "기념품", value: 30 },
-      ],
-    },
-  },
-  {
-    name: "충남",
-    coordinates: [126.775, 36.635],
-    data: {
-      total: 70,
-      details: [
-        { name: "맛집탐방", value: 35 },
-        { name: "기념품", value: 35 },
-      ],
-    },
-  },
-  {
-    name: "전북",
-    coordinates: [127.108, 35.719],
-    data: {
-      total: 60,
-      details: [
-        { name: "맛집탐방", value: 20 },
-        { name: "기념품", value: 40 },
-      ],
-    },
-  },
-  {
-    name: "전남",
-    coordinates: [126.732, 34.814],
-    data: {
-      total: 75,
-      details: [
-        { name: "맛집탐방", value: 40 },
-        { name: "기념품", value: 35 },
-      ],
-    },
-  },
-  {
-    name: "경북",
-    coordinates: [128.669, 36.575],
-    data: {
-      total: 80,
-      details: [
-        { name: "맛집탐방", value: 45 },
-        { name: "기념품", value: 35 },
-      ],
-    },
-  },
-  {
-    name: "경남",
-    coordinates: [128.673, 35.461],
-    data: {
-      total: 85,
-      details: [
-        { name: "맛집탐방", value: 50 },
-        { name: "기념품", value: 35 },
-      ],
-    },
-  },
-  {
-    name: "제주",
-    coordinates: [126.501, 33.35],
-    data: {
-      total: 90,
-      details: [
-        { name: "맛집탐방", value: 60 },
-        { name: "기념품", value: 30 },
-      ],
-    },
-  },
+  {} as Record<string, string>,
+);
+
+const markers = [
+  { name: "서울", code: "SEOUL", coordinates: [126.978, 37.5665] },
+  { name: "부산", code: "BUSAN", coordinates: [129.0756, 35.1796] },
+  { name: "인천", code: "INCHEON", coordinates: [126.7052, 37.4563] },
+  { name: "대구", code: "DAEGU", coordinates: [128.6014, 35.8684] },
+  { name: "대전", code: "DAEJEON", coordinates: [127.3845, 36.3504] },
+  { name: "광주", code: "GWANGJU", coordinates: [126.8515, 35.1595] },
+  { name: "울산", code: "ULSAN", coordinates: [129.3114, 35.5381] },
+  { name: "세종", code: "SEJONG", coordinates: [127.289, 36.4804] },
+  { name: "경기", code: "GYEONGGI", coordinates: [127.01, 37.275] },
+  { name: "강원", code: "GANGWON", coordinates: [128.208, 37.766] },
+  { name: "충북", code: "CHUNGBUK", coordinates: [127.635, 36.6291] },
+  { name: "충남", code: "CHUNGNAM", coordinates: [126.775, 36.635] },
+  { name: "전북", code: "JEONBUK", coordinates: [127.108, 35.719] },
+  { name: "전남", code: "JEONNAM", coordinates: [126.732, 34.814] },
+  { name: "경북", code: "GYEONGBUK", coordinates: [128.669, 36.575] },
+  { name: "경남", code: "GYEONGNAM", coordinates: [128.673, 35.461] },
+  { name: "제주", code: "JEJU", coordinates: [126.501, 33.35] },
 ];
 
-const COLORS: { [key: string]: string } = {
-  맛집탐방: "#FFD700",
-  기념품: "#FF4500",
-};
+const COLORS = ["#845ec2", "#d65db1", "#ff6f91", "#ff9671", "#ffc75f", "#f9f871", "#00c9a7"];
 
 export default function MapMarker() {
-  const [selectedRegion, setSelectedRegion] = useState<{ name: string; data: any } | null>(null);
+  const [selectedRegion, setSelectedRegion] = useState<{
+    name: string;
+    totalCount: number;
+    details: { name: string; value: number; fill: string }[];
+  } | null>(null);
+
   const [geoData, setGeoData] = useState(null);
+
+  const fetchStatistics = async (serviceArea: string) => {
+    const response = await planService.getStatistics(serviceArea);
+    return response;
+  };
+
+  const { data } = useQuery({
+    queryKey: ["statistics"],
+    queryFn: () => fetchStatistics,
+  });
+
+  const getStatistics = async (serviceArea: string) => {
+    try {
+      const data = await planService.getStatistics(serviceArea);
+      if (data) {
+        const details = data.groupByCount.map((item: any) => {
+          const regionName = regionNames[item.serviceArea];
+
+          const serviceName = serviceNames[item.tripType];
+
+          return {
+            name: regionName || serviceName,
+            value: item.count,
+            fill: COLORS[Math.floor(Math.random() * COLORS.length)],
+          };
+        });
+        setSelectedRegion({
+          name: serviceArea || "전체",
+          totalCount: data.totalCount,
+          details: details,
+        });
+      }
+    } catch (error) {
+      console.error("통계 자료 조회 실패", error);
+    }
+  };
 
   useEffect(() => {
     const loadGeoData = async () => {
@@ -217,6 +104,18 @@ export default function MapMarker() {
     loadGeoData();
   }, []);
 
+  useEffect(() => {
+    getStatistics("");
+  }, []);
+
+  const handleMarkerClick = (region: string) => {
+    const englishRegion = Object.keys(regionNames).find((key) => regionNames[key] === region);
+
+    if (englishRegion) {
+      getStatistics(englishRegion);
+    }
+  };
+
   return (
     <div className="flex">
       {/* 지도 */}
@@ -224,7 +123,7 @@ export default function MapMarker() {
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{ center: [127, 36], scale: 6000 }}
-          style={{ width: "100%", height: "800px" }}
+          style={{ width: "700px", height: "800px" }}
         >
           {geoData && (
             <Geographies geography={geoData}>
@@ -235,17 +134,20 @@ export default function MapMarker() {
               }
             </Geographies>
           )}
-          {/* 마커 추가 부분 수정해야함함 */}
-          {markers.map(({ name, coordinates, data }) => (
+          {markers.map(({ name, coordinates }) => (
             <Marker
               key={name}
-              coordinates={coordinates}
-              onClick={() => setSelectedRegion({ name, data })}
+              coordinates={coordinates as [number, number]}
+              onClick={() => handleMarkerClick(name)}
             >
-              <circle r={5} fill="#255CE6" />
-              <text textAnchor="middle" y={-10} fontSize={10} fill="#0F171F">
+              <text textAnchor="middle" x={10} y={0} fontSize={10} fill="#0F171F">
                 {name}
               </text>
+              <path
+                d="M0,0 C6,-12 6,-18 0,-20 C-6,-18 -6,-12 0,0 Z"
+                fill="#FF8383"
+                transform="translate(-8, 5)"
+              />
             </Marker>
           ))}
         </ComposableMap>
@@ -256,11 +158,11 @@ export default function MapMarker() {
         {selectedRegion ? (
           <>
             <h2 className="text-lg font-bold">{selectedRegion.name} 통계</h2>
-            <p>총 서비스 수: {selectedRegion.data.total}</p>
-            <ResponsiveContainer width="100%" height={300}>
+            <p>총 서비스 수: {selectedRegion.totalCount}</p>
+            <ResponsiveContainer width={300} height={300}>
               <PieChart>
                 <Pie
-                  data={selectedRegion.data.details}
+                  data={selectedRegion.details}
                   dataKey="value"
                   nameKey="name"
                   cx="50%"
@@ -268,8 +170,8 @@ export default function MapMarker() {
                   outerRadius={80}
                   label
                 >
-                  {selectedRegion.data.details.map((entry: any, index: number) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[entry.name] || "#8884d8"} />
+                  {selectedRegion.details.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.fill} />
                   ))}
                 </Pie>
                 <Tooltip />
@@ -277,7 +179,7 @@ export default function MapMarker() {
             </ResponsiveContainer>
           </>
         ) : (
-          <p>마커를 클릭하면 해당 행정지역 통계를 볼 수 있습니다.</p>
+          <p>마커를 클릭하면 해당 지역 통계를 볼 수 있습니다.</p>
         )}
       </div>
     </div>
