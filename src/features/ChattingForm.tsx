@@ -34,7 +34,7 @@ export default function ChattingForm() {
   const [isFetchingOldMessages, setIsFetchingOldMessages] = useState(false);
   const [isFirstMessage, setIsFirstMessage] = useState(false);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
-
+  const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -212,6 +212,11 @@ export default function ChattingForm() {
     }
   };
   //메시지 삭제
+
+  const handleBubbleClick = (msgId: any) => {
+    setMessageToDelete((prevSelected) => (prevSelected === msgId ? null : msgId));
+  };
+
   const handleDeleteMessage = async (messageId: string, senderId: string, createdAt: string) => {
     const currentTime = new Date();
     const messageTime = new Date(createdAt);
@@ -251,12 +256,7 @@ export default function ChattingForm() {
               첫 번째 메시지입니다.
             </div>
           )}
-          <div
-            onClick={() =>
-              !msg.isDeleted && handleDeleteMessage(msg.id, msg.senderId, msg.createdAt)
-            }
-            className="cursor-pointer"
-          >
+          <div onClick={() => handleBubbleClick(msg.id)} className="relative mb-2 cursor-pointer">
             <Bubble key={msg.id} type={msg.senderId === userId ? "right" : "left_say"}>
               {msg.isDeleted ? (
                 <p className="text-color-gray-50">
@@ -265,15 +265,27 @@ export default function ChattingForm() {
                   {msg.type === "VIDEO" && "삭제된 동영상입니다."}
                 </p>
               ) : msg.type === "IMAGE" ? (
-                <img src={msg.content || ""} alt="file" className="w-28 rounded-lg" />
+                <img src={msg.content || ""} alt="file" className="w-56 rounded-lg" />
               ) : msg.type === "VIDEO" ? (
-                <video controls className="w-full rounded-lg">
+                <video controls className="h-96 rounded-lg">
                   <source src={msg.content || ""} type="video/mp4" />
                 </video>
               ) : (
                 <p>{msg.content}</p>
               )}
             </Bubble>
+            {messageToDelete === msg.id && !msg.isDeleted && (
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteMessage(msg.id, msg.senderId, msg.createdAt);
+                  setMessageToDelete(null);
+                }}
+                className="bold absolute bottom-0 right-0 w-[107px] cursor-pointer rounded-md border border-color-black-500 bg-color-gray-100 px-2"
+              >
+                메시지 삭제
+              </div>
+            )}
           </div>
         </div>
       ));
