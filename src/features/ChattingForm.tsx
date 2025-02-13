@@ -38,7 +38,7 @@ export default function ChattingForm() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const { data: userId = [] } = useQuery({
+  const { data: userId = "" } = useQuery({
     queryKey: ["userId"],
     queryFn: getUserId,
   });
@@ -46,7 +46,7 @@ export default function ChattingForm() {
   const { data: chatRooms = [], isLoading } = useQuery({
     queryKey: ["chatRooms"],
     queryFn: async () => {
-      return await chatService.getChatRooms();
+      return await chatService.getChatRooms(1, 10);
     },
   });
 
@@ -435,12 +435,19 @@ export default function ChattingForm() {
                     className={`flex cursor-pointer flex-col rounded-lg p-3 ${selectedChatRoom?.id === room.id ? "bg-color-blue-100" : "bg-color-gray-50"}`}
                   >
                     <Image
-                      src={avatarImages.find((avatar) => avatar.key === room.users[1]?.image)?.src}
+                      src={
+                        avatarImages.find(
+                          (avatar) =>
+                            avatar.key === room.users.find((user) => user.id !== userId)?.image,
+                        )?.src
+                      }
                       alt="유저"
                       width={70}
                       className="rounded-full"
                     />
-                    <p className="bold mt-3 text-center">{room.users[1]?.nickName}</p>
+                    <p className="bold mt-3 text-center">
+                      {room.users.find((user) => user.id !== userId)?.nickName}
+                    </p>
                   </div>
                 ))
               )}
@@ -460,7 +467,10 @@ export default function ChattingForm() {
                       <div>
                         <Image
                           src={
-                            avatarImages.find((avatar) => avatar.key === room.users[1]?.image)?.src
+                            avatarImages.find(
+                              (avatar) =>
+                                avatar.key === room.users.find((user) => user.id !== userId)?.image,
+                            )?.src
                           }
                           alt="유저"
                           width={70}
@@ -468,7 +478,7 @@ export default function ChattingForm() {
                         />
                       </div>
                       <div className="flex flex-col gap-3">
-                        <p>{room.users[1]?.nickName}</p>
+                        <p>{room.users.find((user) => user.id !== userId)?.nickName}</p>
                         <p className="line-clamp-2">{room.lastChat}</p>
                       </div>
                     </div>
