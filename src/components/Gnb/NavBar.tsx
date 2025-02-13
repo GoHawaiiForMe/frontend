@@ -85,7 +85,7 @@ const NavBar = () => {
       case "receive":
         return ["/receive", "/all-receive-plan"].includes(router.pathname);
       case "managequo":
-        return ["/managequo", "/rejectlist"].includes(router.pathname);
+        return ["/managequo", "/reject-list"].includes(router.pathname);
       case "mytrip-manage":
         return router.pathname.startsWith("/mytrip-manage/");
       default:

@@ -12,7 +12,7 @@ import SearchBar from "@/components/Common/SearchBar";
 import { useInfiniteQuery, keepPreviousData } from "@tanstack/react-query";
 import ReceiveRequest from "@/services/requestService";
 import { useInView } from "react-intersection-observer";
-import request_empty from "@public/assets/icon_request_empty.png";
+import request_empty from "@public/assets/icon_luggage_frown.svg";
 import Link from "next/link";
 import withAuthAccess from "@/stores/withAuthAccess";
 import { PlanItem } from "@/services/requestService";
@@ -87,7 +87,7 @@ export function AllReceivePlan() {
 
   return (
     <div>
-      <div className="mx-[auto]  mobile:mx-[auto]  tablet:mx-[auto] w-full">
+      <div className="mx-[auto] w-full mobile:mx-[auto] tablet:mx-[auto]">
         <div className="mb-8 flex items-center gap-8 border-b border-color-line-200">
           <Link href="/receive">
             <p className="text-4 cursor-pointer font-semibold">받은 견적 요청</p>
@@ -148,8 +148,11 @@ export function AllReceivePlan() {
                   </div>
                 ))
               ) : (
-                <div className="my-[180px] flex items-center justify-center">
-                  <Image src={request_empty} alt="request_empty" width={180} height={180} />
+                <div className="flex flex-col items-center justify-center">
+                  <Image src={request_empty} alt="request_empty" width={300} height={300} />
+                  <p className="text-xl font-semibold text-color-gray-300">
+                    아직 받은 요청이 없어요!
+                  </p>
                 </div>
               )}
 
