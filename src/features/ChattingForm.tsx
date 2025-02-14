@@ -1,19 +1,19 @@
 import Layout from "@/components/Common/Layout";
-import Image from "next/image";
 import Bubble from "@/components/Common/Bubble";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChatRoom, Message } from "@/types/chatData";
-import chatService from "@/services/chatService";
-import avatarImages from "@/utils/formatImage";
 import { useQuery } from "@tanstack/react-query";
-import userService from "@/services/userService";
+import { ChatRoom, Message } from "@/types/chatData";
+import { getAccessToken } from "@/utils/tokenUtils";
 import { formatToDetailedDate } from "@/utils/formatDate";
-import coconut from "@public/assets/icon_coconut.svg";
+import chatService from "@/services/chatService";
+import userService from "@/services/userService";
+import avatarImages from "@/utils/formatImage";
 import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
+import Image from "next/image";
 import loading from "@public/assets/icon_loading.gif";
-import { getAccessToken } from "@/utils/tokenUtils";
 import download from "@public/assets/icon_download.png";
+import coconut from "@public/assets/icon_coconut.svg";
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const MAX_VIDEO_SIZE = 100 * 1024 * 1024;
@@ -246,13 +246,16 @@ export default function ChattingForm() {
     }
   };
 
+  const hasFirstMessage = isFirstMessage && !hasMoreMessages;
+  const hasChatRoom = chatRooms.length === 0;
+
   const renderMessages = () => {
     return messages
       .slice()
       .reverse()
       .map((msg, index) => (
         <div key={msg.id}>
-          {index === 0 && isFirstMessage && !hasMoreMessages && (
+          {index === 0 && hasFirstMessage && (
             <div className="text-color-blue-500 semibold my-4 text-center">
               첫 번째 메시지입니다.
             </div>
@@ -468,14 +471,14 @@ export default function ChattingForm() {
         ) : (
           <>
             <div className="gap-4 overflow-x-auto rounded-xl border border-color-line-200 bg-color-gray-50 p-4 pc:hidden mobile-tablet:flex card:flex">
-              {chatRooms.length === 0 ? (
+              {hasChatRoom ? (
                 <p>채팅방 목록이 없습니다.</p>
               ) : (
                 chatRooms.map((room) => (
                   <div
                     key={room.id}
                     onClick={() => handleChatRoomClick(room)}
-                    className={`flex cursor-pointer flex-col rounded-lg p-3 ${selectedChatRoom?.id === room.id ? "bg-color-blue-100" : "bg-color-gray-50"}`}
+                    className={`flex cursor-pointer flex-col rounded-lg p-3 hover:scale-[1.1] ${selectedChatRoom?.id === room.id ? "bg-color-blue-100" : "bg-[#fcfcfc]"}`}
                   >
                     <Image
                       src={
@@ -498,14 +501,14 @@ export default function ChattingForm() {
             <div className="grid h-[920px] grid-cols-7 gap-10 pt-4 mobile-tablet:pt-5">
               {/* 채팅방 목록 */}
               <div className="col-span-2 flex flex-col gap-4 overflow-y-auto rounded-xl bg-color-gray-50 p-8 mobile-tablet:hidden card:hidden">
-                {chatRooms.length === 0 ? (
+                {hasChatRoom ? (
                   <p>채팅방 목록이 없습니다.</p>
                 ) : (
                   chatRooms.map((room) => (
                     <div
                       key={room.id}
                       onClick={() => handleChatRoomClick(room)}
-                      className={`flex cursor-pointer gap-4 rounded-xl border border-color-line-100 p-4 ${selectedChatRoom?.id === room.id ? "bg-color-blue-100" : "bg-white"}`}
+                      className={`flex cursor-pointer gap-4 rounded-xl border border-color-line-100 p-4 hover:scale-[1.1] ${selectedChatRoom?.id === room.id ? "bg-color-blue-100" : "bg-[#fcfcfc]"}`}
                     >
                       <div>
                         <Image
