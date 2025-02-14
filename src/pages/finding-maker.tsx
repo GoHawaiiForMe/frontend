@@ -5,49 +5,44 @@ import CardFindMaker from "@/components/Common/CardFindMaker";
 import SearchBar from "@/components/Common/SearchBar";
 import Link from 'next/link';
 import useAuthStore from "@/stores/useAuthStore";
-import { getMakers } from '@/services/findMakerService';
+import { getMakers, ServiceType } from '@/services/findMakerService';
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
-import followService from "@/services/followService";
+import followService, { FollowedCardProps } from "@/services/followService";
 
-interface CardFindMakerProps {
-  serviceTypes: string[];
-  image: string;
-  nickName: string;
-  gallery: string[];
-  averageRating: number;
-  totalReviews: number;
-  totalFollows: number;
-  totalConfirms: number;
-  labelSize: string;
-  cardSize: string;
-  isFollowed?: boolean;
-  likeIcon?: 'pink';
-}
 
-interface MakerData {
-  list: CardFindMakerProps[];
-}
+
 
 export default function FindingMaker() {
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [resetFilters, setResetFilters] = useState(false);
-  const [, setMakers] = useState([]);
   const { isLoggedIn, } = useAuthStore();
   const [orderBy, setOrderBy] = useState<string>('');
   const [serviceArea, setServiceArea] = useState<string>(''); 
   const [serviceType, setServiceType] = useState<string>(''); 
-  const [followedItems, setFollowedItems] = useState<CardFindMakerProps[]>([]);
+  const [pageParam] = useState<number>(1);
+  const [pageSize] = useState<number>(5);
+  const [followedItems, setFollowedItems] = useState<FollowedCardProps[]>([]);
 
   const { ref, inView } = useInView();
 
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["makers", { orderBy, serviceArea, serviceType, searchTerm }],
+    queryKey: [
+      "makers", 
+      { orderBy, serviceArea, serviceType, pageParam, pageSize, keyword: searchTerm }
+    ],
     initialPageParam: 1,
     queryFn: ({ pageParam = 1 }) =>
-      getMakers(orderBy, serviceArea, serviceType, pageParam, searchTerm || undefined),
+      getMakers(
+        orderBy, 
+        serviceArea, 
+        serviceType, 
+        pageParam, 
+        pageSize, 
+        searchTerm
+      ),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.list.length === 5 ? allPages.length + 1 : undefined;
     },
@@ -60,9 +55,10 @@ export default function FindingMaker() {
   }, [inView, fetchNextPage, hasNextPage]);
 
   const allMakers = data?.pages.flatMap((page) => page.list) || [];
-const handleOrderByChange = (selectedOrder: string) => {
-  setOrderBy(selectedOrder);
-};
+
+  const handleOrderByChange = (selectedOrder: string) => {
+    setOrderBy(selectedOrder);
+  };
 
   const handleServiceAreaChange = (selectedArea: string) => {
     
@@ -75,20 +71,6 @@ const handleOrderByChange = (selectedOrder: string) => {
       setServiceType(selectedType);
     
   };
-
-
-  useEffect(() => {
-    const fetchMakers = async () => {
-      try {
-        const data: MakerData = await getMakers(orderBy, serviceArea, serviceType, searchTerm || undefined);
-        setMakers(data.list);
-      } catch (error) {
-        console.error('Failed to fetch makers:', error);
-      }
-    };
-
-    fetchMakers();
-  }, [searchTerm, orderBy, serviceArea, serviceType]);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -186,8 +168,7 @@ const handleOrderByChange = (selectedOrder: string) => {
                 {followedItems.map((item, index) => (
                   <div key={index}>
                     <CardFindMaker 
-                      firstLabelType={item.serviceTypes[0]}
-                      secondLabelType={item.serviceTypes[1]}
+                    
                       description={item.description}
                       image={item.image}
                       nickName={item.nickName}
@@ -196,7 +177,7 @@ const handleOrderByChange = (selectedOrder: string) => {
                       totalReviews={item.totalReviews}
                       totalFollows={item.totalFollows}
                       totalConfirms={item.totalConfirms}
-                      serviceTypes={item.serviceTypes || []}
+                      serviceTypes={(item.serviceTypes || []) as ServiceType[]} 
                       labelSize="sm"
                       cardSize="sm"
                       isFollowed={true}
@@ -237,8 +218,7 @@ const handleOrderByChange = (selectedOrder: string) => {
                 <Link href={`/maker-detail/${maker.id}`} key={maker.id}>
                   <CardFindMaker
                     key={maker.id}
-                    firstLabelType={maker.serviceTypes[0]}
-                    secondLabelType={maker.serviceTypes[1]}
+                    serviceTypes={(maker.serviceTypes || []) as ServiceType[]}
                     nickName={maker.nickName}
                     image={maker.image}
                     description={maker.description}

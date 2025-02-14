@@ -6,9 +6,9 @@ import star from "@public/assets/icon_star_md.svg";
 import avatarImages from "@/utils/formatImage";
 import Link from "next/link";
 import link from "@public/assets/icon_link.svg";
+import { ServiceType } from "@/services/findMakerService";
 interface CardFindMakerProps {
-  firstLabelType?: 'SHOPPING' | 'FOOD_TOUR' | 'ACTIVITY' | 'CULTURE' | 'FESTIVAL' | 'RELAXATION' | 'REQUEST' | 'PENDING' | 'CONFIRMED';
-  secondLabelType?: 'SHOPPING' | 'FOOD_TOUR' | 'ACTIVITY' | 'CULTURE' | 'FESTIVAL' | 'RELAXATION' | 'REQUEST' | 'PENDING' | 'CONFIRMED';
+  
   labelSize?: 'sm';
   cardSize?: 'sm';
   customLabelContainerClass?: string;
@@ -22,7 +22,7 @@ interface CardFindMakerProps {
   otherText?: string;
   starSize?: string;
   heartNumberSize?: string;
-  likeIcon?: 'pink' | 'gray';
+  likeIcon?: 'pink';
   nickName: string;
   image: string;
   description: string;
@@ -32,10 +32,9 @@ interface CardFindMakerProps {
   totalConfirms: number;
   gallery?: string;
   isFollowed?: boolean;
+  serviceTypes: ServiceType[];
 }
 const CardFindMaker = ({
-  firstLabelType,
-  secondLabelType,
   labelSize,
   cardSize,
   cardClassName,
@@ -58,28 +57,27 @@ const CardFindMaker = ({
   totalFollows,
   totalConfirms,
   isFollowed,
+  serviceTypes,
 }: CardFindMakerProps) => {
   const avatarImage = avatarImages.find((avatar) => avatar.key === image);
   const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 1023; 
   const computedPhotoSize = cardSize === 'sm' || isSmallScreen ? "46" : photoSize;
   const computedStarSize = cardSize === 'sm' || isSmallScreen ? "20" : starSize;
-  const imageSource = isFollowed === true || likeIcon === 'pink' ? like_pink : like;
   return (
     <div className={`w-full h-[230px] border border-color-line-100 rounded-lg py-5 px-6 shadow-[2px_2px_10px_rgba(220,220,220,0.14),-2px_-2px_10px_rgba(220,220,220,0.14)]
      ${cardClassName} ${cardSize === 'sm' ? '!w-[327px] !h-[188px] py-4 px-[14px]' : ''} tablet:w-full tablet:h-[188px] mobile:w-full mobile:h-[188px]`}>
       <div className="flex mb-2 gap-4">
+        
+      
+      {(serviceTypes || []).map((type, index) => (
         <Label 
-          labelType={firstLabelType}
+          key={`${type}-${index}`}
+          labelType={type}
           labelSize={labelSize}
           customLabelContainerClass={customLabelContainerClass}
           customLabelTextClass={customLabelTextClass}
         />
-        <Label 
-          labelType={secondLabelType}
-          labelSize={labelSize}
-          customLabelContainerClass={customLabelContainerClass}
-          customLabelTextClass={customLabelTextClass}
-        />
+      ))}
       </div>
 
       <h2 className={`mb-4 text-2xl semibold text-color-black-300 ${titleSize} ${cardSize === 'sm' ? 'text-md !mb-1' : ''} mobile-tablet:text-sm`}>
@@ -110,7 +108,7 @@ const CardFindMaker = ({
               <button className="flex gap-1 items-center">
                 <div className=" transition-all duration-300">
                   <Image
-                    src={imageSource}
+                    src={isFollowed || likeIcon === 'pink' ? like_pink : like}
                     alt="heart"
                     width={24}
                     height={24}
