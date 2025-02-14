@@ -13,6 +13,7 @@ import { Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import loading from "@public/assets/icon_loading.gif";
 import { getAccessToken } from "@/utils/tokenUtils";
+import download from "@public/assets/icon_download.png";
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const MAX_VIDEO_SIZE = 100 * 1024 * 1024;
@@ -265,11 +266,37 @@ export default function ChattingForm() {
                   {msg.type === "VIDEO" && "삭제된 동영상입니다."}
                 </p>
               ) : msg.type === "IMAGE" ? (
-                <img src={msg.content || ""} alt="file" className="w-56 rounded-lg" />
+                <div>
+                  <div className="relative">
+                    <img src={msg.content || ""} alt="file" className="w-56 rounded-lg" />
+                  </div>
+                  <Image
+                    src={download}
+                    alt="다운로드"
+                    className="absolute bottom-0 right-2 h-8 w-8 cursor-pointer"
+                    onClick={(e) => {
+                      handleDownload(msg.content);
+                      e.stopPropagation();
+                    }}
+                  />
+                </div>
               ) : msg.type === "VIDEO" ? (
-                <video controls className="h-96 rounded-lg">
-                  <source src={msg.content || ""} type="video/mp4" />
-                </video>
+                <div>
+                  <div className="relative">
+                    <video controls className="h-96 rounded-lg">
+                      <source src={msg.content || ""} type="video/mp4" />
+                    </video>
+                  </div>
+                  <Image
+                    src={download}
+                    alt="다운로드"
+                    className="absolute bottom-0 right-2 h-8 w-8 cursor-pointer"
+                    onClick={(e) => {
+                      handleDownload(msg.content);
+                      e.stopPropagation();
+                    }}
+                  />
+                </div>
               ) : (
                 <p>{msg.content}</p>
               )}
@@ -298,6 +325,10 @@ export default function ChattingForm() {
 
     scrollToBottom();
     scrollBrowserToBottom();
+  };
+
+  const handleDownload = async (file: any) => {
+    console.log("다운로드 api 연결");
   };
 
   // 웹소켓 연결 부분
