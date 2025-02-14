@@ -20,6 +20,16 @@ interface PlanResponse {
   list: Plan[]; // 여행 플랜 리스트
 }
 
+interface StatisticResponse {
+  totalCount: number;
+  groupByCount: Statistic[];
+}
+
+interface Statistic {
+  serviceArea: number;
+  count: number;
+}
+
 const planService = {
   planRequest: async (data: any) => {
     try {
@@ -94,6 +104,18 @@ const planService = {
       if (error.response && error.response.status === 409) {
         throw new Error("이미 지정 견적을 요청하셨습니다!");
       }
+    }
+  },
+  getStatistics: async (serviceArea?: string): Promise<StatisticResponse> => {
+    try {
+      const queryString = serviceArea ? `?serviceArea=${serviceArea}` : "";
+      const response = await api.get<StatisticResponse, Record<string, unknown>>(
+        `/plans/groupCount${queryString}`,
+      );
+      return response;
+    } catch (error) {
+      console.error("통계 자료 조회 실패", error);
+      throw error;
     }
   },
 };

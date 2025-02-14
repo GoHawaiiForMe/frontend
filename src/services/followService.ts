@@ -9,6 +9,7 @@ interface FollowedCardProps {
   totalFollows: number;
   totalConfirms: number;
   serviceTypes: string[];
+  makerId: string;
 }
 
 const followService = {

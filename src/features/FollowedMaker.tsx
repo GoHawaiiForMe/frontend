@@ -32,6 +32,10 @@ export default function FollowMaker() {
   const handleGoToFindMaker = () => {
     router.push("/finding-maker");
   };
+
+  const handleGoToMaker = (makerId: string) => {
+    router.push(`/maker-detail/${makerId}`);
+  };
   return (
     <>
       <div className="-mx-[260px] bg-color-gray-50 py-6">
@@ -43,8 +47,9 @@ export default function FollowMaker() {
         {followedItems && followedItems.length > 0 ? (
           <div className="gap-4 pc:grid pc:grid-cols-2 mobile-tablet:flex mobile-tablet:flex-col card:flex card:flex-col">
             {followedItems.map((item: FollowedCardProps, index: number) => (
-              <div key={index}>
+              <div key={index} className="cursor-pointer">
                 <FollowedCard
+                  makerId={item.makerId}
                   image={item.image}
                   nickName={item.nickName}
                   gallery={item.gallery}
@@ -53,6 +58,7 @@ export default function FollowMaker() {
                   totalFollows={item.totalFollows}
                   totalConfirms={item.totalConfirms}
                   serviceTypes={item.serviceTypes}
+                  onClick={() => handleGoToMaker(item.makerId)}
                 />
               </div>
             ))}

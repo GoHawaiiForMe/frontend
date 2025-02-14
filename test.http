@@ -79,3 +79,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4N
 {
   makerId: "032d7bd4-116c-467b-9352-a14b0d494ef9"
 }
+
+###지도 통계 가져오기
+GET https://www.goforme.duckdns.org/plans/groupCount
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTQyMTc1OCwiZXhwIjoxNzM5NTA4MTU4fQ.kraLArPuWV3kxY4iPakzgMS5ZGSRlvYY_-uBm182bXw
