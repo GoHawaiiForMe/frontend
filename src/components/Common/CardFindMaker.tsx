@@ -30,7 +30,7 @@ interface CardFindMakerProps {
   totalReviews: number;
   totalFollows: number;
   totalConfirms: number;
-  gallery?: string;
+  gallery: string;
   isFollowed?: boolean;
   serviceTypes: ServiceType[];
 }
@@ -58,6 +58,7 @@ const CardFindMaker = ({
   totalConfirms,
   isFollowed,
   serviceTypes,
+  gallery,
 }: CardFindMakerProps) => {
   const avatarImage = avatarImages.find((avatar) => avatar.key === image);
   const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 1023; 
@@ -134,7 +135,7 @@ const CardFindMaker = ({
               <div className="h-5 border border-line-200" />
               <div className="flex gap-1 items-center">
               <Link
-                  href="https://www.instagram.com/codeit_kr/"
+                  href={gallery}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex"
