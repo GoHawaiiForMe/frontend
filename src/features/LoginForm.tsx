@@ -23,11 +23,6 @@ const getUserInfo = async () => {
   return userData;
 };
 
-const getProfileInfo = async () => {
-  const profileData = await userService.getProfileInfo();
-  return profileData;
-};
-
 const postLogin = async (LoginData: LoginProps) => {
   return authService.login(LoginData);
 };
