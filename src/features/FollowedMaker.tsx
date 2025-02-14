@@ -27,6 +27,12 @@ export default function FollowMaker() {
     },
   });
 
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   if (isLoading) {
     return (
       <div className="grid h-screen place-items-center">
@@ -45,11 +51,6 @@ export default function FollowMaker() {
 
   const allItems = data?.pages.flatMap((page) => page) || [];
 
-  useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
   return (
     <>
       <div className="-mx-[260px] bg-color-gray-50 py-6">

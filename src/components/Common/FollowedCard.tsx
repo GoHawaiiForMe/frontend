@@ -48,7 +48,7 @@ export default function FollowedCard({
   return (
     <>
       <div
-        className="flex w-full flex-col gap-5 rounded-2xl border border-color-line-100 p-5 shadow-md card:gap-0"
+        className="flex w-full flex-col gap-5 rounded-2xl border border-color-line-100 bg-color-gray-50 p-5 shadow-md hover:scale-[1.01]"
         onClick={onClick}
       >
         <div className="flex flex-row gap-2">
@@ -88,10 +88,12 @@ export default function FollowedCard({
                 <p className="medium text-lg text-color-gray-300">({totalReviews})</p>
               </div>
               <div className="border-line-200 h-5 border" />
-              <div className="flex items-center gap-1">
-                <p className="medium text-lg text-color-gray-300">경력</p>
+              <div>
                 <Link href={gallery} target="_blank" rel="noopener noreferrer">
-                  <Image src={link} alt="링크이미지" width={30} height={30} />
+                  <div className="flex items-center">
+                    <Image src={link} alt="링크이미지" width={30} height={30} />
+                    <p className="medium text-lg text-color-gray-300">SNS</p>
+                  </div>
                 </Link>
               </div>
               <div className="border-line-200 h-5 border" />
