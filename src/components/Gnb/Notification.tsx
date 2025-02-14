@@ -27,7 +27,6 @@ const getTripType = (tripType: string): string => {
   return tripTypeMap[tripType] || "알 수 없는 여행 타입";
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getNotificationMessage = (event: string, payload: any) => {
   switch (event) {
     case "ARRIVE_REQUEST":
@@ -115,8 +114,10 @@ export default function Notification({ closeModal }: { closeModal: () => void })
     patchNotiMutation.mutate(notificationId);
   };
 
+  const hasNotification = !isLoading && initialNotificationData.length > 0;
+
   useEffect(() => {
-    if (!isLoading && initialNotificationData.length > 0) {
+    if (hasNotification) {
       setNotificationData(initialNotificationData);
     }
   }, [isLoading, initialNotificationData]);
