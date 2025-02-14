@@ -27,16 +27,27 @@ interface LinkItem {
   group?: string;
 }
 
+enum NavigationPath {
+  FINDING_MAKER = "/plan-request",
+  PLAN_REQUEST = "/finding-maker",
+  MY_TRIP_MANAGE = "/mytrip-manage/ongoing-plan",
+  RECEIVE = "/receive",
+  MANAGE_QUO = "/managequo",
+  LOGIN = "/login",
+  CHATTING = "/chatting",
+  LANDING = "/",
+}
+
 const linkItems: Record<"guest" | "DREAMER" | "MAKER", LinkItem[]> = {
-  guest: [{ href: "/finding-maker", label: "Maker 찾기" }],
+  guest: [{ href: NavigationPath.FINDING_MAKER, label: "Maker 찾기" }],
   DREAMER: [
-    { href: "/plan-request", label: "여행 요청" },
-    { href: "/finding-maker", label: "Maker 찾기" },
-    { href: "/mytrip-manage/ongoing-plan", label: "내 여행 관리", group: "mytrip-manage" },
+    { href: NavigationPath.PLAN_REQUEST, label: "여행 요청" },
+    { href: NavigationPath.FINDING_MAKER, label: "Maker 찾기" },
+    { href: NavigationPath.MY_TRIP_MANAGE, label: "내 여행 관리", group: "mytrip-manage" },
   ],
   MAKER: [
-    { href: "/receive", label: "받은 요청", group: "receive" },
-    { href: "/managequo", label: "내 견적 관리", group: "managequo" },
+    { href: NavigationPath.RECEIVE, label: "받은 요청", group: "receive" },
+    { href: NavigationPath.MANAGE_QUO, label: "내 견적 관리", group: "managequo" },
   ],
 };
 
@@ -83,9 +94,9 @@ const NavBar = () => {
   const isLinkActive = (link: LinkItem): boolean => {
     switch (link.group) {
       case "receive":
-        return ["/receive", "/all-receive-plan"].includes(router.pathname);
+        return [NavigationPath.RECEIVE, "/all-receive-plan"].includes(router.pathname);
       case "managequo":
-        return ["/managequo", "/reject-list"].includes(router.pathname);
+        return [NavigationPath.MANAGE_QUO, "/reject-list"].includes(router.pathname);
       case "mytrip-manage":
         return router.pathname.startsWith("/mytrip-manage/");
       default:
@@ -147,7 +158,13 @@ const NavBar = () => {
           setUserInfo(userData);
           const avatarImage = avatarImages.find((avatar) => avatar.key === profileData.image);
           setUserImage(avatarImage ? avatarImage.src : user_img.src);
-          setLogin(userData.nickName, userData.role, userData.coconut,userData.email,userData.phoneNumber);
+          setLogin(
+            userData.nickName,
+            userData.role,
+            userData.coconut,
+            userData.email,
+            userData.phoneNumber,
+          );
         } catch (error) {
           console.error(error);
         }
@@ -191,12 +208,13 @@ const NavBar = () => {
   }, [isOpenUserMenu, isOpenNotification, isOpenSidebar]);
 
   const hasUnreadNotifications = notificationData.some((notification) => !notification.isRead);
+  const hasNotifications = realTimeNotifications.length > 0;
 
   return (
     <div className="z-40 flex items-center justify-between border-b-2 border-color-line-100 bg-color-background-100 px-32 py-6 mobile:px-4 tablet:px-5 mobile-tablet:py-3">
       <div className="flex items-center">
         <div className="mr-16 text-2xl font-bold mobile-tablet:mr-0">
-          <Link href="/">
+          <Link href={NavigationPath.LANDING}>
             <Image src={logo} width={100} alt="니가가라하와이 로고" />
           </Link>
         </div>
@@ -211,7 +229,7 @@ const NavBar = () => {
               <p className="regular">{coconut}p</p>
             </div>
             <div className="relative">
-              <Link href="/chatting">
+              <Link href={NavigationPath.CHATTING}>
                 <Image
                   src={chatting_icon}
                   alt="채팅"
@@ -276,7 +294,7 @@ const NavBar = () => {
           </>
         ) : (
           <>
-            <Link href="/login">
+            <Link href={NavigationPath.LOGIN}>
               <button className="semibold mobile-tablet:py-2) rounded-2xl bg-color-blue-300 px-10 py-3 text-2lg text-white hover:bg-color-blue-200 mobile-tablet:px-4 mobile-tablet:text-md">
                 로그인
               </button>
@@ -315,7 +333,7 @@ const NavBar = () => {
         </div>
       )}
       {/* 실시간 알림 */}
-      {realTimeNotifications.length > 0 && (
+      {hasNotifications && (
         <div className="fixed left-0 top-20 z-50 flex w-full flex-col gap-2 px-4 py-2">
           {realTimeNotifications.map((notification) => (
             <div
