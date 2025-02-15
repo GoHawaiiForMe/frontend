@@ -6,7 +6,7 @@ import star from "@public/assets/icon_star_md.svg";
 import avatarImages from "@/utils/formatImage";
 import Link from "next/link";
 import link from "@public/assets/icon_link.svg";
-import { ServiceType } from "@/services/findMakerService";
+import { ServiceType } from "@/services/userService";
 interface CardFindMakerProps {
   
   labelSize?: 'sm';
