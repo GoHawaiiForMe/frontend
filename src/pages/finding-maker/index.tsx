@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import DreamerFilter from '../components/Common/DreamerFilter';
+import DreamerFilter from '@/components/Common/DreamerFilter';
 import DropdownSort from "@/components/Common/DropdownSort";
 import CardFindMaker from "@/components/Common/CardFindMaker";
 import SearchBar from "@/components/Common/SearchBar";
