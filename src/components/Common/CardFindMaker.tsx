@@ -106,18 +106,18 @@ const CardFindMaker = ({
           <div className="flex flex-col w-full py-1">
             <div className="w-full flex justify-between ">
               <p className={`text-2lg semibold text-color-black-300 ${nameSize} ${cardSize === 'sm' ? 'text-md' : ''} mobile-tablet:text-md`}>{nickName}</p>
-              <button className="flex gap-1 items-center">
+              <div className="flex gap-1 items-center">
                 <div className=" transition-all duration-300">
                   <Image
                     src={isFollowed || likeIcon === 'pink' ? like_pink : like}
                     alt="heart"
                     width={24}
                     height={24}
-                    className="transition-transform duration-300 hover:scale-110"
+                    
                   />
                 </div>
                 <p className={`text-2lg medium text-color-blue-400 ${heartNumberSize} ${cardSize === 'sm' ? 'text-xs' : ''} mobile-tablet:text-xs`}>{totalFollows}</p>
-              </button>
+              </div>
             </div>
             <div className={`flex gap-4 items-center text-lg medium ${otherText} ${cardSize === 'sm' ? '!text-[10px] !gap-2' : ''} mobile-tablet:text-[10px] mobile-tablet:gap-2`}>
               <div className="flex gap-2 items-center">
