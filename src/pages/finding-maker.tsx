@@ -166,9 +166,10 @@ export default function FindingMaker() {
               <div className="flex flex-col gap-4">
                 <p className="text-xl semibold">최근에 찜한 Maker</p>
                 {followedItems.map((item, index) => (
-                  <div key={index}>
-                    <CardFindMaker 
-                    
+                  <Link href={`/maker-detail/${item.makerId}`} key={index}>
+                    <div key={index}>
+                      <CardFindMaker 
+                      
                       description={item.description}
                       image={item.image}
                       nickName={item.nickName}
@@ -181,8 +182,9 @@ export default function FindingMaker() {
                       labelSize="sm"
                       cardSize="sm"
                       isFollowed={true}
-                    />
-                  </div>
+                      />
+                    </div>
+                  </Link>
                 ))}
               </div>
             )}
