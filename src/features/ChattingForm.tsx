@@ -278,7 +278,7 @@ export default function ChattingForm() {
                     alt="다운로드"
                     className="absolute bottom-0 right-2 h-8 w-8 cursor-pointer"
                     onClick={(e) => {
-                      handleDownload(msg.content);
+                      handleDownload(msg.id);
                       e.stopPropagation();
                     }}
                   />
@@ -295,7 +295,7 @@ export default function ChattingForm() {
                     alt="다운로드"
                     className="absolute bottom-0 right-2 h-8 w-8 cursor-pointer"
                     onClick={(e) => {
-                      handleDownload(msg.content);
+                      handleDownload(msg.id);
                       e.stopPropagation();
                     }}
                   />
@@ -330,8 +330,20 @@ export default function ChattingForm() {
     scrollBrowserToBottom();
   };
 
-  const handleDownload = async (file: any) => {
-    console.log("다운로드 api 연결");
+  const handleDownload = async (chatId: string) => {
+    if (!selectedChatRoom) return;
+
+    try {
+      const presignedUrl = (await chatService.downloadFile(chatId)) as string;
+      if (!presignedUrl.startsWith("http")) {
+        console.error("올바른 URL이 아닙니다:", presignedUrl);
+        return;
+      }
+
+      window.open(presignedUrl, "_blank");
+    } catch (error) {
+      console.error("파일 다운로드 실패:", error);
+    }
   };
 
   // 웹소켓 연결 부분

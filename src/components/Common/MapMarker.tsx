@@ -106,19 +106,19 @@ export default function MapMarker() {
   };
 
   return (
-    <div className="flex">
+    <div className="-ml-14 flex items-center mobile-tablet:ml-0 mobile-tablet:flex-col">
       {/* 지도 */}
-      <div className="w-full">
+      <div className="w-full mobile-tablet:order-2">
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{ center: [127, 36], scale: 6000 }}
-          style={{ width: "700px", height: "800px" }}
+          className="h-[800px] w-[700px] mobile:h-[400px] mobile:w-[500px] tablet:h-[500px] tablet:w-[600px]"
         >
           {geoData && (
             <Geographies geography={geoData}>
               {({ geographies }) =>
                 geographies.map((geo) => (
-                  <Geography key={geo.rsmKey} geography={geo} fill="#ACD2EB" stroke="#ddd" />
+                  <Geography key={geo.rsmKey} geography={geo} fill="#FFF2F2" />
                 ))
               }
             </Geographies>
@@ -151,7 +151,7 @@ export default function MapMarker() {
       </div>
 
       {/* 통계 */}
-      <div className="w-1/3 p-4">
+      <div className="flex h-[400px] w-1/3 flex-col items-center rounded-xl bg-color-gray-50 p-4 shadow-2xl mobile-tablet:order-1 mobile-tablet:w-[400px]">
         {selectedRegion ? (
           <>
             <h2 className="text-lg font-bold">{regionNames[selectedRegion.name]} 통계</h2>

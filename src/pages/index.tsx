@@ -1,9 +1,8 @@
 import Head from "next/head";
-import Image from "next/image";
-import logo from "@public/assets/icon_logo_img.svg";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { setAccessToken } from "@/utils/tokenUtils";
+import MapMarker from "@/components/Common/MapMarker";
 
 export default function Home() {
   const router = useRouter();
@@ -20,12 +19,23 @@ export default function Home() {
 
   return (
     <>
+      <style>
+        {`
+      @media (min-width: 200px) and (max-width: 2400px) {
+        .main-container {
+          padding: 0;
+        }
+      }
+    `}
+      </style>
       <Head>
-        <title>니가가라하와이</title>
+        <title>니가가라하와이 - 당신의 특별한 여행 메이트</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center justify-center py-2">
-        <Image src={logo} width={400} height={400} alt="로고" />
+      <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-color-gray-50 via-color-blue-100 to-color-blue-200">
+        <div className="container relative mx-auto px-4 py-12">
+          <MapMarker />
+        </div>
       </main>
     </>
   );

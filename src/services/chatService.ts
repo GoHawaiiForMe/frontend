@@ -150,6 +150,14 @@ const chatService = {
       console.error("메시지 삭제 실패", error);
     }
   },
+  downloadFile: async (chatId: string) => {
+    try {
+      const response = await api.get(`/chats/${chatId}/downloadFile`);
+      return response;
+    } catch (error) {
+      console.error("파일 다운로드드 실패", error);
+    }
+  },
 };
 
 export default chatService;

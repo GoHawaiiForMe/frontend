@@ -226,7 +226,7 @@ const NavBar = () => {
           <>
             <div className="flex cursor-pointer items-center space-x-2">
               <Image src={coconut_icon} alt="코코넛" width={24} height={24} />
-              <p className="regular">{coconut}p</p>
+              <p className="regular">{coconut}개</p>
             </div>
             <div className="relative">
               <Link href={NavigationPath.CHATTING}>
