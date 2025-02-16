@@ -6,9 +6,10 @@ import downGray from '@public/assets/dropdown_down_gray.svg';
 const placeholder = '지역';
 const items = ['전체', '서울', '경기', '인천', '강원', '충북', '충남', '세종', '대전', '전북'];
 const placeholder2 = '서비스';
-const items2 = ['기념품/쇼핑형', '맛집 탐방형', '액티비티/탐험형', '문화/역사탐방형', '축제참여형', '휴양형'];
+const items2 = ['전체', '기념품/쇼핑형', '맛집 탐방형', '액티비티/탐험형', '문화/역사탐방형', '축제참여형', '휴양형'];
 
 const serviceTypeMapping: Record<string, string> = {
+  '전체': '',
   '기념품/쇼핑형': 'SHOPPING',
   '맛집 탐방형': 'FOOD_TOUR',
   '액티비티/탐험형': 'ACTIVITY',
