@@ -5,6 +5,8 @@ import { setAccessToken } from "@/utils/tokenUtils";
 import Hero from "@/components/Landing/Hero";
 import Features from "@/components/Landing/Features";
 import CTAButton from "@/components/Landing/CTAButton";
+import MapMarker from "@/components/Common/MapMarker";
+import beachBackground7 from "@public/assets/Landing-img/img_07.jpg";
 
 export default function Home() {
   const router = useRouter();
@@ -21,17 +23,28 @@ export default function Home() {
 
   return (
     <>
- 
+      <style>
+        {`
+    @media (min-width: 200px) and (max-width: 2400px) {
+      .main-container {
+        padding: 0;
+      }
+    }
+  `}
+      </style>
       <Head>
         <title>니가가라하와이 - 당신의 특별한 여행 메이트</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-sky-400 via-blue-400 to-blue-600">
-      
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1559494007-9f5847c49d94')] bg-cover bg-center opacity-10" />
+      <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-color-gray-50 via-color-blue-100 to-color-blue-200">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-20"
+          style={{ backgroundImage: `url(${beachBackground7.src})` }}
+        />
         <div className="container relative mx-auto px-4 py-12">
           <Hero />
           <Features />
+          <MapMarker />
           <div className="flex justify-center">
             <CTAButton />
           </div>

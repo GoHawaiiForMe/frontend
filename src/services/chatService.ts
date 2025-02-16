@@ -35,7 +35,6 @@ const chatService = {
           image: user.image,
         })),
       }));
-
       return chatRooms;
     } catch (error) {
       console.error("채팅방 목록 get 실패", error);

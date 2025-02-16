@@ -34,11 +34,11 @@ export default function ChattingForm() {
   const [isFetchingOldMessages, setIsFetchingOldMessages] = useState(false);
   const [isFirstMessage, setIsFirstMessage] = useState(false);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
-
+  const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const { data: userId = [] } = useQuery({
+  const { data: userId = "" } = useQuery({
     queryKey: ["userId"],
     queryFn: getUserId,
   });
@@ -46,7 +46,7 @@ export default function ChattingForm() {
   const { data: chatRooms = [], isLoading } = useQuery({
     queryKey: ["chatRooms"],
     queryFn: async () => {
-      return await chatService.getChatRooms();
+      return await chatService.getChatRooms(1, 10);
     },
   });
 
@@ -212,6 +212,11 @@ export default function ChattingForm() {
     }
   };
   //메시지 삭제
+
+  const handleBubbleClick = (msgId: any) => {
+    setMessageToDelete((prevSelected) => (prevSelected === msgId ? null : msgId));
+  };
+
   const handleDeleteMessage = async (messageId: string, senderId: string, createdAt: string) => {
     const currentTime = new Date();
     const messageTime = new Date(createdAt);
@@ -251,12 +256,7 @@ export default function ChattingForm() {
               첫 번째 메시지입니다.
             </div>
           )}
-          <div
-            onClick={() =>
-              !msg.isDeleted && handleDeleteMessage(msg.id, msg.senderId, msg.createdAt)
-            }
-            className="cursor-pointer"
-          >
+          <div onClick={() => handleBubbleClick(msg.id)} className="relative mb-2 cursor-pointer">
             <Bubble key={msg.id} type={msg.senderId === userId ? "right" : "left_say"}>
               {msg.isDeleted ? (
                 <p className="text-color-gray-50">
@@ -265,15 +265,27 @@ export default function ChattingForm() {
                   {msg.type === "VIDEO" && "삭제된 동영상입니다."}
                 </p>
               ) : msg.type === "IMAGE" ? (
-                <img src={msg.content || ""} alt="file" className="w-28 rounded-lg" />
+                <img src={msg.content || ""} alt="file" className="w-56 rounded-lg" />
               ) : msg.type === "VIDEO" ? (
-                <video controls className="w-full rounded-lg">
+                <video controls className="h-96 rounded-lg">
                   <source src={msg.content || ""} type="video/mp4" />
                 </video>
               ) : (
                 <p>{msg.content}</p>
               )}
             </Bubble>
+            {messageToDelete === msg.id && !msg.isDeleted && (
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteMessage(msg.id, msg.senderId, msg.createdAt);
+                  setMessageToDelete(null);
+                }}
+                className="bold absolute bottom-0 right-0 w-[107px] cursor-pointer rounded-md border border-color-black-500 bg-color-gray-100 px-2"
+              >
+                메시지 삭제
+              </div>
+            )}
           </div>
         </div>
       ));
@@ -435,12 +447,19 @@ export default function ChattingForm() {
                     className={`flex cursor-pointer flex-col rounded-lg p-3 ${selectedChatRoom?.id === room.id ? "bg-color-blue-100" : "bg-color-gray-50"}`}
                   >
                     <Image
-                      src={avatarImages.find((avatar) => avatar.key === room.users[1]?.image)?.src}
+                      src={
+                        avatarImages.find(
+                          (avatar) =>
+                            avatar.key === room.users.find((user) => user.id !== userId)?.image,
+                        )?.src
+                      }
                       alt="유저"
                       width={70}
                       className="rounded-full"
                     />
-                    <p className="bold mt-3 text-center">{room.users[1]?.nickName}</p>
+                    <p className="bold mt-3 text-center">
+                      {room.users.find((user) => user.id !== userId)?.nickName}
+                    </p>
                   </div>
                 ))
               )}
@@ -460,7 +479,10 @@ export default function ChattingForm() {
                       <div>
                         <Image
                           src={
-                            avatarImages.find((avatar) => avatar.key === room.users[1]?.image)?.src
+                            avatarImages.find(
+                              (avatar) =>
+                                avatar.key === room.users.find((user) => user.id !== userId)?.image,
+                            )?.src
                           }
                           alt="유저"
                           width={70}
@@ -468,7 +490,7 @@ export default function ChattingForm() {
                         />
                       </div>
                       <div className="flex flex-col gap-3">
-                        <p>{room.users[1]?.nickName}</p>
+                        <p>{room.users.find((user) => user.id !== userId)?.nickName}</p>
                         <p className="line-clamp-2">{room.lastChat}</p>
                       </div>
                     </div>

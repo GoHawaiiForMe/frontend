@@ -1,14 +1,14 @@
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 interface FeatureCardProps {
-  imageUrl: string;
+  imageUrl: string | StaticImageData;
   title: string;
   description: string;
 }
 
 export default function FeatureCard({ imageUrl, title, description }: FeatureCardProps) {
   return (
-    <div className="hover:shadow-3xl group rounded-2xl bg-white/95 p-8 shadow-2xl transition-all duration-300 hover:-translate-y-1">
+    <div className="hover:shadow-3xl group w-[350px] rounded-2xl bg-white/95 p-8 shadow-2xl transition-all duration-300 hover:-translate-y-1">
       <div className="overflow-hidden rounded-xl">
         <Image
           src={imageUrl}
