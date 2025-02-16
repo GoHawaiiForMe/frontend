@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { setAccessToken } from "@/utils/tokenUtils";
 import Hero from "@/components/Landing/Hero";
 import Features from "@/components/Landing/Features";
-import CTAButton from "@/components/Landing/CTAButton";
 import MapMarker from "@/components/Common/MapMarker";
 import beachBackground7 from "@public/assets/Landing-img/img_07.jpg";
 
@@ -45,9 +44,6 @@ export default function Home() {
           <Hero />
           <Features />
           <MapMarker />
-          <div className="flex justify-center">
-            <CTAButton />
-          </div>
         </div>
       </main>
     </>
