@@ -197,8 +197,8 @@ export default function ChattingForm() {
       } else {
         maintainScrollPosition();
       }
-    } catch (error) {
-      console.error("메시지를 가져오는데 실패했습니다.", error);
+    } catch (error: any) {
+      alert(error.message);
     }
   };
 
@@ -239,9 +239,8 @@ export default function ChattingForm() {
         setMessages((prevMessages) =>
           prevMessages.map((msg) => (msg.id === messageId ? { ...msg, isDeleted: true } : msg)),
         );
-      } catch (error) {
-        console.error("메시지 삭제 실패:", error);
-        alert("메시지 삭제에 실패했습니다.");
+      } catch (error: any) {
+        alert(error.message);
       }
     }
   };
@@ -341,8 +340,8 @@ export default function ChattingForm() {
       }
 
       window.open(presignedUrl, "_blank");
-    } catch (error) {
-      console.error("파일 다운로드 실패:", error);
+    } catch (error: any) {
+      alert(error.message);
     }
   };
 

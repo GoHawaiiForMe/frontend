@@ -78,6 +78,7 @@ const authService = {
       if (error.response && error.response.status === INTERNAL_SERVER_ERROR) {
         throw new Error("구글 프로필 정보를 가져올 수 없습니다.");
       }
+      throw new Error("구글 로그인에 실패했습니다.");
     }
   },
   kakaoLogin: async () => {
@@ -88,6 +89,7 @@ const authService = {
       if (error.response && error.response.status === INTERNAL_SERVER_ERROR) {
         throw new Error("카카오 프로필 정보를 가져올 수 없습니다.");
       }
+      throw new Error("카카오 로그인에 실패했습니다.");
     }
   },
   naverLogin: async () => {
@@ -98,6 +100,7 @@ const authService = {
       if (error.response && error.response.status === INTERNAL_SERVER_ERROR) {
         throw new Error("네이버 프로필 정보를 가져올 수 없습니다.");
       }
+      throw new Error("네이버 로그인에 실패했습니다.");
     }
   },
   refreshToken: async (): Promise<string> => {

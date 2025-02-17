@@ -51,10 +51,7 @@ export default function LoginForm() {
     },
     onError: (error: any) => {
       if (error.response) {
-        console.error("Error response", error.response);
-        if (error.response.status === 400) {
-          alert("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");
-        }
+        alert(error.message);
       } else if (error.request) {
         console.error(error.request);
       } else {

@@ -77,8 +77,8 @@ export default function RequestDetailDreamer() {
           makerProfileInfo.totalFollows += 1;
         }
       }
-    } catch (error) {
-      console.error("찜하기 상태 변경 실패", error);
+    } catch (error: any) {
+      alert(error.message);
     }
   };
 

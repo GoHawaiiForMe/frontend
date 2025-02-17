@@ -45,7 +45,7 @@ const followService = {
       return response;
     } catch (error: any) {
       if (error.response && error.response.status === BAD_REQUEST) {
-        throw new Error("이미 찜한 메이커입니다다.");
+        throw new Error("이미 찜한 메이커입니다.");
       }
     }
   },

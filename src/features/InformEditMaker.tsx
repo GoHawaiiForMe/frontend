@@ -52,12 +52,7 @@ export default function InformEditMaker() {
       refetch();
     },
     onError: (error: any) => {
-      if (error.response?.status === 401) {
-        alert("기존 비밀번호를 확인해주세요.");
-      } else {
-        console.error("메이커 프로필 수정 실패", error);
-        alert("수정 중 문제가 발생했습니다. 다시 시도해주세요.");
-      }
+      alert(error.message);
     },
   });
 
@@ -109,9 +104,10 @@ export default function InformEditMaker() {
         }
         setNickNameMessage("");
       }
-    } catch {
+    } catch (error: any) {
       setError("nickName", { message: "닉네임 체크 중 오류가 발생했습니다." });
       setIsNickNameValid(false);
+      alert(error.message);
     }
   };
 

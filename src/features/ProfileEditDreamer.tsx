@@ -78,9 +78,10 @@ export default function ProfileEditDreamer() {
         }
         setNickNameMessage("");
       }
-    } catch {
+    } catch (error: any) {
       setError("nickName", { message: "닉네임 체크 중 오류가 발생했습니다." });
       setIsNickNameValid(false);
+      alert(error.message);
     }
   };
 
@@ -121,9 +122,8 @@ export default function ProfileEditDreamer() {
         );
       }
       router.reload();
-    } catch (error) {
-      console.error("프로필 수정 실패", error);
-      alert("수정 중 문제가 발생했습니다. 다시 시도해주세요.");
+    } catch (error: any) {
+      alert(error.message);
       router.reload();
     }
   };

@@ -70,9 +70,10 @@ export default function OAuthSignUpForm() {
         setError("nickName", { message: "닉네임이 중복되었습니다!" });
         setNickNameMessage("");
       }
-    } catch {
+    } catch (error: any) {
       setError("nickName", { message: "닉네임 체크 중 오류가 발생했습니다." });
       setIsNickNameValid(false);
+      alert(error.message);
     }
   };
 

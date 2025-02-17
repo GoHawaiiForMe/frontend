@@ -11,7 +11,12 @@ import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 
 const fetchFollowData = async ({ pageParam = 1 }) => {
-  return await followService.getFollow(pageParam, 6);
+  try {
+    return await followService.getFollow(pageParam, 6);
+  } catch (error: any) {
+    alert(error.message);
+    throw error;
+  }
 };
 
 export default function FollowMaker() {
