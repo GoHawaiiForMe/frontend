@@ -137,8 +137,9 @@ export default function MapMarker() {
                   textAnchor="middle"
                   x={10}
                   y={0}
-                  fontSize={10}
+                  fontSize={12}
                   fill="#0F171F"
+                  fontWeight="bold"
                   className="cursor-pointer"
                 >
                   {name}
@@ -146,7 +147,7 @@ export default function MapMarker() {
                 <path
                   d="M0,0 C6,-12 6,-18 0,-20 C-6,-18 -6,-12 0,0 Z"
                   fill="#FF8383"
-                  transform="translate(-8, 5)"
+                  transform="translate(-8, 5) scale(1.2)"
                   className="cursor-pointer"
                 />
               </Marker>
