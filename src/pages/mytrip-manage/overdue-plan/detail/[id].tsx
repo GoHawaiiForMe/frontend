@@ -4,8 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import planService from "@/services/planService";
 import Image from "next/image";
 import loading from "@public/assets/icon_loading.gif";
+import withAuthAccess from "@/stores/withAuthAccess";
 
-export default function ExpiredPlanDetail() {
+export function OverduePlanDetail() {
   const router = useRouter();
   const { id } = router.query;
 
@@ -29,3 +30,5 @@ export default function ExpiredPlanDetail() {
     </>
   );
 }
+
+export default withAuthAccess(OverduePlanDetail);

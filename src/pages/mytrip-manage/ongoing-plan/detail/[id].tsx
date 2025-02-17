@@ -4,8 +4,9 @@ import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import loading from "@public/assets/icon_loading.gif";
+import withAuthAccess from "@/stores/withAuthAccess";
 
-export default function OngoingPlanDetail() {
+export function OngoingPlanDetail() {
   const router = useRouter();
   const { id } = router.query;
 
@@ -29,3 +30,5 @@ export default function OngoingPlanDetail() {
     </>
   );
 }
+
+export default withAuthAccess(OngoingPlanDetail);

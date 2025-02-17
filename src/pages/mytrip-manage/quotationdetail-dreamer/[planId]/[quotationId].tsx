@@ -20,6 +20,7 @@ import planService from "@/services/planService";
 import { QuotationServiceDreamer } from "@/services/quotationServiceDreamer";
 import { Plan } from "@/services/planService";
 import { useState } from "react";
+import withAuthAccess from "@/stores/withAuthAccess";
 
 interface MakerInfo {
   nickName: string;
@@ -43,7 +44,7 @@ interface QuotationDetail {
   isAssigned: false;
 }
 
-export default function QuotationDetailDreamer() {
+export function QuotationDetailDreamer() {
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao) {
       const Kakao = window.Kakao;
@@ -125,11 +126,19 @@ export default function QuotationDetailDreamer() {
   }
 
   if (!planDetail || !quotationDetail) {
-    return <div>Loading...둘다없음</div>;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Image src={loading} alt="로딩 중" />
+      </div>
+    );
   }
 
   if (!planDetail) {
-    return <div>Loading...플랜없음</div>;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Image src={loading} alt="로딩 중" />
+      </div>
+    );
   }
   return (
     <div className="relative flex w-full flex-col">
@@ -277,3 +286,5 @@ export default function QuotationDetailDreamer() {
     </div>
   );
 }
+
+export default withAuthAccess(QuotationDetailDreamer);
