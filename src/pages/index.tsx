@@ -24,7 +24,7 @@ export default function Home() {
     <>
       <style>
         {`
-    @media (min-width: 200px) and (max-width: 2400px) {
+    @media (min-width: 200px) and (max-width: 2700px) {
       .main-container {
         padding: 0;
       }

@@ -108,9 +108,9 @@ export default function MapMarker() {
   return (
     <>
       <div className="bold mb-7 mt-7 flex justify-center">
-        <h1 className="text-4xl">🛬 사용자 이용현황 🛬</h1>
+        <h1 className="mb-10 mt-24 text-4xl">🛬 사용자 이용현황 🛬</h1>
       </div>
-      <div className="-mr-16 flex items-center rounded-xl bg-color-blue-300 bg-opacity-15 mobile-tablet:ml-0 mobile-tablet:flex-col">
+      <div className="-mr-16 flex items-center rounded-xl bg-color-blue-400 bg-opacity-15 mobile-tablet:ml-0 mobile-tablet:flex-col">
         {/* 지도 */}
         <div className="sw-full mobile-tablet:order-2">
           <ComposableMap
@@ -155,7 +155,7 @@ export default function MapMarker() {
         </div>
 
         {/* 통계 */}
-        <div className="flex h-[400px] w-1/3 flex-col items-center rounded-xl bg-color-gray-50 p-4 shadow-2xl pc:-ml-5 mobile-tablet:order-1 mobile-tablet:w-[400px]">
+        <div className="flex h-[400px] w-1/3 flex-col items-center rounded-xl bg-color-gray-50 p-4 shadow-2xl pc:-ml-5 mobile-tablet:order-1 mobile-tablet:mt-10 mobile-tablet:w-[400px]">
           {selectedRegion ? (
             <>
               <h2 className="text-lg font-bold">{regionNames[selectedRegion.name]} 통계</h2>
