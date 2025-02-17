@@ -25,7 +25,7 @@ Content-Type: application/json
 
 ### 로그인 요청 테스트
 
-POST https://www.goforme.duckdns.org/users/login
+POST https://www.goforme.duckdns.org/auth/login
 Content-Type: application/json
 
 {
@@ -56,3 +56,30 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4N
 POST https://goforme.duckdns.org/notifications/2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczODU3MTAzNSwiZXhwIjoxNzM4NjU3NDM1fQ.AyxnnK68YvG5IPNmCK-yhtLhCSpF1-OhQ5MMX-hQFLw
 
+
+### 플랜 리스트 불러오기(dreamer)
+
+GET https://www.goforme.duckdns.org/plans/dreamer?status=PENDING&status=CONFIRMED
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczODkwMjA2MywiZXhwIjoxNzM4OTg4NDYzfQ.Z552RQPGxWAdIon2aXEZ5z9D_OSfmEPcNTDYi9VEoYk
+
+
+### 플랜 데이터 불러오기(dreamer)
+GET https://www.goforme.duckdns.org/plans/0f61f8b9-7b29-4b82-86c7-f7ce8e418baa
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTAzNDY3OSwiZXhwIjoxNzM5MTIxMDc5fQ.Q2fR2Np0O0uF1BznlyPL0z48hZeELsk4Ziro2SLrRaQ
+
+
+### 견적 리스트 불러오기(dreamer)
+GET https://www.goforme.duckdns.org/plans/181b2ef5-a7c6-4d62-a17e-542581693736/quotes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTAzNDY3OSwiZXhwIjoxNzM5MTIxMDc5fQ.Q2fR2Np0O0uF1BznlyPL0z48hZeELsk4Ziro2SLrRaQ
+
+### 찜하기
+POST https://www.goforme.duckdns.org/follow
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTAzNDY3OSwiZXhwIjoxNzM5MTIxMDc5fQ.Q2fR2Np0O0uF1BznlyPL0z48hZeELsk4Ziro2SLrRaQ
+
+{
+  makerId: "032d7bd4-116c-467b-9352-a14b0d494ef9"
+}
+
+###지도 통계 가져오기
+GET https://www.goforme.duckdns.org/plans/groupCount
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTQyMTc1OCwiZXhwIjoxNzM5NTA4MTU4fQ.kraLArPuWV3kxY4iPakzgMS5ZGSRlvYY_-uBm182bXw

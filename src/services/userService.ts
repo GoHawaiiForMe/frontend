@@ -1,6 +1,16 @@
 import { api } from "./api";
 
 type Role = "DREAMER" | "MAKER";
+export type ServiceType =
+  | "SHOPPING"
+  | "FOOD_TOUR"
+  | "ACTIVITY"
+  | "CULTURE"
+  | "FESTIVAL"
+  | "RELAXATION"
+  | "REQUEST"
+  | "PENDING"
+  | "CONFIRMED";
 
 export interface UserInfo {
   id: string;
@@ -9,6 +19,21 @@ export interface UserInfo {
   email: string;
   phoneNumber: string;
   coconut: number;
+}
+
+export interface MakerProfileResponse {
+  nickName: string;
+  image: string;
+  gallery: string;
+  serviceTypes: string[];
+  serviceArea: string[];
+  description: string;
+  detailDescription: string;
+  isFollowed: boolean;
+  averageRating: number;
+  totalReviews: number;
+  totalFollows: number;
+  totalConfirms: number;
 }
 
 interface ProfileInfo {
@@ -56,11 +81,31 @@ interface MakerReviewParams {
   pageSize?: number;
 }
 
+export interface Maker {
+  id: string;
+  nickName: string;
+  description: string;
+  detailDescription: string;
+  image: string;
+  gallery: string;
+  averageRating: number;
+  totalReviews: number;
+  totalFollows: number;
+  totalConfirms: number;
+  serviceTypes: ServiceType[];
+  serviceArea: string[];
+  isFollowed: boolean;
+}
+
+interface MakerResponse {
+  totalCount: number;
+  list: Maker[];
+}
+
 const userService = {
   getUserInfo: async (): Promise<UserInfo> => {
     try {
       const response = await api.get<UserInfo, Record<string, unknown>>("/users/me");
-      console.log(response);
       return response;
     } catch (error) {
       console.error("유저 정보 조회 실패", error);
@@ -135,6 +180,38 @@ const userService = {
       return response;
     } catch (error) {
       console.error("메이커 마이페이지 조회 실패", error);
+      throw error;
+    }
+  },
+
+  getMakerProfile: async (makerId: string): Promise<MakerProfileResponse | undefined> => {
+    try {
+      const response = await api.get<MakerProfileResponse, {}>(`/users/profile/${makerId}`);
+      return response;
+    } catch (error) {
+      console.error("메이커 프로필 조회 실패", error);
+    }
+  },
+
+  getMakers: async (
+    orderBy: string,
+    serviceArea: string,
+    serviceType: string,
+    pageParam?: number,
+    pageSize?: number,
+    keyword?: string,
+  ): Promise<MakerResponse> => {
+    try {
+      const url =
+        `/users/makers?page=${pageParam}&pageSize=${pageSize}` +
+        `${orderBy ? `&orderBy=${orderBy}` : ""}` +
+        `${serviceArea ? `&serviceArea=${serviceArea}` : ""}` +
+        `${serviceType ? `&serviceType=${serviceType}` : ""}` +
+        `${keyword ? `&keyword=${keyword}` : ""}`;
+      const response = await api.get(url);
+      return response as MakerResponse;
+    } catch (error) {
+      console.error("Error fetching makers:", error);
       throw error;
     }
   },

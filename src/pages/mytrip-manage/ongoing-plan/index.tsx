@@ -1,258 +1,95 @@
 import MyPlanNav from "@/components/MyPlans/MyPlanNav";
 import Layout from "@/components/Common/Layout";
-import { useState, useEffect, useRef } from "react";
 import MyPlanList from "@/components/MyPlans/MyPlanList";
-
-/* eslint-disable react-hooks/exhaustive-deps */
+import ReceiveModalLayout from "@/components/Receive/ReceiveModalLayout";
+import planService from "@/services/planService";
+import { useInfiniteQuery, keepPreviousData } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useInView } from "react-intersection-observer";
 
 export default function OngoingPlan() {
-  interface Plan {
-    id: number;
-    name: string;
-    requestDate: string;
-    tripType: string;
-    tripPeriod: string;
-    serviceArea: string;
-    details: string;
-  }
-
-  const planData = {
-    plans: [
-      {
-        id: 1,
-        name: "플랜이름몇자까지되나요",
-        requestDate: "2025-01-01",
-        tripType: "휴양지",
-        serviceArea: "서울",
-        tripPeriod: "2025-01-10 ~ 2025-01-15",
-        details: "특별 요청 사항 없음",
-      },
-      {
-        id: 2,
-        name: "플랜이름더더더더더더더길어져도되나요",
-        requestDate: "2025-02-01",
-        tripType: "액티비티",
-        serviceArea: "부산",
-        tripPeriod: "2025-02-10 ~ 2025-02-17",
-        details: "특별 요청 없음",
-      },
-      {
-        id: 3,
-        name: "안신나는 제주도 출장",
-        requestDate: "2025-03-01",
-        tripType: "비즈니스",
-        serviceArea: "제주도",
-        tripPeriod: "2025-03-05 ~ 2025-03-07",
-        details: "업무 일정 조정 필요",
-      },
-      {
-        id: 4,
-        name: "경주에도 바닷가가 있나요?",
-        requestDate: "2025-04-01",
-        tripType: "휴양지",
-        serviceArea: "경주",
-        tripPeriod: "2025-04-05 ~ 2025-04-10",
-        details: "해변 근처 숙소",
-      },
-      {
-        id: 5,
-        name: "경주에도 바닷가가 있나요?2",
-        requestDate: "2025-05-01",
-        tripType: "휴양지",
-        serviceArea: "경주",
-        tripPeriod: "2025-04-05 ~ 2025-04-10",
-        details: "해변 근처 숙소",
-      },
-      {
-        id: 6,
-        name: "드롭다운 스크롤 테스트",
-        requestDate: "2025-06-01",
-        tripType: "관광지",
-        serviceArea: "전주",
-        tripPeriod: "2025-07-05 ~ 2025-07-10",
-        details: "비빔밥 맛집을 들러주세요",
-      },
-      {
-        id: 7,
-        name: "스크롤 테스트 1",
-        requestDate: "2025-07-01",
-        tripType: "관광지",
-        serviceArea: "전주",
-        tripPeriod: "2025-07-05 ~ 2025-07-10",
-        details: "비빔밥 맛집을 들러주세요",
-      },
-      {
-        id: 8,
-        name: "스크롤 테스트 2",
-        requestDate: "2025-08-01",
-        tripType: "관광지",
-        serviceArea: "전주",
-        tripPeriod: "2025-08-05 ~ 2025-08-10",
-        details: "비빔밥 맛집을 들러주세요",
-      },
-      {
-        id: 9,
-        name: "스크롤 테스트 3",
-        requestDate: "2025-09-01",
-        tripType: "관광지",
-        serviceArea: "전주",
-        tripPeriod: "2025-09-05 ~ 2025-09-10",
-        details: "비빔밥 맛집을 들러주세요",
-      },
-      {
-        id: 10,
-        name: "스크롤 테스트 4",
-        requestDate: "2025-10-01",
-        tripType: "관광지",
-        serviceArea: "전주",
-        tripPeriod: "2025-10-05 ~ 2025-10-10",
-        details: "비빔밥 맛집을 들러주세요",
-      },
-      {
-        id: 1,
-        name: "플랜이름몇자까지되나요",
-        requestDate: "2025-01-01",
-        tripType: "휴양지",
-        serviceArea: "서울",
-        tripPeriod: "2025-01-10 ~ 2025-01-15",
-        details: "특별 요청 사항 없음",
-      },
-      {
-        id: 2,
-        name: "플랜이름더더더더더더더길어져도되나요",
-        requestDate: "2025-02-01",
-        tripType: "액티비티",
-        serviceArea: "부산",
-        tripPeriod: "2025-02-10 ~ 2025-02-17",
-        details: "특별 요청 없음",
-      },
-      {
-        id: 3,
-        name: "안신나는 제주도 출장",
-        requestDate: "2025-03-01",
-        tripType: "비즈니스",
-        serviceArea: "제주도",
-        tripPeriod: "2025-03-05 ~ 2025-03-07",
-        details: "업무 일정 조정 필요",
-      },
-      {
-        id: 4,
-        name: "경주에도 바닷가가 있나요?",
-        requestDate: "2025-04-01",
-        tripType: "휴양지",
-        serviceArea: "경주",
-        tripPeriod: "2025-04-05 ~ 2025-04-10",
-        details: "해변 근처 숙소",
-      },
-      {
-        id: 5,
-        name: "경주에도 바닷가가 있나요?2",
-        requestDate: "2025-05-01",
-        tripType: "휴양지",
-        serviceArea: "경주",
-        tripPeriod: "2025-04-05 ~ 2025-04-10",
-        details: "해변 근처 숙소",
-      },
-      {
-        id: 6,
-        name: "드롭다운 스크롤 테스트",
-        requestDate: "2025-06-01",
-        tripType: "관광지",
-        serviceArea: "전주",
-        tripPeriod: "2025-07-05 ~ 2025-07-10",
-        details: "비빔밥 맛집을 들러주세요",
-      },
-      {
-        id: 7,
-        name: "스크롤 테스트 1",
-        requestDate: "2025-07-01",
-        tripType: "관광지",
-        serviceArea: "전주",
-        tripPeriod: "2025-07-05 ~ 2025-07-10",
-        details: "비빔밥 맛집을 들러주세요",
-      },
-      {
-        id: 8,
-        name: "스크롤 테스트 2",
-        requestDate: "2025-08-01",
-        tripType: "관광지",
-        serviceArea: "전주",
-        tripPeriod: "2025-08-05 ~ 2025-08-10",
-        details: "비빔밥 맛집을 들러주세요",
-      },
-      {
-        id: 9,
-        name: "스크롤 테스트 3",
-        requestDate: "2025-09-01",
-        tripType: "관광지",
-        serviceArea: "전주",
-        tripPeriod: "2025-09-05 ~ 2025-09-10",
-        details: "비빔밥 맛집을 들러주세요",
-      },
-      {
-        id: 10,
-        name: "스크롤 테스트 4",
-        requestDate: "2025-10-01",
-        tripType: "관광지",
-        serviceArea: "전주",
-        tripPeriod: "2025-10-05 ~ 2025-10-10",
-        details: "비빔밥 맛집을 들러주세요",
-      },
-    ],
-  };
-
-  const ITEMS_PER_LOAD = 5;
-  const [visiblePlans, setVisiblePlans] = useState<Plan[]>([]);
-  const [loadedCount, setLoadedCount] = useState(0);
-  const observerRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const { ref, inView } = useInView();
 
   useEffect(() => {
-    setVisiblePlans(planData.plans.slice(0, ITEMS_PER_LOAD));
-    setLoadedCount(ITEMS_PER_LOAD);
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      setIsModalOpen(true);
+    } else {
+      setAccessToken(token);
+    }
   }, []);
 
-  const loadMorePlans = () => {
-    setVisiblePlans((prev) => {
-      const nextBatch = planData.plans.slice(prev.length, prev.length + ITEMS_PER_LOAD);
-      return [...prev, ...nextBatch];
-    });
-    setLoadedCount((prev) => prev + ITEMS_PER_LOAD);
+  const handleConfirm = () => {
+    setIsModalOpen(false);
+    router.push("/login");
   };
 
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    router.push("/");
+  };
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: ["ongoingPlans", { status: ["PENDING", "CONFIRMED"] }],
+    initialPageParam: 1, // 처음 페이지는 1로 시작
+    queryFn: ({ pageParam = 1 }) =>
+      planService.getPlanList({
+        status: ["PENDING", "CONFIRMED"],
+        page: pageParam,
+        pageSize: 5,
+      }),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.list.length === 5 ? allPages.length + 1 : undefined;
+    },
+    enabled: !!accessToken, // 토큰이 있을 때만 요청
+    placeholderData: keepPreviousData, // 이전 데이터 유지
+  });
+
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          loadMorePlans();
-        }
-      },
-      { rootMargin: "200px", threshold: 0.1 },
-    );
-
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
+    if (inView && hasNextPage) {
+      fetchNextPage();
     }
+  }, [inView, fetchNextPage, hasNextPage]);
 
-    return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
-      }
-    };
-  }, [visiblePlans]);
+  const planData = data?.pages.map((page) => page.list).flat() || [];
 
   return (
     <>
       <MyPlanNav />
       <Layout bodyClass="bg-gray">
         <MyPlanList
-          visiblePlans={visiblePlans}
-          loadedCount={loadedCount}
-          totalPlans={planData.plans.length}
-          ref={observerRef}
           title="진행 중인"
           status="ongoing"
+          visiblePlans={planData}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
         />
       </Layout>
+      <div ref={ref} className="h-10">
+        {isFetchingNextPage && (
+          <div className="flex items-center justify-center py-4">
+            <span>플랜을 불러오는 중...</span>
+          </div>
+        )}
+      </div>
+      {isModalOpen && (
+        <ReceiveModalLayout label="로그인 필요" closeModal={() => setIsModalOpen(false)}>
+          <p className="text-lg">로그인이 필요한 서비스입니다.</p>
+          <div className="mt-6 flex justify-end space-x-4">
+            <button className="px-4 py-2 text-gray-500" onClick={handleCancel}>
+              취소
+            </button>
+            <button className="rounded-lg bg-blue-500 px-4 py-2 text-white" onClick={handleConfirm}>
+              확인
+            </button>
+          </div>
+        </ReceiveModalLayout>
+      )}
     </>
   );
 }

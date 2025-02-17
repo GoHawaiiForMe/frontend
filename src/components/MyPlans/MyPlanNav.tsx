@@ -28,10 +28,10 @@ export default function MyPlanNav() {
             종료된 플랜
           </button>
         </Link>
-        <Link href="/mytrip-manage/expired-plan">
+        <Link href="/mytrip-manage/overdue-plan">
           <button
             className={`py-[16px] ${
-              activeTab === "expired-plan" ? "border-b-2 border-black text-color-black-500" : ""
+              activeTab === "overdue-plan" ? "border-b-2 border-black text-color-black-500" : ""
             }`}
           >
             만료된 플랜

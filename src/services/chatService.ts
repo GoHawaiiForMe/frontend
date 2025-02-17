@@ -35,7 +35,6 @@ const chatService = {
           image: user.image,
         })),
       }));
-
       return chatRooms;
     } catch (error) {
       console.error("채팅방 목록 get 실패", error);
@@ -62,7 +61,6 @@ const chatService = {
         type: item.type,
         isDeleted: item.isDeleted,
       }));
-      console.log(messages);
       return messages;
     } catch (error) {
       console.error("메시지 목록 get 실패", error);

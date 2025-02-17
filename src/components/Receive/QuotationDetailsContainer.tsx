@@ -40,7 +40,7 @@ export default function QuotationDetailsContainer({
     <>
       <div className="mb-12 mr-[117px] w-full rounded-[16px] border border-color-line-100 px-4 pb-[12px] pt-[20px] shadow-md mobile:mx-[auto] mobile:mb-6 mobile:px-[14px] mobile:py-[16px] tablet:mx-[auto] tablet:mb-8 mobile-tablet:mr-0">
         <div className="flex flex-col">
-          <Link href={`/planDetail/${data.id}`}>
+          <Link href={`/plan-detail/${data.id}`}>
             <div className="mb-4 flex items-center justify-between text-xs text-color-gray-500">
               <div className="flex items-center gap-2">
                 {waitingQuotation()}

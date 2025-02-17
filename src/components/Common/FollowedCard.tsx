@@ -16,6 +16,8 @@ export interface FollowedCardProps {
   totalFollows: number;
   totalConfirms: number;
   serviceTypes: string[];
+  makerId: string;
+  onClick?: () => void;
 }
 
 export type LabelTypes =
@@ -38,18 +40,23 @@ export default function FollowedCard({
   totalFollows,
   totalConfirms,
   serviceTypes,
+  makerId,
+  onClick,
 }: FollowedCardProps) {
   const avatarImage = avatarImages.find((avatar) => avatar.key === image);
 
   return (
     <>
-      <div className="flex w-full flex-col gap-5 rounded-2xl border border-color-line-100 p-5 shadow-md card:gap-0">
+      <div
+        className="flex w-full flex-col gap-5 rounded-2xl border border-color-line-100 p-5 shadow-md card:gap-0"
+        onClick={onClick}
+      >
         <div className="flex flex-row gap-2">
           {serviceTypes.map((serviceType, index) => (
             <Label key={index} labelType={serviceType as LabelTypes} />
           ))}
         </div>
-        <div className="flex rounded-md border border-color-line-100 p-4">
+        <div key={makerId} className="flex rounded-md border border-color-line-100 p-4">
           <div className="mr-5 flex min-h-20 min-w-20 items-center">
             <Image
               src={avatarImage ? avatarImage.src : default_img}

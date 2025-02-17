@@ -14,6 +14,7 @@ import avatarImages from "@/utils/formatImage";
 import { formatTripType, TripType } from "@/utils/formatTripType";
 import { convertRegionToKorean, ServiceArea } from "@/utils/formatRegion";
 import { formatToSimpleDate } from "@/utils/formatDate";
+import link from "@public/assets/icon_link.svg";
 
 export function MyPage() {
   const router = useRouter();
@@ -114,8 +115,9 @@ export function MyPage() {
                   href={profileInfo?.gallery}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="cursor-pointer text-lg text-color-gray-300 underline hover:text-color-blue-300"
+                  className="flex items-center gap-1 cursor-pointer text-lg text-color-gray-300 underline hover:text-color-blue-300"
                 >
+                  <Image src={link} alt="링크이미지" width={24} height={24} />
                   SNS
                 </a>
               </div>

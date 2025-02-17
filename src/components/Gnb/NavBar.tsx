@@ -18,6 +18,8 @@ import { useQuery } from "@tanstack/react-query";
 import avatarImages from "@/utils/formatImage";
 import { useRef } from "react";
 import useRealTimeNotification from "@/stores/useRealTimeNotification";
+import ChargeModal from "./ChargeModal";
+import { getAccessToken } from "@/utils/tokenUtils";
 
 interface LinkItem {
   href: string;
@@ -54,6 +56,7 @@ const NavBar = () => {
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const notificationRef = useRef<HTMLDivElement | null>(null);
   const sideBarRef = useRef<HTMLDivElement | null>(null);
+  const [isChargeModalOpen, setIsChargeModalOpen] = useState(false);
 
   const router = useRouter();
   const { realTimeNotifications } = useRealTimeNotification();
@@ -82,7 +85,7 @@ const NavBar = () => {
       case "receive":
         return ["/receive", "/all-receive-plan"].includes(router.pathname);
       case "managequo":
-        return ["/managequo", "/rejectlist"].includes(router.pathname);
+        return ["/managequo", "/reject-list"].includes(router.pathname);
       case "mytrip-manage":
         return router.pathname.startsWith("/mytrip-manage/");
       default:
@@ -134,8 +137,7 @@ const NavBar = () => {
   }, [isLoggedIn, notificationData]);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-
+    const accessToken = getAccessToken();
     if (accessToken) {
       const fetchUserInfo = async () => {
         try {
@@ -145,7 +147,7 @@ const NavBar = () => {
           setUserInfo(userData);
           const avatarImage = avatarImages.find((avatar) => avatar.key === profileData.image);
           setUserImage(avatarImage ? avatarImage.src : user_img.src);
-          setLogin(userData.nickName, userData.role, userData.coconut);
+          setLogin(userData.nickName, userData.role, userData.coconut,userData.email,userData.phoneNumber);
         } catch (error) {
           console.error(error);
         }
@@ -218,8 +220,6 @@ const NavBar = () => {
                   className="cursor-pointer"
                 />
               </Link>
-              <span className="absolute right-0 top-0 h-2 w-2 animate-ping rounded-full bg-color-red-200"></span>
-              <span className="absolute right-0 top-0 h-2 w-2 rounded-full bg-color-red-200"></span>
             </div>
             <div className="relative">
               <Image
@@ -263,7 +263,14 @@ const NavBar = () => {
             </div>
             {isOpenUserMenu && (
               <div ref={userMenuRef} className="absolute z-50">
-                <UserMenu userId={userInfo?.id} closeMenu={handleCloseUserMenu} />
+                <UserMenu
+                  userId={userInfo?.id}
+                  closeMenu={handleCloseUserMenu}
+                  onChargeClick={() => {
+                    setIsChargeModalOpen(true);
+                    handleCloseUserMenu();
+                  }}
+                />
               </div>
             )}
           </>
@@ -319,6 +326,10 @@ const NavBar = () => {
             </div>
           ))}
         </div>
+      )}
+
+      {isChargeModalOpen && (
+        <ChargeModal coconut={coconut} setIsChargeModalOpen={setIsChargeModalOpen} />
       )}
     </div>
   );
