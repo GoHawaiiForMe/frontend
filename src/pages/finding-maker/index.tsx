@@ -5,7 +5,7 @@ import CardFindMaker from "@/components/Common/CardFindMaker";
 import SearchBar from "@/components/Common/SearchBar";
 import Link from 'next/link';
 import useAuthStore from "@/stores/useAuthStore";
-import { getMakers, ServiceType } from '@/services/userService';
+import userService, { ServiceType } from '@/services/userService';
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import followService, { FollowedCardProps } from "@/services/followService";
@@ -35,7 +35,7 @@ export default function FindingMaker() {
     ],
     initialPageParam: 1,
     queryFn: ({ pageParam = 1 }) =>
-      getMakers(
+      userService.getMakers(
         orderBy, 
         serviceArea, 
         serviceType, 

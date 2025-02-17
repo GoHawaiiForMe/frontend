@@ -11,6 +11,7 @@ export type ServiceType =
   | "REQUEST"
   | "PENDING"
   | "CONFIRMED";
+
 export interface UserInfo {
   id: string;
   role: Role;
@@ -191,29 +192,29 @@ const userService = {
       console.error("메이커 프로필 조회 실패", error);
     }
   },
+
+  getMakers: async (
+    orderBy: string,
+    serviceArea: string,
+    serviceType: string,
+    pageParam?: number,
+    pageSize?: number,
+    keyword?: string,
+  ): Promise<MakerResponse> => {
+    try {
+      const url =
+        `/users/makers?page=${pageParam}&pageSize=${pageSize}` +
+        `${orderBy ? `&orderBy=${orderBy}` : ""}` +
+        `${serviceArea ? `&serviceArea=${serviceArea}` : ""}` +
+        `${serviceType ? `&serviceType=${serviceType}` : ""}` +
+        `${keyword ? `&keyword=${keyword}` : ""}`;
+      const response = await api.get(url);
+      return response as MakerResponse;
+    } catch (error) {
+      console.error("Error fetching makers:", error);
+      throw error;
+    }
+  },
 };
 
 export default userService;
-
-export const getMakers = async (
-  orderBy: string,
-  serviceArea: string,
-  serviceType: string,
-  pageParam?: number,
-  pageSize?: number,
-  keyword?: string,
-): Promise<MakerResponse> => {
-  try {
-    const url =
-      `/users/makers?page=${pageParam}&pageSize=${pageSize}` +
-      `${orderBy ? `&orderBy=${orderBy}` : ""}` +
-      `${serviceArea ? `&serviceArea=${serviceArea}` : ""}` +
-      `${serviceType ? `&serviceType=${serviceType}` : ""}` +
-      `${keyword ? `&keyword=${keyword}` : ""}`;
-    const response = await api.get(url);
-    return response as MakerResponse;
-  } catch (error) {
-    console.error("Error fetching makers:", error);
-    throw error;
-  }
-};
