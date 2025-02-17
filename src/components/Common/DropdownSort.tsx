@@ -3,9 +3,19 @@ import Image from 'next/image';
 import downGray from '@public/assets/dropdown_down_gray.svg';
 
 const placeholder = '리뷰 많은순';
-const items = ['리뷰 많은순','평점 높은순', '경력 높은순', '확정 많은순'];
+const items = ['리뷰 많은순', '평점 높은순', '확정 많은순'];
 
-const DropdownSort = () => {
+const sortMapping: Record<string, string> = {
+  '리뷰 많은순': 'totalReviews',
+  '평점 높은순': 'averageRating',
+  '확정 많은순': 'totalConfirms',
+};
+
+interface DropdownSortProps {
+  onSort: (sortKey: string) => void;
+}
+
+const DropdownSort = ({ onSort }: DropdownSortProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string>(placeholder);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -27,8 +37,15 @@ const DropdownSort = () => {
     };
   }, []);
 
+  const handleItemClick = (item: string) => {
+    setSelectedItem(item);
+    setIsOpen(false);
+    const sortKey = sortMapping[item];
+    onSort(sortKey);
+  };
+
   return (
-    <div ref={dropdownRef} className="w-full relative ">
+    <div ref={dropdownRef} className="w-full relative">
       <button
         onClick={toggleDropdown}
         className="w-[114px] h-[40px] px-[10px] py-2 flex justify-between items-center rounded-[8px] cursor-pointer transition duration-200 bg-color-gray-50"
@@ -43,17 +60,14 @@ const DropdownSort = () => {
         />
       </button>
       {isOpen && (
-        <div className="w-[114px] h-[160px] rounded-[8px] border border-color-line-100 absolute top-full z-50 shadow-sm overflow-y-scroll transition-all duration-300 ease-in-out bg-white
-        mobile-tablet:w-[91px] mobile-tablet:h-[127px] 
+        <div className="w-[114px] h-[120px] rounded-[8px] border border-color-line-100 absolute top-full z-50 shadow-sm overflow-y-scroll transition-all duration-300 ease-in-out bg-white
+        mobile-tablet:w-[91px] mobile-tablet:h-[95px] 
         ">
           <div className="flex flex-col w-full">
             {items.map((item, index) => (
               <button
                 key={index}
-                onClick={() => {
-                  setSelectedItem(item);
-                  setIsOpen(false);
-                }}
+                onClick={() => handleItemClick(item)}
                 className="text-md border-b border-color-gray-50 px-[10px] py-2 font-normal text-color-black-400 cursor-pointer transition duration-200 hover:bg-gray-100 
                 mobile-tablet:py-1.5 mobile-tablet:pr-1.5 mobile-tablet:pl-2 mobile-tablet:text-xs"
               >
