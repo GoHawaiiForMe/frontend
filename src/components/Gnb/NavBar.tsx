@@ -28,8 +28,8 @@ interface LinkItem {
 }
 
 enum NavigationPath {
-  FINDING_MAKER = "/plan-request",
-  PLAN_REQUEST = "/finding-maker",
+  FINDING_MAKER = "/finding-maker",
+  PLAN_REQUEST = "/plan-request",
   MY_TRIP_MANAGE = "/mytrip-manage/ongoing-plan",
   RECEIVE = "/receive",
   MANAGE_QUO = "/managequo",
