@@ -4,7 +4,7 @@ import MyCompletedTripList from "@/components/MyReviews/MyCompletedTripList";
 import MyReviewNav from "@/components/MyReviews/MyReviewNav";
 import { useEffect, useState } from "react";
 import planService from "@/services/planService";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import loading from "@public/assets/icon_loading.gif";
 import icon_emptyfile from "@public/assets/icon_emptyfile.svg";
@@ -31,13 +31,14 @@ export function ReviewableTrip() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["readyTocomplete", currentPage],
-    queryFn: () => planService.getReviewablePlan(),
+    queryFn: () => planService.getReviewablePlan({ page: currentPage, pageSize }),
+    placeholderData: keepPreviousData,
     enabled: !!accessToken, // 토큰이 있을 때만 요청
   });
 
   const totalPages = Math.ceil((data?.totalCount || 1) / pageSize);
   const planData = data?.list.flat() || [];
-
+  console.log(planData);
   return (
     <>
       <MyReviewNav />

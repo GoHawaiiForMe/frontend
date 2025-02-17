@@ -86,12 +86,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4N
 
 
 ### 완료 가능 플랜 불러오기(dreamer)
-GET https://www.goforme.duckdns.org/plans/dreamer?readyToComplete=true
+GET https://www.goforme.duckdns.org/plans/dreamer?readyToComplete=true&page=1&pageSize=6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTcwMjM5OCwiZXhwIjoxNzM5Nzg4Nzk4fQ.6csBmIW50ciTMkV3iMzjBus0jxAO-4D6ppWj-2Rby-0
 
 
 ### 리뷰가능한 플랜 목록 조회(dreamer)
-GET https://www.goforme.duckdns.org/plans/dreamer?reviewed=false
+GET https://www.goforme.duckdns.org/plans/dreamer?reviewed=false&page=1&pageSize=6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTcwMjM5OCwiZXhwIjoxNzM5Nzg4Nzk4fQ.6csBmIW50ciTMkV3iMzjBus0jxAO-4D6ppWj-2Rby-0
 
 

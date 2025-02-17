@@ -6,7 +6,7 @@ import Image from "next/image";
 import loading from "@public/assets/icon_loading.gif";
 import { useEffect, useState } from "react";
 import planService from "@/services/planService";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import icon_emptyfile from "@public/assets/icon_emptyfile.svg";
 import withAuthAccess from "@/stores/withAuthAccess";
 
@@ -30,7 +30,8 @@ export function CompletedTrip() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["readyTocomplete", currentPage],
-    queryFn: () => planService.getReadyToCompletePlan(),
+    queryFn: () => planService.getReadyToCompletePlan({ page: currentPage, pageSize }),
+    placeholderData: keepPreviousData,
     enabled: !!accessToken, // 토큰이 있을 때만 요청
   });
 

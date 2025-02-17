@@ -30,8 +30,8 @@ export default function ReviewForm({ planDetail, closeModal }: ReviewFormProps) 
         content: review,
         planId: planDetail.id,
       });
-
       alert("리뷰가 등록되었습니다!");
+      window.location.reload();
       closeModal();
     } catch (error) {
       console.log(`리뷰 등록에 실패 하였습니다. ${error}`);

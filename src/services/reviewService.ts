@@ -37,6 +37,11 @@ export interface CreateReview {
   planId: string;
 }
 
+interface pageParams {
+  page: number;
+  pageSize: number;
+}
+
 const reviewService = {
   createReview: async (reviewData: CreateReview) => {
     try {
@@ -48,9 +53,12 @@ const reviewService = {
     }
   },
 
-  getMyReviews: async (): Promise<reviewProps> => {
+  getMyReviews: async (params: pageParams): Promise<reviewProps> => {
     try {
-      const response = await api.get<reviewProps, {}>(`/reviews/me`);
+      const { page = 1, pageSize = 6 } = params;
+      const queryString = `?page=${page}&pageSize=${pageSize}`;
+      const response = await api.get<reviewProps, {}>(`/reviews/me${queryString}`);
+
       return response;
     } catch (error) {
       console.error("리뷰 목록 조회 실패", error);

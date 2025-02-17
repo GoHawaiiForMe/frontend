@@ -4,7 +4,7 @@ import MyReviewList from "@/components/MyReviews/MyReviewList";
 import MyReviewNav from "@/components/MyReviews/MyReviewNav";
 import reviewService from "@/services/reviewService";
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import loading from "@public/assets/icon_loading.gif";
 import icon_emptyfile from "@public/assets/icon_emptyfile.svg";
@@ -31,11 +31,12 @@ export function ReviewedTrip() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["readyTocomplete", currentPage],
-    queryFn: () => reviewService.getMyReviews(),
+    queryFn: () => reviewService.getMyReviews({ page: currentPage, pageSize }),
+    placeholderData: keepPreviousData,
     enabled: !!accessToken, // 토큰이 있을 때만 요청
   });
 
-  const totalPages = Math.ceil((data?.totalCount || 1) / pageSize);
+  const totalPages = Math.max(1, Math.ceil((data?.totalCount || 1) / pageSize));
   const reviewData = data?.list.flat() || [];
 
   return (

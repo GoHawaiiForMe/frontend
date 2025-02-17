@@ -45,6 +45,11 @@ interface Statistic {
   count: number;
 }
 
+interface pageParams {
+  page: number;
+  pageSize: number;
+}
+
 const planService = {
   planRequest: async (data: any) => {
     try {
@@ -137,18 +142,26 @@ const planService = {
     }
   },
 
-  getReadyToCompletePlan: async () => {
+  getReadyToCompletePlan: async (params: pageParams) => {
     try {
-      const response = await api.get<PlanResponse, {}>(`/plans/dreamer?readyToComplete=true`);
+      const { page = 1, pageSize = 6 } = params;
+      const queryString = `&page=${page}&pageSize=${pageSize}`;
+      const response = await api.get<PlanResponse, {}>(
+        `/plans/dreamer?readyToComplete=true${queryString}`,
+      );
       return response;
     } catch (error) {
       console.error("완료 플랜 조회 실패", error);
     }
   },
 
-  getReviewablePlan: async () => {
+  getReviewablePlan: async (params: pageParams) => {
     try {
-      const response = await api.get<PlanResponse, {}>(`/plans/dreamer?reviewed=false`);
+      const { page = 1, pageSize = 6 } = params;
+      const queryString = `&page=${page}&pageSize=${pageSize}`;
+      const response = await api.get<PlanResponse, {}>(
+        `/plans/dreamer?reviewed=false${queryString}`,
+      );
       return response;
     } catch (error) {
       console.error("리뷰 작성 가능 플랜 조회 실패", error);

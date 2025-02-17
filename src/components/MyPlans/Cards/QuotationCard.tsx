@@ -40,6 +40,7 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
     try {
       await QuotationServiceDreamer.confirmQuotation({ isConfirmed: true }, quotationDetail.id);
       alert("플랜이 확정되었습니다.");
+      window.location.reload();
     } catch (error) {
       alert(`플랜 확정에 실패했습니다. 다시 시도해주세요. ${error}`);
     }

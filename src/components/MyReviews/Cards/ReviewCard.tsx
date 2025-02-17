@@ -2,6 +2,7 @@ import Image from "next/image";
 import Label from "@/components/Common/Label";
 import StarRating from "@/components/Receive/StarRating";
 import { Review } from "@/services/reviewService";
+import { formatToSimpleDate } from "@/utils/formatDate";
 
 interface ReviewCardProps {
   reviewDetail: Review;
@@ -18,7 +19,7 @@ export default function ReviewCard({ reviewDetail }: ReviewCardProps) {
           )}
         </div>
         <p className="regular text-2lg text-color-gray-300 mobile-tablet:hidden">
-          작성일 {reviewDetail.createdAt}
+          작성일 {formatToSimpleDate(reviewDetail.createdAt)}
         </p>
       </div>
       <div className="border-color bg-body.bg-gray mobile-tablet:px-[10px]mobile-tablet:border-color my-6 flex gap-6 rounded-md border-[1px] px-[18px] py-4 mobile-tablet:my-[14px] mobile-tablet:gap-3 mobile-tablet:rounded-none mobile-tablet:border-b-[1px] mobile-tablet:px-[10px]">
