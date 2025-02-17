@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Label from "@/components/Common/Label";
 import icon_like_red from "@public/assets/icon_like_red.png";
-import img_avatar1 from "@public/assets/img_avatar1.svg";
 import icon_active_star from "@public/assets/icon_active_star.svg";
 import link from "@public/assets/icon_link.svg";
 import Link from "next/link";
+import { Plan } from "@/services/planService";
+import { formatToDetailedDate } from "@/utils/formatDate";
+import { QuotationServiceDreamer } from "@/services/quotationServiceDreamer";
 
 interface MakerInfo {
   nickName: string;
@@ -29,20 +31,35 @@ interface QuotationDetail {
 }
 
 interface QuotationCardProps {
-  quotationDetail: QuotationDetail; // prop 타입 정의
+  planDetail: Plan;
+  quotationDetail: QuotationDetail;
 }
 
-export default function QuotationCard({ quotationDetail }: QuotationCardProps) {
+export default function QuotationCard({ quotationDetail, planDetail }: QuotationCardProps) {
+  async function handleConfirmButton() {
+    try {
+      await QuotationServiceDreamer.confirmQuotation({ isConfirmed: true }, quotationDetail.id);
+      alert("플랜이 확정되었습니다.");
+    } catch (error) {
+      alert(`플랜 확정에 실패했습니다. 다시 시도해주세요. ${error}`);
+    }
+  }
+
   return (
     <div className="mb-[32px] flex flex-col rounded-2xl bg-color-gray-50 px-6 py-7 shadow mobile-tablet:px-3 mobile-tablet:py-4">
       <div className="justify-left flex items-center gap-[12px] mobile-tablet:mt-[6px]">
-        <Label labelType="RELAXATION" customLabelContainerClass="rounded-lg" />
-        <Label labelType="REQUEST" customLabelContainerClass="rounded-lg" />
+        {quotationDetail.isConfirmed !== false && (
+          <Label labelType="CONFIRMED" customLabelContainerClass="rounded-lg" />
+        )}
+        <Label labelType={planDetail.tripType} customLabelContainerClass="rounded-lg" />
+        {quotationDetail.isAssigned !== false && (
+          <Label labelType="REQUEST" customLabelContainerClass="rounded-lg" />
+        )}
       </div>
       <div className="border-color bg-body.bg-gray my-6 flex gap-6 rounded-md border-[1px] px-[18px] py-4 mobile-tablet:my-[14px] mobile-tablet:gap-3 mobile-tablet:px-[10px]">
         <div className="flex h-20 w-20 flex-shrink-0 items-center mobile-tablet:h-[46px] mobile-tablet:w-[46px]">
           <Image
-            src={img_avatar1}
+            src={`/assets/img_avatar${quotationDetail.maker.image.split("_")[1]}.svg`}
             alt="프로필사진"
             width={80}
             height={80}
@@ -102,7 +119,7 @@ export default function QuotationCard({ quotationDetail }: QuotationCardProps) {
               여행일
             </p>
             <p className="medium text-2lg text-color-black-300 mobile-tablet:text-md">
-              2024.07.01(월)
+              {formatToDetailedDate(planDetail.tripDate)}
             </p>
           </div>
           <p className="text-color-line-200 mobile-tablet:hidden">ㅣ</p>
@@ -111,7 +128,7 @@ export default function QuotationCard({ quotationDetail }: QuotationCardProps) {
               여행지
             </p>
             <p className="whitespace-nowrap text-2lg font-medium leading-[26px] text-color-black-300 mobile-tablet:text-md">
-              서울 강남구
+              {planDetail.serviceArea}
             </p>
           </div>
         </div>
@@ -124,11 +141,20 @@ export default function QuotationCard({ quotationDetail }: QuotationCardProps) {
         </div>
       </div>
       <div className="flex justify-between gap-[11px] mobile:flex-col">
-        <button className="semibold w-full text-nowrap rounded-lg bg-color-blue-300 px-[32.5px] py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]">
-          플랜 확정하기
-        </button>
+        {planDetail.status !== "CONFIRMED" && (
+          <button
+            className="semibold w-full text-nowrap rounded-lg bg-color-blue-300 px-[32.5px] py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]"
+            onClick={handleConfirmButton}
+          >
+            플랜 확정하기
+          </button>
+        )}
         <button className="semibold w-full text-nowrap rounded-lg border-[1px] border-solid border-color-blue-300 px-[32.5px] py-4 text-xl text-color-blue-300 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]">
-          <Link href={`/mytrip-manage/requestdetail-dreamer/${quotationDetail.id}`}>상세보기</Link>
+          <Link
+            href={`/mytrip-manage/quotationdetail-dreamer/${planDetail.id}/${quotationDetail.id}`}
+          >
+            상세보기
+          </Link>
         </button>
       </div>
     </div>

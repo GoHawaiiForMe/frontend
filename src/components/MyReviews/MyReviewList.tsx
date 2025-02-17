@@ -1,15 +1,17 @@
 import ReviewCard from "./Cards/ReviewCard";
+import { Review } from "@/services/reviewService";
 
-export default function MyReviewList() {
+interface MyReviewListProps {
+  reviews: Review[];
+}
+
+export default function MyReviewList({ reviews }: MyReviewListProps) {
   return (
     <>
       <div className="items-center justify-center gap-4 pc:grid pc:grid-cols-2 mobile-tablet:flex mobile-tablet:flex-col">
-        <ReviewCard />
-        <ReviewCard />
-        <ReviewCard />
-        <ReviewCard />
-        <ReviewCard />
-        <ReviewCard />
+        {reviews.map((review) => (
+          <ReviewCard key={review.id} reviewDetail={review} />
+        ))}
       </div>
     </>
   );

@@ -33,8 +33,8 @@ export default function CompletedPlan() {
     router.push("/");
   };
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["ongoingPlans", { status: ["OVERDUE"] }],
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
+    queryKey: ["completedPlans", { status: ["COMPLETED"] }],
     initialPageParam: 1, // 처음 페이지는 1로 시작
     queryFn: ({ pageParam = 1 }) =>
       planService.getPlanList({
@@ -68,6 +68,7 @@ export default function CompletedPlan() {
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          isLoading={isLoading}
         />
       </Layout>
       {isModalOpen && (

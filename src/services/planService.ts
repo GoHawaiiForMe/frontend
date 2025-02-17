@@ -1,4 +1,5 @@
 import { api } from "./api";
+import { ServiceArea } from "@/utils/formatRegion";
 
 export interface Plan {
   id: string;
@@ -6,13 +7,27 @@ export interface Plan {
   updatedAt: string;
   title: string;
   tripDate: string;
-  tripType: string;
-  serviceArea: string;
+  tripType: any;
+  serviceArea: ServiceArea;
   details: string;
   address?: string;
   status: string;
   assignees: [];
-  dreamer: {};
+  dreamer: {
+    id: string;
+    nickName: string;
+  };
+  quotes?: quoteInfo[];
+}
+
+export interface quoteInfo {
+  id: string;
+  price: number;
+  maker: {
+    id: string;
+    nickName: string;
+    image: string;
+  };
 }
 
 interface PlanResponse {
@@ -88,6 +103,7 @@ const planService = {
       throw error;
     }
   },
+
   getPendingPlan: async () => {
     try {
       const response = await api.get<PlanResponse, {}>(`/plans/dreamer?status=PENDING`);
@@ -96,6 +112,7 @@ const planService = {
       console.error("지정 플랜 조회 실패", error);
     }
   },
+
   postPlanRequest: async (planId: string, assigneeId: string) => {
     try {
       const response = await api.post(`/plans/${planId}/assign`, { assigneeId });
@@ -106,6 +123,7 @@ const planService = {
       }
     }
   },
+
   getStatistics: async (serviceArea?: string): Promise<StatisticResponse> => {
     try {
       const queryString = serviceArea ? `?serviceArea=${serviceArea}` : "";
@@ -116,6 +134,33 @@ const planService = {
     } catch (error) {
       console.error("통계 자료 조회 실패", error);
       throw error;
+    }
+  },
+
+  getReadyToCompletePlan: async () => {
+    try {
+      const response = await api.get<PlanResponse, {}>(`/plans/dreamer?readyToComplete=true`);
+      return response;
+    } catch (error) {
+      console.error("완료 플랜 조회 실패", error);
+    }
+  },
+
+  getReviewablePlan: async () => {
+    try {
+      const response = await api.get<PlanResponse, {}>(`/plans/dreamer?reviewed=false`);
+      return response;
+    } catch (error) {
+      console.error("리뷰 작성 가능 플랜 조회 실패", error);
+    }
+  },
+
+  deletePlan: async (planId: string) => {
+    try {
+      const response = await api.delete(`/plans/${planId}`);
+      return response;
+    } catch (error) {
+      console.error("플랜 취소 실패", error);
     }
   },
 };

@@ -1,13 +1,19 @@
 import Image from "next/image";
-import img_avatar1 from "@public/assets/img_avatar1.svg";
+import loading from "@public/assets/icon_loading.gif";
 import Label from "@/components/Common/Label";
 import ReceiveModalLayout from "@/components/Receive/ReceiveModalLayout";
 import ReviewForm from "@/components/Common/ReviewForm";
+import { formatToDetailedDate } from "@/utils/formatDate";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import CompleteTrip from "@/components/Common/CompleteTrip";
+import { Plan } from "@/services/planService";
 
-export default function TripCard() {
+interface TripCardProps {
+  planDetail: Plan;
+}
+
+export default function TripCard({ planDetail }: TripCardProps) {
   const router = useRouter();
   const [isReviewModalOpen, setIsReviewModalOpen] = useState<boolean>(false);
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState<boolean>(false);
@@ -21,6 +27,14 @@ export default function TripCard() {
   const openCompleteModal = () => setIsCompleteModalOpen(true);
   const closeCompleteModal = () => setIsCompleteModalOpen(false);
 
+  if (!planDetail) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Image src={loading} alt="로딩 중" />
+      </div>
+    );
+  }
+
   return (
     <div className="mb-[32px] flex flex-col rounded-2xl bg-color-gray-50 px-6 py-7 mobile-tablet:px-3 mobile-tablet:py-4">
       <div className="justify-left flex items-center gap-[12px] mobile-tablet:mt-[6px]">
@@ -29,7 +43,7 @@ export default function TripCard() {
       <div className="border-color bg-body.bg-gray my-6 flex gap-6 rounded-md border-[1px] px-[18px] py-4 mobile-tablet:my-[14px] mobile-tablet:gap-3 mobile-tablet:px-[10px]">
         <div className="flex h-20 w-20 flex-shrink-0 items-center mobile-tablet:h-[46px] mobile-tablet:w-[46px]">
           <Image
-            src={img_avatar1}
+            src={`/assets/img_avatar${planDetail.quotes?.[0]?.maker.image.split("_")[1]}.svg`}
             alt="프로필사진"
             width={80}
             height={80}
@@ -38,16 +52,22 @@ export default function TripCard() {
         </div>
         <div className="flex w-full">
           <div className="w-full flex-col items-center justify-between text-xs text-color-black-500">
-            <p className="semibold text-xl mobile-tablet:text-lg">김코드 Maker</p>
+            <p className="semibold text-xl mobile-tablet:text-lg">
+              {planDetail ? planDetail.quotes?.[0]?.maker.nickName : "-"}
+            </p>
             <div className="flex items-center gap-2 mobile-tablet:gap-1">
               <div className="medium flex flex-shrink-0 gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                 <p>여행일</p>
-                <p className="text-color-gray-400">2024.07.01(월)</p>
+                <p className="text-color-gray-400">
+                  {planDetail ? formatToDetailedDate(planDetail.tripDate) : "-"}
+                </p>
               </div>
               <p className="text-color-line-200">ㅣ</p>
               <div className="medium flex flex-shrink-0 gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                 <p>플랜가</p>
-                <p className="text-color-gray-400">210,000원</p>
+                <p className="text-color-gray-400">
+                  {planDetail ? planDetail.quotes?.[0]?.price : "-"}원
+                </p>
               </div>
             </div>
           </div>
@@ -78,7 +98,7 @@ export default function TripCard() {
       )}
       {isReviewModalOpen && (
         <ReceiveModalLayout label="리뷰 작성" closeModal={closeReviewModal}>
-          <ReviewForm />
+          <ReviewForm planDetail={planDetail} closeModal={closeReviewModal} />
         </ReceiveModalLayout>
       )}
     </div>

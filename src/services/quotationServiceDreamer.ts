@@ -72,4 +72,14 @@ export const QuotationServiceDreamer = {
       throw error;
     }
   },
+
+  confirmQuotation: async (payload: { isConfirmed: boolean }, quoteId: string) => {
+    try {
+      const response = await api.patch(`quotes/${quoteId}/confirm`, payload);
+      return response;
+    } catch (error) {
+      console.error("견적 확정에 실패 하였습니다.", error);
+      throw error;
+    }
+  },
 };

@@ -7,6 +7,8 @@ import { useInfiniteQuery, keepPreviousData } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useInView } from "react-intersection-observer";
+import Image from "next/image";
+import loading from "@public/assets/icon_loading.gif";
 
 export default function OngoingPlan() {
   const router = useRouter();
@@ -33,7 +35,7 @@ export default function OngoingPlan() {
     router.push("/");
   };
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
     queryKey: ["ongoingPlans", { status: ["PENDING", "CONFIRMED"] }],
     initialPageParam: 1, // 처음 페이지는 1로 시작
     queryFn: ({ pageParam = 1 }) =>
@@ -68,12 +70,13 @@ export default function OngoingPlan() {
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          isLoading={isLoading}
         />
       </Layout>
       <div ref={ref} className="h-10">
         {isFetchingNextPage && (
-          <div className="flex items-center justify-center py-4">
-            <span>플랜을 불러오는 중...</span>
+          <div className="flex h-screen items-center justify-center">
+            <Image src={loading} alt="로딩 중" />
           </div>
         )}
       </div>
