@@ -11,7 +11,7 @@ import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 
 const fetchFollowData = async ({ pageParam = 1 }) => {
-  return await followService.getFollow(pageParam, 10);
+  return await followService.getFollow(pageParam, 6);
 };
 
 export default function FollowMaker() {
@@ -23,7 +23,7 @@ export default function FollowMaker() {
     queryFn: fetchFollowData,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
-      return lastPage.length > 0 ? allPages.length + 1 : null;
+      return lastPage.length > 0 ? allPages.length + 1 : undefined;
     },
   });
 
