@@ -1,5 +1,6 @@
 import { setAccessToken } from "@/utils/tokenUtils";
 import { api } from "./api";
+import { BAD_REQUEST, INTERNAL_SERVER_ERROR, UNAUTHORIZED } from "@/utils/errorStatus";
 
 interface OAuthResponse {
   provider?: string;
@@ -27,25 +28,30 @@ const authService = {
         const response = await api.post("/auth/signup");
         return response;
       }
-    } catch (error) {
-      console.error("회원가입 실패", error);
-      throw error;
+    } catch (error: any) {
+      if (error.response && error.response.status === BAD_REQUEST) {
+        throw new Error("이미 존재하는 사용자입니다.");
+      }
     }
   },
   checkNickName: async (data: { nickName: string }) => {
     try {
       const response = await api.post("/auth/check/nickName", data);
       return response;
-    } catch (error) {
-      console.error("닉네임 체크 불가", error);
+    } catch (error: any) {
+      if (error.response && error.response.status === INTERNAL_SERVER_ERROR) {
+        throw new Error("email이 없습니다.");
+      }
     }
   },
   checkEmail: async (data: { email: string }) => {
     try {
       const response = await api.post("/auth/check/email", data);
       return response;
-    } catch (error) {
-      console.error("이메일 체크 불가", error);
+    } catch (error: any) {
+      if (error.response && error.response.status === INTERNAL_SERVER_ERROR) {
+        throw new Error("닉네임이 없습니다.");
+      }
     }
   },
   login: async (data: { email: string; password: string }): Promise<LoginResponse> => {
@@ -57,45 +63,52 @@ const authService = {
       setAccessToken(response.accessToken);
 
       return response;
-    } catch (error) {
-      console.error("로그인 실패:", error);
-      throw error;
+    } catch (error: any) {
+      if (error.response && error.response.status === BAD_REQUEST) {
+        throw new Error("유저 정보가 일치하지 않습니다.");
+      }
+      throw new Error("로그인 중 오류가 발생했습니다.");
     }
   },
   googleLogin: async () => {
     try {
       const response = await api.get<OAuthResponse, Record<string, unknown>>("/auth/google");
       return response.redirectUrl;
-    } catch (error) {
-      console.error("구글 로그인 실패", error);
-      throw error;
+    } catch (error: any) {
+      if (error.response && error.response.status === INTERNAL_SERVER_ERROR) {
+        throw new Error("구글 프로필 정보를 가져올 수 없습니다.");
+      }
     }
   },
   kakaoLogin: async () => {
     try {
       const response = await api.get<OAuthResponse, Record<string, unknown>>("/auth/kakao");
       return response.redirectUrl;
-    } catch (error) {
-      console.error("카카오 로그인 실패", error);
-      throw error;
+    } catch (error: any) {
+      if (error.response && error.response.status === INTERNAL_SERVER_ERROR) {
+        throw new Error("카카오 프로필 정보를 가져올 수 없습니다.");
+      }
     }
   },
   naverLogin: async () => {
     try {
       const response = await api.get<OAuthResponse, Record<string, unknown>>("/auth/naver");
       return response.redirectUrl;
-    } catch (error) {
-      console.error("네이버 로그인 실패", error);
-      throw error;
+    } catch (error: any) {
+      if (error.response && error.response.status === INTERNAL_SERVER_ERROR) {
+        throw new Error("네이버 프로필 정보를 가져올 수 없습니다.");
+      }
     }
   },
   refreshToken: async (): Promise<string> => {
     try {
       const response: RefreshTokenResponse = await api.post("/auth/refresh/token", true);
       return response.accessToken;
-    } catch (error) {
-      console.error("리프레시 토큰 발급 실패", error);
-      throw error;
+    } catch (error: any) {
+      if (error.response && error.response.status === UNAUTHORIZED) {
+        throw new Error("리프레시 토큰이 없거나 만료되었습니다.");
+      }
+      throw new Error("토큰 발급 중 오류가 발생했습니다.");
     }
   },
 };

@@ -1,4 +1,5 @@
 import { api } from "./api";
+import { BAD_REQUEST } from "@/utils/errorStatus";
 
 export interface FollowedCardProps {
   image: string;
@@ -34,7 +35,7 @@ const followService = {
       }));
       return followedItems;
     } catch (error) {
-      console.error("찜한 메이커 get 실패", error);
+      console.error("찜한 메이커 get 실패하였습니다.", error);
       throw error;
     }
   },
@@ -42,16 +43,20 @@ const followService = {
     try {
       const response = await api.post("/follow", { makerId });
       return response;
-    } catch (error) {
-      console.error("찜하기를 실패했습니다", error);
+    } catch (error: any) {
+      if (error.response && error.response.status === BAD_REQUEST) {
+        throw new Error("이미 찜한 메이커입니다다.");
+      }
     }
   },
   deleteFollow: async (makerId: string) => {
     try {
       const response = await api.delete("/follow", { data: { makerId } });
       return response;
-    } catch (error) {
-      console.error("찜하기 취소를 실패했습니다", error);
+    } catch (error: any) {
+      if (error.response && error.response.status === BAD_REQUEST) {
+        throw new Error("찜하지 않은 메이커입니다.");
+      }
     }
   },
 };

@@ -1,6 +1,7 @@
 import { ChatRoom, Message, User } from "@/types/chatData";
 import { api } from "./api";
 import { io, Socket } from "socket.io-client";
+import { BAD_REQUEST, CONFLICT, FORBIDDEN, NOT_FOUND } from "@/utils/errorStatus";
 
 interface FileUploadResponse {
   id: string;
@@ -37,7 +38,7 @@ const chatService = {
       }));
       return chatRooms;
     } catch (error) {
-      console.error("채팅방 목록 get 실패", error);
+      console.error("채팅방 목록 조회에 실패했습니다.", error);
       throw error;
     }
   },
@@ -62,9 +63,12 @@ const chatService = {
         isDeleted: item.isDeleted,
       }));
       return messages;
-    } catch (error) {
-      console.error("메시지 목록 get 실패", error);
-      throw error;
+    } catch (error: any) {
+      if (error.response && error.response.status === FORBIDDEN) {
+        throw new Error("해당 채팅방 유저가 아닙니다.");
+      } else {
+        throw new Error("해당 채팅방이 없습니다.");
+      }
     }
   },
   connectWebSocket: (
@@ -146,16 +150,28 @@ const chatService = {
     try {
       const response = await api.delete(`/chats/${chatId}`);
       return response;
-    } catch (error) {
-      console.error("메시지 삭제 실패", error);
+    } catch (error: any) {
+      if (error.response && error.response.status === NOT_FOUND) {
+        throw new Error("해당 채팅은 이미 삭제되었거나 없는 채팅입니다.");
+      } else if (error.response && error.response.status === BAD_REQUEST) {
+        throw new Error("해당 채팅방은 비활성화가 되었습니다.");
+      } else if (error.response && error.response.status === CONFLICT) {
+        throw new Error("이미 삭제된 메시지입니다.");
+      }
     }
   },
   downloadFile: async (chatId: string) => {
     try {
       const response = await api.get(`/chats/${chatId}/downloadFile`);
       return response;
-    } catch (error) {
-      console.error("파일 다운로드드 실패", error);
+    } catch (error: any) {
+      if (error.response && error.response.status === NOT_FOUND) {
+        throw new Error("내용이 없습니다.");
+      } else if (error.response && error.response.status === BAD_REQUEST) {
+        throw new Error("텍스트이거나 삭제된 메시지입니다.");
+      } else if (error.response && error.response.status === FORBIDDEN) {
+        throw new Error("본인이 속한 채팅방이 아닙니다.");
+      }
     }
   },
 };
