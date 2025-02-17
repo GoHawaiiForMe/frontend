@@ -1,6 +1,6 @@
 import { api } from "./api";
 
-interface FollowedCardProps {
+export interface FollowedCardProps {
   image: string;
   nickName: string;
   gallery: string;
@@ -9,6 +9,7 @@ interface FollowedCardProps {
   totalFollows: number;
   totalConfirms: number;
   serviceTypes: string[];
+  description: string;
   makerId: string;
 }
 
@@ -29,6 +30,7 @@ const followService = {
         totalConfirms: item.maker.totalConfirms,
         makerId: item.makerId,
         serviceTypes: item.maker.serviceTypes,
+        description: item.maker.description,
       }));
       return followedItems;
     } catch (error) {
