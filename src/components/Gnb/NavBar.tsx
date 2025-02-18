@@ -306,26 +306,33 @@ const NavBar = () => {
       </div>
 
       {/* 사이드바 */}
-      {isOpenSidebar && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-end bg-black bg-opacity-50">
-          <div className="flex h-full w-[220px] flex-col bg-white p-4 shadow-lg" ref={sideBarRef}>
-            <div className="mb-4 flex justify-end">
-              <Image
-                src={closeIcon}
-                alt="닫기"
-                width={36}
-                height={36}
-                className="cursor-pointer"
-                onClick={() => setIsOpenSidebar(false)}
-              />
-            </div>
-            <div className="h-0.5 bg-color-line-100"></div>
-            <ul className="bold mt-6 flex cursor-pointer flex-col gap-y-10 space-y-4 text-lg">
-              {renderLinks()}
-            </ul>
+      <div
+        className={`fixed inset-0 z-[9999] flex items-center justify-end bg-black bg-opacity-50 transition-opacity duration-500 ${
+          isOpenSidebar ? "visible opacity-100" : "invisible opacity-0"
+        }`}
+      >
+        <div
+          ref={sideBarRef}
+          className={`fixed right-0 top-0 h-full w-[220px] rounded-l-2xl bg-white p-4 shadow-lg transition-transform duration-500 ease-in-out ${
+            isOpenSidebar ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="mb-4 flex justify-end">
+            <Image
+              src={closeIcon}
+              alt="닫기"
+              width={36}
+              height={36}
+              className="cursor-pointer"
+              onClick={() => setIsOpenSidebar(false)}
+            />
           </div>
+          <div className="h-0.5 bg-color-line-100"></div>
+          <ul className="bold mt-6 flex cursor-pointer flex-col gap-y-10 space-y-4 text-lg">
+            {renderLinks()}
+          </ul>
         </div>
-      )}
+      </div>
       {/* 실시간 알림 */}
       {hasNotifications && (
         <div className="fixed left-0 top-20 z-50 flex w-full flex-col gap-2 px-4 py-2">
