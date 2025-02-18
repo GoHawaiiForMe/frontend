@@ -50,7 +50,7 @@ export default function QuotationDetailsContainer({
               <div className="">{writeTime}</div>
             </div>
             <div>
-              <p className="text-xl font-semibold">{data.plan.title}</p>
+              <p className="text-xl semibold">{data.plan.title}</p>
               <p className="mb-[18px] border-b border-color-line-200 pb-[18px] text-md font-medium">
                 {data.dreamer.nickName} 님
               </p>
@@ -81,12 +81,12 @@ export default function QuotationDetailsContainer({
                 twoButton ? "hidden" : ""
               }`}
             >
-              <p className="whitespace-nowrap text-xl font-semibold text-white">견적 보내기</p>
+              <p className="whitespace-nowrap text-xl semibold text-white">견적 보내기</p>
               <Image src={writing} alt="send" width={24} height={24} />
             </button>
             <button
               onClick={onReject}
-              className={`w-full items-center justify-center rounded-[16px] border border-color-blue-300 bg-white p-4 text-xl font-semibold text-color-blue-300 mobile:p-3 tablet:p-3 ${oneButton ? "hidden" : ""} `}
+              className={`w-full items-center justify-center rounded-[16px] border border-color-blue-300 bg-white p-4 text-xl semibold text-color-blue-300 mobile:p-3 tablet:p-3 ${oneButton ? "hidden" : ""} `}
             >
               반려
             </button>

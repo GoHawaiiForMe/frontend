@@ -54,7 +54,7 @@ const SearchBar = ({
         onChange={handleChange}
         onKeyPress={handleKeyPress}
         placeholder={placeholder}
-        className="h-[64px] w-full rounded-[16px] border-none bg-color-background-200 pl-[60px] pr-[24px] text-[16px] font-normal leading-[32px] text-color-gray-400"
+        className="h-[64px] w-full rounded-[16px] border-none bg-color-background-200 pl-[60px] pr-[24px] text-[16px] font-normal leading-[32px] text-black"
       />
     </div>
   );

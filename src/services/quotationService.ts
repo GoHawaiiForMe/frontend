@@ -1,6 +1,7 @@
 import { api } from "./api";
 import { PlanItem } from "./requestService";
 import { UserInfo } from "./userService";
+import { FORBIDDEN, NOT_FOUND } from "@/utils/errorStatus";
 
 export interface QuotationItem extends PlanItem {
   id: string;
@@ -58,7 +59,13 @@ export const getQuotationDetail = async (id: string): Promise<QuotationItem> => 
   try {
     const response = await api.get<QuotationItem, {}>(`/quotes/${id}`);
     return response;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.response?.status === NOT_FOUND) {
+      throw new Error("존재하지 않는 견적입니다.");
+    }
+    if (error.response?.status === FORBIDDEN) {
+      throw new Error("잘못된 접근입니다.");
+    }
     console.error("견적 상세 조회 실패", error);
     throw error;
   }

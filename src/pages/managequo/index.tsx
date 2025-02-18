@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import withAuthAccess from "@/stores/withAuthAccess";
+import Image from "next/image";
+import loading from "@public/assets/icon_loading.gif";
 
 export function ManageQuo() {
   const { ref, inView } = useInView();
@@ -26,7 +28,11 @@ export function ManageQuo() {
   }, [inView, hasNextPage, fetchNextPage]);
 
   if (isLoading) {
-    return <div>견적 목록 로딩 중...</div>;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Image src={loading} alt="로딩 중" />
+      </div>
+    );
   }
 
   const allItems = data?.pages.flatMap((page) => page.list) ?? [];
@@ -36,12 +42,12 @@ export function ManageQuo() {
       <div className="mx-[auto] w-full mobile:mx-[auto] tablet:mx-[auto]">
         <div className="flex items-center gap-8 border-b border-color-line-200">
           <Link href="/managequo">
-            <p className="text-4 cursor-pointer border-b-[3px] border-black py-6 font-semibold">
+            <p className="text-4 cursor-pointer border-b-[3px] border-black py-6 semibold">
               보낸 견적 조회
             </p>
           </Link>
           <Link href="/reject-list">
-            <p className="text-4 cursor-pointer font-semibold">반려된 견적</p>
+            <p className="text-4 cursor-pointer semibold">반려된 견적</p>
           </Link>
         </div>
       </div>
