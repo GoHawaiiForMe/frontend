@@ -153,6 +153,9 @@ const NavBar = () => {
     if (accessToken) {
       const fetchUserInfo = async () => {
         try {
+          const userData = await userService.getUserInfo();
+
+          setUserInfo(userData);
           const avatarImage = avatarImages.find((avatar) => avatar.key === profileImage);
           setUserImage(avatarImage ? avatarImage.src : user_img.src);
           setLogin(nickName, role, coconut, email, phoneNumber, profileImage);
