@@ -42,10 +42,10 @@ export function RejectList() {
       <div className="mx-[auto] mobile:mx-[auto] mobile:w-[327px] tablet:mx-[auto] tablet:w-[600px]">
         <div className="flex items-center gap-8 border-b border-color-line-200">
           <Link href="/managequo">
-            <p className="text-4 cursor-pointer font-semibold">보낸 견적 조회</p>
+            <p className="text-4 semibold cursor-pointer">보낸 견적 조회</p>
           </Link>
           <Link href="/reject-list">
-            <p className="text-4 cursor-pointer border-b-[3px] border-black py-6 font-semibold">
+            <p className="text-4 semibold cursor-pointer border-b-[3px] border-black py-6">
               반려된 견적
             </p>
           </Link>

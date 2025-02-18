@@ -113,7 +113,7 @@ export default function ChargeModal({
       <ReceiveModalLayout label="코코넛 충전" closeModal={() => setIsChargeModalOpen(false)}>
         <form onSubmit={handleSubmit} className="mt-3 flex flex-col gap-8 p-4">
           <div className="flex flex-col gap-4">
-            <p className="text-lg font-semibold">현재 보유중인 코코넛</p>
+            <p className="text-lg semibold">현재 보유중인 코코넛</p>
             <div className="flex items-center gap-2">
               <Image src={coconut_icon} alt="코코넛" width={32} height={32} />
               <p className="text-2xl font-bold">{coconut}개</p>
@@ -121,7 +121,7 @@ export default function ChargeModal({
           </div>
 
           <div className="flex flex-col gap-4">
-            <p className="text-lg font-semibold">충전할 코코넛</p>
+            <p className="text-lg semibold">충전할 코코넛</p>
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <input
@@ -159,9 +159,9 @@ export default function ChargeModal({
             </div>
           </div>
           <div className="flex items-center justify-between gap-2">
-            <p className="text-lg font-semibold">충전 갯수</p>
+            <p className="text-lg semibold">충전 갯수</p>
             <div className="flex items-center gap-2">
-              <p className="text-md font-semibold">{amount ? amount.toLocaleString() : 0}개 /</p>
+              <p className="text-md semibold">{amount ? amount.toLocaleString() : 0}개 /</p>
               <p className="text-xl font-bold text-color-blue-300">
                 {amount ? (amount * 100).toLocaleString() : 0}원
               </p>
@@ -171,7 +171,7 @@ export default function ChargeModal({
             type="submit"
             aria-busy={isWaitingPayment}
             disabled={isWaitingPayment}
-            className="w-full rounded-lg bg-color-blue-300 py-4 text-lg font-semibold text-white hover:bg-color-blue-200"
+            className="w-full rounded-lg bg-color-blue-300 py-4 text-lg semibold text-white hover:bg-color-blue-200"
           >
             충전하기
           </button>

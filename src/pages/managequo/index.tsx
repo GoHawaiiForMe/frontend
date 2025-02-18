@@ -42,12 +42,12 @@ export function ManageQuo() {
       <div className="mx-[auto] w-full mobile:mx-[auto] tablet:mx-[auto]">
         <div className="flex items-center gap-8 border-b border-color-line-200">
           <Link href="/managequo">
-            <p className="text-4 cursor-pointer border-b-[3px] border-black py-6 font-semibold">
+            <p className="text-4 cursor-pointer border-b-[3px] border-black py-6 semibold">
               보낸 견적 조회
             </p>
           </Link>
           <Link href="/reject-list">
-            <p className="text-4 cursor-pointer font-semibold">반려된 견적</p>
+            <p className="text-4 cursor-pointer semibold">반려된 견적</p>
           </Link>
         </div>
       </div>

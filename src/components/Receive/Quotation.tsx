@@ -60,7 +60,7 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
           {specifyMaker}
         </div>
         <div className="mb-8 mt-6 w-[560px] rounded-[8px] border border-color-line-200 py-6 mobile:mt-6 mobile:w-[327px] mobile:border-none mobile:py-[10px] tablet:mt-6 tablet:w-[327px] tablet:border-none tablet:py-[10px]">
-          <p className="mb-2 px-[18px] text-2xl font-semibold mobile:px-0 mobile:text-2lg tablet:pl-0 tablet:text-2lg">
+          <p className="mb-2 px-[18px] text-2xl semibold mobile:px-0 mobile:text-2lg tablet:pl-0 tablet:text-2lg">
             {data.title}
           </p>
           <p className="mb-[18px] border-b border-color-line-200 pb-[18px] pl-[18px] text-md font-medium text-color-gray-500 mobile:px-0 mobile:text-sm tablet:pl-0 tablet:text-sm">
@@ -88,7 +88,7 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
         </div>
       </div>
       <div className="mb-[64px] mobile:mb-10 tablet:mb-10">
-        <p className="text-2xl font-semibold">견적 코코넛을 입력해 주세요</p>
+        <p className="text-2xl semibold">견적 코코넛을 입력해 주세요</p>
         <input
           type="number"
           placeholder="코코넛 갯수 입력"
@@ -98,7 +98,7 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
         />
       </div>
       <div className="mb-10 mobile:mb-6 tablet:mb-6">
-        <p className="text-2xl font-semibold mobile:text-2lg tablet:text-2lg">
+        <p className="text-2xl semibold mobile:text-2lg tablet:text-2lg">
           코멘트를 입력해 주세요
         </p>
         <textarea
@@ -118,7 +118,7 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
         {showError && <p className="text-md font-bold text-red-500">10글자 이상 작성해 주세요</p>}
       </div>
       <button
-        className={`h-[64px] w-[560px] rounded-[16px] text-xl font-semibold text-white ${
+        className={`h-[64px] w-[560px] rounded-[16px] text-xl semibold text-white ${
           isButtonEnabled ? "bg-color-blue-300" : "cursor-not-allowed bg-color-gray-100"
         } mobile:h-[48px] mobile:w-[327px] mobile:text-lg tablet:h-[54px] tablet:w-[327px] tablet:text-lg`}
         disabled={!isButtonEnabled || quoteMutation.isPending}

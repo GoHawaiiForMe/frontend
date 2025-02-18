@@ -91,10 +91,10 @@ export function AllReceivePlan() {
       <div className="mx-[auto] w-full mobile:mx-[auto] tablet:mx-[auto]">
         <div className="mb-8 flex items-center gap-8 border-b border-color-line-200">
           <Link href="/receive">
-            <p className="text-4 cursor-pointer font-semibold">받은 견적 요청</p>
+            <p className="text-4 cursor-pointer semibold">받은 견적 요청</p>
           </Link>
           <Link href="/all-receive-plan">
-            <p className="text-4 cursor-pointer border-b-[3px] border-black py-6 font-semibold">
+            <p className="text-4 cursor-pointer border-b-[3px] border-black py-6 semibold">
               전체 플랜
             </p>
           </Link>
@@ -106,7 +106,7 @@ export function AllReceivePlan() {
           <SearchBar value={searchValue} onChange={handleSearchChange} onSearch={handleSearch} />
           <div className="mb-8 mt-4 flex w-full items-center justify-between mobile:mx-[auto] tablet:mx-[auto]">
             <div className="flex items-center gap-2">
-              <p className="font-semibold">전체 {totalCount} 건</p>
+              <p className="semibold">전체 {totalCount} 건</p>
               {isFetching && !isLoading && (
                 <div className="flex items-center gap-2 text-blue-500">
                   <div className="h-2 w-2 animate-pulse rounded-full bg-blue-500"></div>
@@ -151,7 +151,7 @@ export function AllReceivePlan() {
               ) : (
                 <div className="flex flex-col items-center justify-center">
                   <Image src={request_empty} alt="request_empty" width={300} height={300} />
-                  <p className="text-xl font-semibold text-color-gray-300">
+                  <p className="text-xl semibold text-color-gray-300">
                     아직 받은 요청이 없어요!
                   </p>
                 </div>
