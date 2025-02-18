@@ -53,8 +53,8 @@ export default function FollowedCard({
       >
         <div className="flex flex-row gap-2 overflow-hidden">
           {serviceTypes.map((serviceType, index) => (
-            <div className="flex-shrink-0 overflow-hidden whitespace-nowrap">
-              <Label key={index} labelType={serviceType as LabelTypes} />
+            <div key={index} className="flex-shrink-0 overflow-hidden whitespace-nowrap">
+              <Label key={serviceType} labelType={serviceType as LabelTypes} />
             </div>
           ))}
         </div>
