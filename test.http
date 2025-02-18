@@ -1,3 +1,5 @@
+@HOST_NAME=http://localhost:4000
+
 ### 회원가입 요청 테스트
 
 POST https://go-for-me.onrender.com/user/signup
@@ -87,14 +89,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4N
 
 ### 완료 가능 플랜 불러오기(dreamer)
 GET https://www.goforme.duckdns.org/plans/dreamer?readyToComplete=true&page=1&pageSize=6
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTcwMjM5OCwiZXhwIjoxNzM5Nzg4Nzk4fQ.6csBmIW50ciTMkV3iMzjBus0jxAO-4D6ppWj-2Rby-0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTgwMDQxNSwiZXhwIjoxNzM5ODg2ODE1fQ.VKDq_T-dg2NK6xRC_2GeSNLXBLGD2SyIzbaAXWmfrfc
 
 
 ### 리뷰가능한 플랜 목록 조회(dreamer)
 GET https://www.goforme.duckdns.org/plans/dreamer?reviewed=false&page=1&pageSize=6
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTcwMjM5OCwiZXhwIjoxNzM5Nzg4Nzk4fQ.6csBmIW50ciTMkV3iMzjBus0jxAO-4D6ppWj-2Rby-0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTgwMDQxNSwiZXhwIjoxNzM5ODg2ODE1fQ.VKDq_T-dg2NK6xRC_2GeSNLXBLGD2SyIzbaAXWmfrfc
 
 
 ### 작성한 리뷰 목록 조회(dreamer)
 GET https://www.goforme.duckdns.org/reviews/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTcwMjM5OCwiZXhwIjoxNzM5Nzg4Nzk4fQ.6csBmIW50ciTMkV3iMzjBus0jxAO-4D6ppWj-2Rby-0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTgwMDQxNSwiZXhwIjoxNzM5ODg2ODE1fQ.VKDq_T-dg2NK6xRC_2GeSNLXBLGD2SyIzbaAXWmfrfc
+
+
+### 완료 가능 플랜 불러오기(dreamer)
+GET {{HOST_NAME}}/plans/dreamer?readyToComplete=true&page=1&pageSize=6
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTgwMDQxNSwiZXhwIjoxNzM5ODg2ODE1fQ.VKDq_T-dg2NK6xRC_2GeSNLXBLGD2SyIzbaAXWmfrfc

@@ -7,7 +7,7 @@ import planService from "@/services/planService";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import loading from "@public/assets/icon_loading.gif";
-import icon_emptyfile from "@public/assets/icon_emptyfile.svg";
+import icon_luggage_frown from "@public/assets/icon_luggage_frown.svg";
 import Link from "next/link";
 import withAuthAccess from "@/stores/withAuthAccess";
 
@@ -46,7 +46,7 @@ export function ReviewableTrip() {
         <div className="my-10">
           {planData.length === 0 && (
             <div className="flex h-screen flex-col items-center justify-center gap-8">
-              <Image src={icon_emptyfile} alt="비어있음" />
+              <Image src={icon_luggage_frown} alt="비어있음" />
               <p className="regular text-2xl text-color-gray-400">아직 완료된 여행이 없어요!</p>
               <Link href="/myreview-manage/completed-trip">
                 <button className="semibold w-full text-nowrap rounded-lg bg-color-blue-300 px-[32.5px] py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]">

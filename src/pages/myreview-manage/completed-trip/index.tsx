@@ -7,7 +7,7 @@ import loading from "@public/assets/icon_loading.gif";
 import { useEffect, useState } from "react";
 import planService from "@/services/planService";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import icon_emptyfile from "@public/assets/icon_emptyfile.svg";
+import icon_luggage_frown from "@public/assets/icon_luggage_frown.svg";
 import withAuthAccess from "@/stores/withAuthAccess";
 
 export function CompletedTrip() {
@@ -45,7 +45,7 @@ export function CompletedTrip() {
         <div className="my-10">
           {planData.length === 0 && (
             <div className="flex h-screen flex-col items-center justify-center gap-8">
-              <Image src={icon_emptyfile} alt="비어있음" />
+              <Image src={icon_luggage_frown} alt="비어있음" />
               <p className="regular text-2xl text-color-gray-400">
                 아직 완료 가능한 여행이 없어요!
               </p>
