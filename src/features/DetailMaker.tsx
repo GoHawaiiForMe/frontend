@@ -238,8 +238,8 @@ export default function RequestDetailDreamer() {
             <div className="flex-grow">
               <div className="mobile-tablet:mt-[6px]">
                 <div className="custom-scrollbar mb-3 flex max-w-full gap-2 overflow-x-auto">
-                  {makerProfileInfo?.serviceTypes.map((type) => (
-                    <div className="mb-3 flex-shrink-0">
+                  {makerProfileInfo?.serviceTypes.map((type, index) => (
+                    <div key={index} className="mb-3 flex-shrink-0">
                       <Label key={type} labelType={type as TripType} />
                     </div>
                   ))}
