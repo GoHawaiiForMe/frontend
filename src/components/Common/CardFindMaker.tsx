@@ -69,8 +69,7 @@ const CardFindMaker = ({
      ${cardClassName} ${cardSize === 'sm' ? '!w-[327px] !h-[188px] py-4 px-[14px]' : ''} tablet:w-full tablet:h-[188px] mobile:w-full mobile:h-[188px]`}>
       <div className="flex mb-2 gap-4">
         
-      
-      {(serviceTypes || []).map((type, index) => (
+      {(serviceTypes || []).slice(0, cardSize === 'sm' ? 2 : serviceTypes.length).map((type, index) => (
         <Label 
           key={`${type}-${index}`}
           labelType={type}
