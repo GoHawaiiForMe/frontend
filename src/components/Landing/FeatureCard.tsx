@@ -8,7 +8,7 @@ interface FeatureCardProps {
 
 export default function FeatureCard({ imageUrl, title, description }: FeatureCardProps) {
   return (
-    <div className="hover:shadow-3xl group w-[350px] rounded-2xl bg-white/95 p-8 shadow-2xl transition-all duration-300 hover:-translate-y-1">
+    <div className="hover:shadow-3xl group w-full rounded-2xl bg-white/95 p-8 shadow-2xl transition-all duration-300 hover:-translate-y-1">
       <div className="overflow-hidden rounded-xl">
         <Image
           src={imageUrl}
