@@ -35,8 +35,8 @@ apiClient.interceptors.response.use(
 
         error.config.headers["Authorization"] = `Bearer ${accessToken}`;
         return apiClient(error.config);
-      } catch (error) {
-        console.error("리프레시 토큰 발급 실패", error);
+      } catch (error: any) {
+        alert(error.message);
         return Promise.reject(error);
       }
     }

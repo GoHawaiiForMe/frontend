@@ -18,7 +18,7 @@ const notificationService = {
       );
       return response;
     } catch (error) {
-      console.error("알림 get 실패", error);
+      console.error("알림을 불러오는데 실패했습니다.", error);
       throw error;
     }
   },
@@ -32,7 +32,7 @@ const notificationService = {
       );
       return response;
     } catch (error) {
-      console.error("알림 patch 실패", error);
+      console.error("알림 읽음 처리를 실패했습니다.", error);
       throw error;
     }
   },

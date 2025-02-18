@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { setAccessToken } from "@/utils/tokenUtils";
 import Hero from "@/components/Landing/Hero";
 import Features from "@/components/Landing/Features";
-import MapMarker from "@/components/Common/MapMarker";
+import MapMarker from "@/components/Landing/MapMarker";
 import beachBackground7 from "@public/assets/Landing-img/img_07.jpg";
 
 export default function Home() {
@@ -24,7 +24,7 @@ export default function Home() {
     <>
       <style>
         {`
-    @media (min-width: 200px) and (max-width: 2400px) {
+    @media (min-width: 200px) and (max-width: 2700px) {
       .main-container {
         padding: 0;
       }

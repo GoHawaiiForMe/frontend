@@ -1,3 +1,4 @@
+import { UNAUTHORIZED } from "@/utils/errorStatus";
 import { api } from "./api";
 
 type Role = "DREAMER" | "MAKER";
@@ -132,9 +133,10 @@ const userService = {
   }): Promise<void> => {
     try {
       await api.patch("/users/update", payload);
-    } catch (error) {
-      console.error("기본 정보 수정 실패", error);
-      throw error;
+    } catch (error: any) {
+      if (error.response && error.response.status === UNAUTHORIZED) {
+        throw new Error("기존 비밀번호와 일치하지 않습니다.");
+      }
     }
   },
 

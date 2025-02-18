@@ -106,79 +106,85 @@ export default function MapMarker() {
   };
 
   return (
-    <div className="flex">
-      {/* 지도 */}
-      <div className="w-full">
-        <ComposableMap
-          projection="geoMercator"
-          projectionConfig={{ center: [127, 36], scale: 6000 }}
-          style={{ width: "700px", height: "800px" }}
-        >
-          {geoData && (
-            <Geographies geography={geoData}>
-              {({ geographies }) =>
-                geographies.map((geo) => (
-                  <Geography key={geo.rsmKey} geography={geo} fill="#ACD2EB" stroke="#ddd" />
-                ))
-              }
-            </Geographies>
+    <>
+      <div className="bold mb-7 mt-7 flex justify-center">
+        <h1 className="mb-10 mt-24 text-4xl">🛬 사용자 이용현황 🛬</h1>
+      </div>
+      <div className="-mr-16 flex items-center rounded-xl bg-color-blue-400 bg-opacity-15 mobile-tablet:ml-0 mobile-tablet:flex-col">
+        {/* 지도 */}
+        <div className="sw-full mobile-tablet:order-2">
+          <ComposableMap
+            projection="geoMercator"
+            projectionConfig={{ center: [127, 36], scale: 6000 }}
+            className="h-[800px] w-[700px] mobile:h-[500px] mobile:w-[500px] tablet:h-[600px] tablet:w-[600px]"
+          >
+            {geoData && (
+              <Geographies geography={geoData}>
+                {({ geographies }) =>
+                  geographies.map((geo) => (
+                    <Geography key={geo.rsmKey} geography={geo} fill="#FFF2F2" />
+                  ))
+                }
+              </Geographies>
+            )}
+            {markers.map(({ name, coordinates }) => (
+              <Marker
+                key={name}
+                coordinates={coordinates as [number, number]}
+                onClick={() => handleMarkerClick(name)}
+              >
+                <text
+                  textAnchor="middle"
+                  x={10}
+                  y={0}
+                  fontSize={12}
+                  fill="#0F171F"
+                  fontWeight="bold"
+                  className="cursor-pointer"
+                >
+                  {name}
+                </text>
+                <path
+                  d="M0,0 C6,-12 6,-18 0,-20 C-6,-18 -6,-12 0,0 Z"
+                  fill="#FF8383"
+                  transform="translate(-8, 5) scale(1.2)"
+                  className="cursor-pointer"
+                />
+              </Marker>
+            ))}
+          </ComposableMap>
+        </div>
+
+        {/* 통계 */}
+        <div className="flex h-[400px] w-1/3 flex-col items-center rounded-xl bg-color-gray-50 p-4 shadow-2xl pc:-ml-5 mobile-tablet:order-1 mobile-tablet:mt-10 mobile-tablet:w-[400px]">
+          {selectedRegion ? (
+            <>
+              <h2 className="text-lg font-bold">{regionNames[selectedRegion.name]} 통계</h2>
+              <p>총 서비스 수: {selectedRegion.totalCount}</p>
+
+              <PieChart width={300} height={300}>
+                <Pie
+                  data={selectedRegion.details}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  label
+                >
+                  {selectedRegion.details.map((entry, index) => (
+                    <Cell key={`cell${index}`} fill={entry.fill} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+              <p className="text-sm">마커를 클릭하면 해당 지역 통계를 볼 수 있습니다.</p>
+            </>
+          ) : (
+            <p>마커를 클릭하면 해당 지역 통계를 볼 수 있습니다.</p>
           )}
-          {markers.map(({ name, coordinates }) => (
-            <Marker
-              key={name}
-              coordinates={coordinates as [number, number]}
-              onClick={() => handleMarkerClick(name)}
-            >
-              <text
-                textAnchor="middle"
-                x={10}
-                y={0}
-                fontSize={10}
-                fill="#0F171F"
-                className="cursor-pointer"
-              >
-                {name}
-              </text>
-              <path
-                d="M0,0 C6,-12 6,-18 0,-20 C-6,-18 -6,-12 0,0 Z"
-                fill="#FF8383"
-                transform="translate(-8, 5)"
-                className="cursor-pointer"
-              />
-            </Marker>
-          ))}
-        </ComposableMap>
+        </div>
       </div>
-
-      {/* 통계 */}
-      <div className="w-1/3 p-4">
-        {selectedRegion ? (
-          <>
-            <h2 className="text-lg font-bold">{regionNames[selectedRegion.name]} 통계</h2>
-            <p>총 서비스 수: {selectedRegion.totalCount}</p>
-
-            <PieChart width={300} height={300}>
-              <Pie
-                data={selectedRegion.details}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                label
-              >
-                {selectedRegion.details.map((entry, index) => (
-                  <Cell key={`cell${index}`} fill={entry.fill} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-            <p className="text-sm">마커를 클릭하면 해당 지역 통계를 볼 수 있습니다.</p>
-          </>
-        ) : (
-          <p>마커를 클릭하면 해당 지역 통계를 볼 수 있습니다.</p>
-        )}
-      </div>
-    </div>
+    </>
   );
 }
