@@ -51,9 +51,11 @@ export default function FollowedCard({
         className="flex w-full flex-col gap-5 rounded-2xl border border-color-line-100 bg-color-gray-50 p-5 shadow-md hover:scale-[1.01]"
         onClick={onClick}
       >
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2 overflow-hidden">
           {serviceTypes.map((serviceType, index) => (
-            <Label key={index} labelType={serviceType as LabelTypes} />
+            <div className="flex-shrink-0 overflow-hidden whitespace-nowrap">
+              <Label key={index} labelType={serviceType as LabelTypes} />
+            </div>
           ))}
         </div>
         <div key={makerId} className="flex rounded-md border border-color-line-100 p-4">
