@@ -170,7 +170,7 @@ export function MyPage() {
         </div>
       </div>
       <div>
-        <p className="mb-8 text-lg font-bold">리뷰({totalItems})</p>
+        <p className="mb-8 text-xl mobile-tablet:text-lg font-bold">리뷰({totalItems})</p>
         <div className="mb-10 flex items-center justify-center gap-10 mobile:flex-col">
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="flex items-end gap-2">

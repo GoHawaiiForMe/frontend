@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import withAuthAccess from "@/stores/withAuthAccess";
+import Image from "next/image";
+import loading from "@public/assets/icon_loading.gif";
 
 export function ManageQuo() {
   const { ref, inView } = useInView();
@@ -26,7 +28,11 @@ export function ManageQuo() {
   }, [inView, hasNextPage, fetchNextPage]);
 
   if (isLoading) {
-    return <div>견적 목록 로딩 중...</div>;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Image src={loading} alt="로딩 중" />
+      </div>
+    );
   }
 
   const allItems = data?.pages.flatMap((page) => page.list) ?? [];

@@ -1,7 +1,3 @@
-import Image from "next/image";
-import clipshare from "@public/assets/icon_outline.png";
-import facebook from "@public/assets/icon_facebook.png";
-import kakao from "@public/assets/icon_kakao.png";
 import withAuthAccess from "@/stores/withAuthAccess";
 import { useRouter } from "next/router";
 import { getQuotationDetail } from "@/services/quotationService";
@@ -11,6 +7,9 @@ import { convertRegionToKorean } from "@/utils/formatRegion";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import { formatTripType } from "@/utils/formatTripType";
 import { useEffect } from "react";
+import ShareSNS from "@/components/Common/ShareSNS";
+import loading from "@public/assets/icon_loading.gif";
+import Image from "next/image";
 
 // Facebook SDK 타입 정의
 
@@ -67,14 +66,18 @@ export function QuotationDetail() {
     return window.open(`http://www.facebook.com/sharer/sharer.php?u=${location.href}`);
   };
 
-  if (isLoading) {
-    return <div>로딩중...</div>;
+  if (isLoading || !quotationDetail) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Image src={loading} alt="로딩 중" />
+      </div>
+    );
   }
 
-  const writeTime = formatToDetailedDate(quotationDetail?.plan.createdAt ?? "");
-  const tripDate = formatToDetailedDate(quotationDetail?.plan.tripDate ?? "");
-  const region = convertRegionToKorean(quotationDetail?.plan.serviceArea ?? "SEOUL");
-  const tripType = formatTripType(quotationDetail?.plan.tripType ?? "CULTURE");
+  const writeTime = formatToDetailedDate(quotationDetail.plan.createdAt);
+  const tripDate = formatToDetailedDate(quotationDetail.plan.tripDate);
+  const region = convertRegionToKorean(quotationDetail.plan.serviceArea);
+  const tripType = formatTripType(quotationDetail.plan.tripType);
 
   return (
     <>
@@ -96,33 +99,10 @@ export function QuotationDetail() {
             견적서 공유하기
           </p>
           <div className="flex items-center gap-4">
-            <Image
-              src={clipshare}
-              alt="clipshare"
-              onClick={handleCopyUrl}
-              className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
-              width={64}
-              height={64}
-            />
-
-            <Image
-              src={kakao}
-              alt="kakao"
-              id="kakaotalk-sharing-btn"
-              onClick={handleKakaoShare}
-              className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
-              width={64}
-              height={64}
-            />
-
-            <Image
-              src={facebook}
-              alt="facebook"
-              id="facebook-sharing-btn"
-              onClick={handleFacebookShare}
-              className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
-              width={64}
-              height={64}
+            <ShareSNS
+              onCopyUrl={handleCopyUrl}
+              onKakaoShare={handleKakaoShare}
+              onFacebookShare={handleFacebookShare}
             />
           </div>
         </div>

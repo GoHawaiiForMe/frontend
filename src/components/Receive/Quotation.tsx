@@ -54,7 +54,7 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
 
   return (
     <>
-      <div>
+      <div className="mt-6">
         <div className="flex items-center gap-3">
           <Label labelType={data.tripType} />
           {specifyMaker}
@@ -66,7 +66,7 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
           <p className="mb-[18px] border-b border-color-line-200 pb-[18px] pl-[18px] text-md font-medium text-color-gray-500 mobile:px-0 mobile:text-sm tablet:pl-0 tablet:text-sm">
             {data.dreamer?.nickName} 고객님
           </p>
-          <div className="grid grid-cols-2 gap-[0px]">
+          <div className="grid grid-cols-2 ">
             <div className="col-span-2 mb-2 flex items-center gap-1 pl-[18px] mobile:pl-0 mobile:text-sm tablet:gap-[8px] tablet:pl-0">
               <p className="whitespace-nowrap rounded-[4px] bg-color-background-400 px-[6px] py-1 text-2lg text-color-gray-500 mobile:text-md tablet:text-md">
                 여행일
@@ -76,7 +76,7 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
               </p>
             </div>
 
-            <div className="mobile-tablet:gap2 flex items-center gap-3 pl-[14px] mobile-tablet:pl-0">
+            <div className="mobile-tablet:gap2 flex items-center gap-1 pl-[18px] mobile-tablet:pl-0">
               <p className="whitespace-nowrap rounded-[4px] bg-color-background-400 px-[6px] py-1 text-2lg text-color-gray-500 mobile:text-md tablet:text-md">
                 여행지
               </p>

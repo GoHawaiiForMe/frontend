@@ -4,9 +4,6 @@ import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import RequestDetails from "@/components/Receive/RequestDetails";
 import Image from "next/image";
-import clipshare from "@public/assets/icon_outline.png";
-import facebook from "@public/assets/icon_facebook.png";
-import kakao from "@public/assets/icon_kakao.png";
 import { getPlanDetail } from "@/services/requestService";
 import withAuthAccess from "@/stores/withAuthAccess";
 import ReceiveModalLayout from "@/components/Receive/ReceiveModalLayout";
@@ -16,6 +13,8 @@ import writing from "@public/assets/icon_writing.png";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import { convertRegionToKorean } from "@/utils/formatRegion";
 import { formatTripType } from "@/utils/formatTripType";
+import ShareSNS from "@/components/Common/ShareSNS";
+import loading from "@public/assets/icon_loading.gif";
 
 export function PlanDetail() {
   const router = useRouter();
@@ -74,15 +73,17 @@ export function PlanDetail() {
     return window.open(`http://www.facebook.com/sharer/sharer.php?u=${location.href}`);
   };
 
-  if (isLoading) {
-    return <div>로딩중...</div>;
+  if (isLoading || !planDetail) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Image src={loading} alt="로딩 중" />
+      </div>
+    );
   }
 
-  console.log("플랜데이터", planDetail);
-
-  const writeDate = formatToDetailedDate(planDetail?.updatedAt ?? "");
-  const tripDate = formatToDetailedDate(planDetail?.tripDate ?? "");
-  const region = convertRegionToKorean(planDetail?.serviceArea ?? "SEOUL");
+  const writeDate = formatToDetailedDate(planDetail?.updatedAt);
+  const tripDate = formatToDetailedDate(planDetail?.tripDate);
+  const region = convertRegionToKorean(planDetail?.serviceArea);
 
   return (
     <>
@@ -112,30 +113,10 @@ export function PlanDetail() {
             견적서 공유하기
           </p>
           <div className="flex items-center gap-4">
-            <Image
-              src={clipshare}
-              alt="clipshare"
-              className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
-              width={64}
-              height={64}
-              onClick={handleCopyUrl}
-            />
-            <Image
-              src={kakao}
-              alt="kakao"
-              id="kakaotalk-sharing-btn"
-              className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
-              width={64}
-              height={64}
-              onClick={handleKakaoShare}
-            />
-            <Image
-              src={facebook}
-              alt="facebook"
-              className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
-              width={64}
-              height={64}
-              onClick={handleFacebookShare}
+            <ShareSNS
+              onCopyUrl={handleCopyUrl}
+              onKakaoShare={handleKakaoShare}
+              onFacebookShare={handleFacebookShare}
             />
           </div>
         </div>
