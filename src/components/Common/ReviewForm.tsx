@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useState } from "react";
-import StarRating from "../Receive/StarRating";
+import StarRating from "@/components/Receive/StarRating";
 import { Plan } from "@/services/planService";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import reviewService from "@/services/reviewService";

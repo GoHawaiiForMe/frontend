@@ -4,7 +4,6 @@ import MyPlanList from "@/components/MyPlans/MyPlanList";
 import planService from "@/services/planService";
 import { useInfiniteQuery, keepPreviousData } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-
 import { useInView } from "react-intersection-observer";
 import withAuthAccess from "@/stores/withAuthAccess";
 

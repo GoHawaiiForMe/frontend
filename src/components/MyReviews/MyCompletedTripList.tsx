@@ -1,4 +1,4 @@
-import TripCard from "./Cards/TripCard";
+import TripCard from "@/components/MyReviews/Cards/TripCard";
 import { Plan } from "@/services/planService";
 
 interface CompletedPlanListProps {

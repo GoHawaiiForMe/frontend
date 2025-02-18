@@ -1,7 +1,7 @@
-import MyPlanNav from "./MyPlanNav";
-import Layout from "../Common/Layout";
-import PlanCard from "./Cards/PlanCard";
-import QuotationCardListCompleted from "./QuotationCardListCompleted";
+import MyPlanNav from "@/components/MyPlans/MyPlanNav";
+import Layout from "@/components/Common/Layout";
+import PlanCard from "@/components/MyPlans/Cards/PlanCard";
+import QuotationCardListCompleted from "@/components/MyPlans/QuotationCardListCompleted";
 import { Plan } from "@/services/planService";
 import Image from "next/image";
 import loading from "@public/assets/icon_loading.gif";

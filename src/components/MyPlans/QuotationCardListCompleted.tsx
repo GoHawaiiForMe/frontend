@@ -2,7 +2,7 @@ import { QuotationServiceDreamer } from "@/services/quotationServiceDreamer";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import { Plan } from "@/services/planService";
-import QuotationCardCompleted from "./Cards/QuotationCardCompleted";
+import QuotationCardCompleted from "@/components/MyPlans/Cards/QuotationCardCompleted";
 import Image from "next/image";
 import loading from "@public/assets/icon_loading.gif";
 

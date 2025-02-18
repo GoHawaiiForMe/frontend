@@ -126,7 +126,6 @@ export default function QuotationCardCompleted({
         <div className="flex items-center justify-end gap-4 py-6">
           <p className="medium text-2lg mobile-tablet:text-md">견적 금액</p>
           <p className="bold text-2xl mobile-tablet:text-2lg">
-            {" "}
             {quotationDetail.price.toLocaleString()}원
           </p>
         </div>

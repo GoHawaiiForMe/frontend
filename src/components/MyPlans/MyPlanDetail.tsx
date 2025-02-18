@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
-import MyPlanNav from "./MyPlanNav";
-import Layout from "../Common/Layout";
-import PlanCard from "./Cards/PlanCard";
-import QuotationCardList from "./QuotationCardList";
+import MyPlanNav from "@/components/MyPlans/MyPlanNav";
+import Layout from "@/components/Common/Layout";
+import PlanCard from "@/components/MyPlans/Cards/PlanCard";
+import QuotationCardList from "@/components/MyPlans/QuotationCardList";
 import planService, { Plan } from "@/services/planService";
 import Image from "next/image";
 import loading from "@public/assets/icon_loading.gif";
@@ -21,7 +21,7 @@ export default function MyPlanDetail({ planDetail }: PlanData) {
     } catch (error) {
       alert(`플랜 취소를 실패했습니다. 다시 시도해주세요. ${error}`);
     } finally {
-      router.push("../");
+      router.push("/mytrip-manage/ongoing-plan");
     }
   }
 

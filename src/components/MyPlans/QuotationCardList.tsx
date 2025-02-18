@@ -1,4 +1,4 @@
-import QuotationCard from "./Cards/QuotationCard";
+import QuotationCard from "@/components/MyPlans/Cards/QuotationCard";
 import { QuotationServiceDreamer } from "@/services/quotationServiceDreamer";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
