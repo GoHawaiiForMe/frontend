@@ -8,6 +8,7 @@ import Link from "next/link";
 import link from "@public/assets/icon_link.svg";
 import { ServiceType } from "@/services/userService";
 import React, { useState, useEffect, useRef } from 'react';
+import moreIcon from "@public/assets/label_more.svg";
 
 interface CardFindMakerProps {
   
@@ -93,7 +94,7 @@ const CardFindMaker = ({
     >
       <div className="flex mb-2 gap-4">
         
-      {(serviceTypes || []).slice(0, cardWidth < 373 ? 2 : (cardWidth < 840 ? 3 : serviceTypes.length)).map((type, index) => (
+      {(serviceTypes || []).slice(0, cardWidth < 410 ? 2 : (cardWidth< 586 ? 3 : (cardWidth < 716 ? 4 : (cardWidth < 840 ? 5 : serviceTypes.length)))).map((type, index) => (
         <Label 
           key={`${type}-${index}`}
           labelType={type}
@@ -102,6 +103,14 @@ const CardFindMaker = ({
           customLabelTextClass={customLabelTextClass}
         />
       ))}
+      {serviceTypes.length > (cardWidth < 410 ? 2 : (cardWidth < 586 ? 3 : (cardWidth < 716 ? 4 : (cardWidth < 840 ? 5 : serviceTypes.length)))) && (
+        <Image
+          src={moreIcon}
+          alt="더 있음"
+          width={24}
+          height={24}
+        />
+      )}
       </div>
 
       <h2 className={`mb-4 text-2xl semibold text-color-black-300 ${titleSize} ${cardSize === 'sm' ? 'text-md !mb-1' : ''} mobile-tablet:text-sm`}>
