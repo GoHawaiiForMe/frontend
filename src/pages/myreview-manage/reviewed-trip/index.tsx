@@ -19,7 +19,6 @@ export function ReviewedTrip() {
   // 페이지 변경 핸들러
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    console.log(`Changed to page: ${page}`); // 디버깅용
   };
 
   useEffect(() => {

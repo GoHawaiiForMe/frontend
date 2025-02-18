@@ -103,5 +103,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4N
 
 
 ### 완료 가능 플랜 불러오기(dreamer)
-GET {{HOST_NAME}}/plans/dreamer?readyToComplete=true&page=1&pageSize=6
+GET https://www.goforme.duckdns.org/plans/dreamer?readyToComplete=true&page=1&pageSize=6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njg4NWEzYy01MGY0LTQyN2ItOGE5Mi0zNzAyYzY5NzZmYjAiLCJyb2xlIjoiRFJFQU1FUiIsImlhdCI6MTczOTgwMDQxNSwiZXhwIjoxNzM5ODg2ODE1fQ.VKDq_T-dg2NK6xRC_2GeSNLXBLGD2SyIzbaAXWmfrfc

@@ -43,22 +43,22 @@ export default function QuotationCardCompleted({
       <div className="justify-left flex items-center gap-[12px] mobile-tablet:mt-[6px]">
         <Label labelType={planDetail.tripType} customLabelContainerClass="rounded-lg" />
       </div>
-      <div className="border-color bg-body.bg-gray my-6 flex gap-6 rounded-md border-[1px] px-[18px] py-4 mobile-tablet:my-[14px] mobile-tablet:gap-3 mobile-tablet:px-[10px]">
-        <div className="flex h-20 w-20 flex-shrink-0 items-center mobile-tablet:h-[46px] mobile-tablet:w-full">
+      <div className="my-6 flex gap-6 rounded-md border-[1px] px-[18px] py-4 mobile-tablet:my-[14px] mobile-tablet:gap-3 mobile-tablet:px-[10px]">
+        <div className="md:w-24 md:h-24 flex h-20 w-20 content-center items-center mobile:h-12 mobile:w-12">
           <Image
             src={`/assets/img_avatar${quotationDetail.maker.image.split("_")[1]}.svg`}
             alt="프로필사진"
             width={80}
             height={80}
-            className="rounded-full border-2 border-color-blue-400"
+            className="rounded-full border-2 border-color-blue-400 mobile-tablet:border-[1px]"
           />
         </div>
         <div className="flex w-full">
-          <div className="w-full flex-col items-center justify-between text-xs text-color-black-500">
+          <div className="w-full flex-col content-around items-center justify-between text-xs text-color-black-500">
             <p className="semibold text-xl mobile-tablet:text-lg">
               {quotationDetail.maker.nickName}
             </p>
-            <div className="flex items-center gap-4 mobile-tablet:gap-1">
+            <div className="flex content-center items-center gap-4 mobile-tablet:gap-1">
               <div className="medium flex flex-shrink-0 items-center gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                 <Image
                   src={icon_active_star}
@@ -69,15 +69,17 @@ export default function QuotationCardCompleted({
                 <p className="text-color-gray-400">({quotationDetail.maker.totalReviews})</p>
               </div>
               <p className="text-color-line-200">ㅣ</p>
-              <div className="medium flex flex-shrink-0 gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
+              <div className="medium flex flex-shrink-0 items-center gap-[6px] object-center text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                 <Link
                   href={quotationDetail.maker.gallery}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex"
+                  className="flex items-center"
                 >
-                  <Image src={link} alt="링크이미지" width={30} height={30} />
-                  <p className="text-color-gray-400">SNS</p>
+                  <div className="flex mobile-tablet:h-[14px] mobile-tablet:w-[14px]">
+                    <Image src={link} alt="링크이미지" width={30} height={30} />
+                  </div>
+                  <p className="content-center text-color-gray-400">SNS</p>
                 </Link>
               </div>
               <p className="text-color-line-200">ㅣ</p>
@@ -87,15 +89,17 @@ export default function QuotationCardCompleted({
               </div>
             </div>
           </div>
-          <div className="medium flex text-2lg text-color-blue-400 mobile-tablet:text-sm">
-            <Image
-              src={icon_like_red}
-              alt="좋아요"
-              width={24}
-              height={24}
-              className="color-red-200 h-[24px] w-[24px]"
-            />
-            136
+          <div className="medium flex-col text-2lg text-color-blue-400 mobile-tablet:mr-[10px] mobile-tablet:text-sm">
+            <div className="flex items-center">
+              <Image
+                src={icon_like_red}
+                alt="좋아요"
+                width={24}
+                height={24}
+                className="color-red-200 h-[24px] w-[24px]"
+              />
+              <p>{quotationDetail.maker.totalFollows}</p>
+            </div>
           </div>
         </div>
       </div>
