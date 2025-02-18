@@ -17,7 +17,7 @@ const Services = ({
     {(data || planData.services).map((service, index) => (
       <div
         key={index}
-        className={`${itemClassName ?? ""} medium flex cursor-pointer justify-center rounded-3xl border px-3 py-2 text-2lg mobile-tablet:px-2 mobile-tablet:py-1 mobile-tablet:text-md ${
+        className={`${itemClassName ?? ""} medium flex cursor-pointer justify-center rounded-3xl border px-3 py-2 text-2lg hover:scale-105 mobile-tablet:px-2 mobile-tablet:py-1 mobile-tablet:text-md ${
           selectedTypes.includes(service.name)
             ? "bold border-color-blue-300 bg-color-blue-50 text-color-blue-300"
             : "border-color-gray-100 bg-color-background-100"
@@ -49,7 +49,7 @@ const Locations = ({
     {(data || planData.locations).map((location, index) => (
       <div
         key={index}
-        className={`${itemClassName ?? ""} medium flex cursor-pointer justify-center rounded-3xl border px-3 py-2 text-2lg mobile-tablet:px-2 mobile-tablet:py-1 mobile-tablet:text-md ${
+        className={`${itemClassName ?? ""} medium flex cursor-pointer justify-center rounded-3xl border px-3 py-2 text-2lg hover:scale-105 mobile-tablet:px-2 mobile-tablet:py-1 mobile-tablet:text-md ${
           selectedTypes.includes(location.name)
             ? "bold border-color-blue-300 bg-color-blue-50 text-color-blue-300"
             : "border-color-gray-100 bg-color-background-100"

@@ -237,9 +237,11 @@ export default function RequestDetailDreamer() {
           <div className="flex h-72 gap-4 rounded-2xl border border-color-line-100 bg-color-gray-50 px-6 py-7 mobile-tablet:h-[200px] mobile-tablet:px-3 mobile-tablet:py-4">
             <div className="flex-grow">
               <div className="mobile-tablet:mt-[6px]">
-                <div className="mb-3 flex gap-4">
-                  {makerProfileInfo?.serviceTypes.map((type) => (
-                    <Label key={type} labelType={type as TripType} />
+                <div className="custom-scrollbar mb-3 flex max-w-full gap-2 overflow-x-auto">
+                  {makerProfileInfo?.serviceTypes.map((type, index) => (
+                    <div key={index} className="mb-3 flex-shrink-0">
+                      <Label key={type} labelType={type as TripType} />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -249,7 +251,7 @@ export default function RequestDetailDreamer() {
                 </p>
               </div>
               <div className="my-6 flex rounded-md border-[1px] border-color-line-100 px-[18px] py-4 mobile-tablet:my-[14px] mobile-tablet:gap-3 mobile-tablet:px-[10px] mobile-tablet:py-2">
-                <div className="mr-4 flex mobile-tablet:h-[46px] mobile-tablet:w-[46px]">
+                <div className="mr-4 h-[80px] w-[80px] mobile-tablet:h-[46px] mobile-tablet:w-[46px]">
                   <Image
                     src={avatarImages.find((avatar) => avatar.key === makerProfileInfo?.image)?.src}
                     alt="프로필사진"
@@ -316,17 +318,21 @@ export default function RequestDetailDreamer() {
                 {makerProfileInfo?.detailDescription}
               </p>
             </div>
-            <div>
+            <div className="overflow-x-auto">
               <p className="bold mb-8 text-2xl text-color-black-400 mobile-tablet:text-lg">
                 제공 서비스
               </p>
-              <Selector
-                category="services"
-                selectedTypes={makerProfileInfo?.serviceTypes ?? []}
-                data={filteredServices}
-                className="flex gap-4"
-                itemClassName="!border-color-blue-300 bg-color-blue-50 text-color-blue-300"
-              />
+              <div className="custom-scrollbar flex gap-4 overflow-x-auto">
+                <div className="mb-3 flex-shrink-0">
+                  <Selector
+                    category="services"
+                    selectedTypes={makerProfileInfo?.serviceTypes ?? []}
+                    data={filteredServices}
+                    className="flex gap-4"
+                    itemClassName="!border-color-blue-300 bg-color-blue-50 text-color-blue-300"
+                  />
+                </div>
+              </div>
             </div>
             <div>
               <p className="bold mb-8 text-2xl text-color-black-400 mobile-tablet:text-lg">
@@ -392,13 +398,13 @@ export default function RequestDetailDreamer() {
 
         {/* 오른쪽 열 */}
         <div className="col-span-2 flex">
-          <div className="flex flex-col flex-nowrap gap-7 mobile-tablet:relative mobile-tablet:w-full mobile-tablet:flex-grow">
+          <div className="flex flex-col flex-nowrap gap-7 mobile-tablet:relative mobile-tablet:w-full mobile-tablet:flex-grow card:flex-grow">
             <p className="semibold text-xl mobile-tablet:hidden">
               {makerProfileInfo?.nickName} Maker에게 지정 플랜을 요청해보세요!
             </p>
             <button
               onClick={handleFollowToggle}
-              className="semibold flex w-[354px] justify-center rounded-2xl border-[1px] p-2 py-4 text-xl mobile:text-md tablet:text-lg mobile-tablet:hidden mobile-tablet:px-4 mobile-tablet:py-[11px]"
+              className="semibold flex w-[354px] justify-center rounded-2xl border-[1px] p-2 py-4 text-xl hover:scale-105 mobile:text-md tablet:text-lg mobile-tablet:hidden mobile-tablet:px-4 mobile-tablet:py-[11px]"
             >
               <Image
                 src={isFollowed ? icon_like_red : icon_like_black}
@@ -422,7 +428,7 @@ export default function RequestDetailDreamer() {
               </button>
               <button
                 onClick={handlePendingPlan}
-                className="semibold flex w-[354px] items-center justify-center rounded-2xl bg-color-blue-300 py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:w-full mobile-tablet:max-w-full mobile-tablet:px-4 mobile-tablet:py-[11px]"
+                className="semibold flex w-[354px] items-center justify-center rounded-2xl bg-color-blue-300 py-4 text-xl text-gray-50 hover:scale-105 mobile:text-md tablet:text-lg mobile-tablet:w-full mobile-tablet:max-w-full mobile-tablet:px-4 mobile-tablet:py-[11px]"
               >
                 지정 플랜 요청하기
               </button>

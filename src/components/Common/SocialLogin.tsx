@@ -32,16 +32,34 @@ const SocialLogin = () => {
 
   return (
     <div className="flex flex-col items-center gap-8">
-      <h2 className="tablet:text-xs pc:text-xl">SNS 계정으로 간편 가입하기</h2>
+      <h2 className="text-color-black-200 tablet:text-xs pc:text-xl">SNS 계정으로 간편 가입하기</h2>
       <div className="flex gap-4">
         <div onClick={() => handleSocialLogin("google")} className="cursor-pointer">
-          <Image src={google_icon} alt="구글 아이콘" width={50} height={50} />
+          <Image
+            src={google_icon}
+            alt="구글 아이콘"
+            width={50}
+            height={50}
+            className="hover:scale-110"
+          />
         </div>
         <div onClick={() => handleSocialLogin("kakao")} className="cursor-pointer">
-          <Image src={kakao_icon} alt="카카오 아이콘" width={50} height={50} />
+          <Image
+            src={kakao_icon}
+            alt="카카오 아이콘"
+            width={50}
+            height={50}
+            className="hover:scale-110"
+          />
         </div>
         <div onClick={() => handleSocialLogin("naver")} className="cursor-pointer">
-          <Image src={naver_icon} alt="네이버 아이콘" width={50} height={50} />
+          <Image
+            src={naver_icon}
+            alt="네이버 아이콘"
+            width={50}
+            height={50}
+            className="hover:scale-110"
+          />
         </div>
       </div>
     </div>

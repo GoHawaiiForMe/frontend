@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { setAccessToken } from "@/utils/tokenUtils";
 import Hero from "@/components/Landing/Hero";
@@ -9,6 +9,7 @@ import beachBackground7 from "@public/assets/Landing-img/img_07.jpg";
 
 export default function Home() {
   const router = useRouter();
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
     if (router.isReady) {
@@ -19,6 +20,12 @@ export default function Home() {
       }
     }
   }, [router.isReady, router.query.auth]);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  if (!isHydrated) return null;
 
   return (
     <>

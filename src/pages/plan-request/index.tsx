@@ -4,7 +4,7 @@ import ConfirmedPlan from "@/components/Common/ConfirmedPlan";
 import { useState } from "react";
 import withAuthAccess from "@/stores/withAuthAccess";
 
-export default function PlanRequestPage() {
+export function PlanRequestPage() {
   const [isPlanConfirmed, setIsPlanConfirmed] = useState(false);
 
   const handleResetPlan = () => {
@@ -24,4 +24,4 @@ export default function PlanRequestPage() {
   );
 }
 
-withAuthAccess(PlanRequestPage);
+export default withAuthAccess(PlanRequestPage);

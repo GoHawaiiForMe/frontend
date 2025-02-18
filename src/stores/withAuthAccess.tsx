@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getAccessToken } from "@/utils/tokenUtils";
+import loading from "@public/assets/icon_loading.gif";
+import Image from "next/image";
 
 const withAuthAccess = (WrappedComponent: React.ComponentType) => {
   const AuthComponent = (props: any) => {
@@ -27,7 +29,11 @@ const withAuthAccess = (WrappedComponent: React.ComponentType) => {
     }, [router]);
 
     if (isLoading) {
-      return <div>Loading...</div>;
+      return (
+        <div className="flex h-screen items-center justify-center">
+          <Image src={loading} alt="로딩 중" />
+        </div>
+      );
     }
 
     if (!accessToken && !(router.pathname === "/login" || router.pathname === "/signup")) {

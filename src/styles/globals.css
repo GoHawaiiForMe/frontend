@@ -88,6 +88,21 @@ button {
   background: #555;
 }
 
+.custom-scrollbar::-webkit-scrollbar {
+  height: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #4da9ff;
+  border-radius: 10px;
+  border: 2px solid #ffffff;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
 @keyframes fadeInOut {
   0% {
     opacity: 0;
@@ -108,5 +123,9 @@ button {
 }
 
 .rsm-geography:focus {
+  outline: none;
+}
+
+.recharts-layer :focus {
   outline: none;
 }

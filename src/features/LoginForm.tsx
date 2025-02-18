@@ -23,6 +23,11 @@ const getUserInfo = async () => {
   return userData;
 };
 
+const getProfileInfo = async () => {
+  const profileData = await userService.getProfileInfo();
+  return profileData;
+};
+
 const postLogin = async (LoginData: LoginProps) => {
   return authService.login(LoginData);
 };
@@ -36,6 +41,7 @@ export default function LoginForm() {
     onSuccess: async () => {
       try {
         const userInfo = await getUserInfo();
+        const profileInfo = await getProfileInfo();
 
         setLogin(
           userInfo.nickName,
@@ -43,8 +49,10 @@ export default function LoginForm() {
           userInfo.coconut,
           userInfo.email,
           userInfo.phoneNumber,
+          profileInfo.image,
         );
-        router.push("/");
+        router.reload();
+        router.replace("/");
       } catch (error) {
         console.error("유저 정보 가져오기 실패", error);
       }
@@ -84,7 +92,7 @@ export default function LoginForm() {
   return (
     <div className="my-24 flex justify-center">
       <div className="flex flex-col items-center gap-8 pc:w-[640px] mobile-tablet:w-[372px]">
-        <Image src={logo} width={400} height={400} alt="로고" />
+        <Image src={logo} width={400} height={400} alt="로고" className="hover:scale-95" />
         <form className="relative flex w-full flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-2">
             <Input
@@ -116,12 +124,12 @@ export default function LoginForm() {
           </div>
         </form>
         <div className="mb-10 flex justify-center pc:text-xl">
-          <p className="mr-2 text-lg mobile-tablet:text-xs">
+          <p className="mr-2 text-lg text-color-black-200 mobile-tablet:text-xs">
             아직 니가가라하와이 회원이 아니신가요?
           </p>
           <Link
             href="/signup"
-            className="text-lg text-color-blue-300 underline mobile-tablet:text-xs"
+            className="semibold text-lg text-color-blue-300 underline hover:scale-105 mobile-tablet:text-xs"
           >
             이메일로 회원가입하기
           </Link>
