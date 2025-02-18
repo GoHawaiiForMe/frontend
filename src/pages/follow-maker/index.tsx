@@ -1,5 +1,8 @@
 import FollowedMaker from "@/features/FollowedMaker";
+import withAuthAccess from "@/stores/withAuthAccess";
 
-export default function FollowedMakerPage() {
-    return <FollowedMaker />;
+export function FollowedMakerPage() {
+  return <FollowedMaker />;
 }
+
+export default withAuthAccess(FollowedMakerPage);
