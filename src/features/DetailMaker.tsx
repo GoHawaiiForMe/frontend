@@ -398,7 +398,7 @@ export default function RequestDetailDreamer() {
             </p>
             <button
               onClick={handleFollowToggle}
-              className="semibold flex w-[354px] justify-center rounded-2xl border-[1px] p-2 py-4 text-xl mobile:text-md tablet:text-lg mobile-tablet:hidden mobile-tablet:px-4 mobile-tablet:py-[11px]"
+              className="semibold flex w-[354px] justify-center rounded-2xl border-[1px] p-2 py-4 text-xl hover:scale-105 mobile:text-md tablet:text-lg mobile-tablet:hidden mobile-tablet:px-4 mobile-tablet:py-[11px]"
             >
               <Image
                 src={isFollowed ? icon_like_red : icon_like_black}
@@ -422,7 +422,7 @@ export default function RequestDetailDreamer() {
               </button>
               <button
                 onClick={handlePendingPlan}
-                className="semibold flex w-[354px] items-center justify-center rounded-2xl bg-color-blue-300 py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:w-full mobile-tablet:max-w-full mobile-tablet:px-4 mobile-tablet:py-[11px]"
+                className="semibold flex w-[354px] items-center justify-center rounded-2xl bg-color-blue-300 py-4 text-xl text-gray-50 hover:scale-105 mobile:text-md tablet:text-lg mobile-tablet:w-full mobile-tablet:max-w-full mobile-tablet:px-4 mobile-tablet:py-[11px]"
               >
                 지정 플랜 요청하기
               </button>

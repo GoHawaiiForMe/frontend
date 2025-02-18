@@ -16,7 +16,7 @@ export default function ShareSNS({ onCopyUrl, onKakaoShare, onFacebookShare }: S
         src={clipshare}
         alt="clipshare"
         onClick={onCopyUrl}
-        className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
+        className="cursor-pointer rounded-[16px] shadow-md hover:scale-105 mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
         width={64}
         height={64}
       />
@@ -25,7 +25,7 @@ export default function ShareSNS({ onCopyUrl, onKakaoShare, onFacebookShare }: S
         alt="kakao"
         id="kakaotalk-sharing-btn"
         onClick={onKakaoShare}
-        className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
+        className="cursor-pointer rounded-[16px] shadow-md hover:scale-105 mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
         width={64}
         height={64}
       />
@@ -34,7 +34,7 @@ export default function ShareSNS({ onCopyUrl, onKakaoShare, onFacebookShare }: S
         alt="facebook"
         id="facebook-sharing-btn"
         onClick={onFacebookShare}
-        className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
+        className="cursor-pointer rounded-[16px] shadow-md hover:scale-105 mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
         width={64}
         height={64}
       />

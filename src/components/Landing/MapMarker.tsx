@@ -108,7 +108,7 @@ export default function MapMarker() {
   return (
     <>
       <div className="bold mb-7 mt-7 flex justify-center">
-        <h1 className="mb-10 mt-24 text-4xl">🛬 사용자 이용현황 🛬</h1>
+        <h1 className="mb-10 mt-24 animate-bounce text-4xl">🛬 사용자 이용현황 🛬</h1>
       </div>
       <div className="-mr-16 flex items-center rounded-xl bg-color-blue-400 bg-opacity-15 mobile-tablet:ml-0 mobile-tablet:flex-col">
         {/* 지도 */}

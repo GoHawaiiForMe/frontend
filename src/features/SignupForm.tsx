@@ -103,7 +103,7 @@ export default function SignUpForm() {
   return (
     <div className="flex justify-center">
       <div className="flex flex-col items-center justify-center gap-8 pc:w-[640px] mobile-tablet:w-[372px]">
-        <Image src={logo} width={400} height={400} alt="로고" />
+        <Image src={logo} width={400} height={400} alt="로고" className="hover:scale-95" />
 
         <form onSubmit={handleSubmit(onSubmit)} className="relative flex w-full flex-col gap-8">
           <div className="relative">
@@ -200,8 +200,13 @@ export default function SignUpForm() {
           />
         </form>
         <div className="mb-4 flex justify-center">
-          <p className="mr-2">이미 니가가라하와이 회원이신가요?</p>
-          <Link href="/login" className="text-color-blue-300 underline">
+          <p className="mr-2 text-color-black-200 mobile-tablet:text-xs">
+            이미 니가가라하와이 회원이신가요?
+          </p>
+          <Link
+            href="/login"
+            className="semibold text-color-blue-300 underline hover:scale-105 mobile-tablet:text-xs"
+          >
             로그인
           </Link>
         </div>
