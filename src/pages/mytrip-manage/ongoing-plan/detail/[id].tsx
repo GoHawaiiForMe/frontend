@@ -2,23 +2,26 @@ import MyPlanDetail from "@/components/MyPlans/MyPlanDetail";
 import planService from "@/services/planService";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
+import loading from "@public/assets/icon_loading.gif";
+import withAuthAccess from "@/stores/withAuthAccess";
 
-export default function OngoingPlanDetail() {
+export function OngoingPlanDetail() {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data: planDetail, isLoading } = useQuery({
+  const { data: planDetail } = useQuery({
     queryKey: ["planDetail", id],
     queryFn: () => planService.getPlanDetail(id as string),
     enabled: !!id,
   });
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   if (!planDetail) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Image src={loading} alt="로딩 중" />
+      </div>
+    );
   }
 
   return (
@@ -27,3 +30,5 @@ export default function OngoingPlanDetail() {
     </>
   );
 }
+
+export default withAuthAccess(OngoingPlanDetail);

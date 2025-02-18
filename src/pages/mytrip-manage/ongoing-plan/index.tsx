@@ -1,39 +1,26 @@
 import MyPlanNav from "@/components/MyPlans/MyPlanNav";
 import Layout from "@/components/Common/Layout";
 import MyPlanList from "@/components/MyPlans/MyPlanList";
-import ReceiveModalLayout from "@/components/Receive/ReceiveModalLayout";
 import planService from "@/services/planService";
 import { useInfiniteQuery, keepPreviousData } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { useInView } from "react-intersection-observer";
+import Image from "next/image";
+import loading from "@public/assets/icon_loading.gif";
+import withAuthAccess from "@/stores/withAuthAccess";
 
-export default function OngoingPlan() {
-  const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export function OngoingPlan() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const { ref, inView } = useInView();
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    if (!token) {
-      setIsModalOpen(true);
-    } else {
+    if (token) {
       setAccessToken(token);
     }
   }, []);
 
-  const handleConfirm = () => {
-    setIsModalOpen(false);
-    router.push("/login");
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    router.push("/");
-  };
-
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
     queryKey: ["ongoingPlans", { status: ["PENDING", "CONFIRMED"] }],
     initialPageParam: 1, // 처음 페이지는 1로 시작
     queryFn: ({ pageParam = 1 }) =>
@@ -68,28 +55,18 @@ export default function OngoingPlan() {
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          isLoading={isLoading}
         />
       </Layout>
       <div ref={ref} className="h-10">
         {isFetchingNextPage && (
-          <div className="flex items-center justify-center py-4">
-            <span>플랜을 불러오는 중...</span>
+          <div className="flex h-screen items-center justify-center">
+            <Image src={loading} alt="로딩 중" />
           </div>
         )}
       </div>
-      {isModalOpen && (
-        <ReceiveModalLayout label="로그인 필요" closeModal={() => setIsModalOpen(false)}>
-          <p className="text-lg">로그인이 필요한 서비스입니다.</p>
-          <div className="mt-6 flex justify-end space-x-4">
-            <button className="px-4 py-2 text-gray-500" onClick={handleCancel}>
-              취소
-            </button>
-            <button className="rounded-lg bg-blue-500 px-4 py-2 text-white" onClick={handleConfirm}>
-              확인
-            </button>
-          </div>
-        </ReceiveModalLayout>
-      )}
     </>
   );
 }
+
+export default withAuthAccess(OngoingPlan);
