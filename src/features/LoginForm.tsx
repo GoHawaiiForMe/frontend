@@ -23,6 +23,11 @@ const getUserInfo = async () => {
   return userData;
 };
 
+const getProfileInfo = async () => {
+  const profileData = await userService.getProfileInfo();
+  return profileData;
+};
+
 const postLogin = async (LoginData: LoginProps) => {
   return authService.login(LoginData);
 };
@@ -36,6 +41,7 @@ export default function LoginForm() {
     onSuccess: async () => {
       try {
         const userInfo = await getUserInfo();
+        const profileInfo = await getProfileInfo();
 
         setLogin(
           userInfo.nickName,
@@ -43,8 +49,10 @@ export default function LoginForm() {
           userInfo.coconut,
           userInfo.email,
           userInfo.phoneNumber,
+          profileInfo.image,
         );
-        router.push("/");
+        router.reload();
+        router.replace("/");
       } catch (error) {
         console.error("유저 정보 가져오기 실패", error);
       }

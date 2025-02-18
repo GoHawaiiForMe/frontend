@@ -57,13 +57,14 @@ const getNotification = () => {
 };
 
 const NavBar = () => {
-  const { isLoggedIn, nickName, role, coconut, setLogin } = useAuthStore();
+  const { isLoggedIn, nickName, role, coconut, email, phoneNumber, profileImage, setLogin } =
+    useAuthStore();
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<any>(null);
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
-  const [userImage, setUserImage] = useState<string>(user_img.src);
+  const [userImage, setUserImage] = useState<string>(profileImage || user_img.src);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const notificationRef = useRef<HTMLDivElement | null>(null);
   const sideBarRef = useRef<HTMLDivElement | null>(null);
@@ -152,19 +153,9 @@ const NavBar = () => {
     if (accessToken) {
       const fetchUserInfo = async () => {
         try {
-          const userData = await userService.getUserInfo();
-          const profileData = await userService.getProfileInfo();
-
-          setUserInfo(userData);
-          const avatarImage = avatarImages.find((avatar) => avatar.key === profileData.image);
+          const avatarImage = avatarImages.find((avatar) => avatar.key === profileImage);
           setUserImage(avatarImage ? avatarImage.src : user_img.src);
-          setLogin(
-            userData.nickName,
-            userData.role,
-            userData.coconut,
-            userData.email,
-            userData.phoneNumber,
-          );
+          setLogin(nickName, role, coconut, email, phoneNumber, profileImage);
         } catch (error) {
           console.error(error);
         }
