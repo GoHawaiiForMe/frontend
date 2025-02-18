@@ -196,7 +196,7 @@ export default function InformEditMaker() {
                 type="password"
                 label="현재 비밀번호"
                 placeholder="현재 비밀번호를 입력해 주세요"
-                className="border-0 bg-color-background-200"
+                className="overflow-hidden text-ellipsis whitespace-nowrap border-0 bg-color-background-200 pr-10"
                 disabled={!isEmailExist}
                 {...register("password")}
               />
@@ -207,7 +207,7 @@ export default function InformEditMaker() {
                 type="password"
                 label="새 비밀번호"
                 placeholder="비밀번호를 입력해 주세요"
-                className="border-0 bg-color-background-200"
+                className="overflow-hidden text-ellipsis whitespace-nowrap border-0 bg-color-background-200 pr-10"
                 disabled={!isEmailExist}
                 {...register("newPassword")}
                 error={!!errors.password}
@@ -220,7 +220,7 @@ export default function InformEditMaker() {
                 type="password"
                 label="새 비밀번호 확인"
                 placeholder="비밀번호를 다시 한번 입력해 주세요"
-                className="border-0 bg-color-background-200"
+                className="overflow-hidden text-ellipsis whitespace-nowrap border-0 bg-color-background-200 pr-10"
                 disabled={!isEmailExist}
                 {...register("newConfirmPassword")}
                 error={!!errors.newConfirmPassword}
