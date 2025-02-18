@@ -110,3 +110,7 @@ button {
 .rsm-geography:focus {
   outline: none;
 }
+
+.recharts-layer :focus {
+  outline: none;
+}

@@ -156,7 +156,7 @@ export default function MapMarker() {
         </div>
 
         {/* 통계 */}
-        <div className="flex h-[400px] w-1/3 flex-col items-center rounded-xl bg-color-gray-50 p-4 shadow-2xl pc:-ml-5 mobile-tablet:order-1 mobile-tablet:mt-10 mobile-tablet:w-[400px]">
+        <div className="flex h-[400px] w-1/3 flex-col items-center rounded-xl bg-color-gray-50 p-4 shadow-2xl hover:scale-[1.05] pc:-ml-5 mobile-tablet:order-1 mobile-tablet:mt-10 mobile-tablet:w-[400px]">
           {selectedRegion ? (
             <>
               <h2 className="text-lg font-bold">{regionNames[selectedRegion.name]} 통계</h2>
