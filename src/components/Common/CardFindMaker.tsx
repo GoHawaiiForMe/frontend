@@ -7,6 +7,9 @@ import avatarImages from "@/utils/formatImage";
 import Link from "next/link";
 import link from "@public/assets/icon_link.svg";
 import { ServiceType } from "@/services/userService";
+import React, { useState, useEffect, useRef } from 'react';
+import moreIcon from "@public/assets/label_more.svg";
+
 interface CardFindMakerProps {
   
   labelSize?: 'sm';
@@ -64,13 +67,34 @@ const CardFindMaker = ({
   const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 1023; 
   const computedPhotoSize = cardSize === 'sm' || isSmallScreen ? "46" : photoSize;
   const computedStarSize = cardSize === 'sm' || isSmallScreen ? "20" : starSize;
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [cardWidth, setCardWidth] = useState<number>(0);
+
+  useEffect(() => {
+    const updateCardWidth = () => {
+      if (cardRef.current) {
+        setCardWidth(cardRef.current.offsetWidth);
+      }
+    };
+
+    updateCardWidth();
+    window.addEventListener('resize', updateCardWidth);
+
+    return () => {
+      window.removeEventListener('resize', updateCardWidth);
+    };
+  }, []);
+
   return (
-    <div className={`w-full h-[230px] border border-color-line-100 rounded-lg py-5 px-6 shadow-[2px_2px_10px_rgba(220,220,220,0.14),-2px_-2px_10px_rgba(220,220,220,0.14)]
-     ${cardClassName} ${cardSize === 'sm' ? '!w-[327px] !h-[188px] py-4 px-[14px]' : ''} tablet:w-full tablet:h-[188px] mobile:w-full mobile:h-[188px]`}>
+    <div
+      ref={cardRef}
+      className={`w-full h-[230px] border border-color-line-100 rounded-lg py-5 px-6 shadow-[2px_2px_10px_rgba(220,220,220,0.14),-2px_-2px_10px_rgba(220,220,220,0.14)]
+      ${cardClassName} ${cardSize === 'sm' ? '!w-[327px] !h-[188px] py-4 px-[14px]' : ''} tablet:w-full tablet:h-[188px] mobile:w-full mobile:h-[188px] 
+      `}
+    >
       <div className="flex mb-2 gap-4">
         
-      
-      {(serviceTypes || []).map((type, index) => (
+      {(serviceTypes || []).slice(0, cardWidth < 410 ? 2 : (cardWidth< 586 ? 3 : (cardWidth < 716 ? 4 : (cardWidth < 840 ? 5 : serviceTypes.length)))).map((type, index) => (
         <Label 
           key={`${type}-${index}`}
           labelType={type}
@@ -79,6 +103,14 @@ const CardFindMaker = ({
           customLabelTextClass={customLabelTextClass}
         />
       ))}
+      {serviceTypes.length > (cardWidth < 410 ? 2 : (cardWidth < 586 ? 3 : (cardWidth < 716 ? 4 : (cardWidth < 840 ? 5 : serviceTypes.length)))) && (
+        <Image
+          src={moreIcon}
+          alt="더 있음"
+          width={24}
+          height={24}
+        />
+      )}
       </div>
 
       <h2 className={`mb-4 text-2xl semibold text-color-black-300 ${titleSize} ${cardSize === 'sm' ? 'text-md !mb-1' : ''} mobile-tablet:text-sm`}>

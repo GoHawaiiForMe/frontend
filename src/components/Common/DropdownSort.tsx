@@ -48,7 +48,7 @@ const DropdownSort = ({ onSort }: DropdownSortProps) => {
     <div ref={dropdownRef} className="w-full relative">
       <button
         onClick={toggleDropdown}
-        className="w-[114px] h-[40px] px-[10px] py-2 flex justify-between items-center rounded-[8px] cursor-pointer transition duration-200 bg-color-gray-50"
+        className="w-[115px] h-[40px] px-[10px] py-2 flex justify-between items-center rounded-[8px] cursor-pointer transition duration-200"
       >
         <p className="text-color-black-400 text-md semibold mobile-tablet:text-xs">
           {selectedItem || placeholder}
