@@ -283,8 +283,8 @@ export default function ProfileEditDreamer() {
                         profileImgDefault
                       }
                       alt="프로필 이미지"
-                      width={140}
-                      height={140}
+                      width={130}
+                      height={130}
                     />
                   ) : (
                     <Image src={profileImgDefault} alt="프로필 이미지" width={150} height={150} />
