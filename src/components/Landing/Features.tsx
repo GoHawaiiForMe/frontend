@@ -23,10 +23,12 @@ const featureData = [
 
 export default function Features() {
   return (
-    <div className="container mx-auto px-4">
-      <div className="flex justify-center gap-6">
+    <div className="container mx-auto px-4 w-full max-w-[1200px]">
+      <div className="flex justify-center gap-6 mobile-tablet:flex-col mobile-tablet:items-center">
         {featureData.map((feature, index) => (
-          <FeatureCard key={index} {...feature} />
+          <div key={index} className="w-full">
+            <FeatureCard {...feature} />
+          </div>
         ))}
       </div>
     </div>
