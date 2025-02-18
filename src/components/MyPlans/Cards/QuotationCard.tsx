@@ -72,7 +72,7 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
             <p className="semibold text-xl mobile-tablet:text-lg">
               {quotationDetail.maker.nickName}
             </p>
-            <div className="flex items-center gap-4 mobile-tablet:gap-1">
+            <div className="flex content-center items-center gap-4 mobile-tablet:gap-1">
               <div className="medium flex flex-shrink-0 items-center gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                 <Image
                   src={icon_active_star}
@@ -83,15 +83,17 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
                 <p className="text-color-gray-400">({quotationDetail.maker.totalReviews})</p>
               </div>
               <p className="text-color-line-200">ㅣ</p>
-              <div className="medium flex flex-shrink-0 gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
+              <div className="medium flex flex-shrink-0 items-center gap-[6px] object-center text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                 <Link
                   href={quotationDetail.maker.gallery}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex"
+                  className="flex items-center"
                 >
-                  <Image src={link} alt="링크이미지" width={30} height={30} />
-                  <p className="text-color-gray-400">SNS</p>
+                  <div className="flex mobile-tablet:h-[14px] mobile-tablet:w-[14px]">
+                    <Image src={link} alt="링크이미지" width={30} height={30} />
+                  </div>
+                  <p className="content-center text-color-gray-400">SNS</p>
                 </Link>
               </div>
               <p className="text-color-line-200">ㅣ</p>
@@ -101,15 +103,17 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
               </div>
             </div>
           </div>
-          <div className="medium flex text-2lg text-color-blue-400 mobile-tablet:text-sm">
-            <Image
-              src={icon_like_red}
-              alt="좋아요"
-              width={24}
-              height={24}
-              className="color-red-200 h-[24px] w-[24px]"
-            />
-            136
+          <div className="medium flex-col text-2lg text-color-blue-400 mobile-tablet:text-sm">
+            <div className="flex items-center">
+              <Image
+                src={icon_like_red}
+                alt="좋아요"
+                width={24}
+                height={24}
+                className="color-red-200 h-[24px] w-[24px]"
+              />
+              <p>{quotationDetail.maker.totalFollows}</p>
+            </div>
           </div>
         </div>
       </div>
