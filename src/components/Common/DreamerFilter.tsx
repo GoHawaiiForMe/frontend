@@ -6,16 +6,47 @@ import downGray from '@public/assets/dropdown_down_gray.svg';
 const placeholder = '지역';
 const items = ['전체', '서울', '경기', '인천', '강원', '충북', '충남', '세종', '대전', '전북'];
 const placeholder2 = '서비스';
-const items2 = ['기념품/쇼핑형', '맛집 탐방형', '액티비티/탐험형', '문화/역사탐방형', '축제참여형', '휴양형'];
+const items2 = ['전체', '기념품/쇼핑형', '맛집 탐방형', '액티비티/탐험형', '문화/역사탐방형', '축제참여형', '휴양형'];
+
+const serviceTypeMapping: Record<string, string> = {
+  '전체': '',
+  '기념품/쇼핑형': 'SHOPPING',
+  '맛집 탐방형': 'FOOD_TOUR',
+  '액티비티/탐험형': 'ACTIVITY',
+  '문화/역사탐방형': 'CULTURE',
+  '축제참여형': 'FESTIVAL',
+  '휴양형': 'RELAXATION',
+};
+
+const areaMapping: Record<string, string> = {
+  '전체': '',
+  '서울': 'SEOUL',
+  '경기': 'GYEONGGI',
+  '인천': 'INCHEON',
+  '강원': 'GANGWON',
+  '충북': 'CHUNGBUK',
+  '충남': 'CHUNGNAM',
+  '세종': 'SEJONG',
+  '대전': 'DAEJEON',
+  '전북': 'JEONBUK',
+};
 
 interface DreamerFilterProps {
   type: 'location' | 'service';
+  reset: boolean;
+  onSelect: (selectedItem: string) => void;
 }
 
-const DreamerFilter: React.FC<DreamerFilterProps> = ({ type }) => {
+const DreamerFilter = ({ type, reset, onSelect }: DreamerFilterProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (reset) {
+      setSelectedItem(null);
+    }
+  }, [reset]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -36,6 +67,15 @@ const DreamerFilter: React.FC<DreamerFilterProps> = ({ type }) => {
 
   const itemsToDisplay = type === 'location' ? items : items2;
   const placeholderText = type === 'location' ? placeholder : placeholder2;
+
+  const handleItemClick = (item: string) => {
+    if (itemsToDisplay.includes(item)) {
+      setSelectedItem(item);
+      setIsOpen(false);
+      const mappedValue = type === 'service' ? serviceTypeMapping[item] : areaMapping[item];
+      onSelect(mappedValue);
+    }
+  };
 
   return (
     <div ref={dropdownRef} className="w-full relative">
@@ -72,10 +112,7 @@ const DreamerFilter: React.FC<DreamerFilterProps> = ({ type }) => {
             {itemsToDisplay.map(item => (
               <button
                 key={item}
-                onClick={() => {
-                  setSelectedItem(item);
-                  setIsOpen(false);
-                }}
+                onClick={() => handleItemClick(item)}
                 className={`h-[64px] justify-between px-[24px] py-[16px] font-medium text-color-black-400 cursor-pointer transition duration-200 hover:bg-gray-100
                   mobile-tablet:w-full mobile-tablet:h-auto mobile-tablet:px-[14px] mobile-tablet:py-[8px]
   

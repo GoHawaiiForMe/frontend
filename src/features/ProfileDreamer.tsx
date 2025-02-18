@@ -47,8 +47,7 @@ export default function ProfileDreamer() {
       router.push("/login");
     },
     onError: (error: any) => {
-      console.error("회원가입 실패", error);
-      alert("회원가입에 실패하셨습니다.");
+      alert(error.message);
     },
   });
 

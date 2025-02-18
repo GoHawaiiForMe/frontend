@@ -1,25 +1,42 @@
 import FollowedCard, { FollowedCardProps } from "@/components/Common/FollowedCard";
 import followService from "../services/followService";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import loading from "@public/assets/icon_loading.gif";
 import Image from "next/image";
 import Layout from "@/components/Common/Layout";
 import luggage from "@public/assets/icon_luggage.svg";
 import Button from "@/components/Common/Button";
 import { useRouter } from "next/router";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
 
-const fetchFollowData = () => {
-  const followData = followService.getFollow(1, 10);
-  return followData;
+const fetchFollowData = async ({ pageParam = 1 }) => {
+  try {
+    return await followService.getFollow(pageParam, 6);
+  } catch (error: any) {
+    alert(error.message);
+    throw error;
+  }
 };
 
 export default function FollowMaker() {
-  const { data: followedItems, isLoading } = useQuery({
+  const router = useRouter();
+  const { ref, inView } = useInView();
+
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["followedItems"],
     queryFn: fetchFollowData,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.length > 0 ? allPages.length + 1 : undefined;
+    },
   });
 
-  const router = useRouter();
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   if (isLoading) {
     return (
@@ -36,6 +53,9 @@ export default function FollowMaker() {
   const handleGoToMaker = (makerId: string) => {
     router.push(`/maker-detail/${makerId}`);
   };
+
+  const allItems = data?.pages.flatMap((page) => page) || [];
+
   return (
     <>
       <div className="-mx-[260px] bg-color-gray-50 py-6">
@@ -44,9 +64,9 @@ export default function FollowMaker() {
       <Layout bodyClass="bg-gray">
         <div className="mb-8 h-0.5 bg-color-line-200 mobile:-mx-[24px] tablet:-mx-[72px] pc:-mx-[260px]"></div>
 
-        {followedItems && followedItems.length > 0 ? (
+        {allItems.length > 0 ? (
           <div className="gap-4 pc:grid pc:grid-cols-2 mobile-tablet:flex mobile-tablet:flex-col card:flex card:flex-col">
-            {followedItems.map((item: FollowedCardProps, index: number) => (
+            {allItems.map((item: FollowedCardProps, index: number) => (
               <div key={index} className="cursor-pointer">
                 <FollowedCard
                   makerId={item.makerId}
@@ -76,6 +96,12 @@ export default function FollowMaker() {
             </div>
           </div>
         )}
+        {isFetchingNextPage && (
+          <div className="flex justify-center py-4">
+            <Image src={loading} alt="로딩중" />
+          </div>
+        )}
+        <div ref={ref} className="h-10"></div>
       </Layout>
     </>
   );

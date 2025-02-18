@@ -106,3 +106,7 @@ button {
     transform: translateY(20px);
   }
 }
+
+.rsm-geography:focus {
+  outline: none;
+}

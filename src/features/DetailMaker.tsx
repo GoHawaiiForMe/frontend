@@ -1,31 +1,30 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
 import icon_like_red from "@public/assets/icon_like_red.png";
 import icon_like_black from "@public/assets/icon_like_black.svg";
 import icon_active_star from "@public/assets/icon_active_star.svg";
+import icon_link from "@public/assets/icon_link.svg";
+import { useRouter } from "next/router";
+import { useQuery, keepPreviousData, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Label from "@/components/Common/Label";
 import planData, { Service, Location } from "@/types/planData";
 import Selector from "@/components/Common/Selector";
-import icon_link from "@public/assets/icon_link.svg";
 import StarRating from "@/components/Receive/StarRating";
 import ReviewGraph from "@/components/Receive/ReviewGraph";
 import Pagination from "@/components/Common/Pagination";
 import userService from "@/services/userService";
-import { useRouter } from "next/router";
-import { useQuery, keepPreviousData, useQueryClient, useMutation } from "@tanstack/react-query";
+import followService from "@/services/followService";
+import planService from "@/services/planService";
 import avatarImages from "@/utils/formatImage";
 import { formatToSimpleDate } from "@/utils/formatDate";
-import clipshare from "@public/assets/icon_outline.png";
-import facebook from "@public/assets/icon_facebook.png";
-import kakao from "@public/assets/icon_kakao.png";
 import { TripType } from "@/utils/formatTripType";
-import Link from "next/link";
-import followService from "@/services/followService";
 import ModalLayout from "@/components/Common/ModalLayout";
-import planService from "@/services/planService";
 import { getAccessToken } from "@/utils/tokenUtils";
+import ShareSNS from "@/components/Common/ShareSNS";
+const itemsPerPage = 5;
 
 export default function RequestDetailDreamer() {
   const router = useRouter();
@@ -36,7 +35,6 @@ export default function RequestDetailDreamer() {
   const [isRequestSuccessModalOpen, setIsRequestSuccessModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState("");
   const queryClient = useQueryClient();
-  const itemsPerPage = 5;
   const [pendingPlans, setPendingPlans] = useState<{ id: string; title: string }[]>([]);
   const [pendingPlanTitles, setPendingPlanTitles] = useState<string[]>([]);
 
@@ -79,8 +77,8 @@ export default function RequestDetailDreamer() {
           makerProfileInfo.totalFollows += 1;
         }
       }
-    } catch (error) {
-      console.error("찜하기 상태 변경 실패", error);
+    } catch (error: any) {
+      alert(error.message);
     }
   };
 
@@ -222,31 +220,10 @@ export default function RequestDetailDreamer() {
     <div className="flex flex-col gap-4">
       <p className="semibold text-black-400 text-xl">나만 알기엔 아쉬운 기사님인가요?</p>
       <div className="flex items-center gap-4">
-        <Image
-          src={clipshare}
-          alt="clipshare"
-          onClick={handleCopyUrl}
-          className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
-          width={64}
-          height={64}
-        />
-        <Image
-          src={kakao}
-          alt="kakao"
-          id="kakaotalk-sharing-btn"
-          onClick={handleKakaoShare}
-          className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
-          width={64}
-          height={64}
-        />
-        <Image
-          src={facebook}
-          alt="facebook"
-          id="facebook-sharing-btn"
-          onClick={handleFacebookShare}
-          className="cursor-pointer rounded-[16px] shadow-md mobile-tablet:h-[40px] mobile-tablet:w-[40px]"
-          width={64}
-          height={64}
+        <ShareSNS
+          onCopyUrl={handleCopyUrl}
+          onKakaoShare={handleKakaoShare}
+          onFacebookShare={handleFacebookShare}
         />
       </div>
     </div>
@@ -281,7 +258,6 @@ export default function RequestDetailDreamer() {
                     className="rounded-full border-2 border-color-blue-400"
                   />
                 </div>
-
                 <div className="flex flex-grow flex-col gap-4 text-xs text-color-black-500">
                   <div className="flex items-center justify-between">
                     <div className="flex">
@@ -327,7 +303,6 @@ export default function RequestDetailDreamer() {
               </div>
             </div>
           </div>
-
           <div className="flex flex-col gap-10 mobile-tablet:gap-12">
             <hr className="border-color-line-100 pc:hidden" />
             <div>

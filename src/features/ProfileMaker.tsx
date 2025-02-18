@@ -73,8 +73,8 @@ export default function ProfileMaker() {
       alert("Maker님 가입을 축하드립니다!");
       removeOAuthToken();
       router.push("/login");
-    } catch (error) {
-      console.error("회원가입 실패", error);
+    } catch (error: any) {
+      alert(error.message);
     }
   };
 
