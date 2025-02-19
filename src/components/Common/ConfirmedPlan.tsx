@@ -20,6 +20,7 @@ export default function ConfirmedPlan({ onReset }: { onReset: () => void }) {
   return (
     <>
       <Layout bodyClass="bg-gray">
+        <div className="flex flex-col items-center justify-center h-screen text-center">
         <Image src={luggage} alt="캐리어 아이콘" width={500} />
         <div className="flex gap-4">
           <div>
@@ -36,6 +37,7 @@ export default function ConfirmedPlan({ onReset }: { onReset: () => void }) {
               onClick={handleGoToSeePlans}
             />
           </div>
+        </div>
         </div>
       </Layout>
     </>
