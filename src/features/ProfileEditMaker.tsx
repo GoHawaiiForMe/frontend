@@ -48,7 +48,6 @@ export default function ProfileEditorMaker({ makerId }: ProfileEditMakerProps) {
           router.push("/profile");
         }
       };
-      console.log(userId);
       fetchMakerProfile();
     }
   }, [makerId]); // makerId를 의존성 배열에 추가
