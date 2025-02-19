@@ -25,7 +25,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
             key={i}
             onClick={() => onPageChange(i)}
             className={`flex h-8 w-8 items-center justify-center ${
-              currentPage === i ? "font-bold text-blue-500" : "text-gray-500"
+              currentPage === i ? "bold text-blue-500" : "text-gray-500"
             }`}
           >
             {i}
@@ -44,7 +44,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
               key={i}
               onClick={() => onPageChange(i)}
               className={`flex h-8 w-8 items-center justify-center ${
-                currentPage === i ? "font-bold text-blue-500" : "text-gray-500"
+                currentPage === i ? "bold text-blue-500" : "text-gray-500"
               }`}
             >
               {i}
@@ -89,7 +89,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
               key={i}
               onClick={() => onPageChange(i)}
               className={`flex h-8 w-8 items-center justify-center ${
-                currentPage === i ? "font-bold text-blue-500" : "text-gray-500"
+                currentPage === i ? "bold text-blue-500" : "text-gray-500"
               }`}
             >
               {i}
@@ -121,7 +121,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
               key={i}
               onClick={() => onPageChange(i)}
               className={`flex h-8 w-8 items-center justify-center ${
-                currentPage === i ? "font-bold text-blue-500" : "text-gray-500"
+                currentPage === i ? "bold text-blue-500" : "text-gray-500"
               }`}
             >
               {i}

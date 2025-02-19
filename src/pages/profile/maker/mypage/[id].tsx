@@ -179,11 +179,11 @@ export function MyPage() {
         </div>
       </div>
       <div>
-        <p className="mb-8 text-xl font-bold mobile-tablet:text-lg">리뷰({totalItems})</p>
+        <p className="mb-8 text-xl bold mobile-tablet:text-lg">리뷰({totalItems})</p>
         <div className="mb-10 flex items-center justify-center gap-10 mobile:flex-col">
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="flex items-end gap-2">
-              <p className="text-[64px] font-bold leading-[76.38px]">
+              <p className="text-[64px] bold leading-[76.38px]">
                 {profileInfo?.averageRating}
               </p>
               <p className="text-[38px] leading-[45.38px] text-color-gray-100">/5</p>

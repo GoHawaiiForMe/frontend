@@ -113,7 +113,7 @@ export function QuotationDetail() {
       </div>
       <div className="mb-10 mt-10 flex flex-col gap-8 border-b border-color-line-100 pb-10 mobile-tablet:mb-6 mobile-tablet:mt-0 mobile-tablet:gap-4 mobile-tablet:pb-6">
         <p className="text-2xl semibold mobile-tablet:text-lg">견적 코코넛</p>
-        <p className="text-3xl font-bold mobile-tablet:text-xl">{quotationDetail?.price}개</p>
+        <p className="text-3xl bold mobile-tablet:text-xl">{quotationDetail?.price}개</p>
       </div>
       <div className="mb-[322px] flex flex-col gap-10 mobile:mb-[110px] tablet:mb-[72px] mobile-tablet:gap-6">
         <p className="text-2xl semibold mobile-tablet:text-lg">플랜 정보</p>
