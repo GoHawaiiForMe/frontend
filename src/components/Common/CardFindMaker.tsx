@@ -95,7 +95,7 @@ const CardFindMaker = ({
     >
       <div className="flex mb-2 gap-4">
         
-      {(serviceTypes || []).slice(0, cardWidth < 410 ? 2 : (cardWidth< 586 ? 3 : (cardWidth < 716 ? 4 : (cardWidth < 840 ? 5 : serviceTypes.length)))).map((type, index) => (
+      {(serviceTypes || []).slice(0, cardWidth < 467 ? 2 : (cardWidth< 650 ? 3 : (cardWidth < 756 ? 4 : (cardWidth < 840 ? 5 : serviceTypes.length)))).map((type, index) => (
         <Label 
           key={`${type}-${index}`}
           labelType={type}
@@ -104,7 +104,7 @@ const CardFindMaker = ({
           customLabelTextClass={customLabelTextClass}
         />
       ))}
-      {serviceTypes.length > (cardWidth < 410 ? 2 : (cardWidth < 586 ? 3 : (cardWidth < 716 ? 4 : (cardWidth < 840 ? 5 : serviceTypes.length)))) && (
+      {serviceTypes.length > (cardWidth < 467 ? 2 : (cardWidth < 650 ? 3 : (cardWidth < 756 ? 4 : (cardWidth < 840 ? 5 : serviceTypes.length)))) && (
         <Image
           src={moreIcon}
           alt="더 있음"
