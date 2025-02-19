@@ -34,6 +34,7 @@ export default function ChargeModal({
   const { nickName, email, phoneNumber } = useAuthStore();
   const [amount, setAmount] = useState<number | "">("");
   const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>({
     status: "IDLE",
   });
@@ -49,6 +50,13 @@ export default function ChargeModal({
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
+    if (Number(amount) < 10) {
+      setPaymentStatus({
+        status: "FAILED",
+        message: "최소 10개 이상부터 충전 가능합니다.",
+      });
+      return;
+    }
     if (Number(amount) <= 0) {
       setPaymentStatus({
         status: "FAILED",
@@ -108,12 +116,13 @@ export default function ChargeModal({
   };
 
   const isWaitingPayment = paymentStatus.status !== "IDLE";
+  console.log('상태메세지',paymentStatus);
   return (
     <>
       <ReceiveModalLayout label="코코넛 충전" closeModal={() => setIsChargeModalOpen(false)}>
         <form onSubmit={handleSubmit} className="mt-3 flex flex-col gap-8 p-4">
           <div className="flex flex-col gap-4">
-            <p className="text-lg semibold">현재 보유중인 코코넛</p>
+            <p className="semibold text-lg">현재 보유중인 코코넛</p>
             <div className="flex items-center gap-2">
               <Image src={coconut_icon} alt="코코넛" width={32} height={32} />
               <p className="text-2xl font-bold">{coconut}개</p>
@@ -121,7 +130,7 @@ export default function ChargeModal({
           </div>
 
           <div className="flex flex-col gap-4">
-            <p className="text-lg semibold">충전할 코코넛</p>
+            <p className="semibold text-lg">충전할 코코넛</p>
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <input
@@ -134,6 +143,7 @@ export default function ChargeModal({
                       if (Number(value) > 10000) {
                         setAmount(10000);
                         setShowError(true);
+                        setErrorMessage("최대 10,000개까지만 충전 가능합니다.");
                         setTimeout(() => {
                           setShowError(false);
                         }, 2000);
@@ -143,25 +153,30 @@ export default function ChargeModal({
                       setShowError(false);
                     }
                   }}
-                  onBlur={() => setShowError(false)}
-                  min="1"
+                  onBlur={() => {
+                    if (amount !== "" && Number(amount) < 10) {
+                      setShowError(true);
+                      setErrorMessage("최소 10개 이상부터 충전 가능합니다.");
+                    } else {
+                      setShowError(false);
+                    }
+                  }}
+                  min="10"
                   max="10000"
-                  placeholder="코코넛 갯수 입력 (최대 10,000개)"
+                  placeholder="코코넛 갯수 입력 (10~10,000개)"
                   className={`w-[288px] rounded-lg border ${
                     showError ? "border-red-500" : "border-color-gray-200"
                   } px-4 py-3 text-lg focus:border-color-blue-300 focus:outline-none mobile:w-full`}
                 />
                 <span className="text-lg">개</span>
               </div>
-              {showError && (
-                <p className="mt-1 text-sm text-red-500">최대 10,000개까지만 충전 가능합니다.</p>
-              )}
+              {showError && <p className="mt-1 text-sm text-red-500">{errorMessage}</p>}
             </div>
           </div>
           <div className="flex items-center justify-between gap-2">
-            <p className="text-lg semibold">충전 갯수</p>
+            <p className="semibold text-lg">충전 갯수</p>
             <div className="flex items-center gap-2">
-              <p className="text-md semibold">{amount ? amount.toLocaleString() : 0}개 /</p>
+              <p className="semibold text-md">{amount ? amount.toLocaleString() : 0}개 /</p>
               <p className="text-xl font-bold text-color-blue-300">
                 {amount ? (amount * 100).toLocaleString() : 0}원
               </p>
@@ -171,7 +186,7 @@ export default function ChargeModal({
             type="submit"
             aria-busy={isWaitingPayment}
             disabled={isWaitingPayment}
-            className="w-full rounded-lg bg-color-blue-300 py-4 text-lg semibold text-white hover:bg-color-blue-200"
+            className="semibold w-full rounded-lg bg-color-blue-300 py-4 text-lg text-white hover:bg-color-blue-200"
           >
             충전하기
           </button>

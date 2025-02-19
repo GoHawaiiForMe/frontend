@@ -1,7 +1,7 @@
 import ProfileMaker from "@/features/ProfileMaker";
 import withAuthAccess from "@/stores/withAuthAccess";
 
-export function MakerProfile() {
+export default function MakerProfile() {
   return (
     <div>
       <ProfileMaker />
@@ -9,4 +9,4 @@ export function MakerProfile() {
   );
 }
 
-export default withAuthAccess(MakerProfile);
+
