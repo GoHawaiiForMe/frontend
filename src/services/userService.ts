@@ -39,6 +39,7 @@ export interface MakerProfileResponse {
 
 interface ProfileInfo {
   userId: string;
+  id?: string;
   nickName?: string;
   image: string;
   serviceArea: string[];

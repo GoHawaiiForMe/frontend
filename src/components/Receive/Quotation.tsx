@@ -115,7 +115,7 @@ export default function Quotation({ data, closeModal }: QuotationProps) {
           }}
           className="mt-4 h-[160px] w-[560px] resize-none rounded-[16px] bg-color-background-200 p-[14px] text-xl mobile:h-[160px] mobile:w-[327px] mobile:text-lg tablet:h-[160px] tablet:w-[327px] tablet:text-lg"
         />
-        {showError && <p className="text-md font-bold text-red-500">10글자 이상 작성해 주세요</p>}
+        {showError && <p className="text-md bold text-red-500">10글자 이상 작성해 주세요</p>}
       </div>
       <button
         className={`h-[64px] w-[560px] rounded-[16px] text-xl semibold text-white ${
