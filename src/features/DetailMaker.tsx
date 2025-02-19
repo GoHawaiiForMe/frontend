@@ -230,11 +230,19 @@ export default function RequestDetailDreamer() {
   );
 
   return (
-    <>
-      <div className="relative mt-20 grid w-full grid-cols-7 gap-16 mobile-tablet:flex mobile-tablet:flex-col">
+    <>  <style>
+    {`
+        @media (min-width: 744px) and (max-width: 2700px) {
+        .main-container {
+         padding: 0 24px;
+        }
+      }
+    `}
+  </style>
+      <div className="relative mt-20 grid w-full grid-cols-7 gap-10 mobile-tablet:flex mobile-tablet:flex-col">
         {/* 왼쪽 열 */}
         <div className="col-span-5 flex flex-col">
-          <div className="flex h-72 gap-4 rounded-2xl border border-color-line-100 bg-color-gray-50 px-6 py-7 mobile-tablet:h-[200px] mobile-tablet:px-3 mobile-tablet:py-4">
+          <div className="flex h-72 gap-4 rounded-2xl border border-color-line-100 bg-color-gray-50 px-6 py-7 mobile-tablet:h-[220px] mobile-tablet:px-3 mobile-tablet:py-4">
             <div className="flex-grow">
               <div className="mobile-tablet:mt-[6px]">
                 <div className="custom-scrollbar mb-3 flex max-w-full gap-2 overflow-x-auto">
@@ -305,12 +313,12 @@ export default function RequestDetailDreamer() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-10 mobile-tablet:gap-12">
-            <hr className="border-color-line-100 pc:hidden" />
+          <div className="flex flex-col gap-10 mobile-tablet:gap-10">
+            <hr className="border-color-line-100 mt-10" />
             <div>
               <div className="pc:hidden">{sharePromptContent}</div>
             </div>
-            <div className="mt-20 mobile-tablet:mt-0">
+            <div>
               <p className="bold mb-8 text-2xl text-color-black-400 mobile-tablet:text-lg">
                 상세설명
               </p>
@@ -368,30 +376,33 @@ export default function RequestDetailDreamer() {
                   </div>
                 </div>
               </div>
-
-              {findMakerReview?.list?.map((review, index) => (
-                <div key={index} className="border-b border-color-line-100 py-8">
-                  <div className="flex items-center gap-3">
-                    <p className="border-r border-color-line-200 pr-3 text-md">
-                      {review.writer.nickName}
-                    </p>
-                    <p className="text-md text-color-gray-300">
-                      {formatToSimpleDate(review.createdAt)}
-                    </p>
+              {findMakerReview?.list && findMakerReview.list.length > 0 &&  (
+                <>
+                  {findMakerReview?.list?.map((review, index) => (
+                    <div key={index} className="border-b border-color-line-100 py-8">
+                      <div className="flex items-center gap-3">
+                        <p className="border-r border-color-line-200 pr-3 text-md">
+                          {review.writer.nickName}
+                        </p>
+                        <p className="text-md text-color-gray-300">
+                          {formatToSimpleDate(review.createdAt)}
+                        </p>
+                      </div>
+                      <div className="mb-4 mt-2">
+                        <StarRating type={true} initialRating={review.rating} readonly={true} />
+                      </div>
+                      <p className="text-2lg">{review.content}</p>
+                    </div>
+                  ))}
+                  <div className="my-8 mobile-tablet:mb-[104px]">
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={handlePageChange}
+                    />
                   </div>
-                  <div className="mb-4 mt-2">
-                    <StarRating type={true} initialRating={review.rating} readonly={true} />
-                  </div>
-                  <p className="text-2lg">{review.content}</p>
-                </div>
-              ))}
-              <div className="my-8">
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={handlePageChange}
-                />
-              </div>
+                </>
+              )}
             </div>
           </div>
         </div>

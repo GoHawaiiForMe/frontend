@@ -67,6 +67,7 @@ const CardFindMaker = ({
   const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 1023; 
   const computedPhotoSize = cardSize === 'sm' || isSmallScreen ? "46" : photoSize;
   const computedStarSize = cardSize === 'sm' || isSmallScreen ? "20" : starSize;
+  const computedLinkSize = cardSize === 'sm' || isSmallScreen ? "20" : "30";
   const cardRef = useRef<HTMLDivElement>(null);
   const [cardWidth, setCardWidth] = useState<number>(0);
 
@@ -94,7 +95,7 @@ const CardFindMaker = ({
     >
       <div className="flex mb-2 gap-4">
         
-      {(serviceTypes || []).slice(0, cardWidth < 410 ? 2 : (cardWidth< 586 ? 3 : (cardWidth < 716 ? 4 : (cardWidth < 840 ? 5 : serviceTypes.length)))).map((type, index) => (
+      {(serviceTypes || []).slice(0, cardWidth < 467 ? 2 : (cardWidth< 650 ? 3 : (cardWidth < 756 ? 4 : (cardWidth < 840 ? 5 : serviceTypes.length)))).map((type, index) => (
         <Label 
           key={`${type}-${index}`}
           labelType={type}
@@ -103,7 +104,7 @@ const CardFindMaker = ({
           customLabelTextClass={customLabelTextClass}
         />
       ))}
-      {serviceTypes.length > (cardWidth < 410 ? 2 : (cardWidth < 586 ? 3 : (cardWidth < 716 ? 4 : (cardWidth < 840 ? 5 : serviceTypes.length)))) && (
+      {serviceTypes.length > (cardWidth < 467 ? 2 : (cardWidth < 650 ? 3 : (cardWidth < 756 ? 4 : (cardWidth < 840 ? 5 : serviceTypes.length)))) && (
         <Image
           src={moreIcon}
           alt="더 있음"
@@ -172,7 +173,11 @@ const CardFindMaker = ({
                   rel="noopener noreferrer"
                   className="flex"
                 >
-                  <Image src={link} alt="링크이미지" width={30} height={30} />
+                  <Image src={link} alt="링크이미지" 
+                  width={computedLinkSize} 
+                  height={computedLinkSize} 
+                  className="mobile-tablet:hidden"
+                  />
                   <p className="text-color-gray-400">SNS</p>
                 </Link>
               </div>

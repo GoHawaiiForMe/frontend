@@ -20,22 +20,24 @@ export default function ConfirmedPlan({ onReset }: { onReset: () => void }) {
   return (
     <>
       <Layout bodyClass="bg-gray">
+        <div className="flex flex-col items-center justify-center h-screen text-center">
         <Image src={luggage} alt="캐리어 아이콘" width={500} />
         <div className="flex gap-4">
           <div>
             <Button
               label="새로운 여행 계획하기"
-              className="px-5 text-color-gray-50"
+              className="px-7 text-color-gray-50"
               onClick={handleNewPlanRequest}
             />
           </div>
           <div>
             <Button
               label="신청한 여행 보러가기"
-              className="px-5 text-color-gray-50"
+              className="px-7 text-color-gray-50"
               onClick={handleGoToSeePlans}
             />
           </div>
+        </div>
         </div>
       </Layout>
     </>

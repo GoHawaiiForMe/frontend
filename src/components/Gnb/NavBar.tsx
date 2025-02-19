@@ -205,9 +205,9 @@ const NavBar = () => {
   const hasNotifications = realTimeNotifications.length > 0;
 
   return (
-    <div className="z-40 flex items-center justify-between border-b-2 border-color-line-100 bg-color-background-100 px-32 py-6 mobile:px-4 tablet:px-5 mobile-tablet:py-3">
+    <div className="z-40 flex items-center justify-between border-b-2 border-color-line-100 bg-color-background-100 px-24 py-6 mobile:px-4 tablet:px-5 mobile-tablet:py-3">
       <div className="flex items-center">
-        <div className="mr-16 text-2xl font-bold mobile-tablet:mr-0">
+        <div className="mr-14 text-2xl font-bold mobile-tablet:mr-0">
           <Link href={NavigationPath.LANDING}>
             <Image src={logo} width={100} alt="니가가라하와이 로고" />
           </Link>
