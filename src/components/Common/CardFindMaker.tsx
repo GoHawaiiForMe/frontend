@@ -67,6 +67,7 @@ const CardFindMaker = ({
   const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 1023; 
   const computedPhotoSize = cardSize === 'sm' || isSmallScreen ? "46" : photoSize;
   const computedStarSize = cardSize === 'sm' || isSmallScreen ? "20" : starSize;
+  const computedLinkSize = cardSize === 'sm' || isSmallScreen ? "20" : "30";
   const cardRef = useRef<HTMLDivElement>(null);
   const [cardWidth, setCardWidth] = useState<number>(0);
 
@@ -172,7 +173,11 @@ const CardFindMaker = ({
                   rel="noopener noreferrer"
                   className="flex"
                 >
-                  <Image src={link} alt="링크이미지" width={30} height={30} />
+                  <Image src={link} alt="링크이미지" 
+                  width={computedLinkSize} 
+                  height={computedLinkSize} 
+                  className="mobile-tablet:hidden"
+                  />
                   <p className="text-color-gray-400">SNS</p>
                 </Link>
               </div>
