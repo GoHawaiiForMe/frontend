@@ -10,8 +10,14 @@ import Input from "@/components/Common/Input";
 import router from "next/router";
 import avatarImages from "@/utils/formatImage";
 import { getAccessToken } from "@/utils/tokenUtils";
+import { useRouter } from "next/router";
 
-export default function ProfileEditorMaker() {
+interface ProfileEditMakerProps {
+  makerId: string;
+}
+
+export default function ProfileEditorMaker({ makerId }: ProfileEditMakerProps) {
+  const router = useRouter();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [isOpenImageModal, setIsOpenImageModal] = useState(false);
@@ -19,6 +25,7 @@ export default function ProfileEditorMaker() {
   const [description, setDescription] = useState<string>("");
   const [detailDescription, setDetailDescription] = useState<string>("");
   const [snsAddress, setSnsAddress] = useState<string>("");
+  const [userId, setUserId] = useState<string>((makerId as string) || ""); // makerId로 초기화
 
   useEffect(() => {
     const accessToken = getAccessToken();
@@ -26,10 +33,10 @@ export default function ProfileEditorMaker() {
       const fetchMakerProfile = async () => {
         try {
           const profileData = await userService.getProfileInfo();
-
           if (profileData.image) {
             setProfileImg(profileData.image);
           }
+          setUserId((makerId as string) || "메이커아이디를 찾을수 없습니다."); // profileData.id 대신 makerId 사용
           setSelectedServices(profileData.serviceTypes || []);
           setSelectedLocations(profileData.serviceArea || []);
           setSnsAddress(profileData.gallery || "");
@@ -41,10 +48,10 @@ export default function ProfileEditorMaker() {
           router.push("/profile");
         }
       };
-
+      console.log(userId);
       fetchMakerProfile();
     }
-  }, []);
+  }, [makerId]); // makerId를 의존성 배열에 추가
 
   const handleImageSelect = (imageKey: string) => {
     setProfileImg(imageKey);
@@ -89,8 +96,9 @@ export default function ProfileEditorMaker() {
 
     try {
       await userService.patchProfileMaker(updatedProfileData); // API 호출 필요
+
       alert("프로필이 성공적으로 수정되었습니다!");
-      router.push("/profile/maker/mypage");
+      router.push(`/profile/maker/mypage/${userId}`);
     } catch (error) {
       console.error("프로필 수정 실패", error);
       alert("프로필 수정에 실패했습니다.");

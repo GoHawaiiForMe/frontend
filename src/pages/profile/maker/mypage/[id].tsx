@@ -15,6 +15,7 @@ import { formatTripType, TripType } from "@/utils/formatTripType";
 import { convertRegionToKorean, ServiceArea } from "@/utils/formatRegion";
 import { formatToSimpleDate } from "@/utils/formatDate";
 import link from "@public/assets/icon_link.svg";
+import loading from "@public/assets/icon_loading.gif";
 
 export function MyPage() {
   const router = useRouter();
@@ -23,13 +24,13 @@ export function MyPage() {
   const itemsPerPage = 5;
   const queryClient = useQueryClient();
 
-  const { data: profileInfo, isPlaceholderData } = useQuery({
+  const { data: profileInfo, isLoading: isProfileLoading } = useQuery({
     queryKey: ["profileInfo", userId],
     queryFn: () => userService.getProfileInfo(userId as string),
     enabled: !!userId && typeof userId === "string",
   });
 
-  const { data: makerMypage } = useQuery({
+  const { data: makerMypage, isLoading: isMypageLoading } = useQuery({
     queryKey: ["makerMypage", userId, currentPage],
     queryFn: () =>
       userService.getMakerMypage(userId as string, { page: currentPage, pageSize: itemsPerPage }),
@@ -61,7 +62,7 @@ export function MyPage() {
   useEffect(() => {
     const hasMore = currentPage * itemsPerPage < totalItems;
 
-    if (!isPlaceholderData && hasMore) {
+    if (!isMypageLoading && hasMore) {
       queryClient.prefetchQuery({
         queryKey: ["makerMypage", userId, currentPage + 1],
         queryFn: () =>
@@ -71,13 +72,21 @@ export function MyPage() {
           }),
       });
     }
-  }, [isPlaceholderData, currentPage, itemsPerPage, totalItems, userId, queryClient]);
+  }, [isMypageLoading, currentPage, itemsPerPage, totalItems, userId, queryClient]);
+
+  if (isProfileLoading || isMypageLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Image src={loading} alt="로딩 중" />
+      </div>
+    );
+  }
 
   if (!userId || typeof userId !== "string") return null;
 
   return (
     <>
-      <p className="mb-6 py-8 text-2xl semibold">마이페이지</p>
+      <p className="semibold mb-6 py-8 text-2xl">마이페이지</p>
       <div className="flex flex-col items-center justify-center">
         <div className="mb-12 w-full rounded-[16px] border border-color-gray-100 bg-color-background-200 p-6 pb-12 shadow-sm mobile-tablet:mb-6 mobile-tablet:pb-6">
           <div className="mb-6 flex items-center justify-between gap-2">
@@ -94,7 +103,7 @@ export function MyPage() {
                 height={80}
               />
               <div className="flex flex-col">
-                <p className="text-2xl semibold">{profileInfo?.nickName}</p>
+                <p className="semibold text-2xl">{profileInfo?.nickName}</p>
                 <p className="flex text-xl text-color-gray-400 mobile:line-clamp-1">
                   {profileInfo?.detailDescription}
                 </p>
@@ -107,7 +116,7 @@ export function MyPage() {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-[6px] border-r border-color-gray-100 pr-4">
                 <Image src={star_sm} alt="별이미지" width={24} height={24} />
-                <p className="text-lg semibold">{profileInfo?.averageRating}</p>
+                <p className="semibold text-lg">{profileInfo?.averageRating}</p>
                 <p className="text-lg text-color-gray-300">리뷰수({totalItems})</p>
               </div>
               <div className="flex items-center gap-[6px] border-r border-color-gray-100 pr-4">
@@ -115,14 +124,14 @@ export function MyPage() {
                   href={profileInfo?.gallery}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1 cursor-pointer text-lg text-color-gray-300 underline hover:text-color-blue-300"
+                  className="flex cursor-pointer items-center gap-1 text-lg text-color-gray-300 underline hover:text-color-blue-300"
                 >
                   <Image src={link} alt="링크이미지" width={24} height={24} />
                   SNS
                 </a>
               </div>
               <div className="flex items-center gap-[6px]">
-                <p className="text-lg semibold">{profileInfo?.totalConfirms}건</p>
+                <p className="semibold text-lg">{profileInfo?.totalConfirms}건</p>
                 <p className="text-lg text-color-gray-300">확정</p>
               </div>
             </div>
@@ -154,14 +163,14 @@ export function MyPage() {
           <div className="flex items-center justify-end gap-4 mobile:flex-col">
             <Link href={`/profile/maker/edit/informEdit`}>
               <button className="mobile: flex items-center gap-[6px] rounded-[16px] border border-color-gray-200 bg-color-background-200 px-[64px] py-4 mobile:px-[100px]">
-                <p className="text-xl semibold text-color-gray-400 mobile-tablet:whitespace-nowrap">
+                <p className="semibold text-xl text-color-gray-400 mobile-tablet:whitespace-nowrap">
                   기본정보 수정
                 </p>
               </button>
             </Link>
-            <Link href={`/profile/maker/edit/profileEdit`}>
+            <Link href={`/profile/maker/edit/profileEdit/${userId}`}>
               <button className="flex items-center gap-[6px] rounded-[16px] bg-color-blue-300 px-[64px] py-4 mobile:px-[100px]">
-                <p className="text-xl semibold text-white mobile-tablet:whitespace-nowrap">
+                <p className="semibold text-xl text-white mobile-tablet:whitespace-nowrap">
                   내 프로필 수정
                 </p>
               </button>
@@ -170,7 +179,7 @@ export function MyPage() {
         </div>
       </div>
       <div>
-        <p className="mb-8 text-xl mobile-tablet:text-lg font-bold">리뷰({totalItems})</p>
+        <p className="mb-8 text-xl font-bold mobile-tablet:text-lg">리뷰({totalItems})</p>
         <div className="mb-10 flex items-center justify-center gap-10 mobile:flex-col">
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="flex items-end gap-2">
