@@ -9,6 +9,8 @@ import userService, { ServiceType } from '@/services/userService';
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import followService, { FollowedCardProps } from "@/services/followService";
+import Image from 'next/image';
+import loading from "@public/assets/icon_loading.gif";
 
 
 
@@ -212,8 +214,8 @@ export default function FindingMaker() {
           
           <div className="w-full flex flex-col gap-4">
             {isLoading ? (
-              <div className="flex min-h-[200px] items-center justify-center">
-                <span>Loading...</span>
+              <div className="flex h-screen items-center justify-center">
+                <Image src={loading} alt="로딩 중" />
               </div>
             ) : (
               allMakers.map((maker) => (
@@ -237,7 +239,7 @@ export default function FindingMaker() {
             <div ref={ref} className="h-10">
               {isFetchingNextPage && (
                 <div className="flex items-center justify-center py-4">
-                  <span>Loading more...</span>
+                  <Image src={loading} alt="로딩 중" />
                 </div>
               )}
             </div>

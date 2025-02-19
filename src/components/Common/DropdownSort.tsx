@@ -6,9 +6,9 @@ const placeholder = '리뷰 많은순';
 const items = ['리뷰 많은순', '평점 높은순', '확정 많은순'];
 
 const sortMapping: Record<string, string> = {
-  '리뷰 많은순': 'totalReviews',
-  '평점 높은순': 'averageRating',
-  '확정 많은순': 'totalConfirms',
+  '리뷰 많은순': 'REVIEWS',
+  '평점 높은순': 'RATINGS',
+  '확정 많은순': 'CONFIRMS',
 };
 
 interface DropdownSortProps {
