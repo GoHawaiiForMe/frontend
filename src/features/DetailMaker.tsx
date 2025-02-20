@@ -217,7 +217,6 @@ export default function RequestDetailDreamer() {
 
   return (
     <>
-      {" "}
       <style>
         {`
         @media (min-width: 744px) and (max-width: 2700px) {
