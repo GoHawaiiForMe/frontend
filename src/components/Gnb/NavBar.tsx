@@ -168,6 +168,9 @@ const NavBar = () => {
           const avatarImage = avatarImages.find((avatar) => avatar.key === profileImage);
           setUserImage(avatarImage ? avatarImage.src : user_img.src);
           setLogin(nickName, role, coconut, email, phoneNumber, profileImage);
+          if (userData.coconut !== coconut) {
+            handleCoconutChange(userData.coconut);
+          }
         } catch (error) {
           console.error(error);
         }
@@ -175,7 +178,7 @@ const NavBar = () => {
 
       fetchUserInfo();
     }
-  }, [setLogin]);
+  }, [setLogin, coconut]);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -213,23 +216,6 @@ const NavBar = () => {
   const handleCoconutChange = (newCoconut: number) => {
     setCoconut(newCoconut);
   };
-
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const userData = await userService.getUserInfo();
-        setUserInfo(userData);
-
-        if (userData.coconut !== coconut) {
-          handleCoconutChange(userData.coconut);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchUserInfo();
-  }, [coconut]);
 
   const hasUnreadNotifications = notificationData.some((notification) => !notification.isRead);
   const hasNotifications = realTimeNotifications.length > 0;
