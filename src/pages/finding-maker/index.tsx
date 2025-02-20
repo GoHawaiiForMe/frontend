@@ -126,6 +126,14 @@ export default function FindingMaker() {
               padding: 0 72px;
             }
           }
+          @media (max-width: 374px) {
+            .main-container {
+              padding: 0 5px;
+            }
+            .hide-on-374 {
+              display: none;
+            }
+          }
           .flash {
             animation: flash-animation 0.3s ease-in-out;
           }
@@ -199,7 +207,7 @@ export default function FindingMaker() {
                 <DreamerFilter type="service" reset={resetFilters} onSelect={handleServiceTypeChange} />
                 <DreamerFilter type="location" reset={resetFilters} onSelect={handleServiceAreaChange} />
               </div>
-              <div className="pc:ml-auto">
+              <div className="pc:ml-auto hide-on-374">
                 <DropdownSort onSort={handleOrderByChange} />
               </div>
             </div>
