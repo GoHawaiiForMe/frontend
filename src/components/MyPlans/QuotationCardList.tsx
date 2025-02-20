@@ -32,10 +32,18 @@ export default function QuotationCardList({ planDetail }: PlanData) {
   if (!quotations?.list || quotations.list.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center text-center text-xl text-color-gray-500">
-        <p>아직 받은 견적이 없어요!</p>
-        <br />
-        <p>지정견적요청을 해보세요!</p>
-        <Link href="" className="text-blue-500 underline"></Link>
+        <div className="w-full rounded-2xl bg-color-gray-50 p-8 shadow">
+          <p>아직 받은 견적이 없어요!</p>
+          <br />
+          <p>지정견적요청을 해보세요!</p>
+          <br />
+          <button className="border-1 rounded-lg bg-color-blue-200 p-2">
+            <Link href="/finding-maker" className="text-gray-100">
+              {" "}
+              Maker 찾기
+            </Link>
+          </button>
+        </div>
       </div>
     );
   }

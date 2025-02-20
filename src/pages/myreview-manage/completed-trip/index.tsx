@@ -72,4 +72,4 @@ export function CompletedTrip() {
   );
 }
 
-export default withAuthAccess(CompletedTrip);
+export default withAuthAccess(CompletedTrip, "DREAMER");

@@ -31,4 +31,4 @@ export function OverduePlanDetail() {
   );
 }
 
-export default withAuthAccess(OverduePlanDetail);
+export default withAuthAccess(OverduePlanDetail, "DREAMER");

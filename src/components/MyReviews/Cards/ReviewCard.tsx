@@ -59,7 +59,7 @@ export default function ReviewCard({ reviewDetail }: ReviewCardProps) {
       </div>
       <div>
         <p className="regular text-right text-md text-color-gray-300 pc:hidden">
-          작성일 {reviewDetail.createdAt}
+          작성일 {formatToSimpleDate(reviewDetail.createdAt)}
         </p>
       </div>
     </div>
