@@ -4,4 +4,4 @@ import withAuthAccess from "@/stores/withAuthAccess";
 export function ProfileEditDreamerPage() {
   return <ProfileEditDreamer />;
 }
-export default withAuthAccess(ProfileEditDreamerPage);
+export default withAuthAccess(ProfileEditDreamerPage, "DREAMER");
