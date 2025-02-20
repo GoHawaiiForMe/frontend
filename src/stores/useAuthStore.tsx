@@ -20,6 +20,7 @@ interface AuthState {
     profileImage?: string,
   ) => void;
   setLogout: () => void;
+  setCoconut: (newCoconut: number) => void;
 }
 
 const useAuthStore = create<AuthState>()(
@@ -50,6 +51,7 @@ const useAuthStore = create<AuthState>()(
           phoneNumber: "",
           profileImage: "",
         }),
+      setCoconut: (newCoconut: number) => set({ coconut: newCoconut }),
     }),
     {
       name: "auth",
