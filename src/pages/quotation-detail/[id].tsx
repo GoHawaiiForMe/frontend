@@ -148,4 +148,4 @@ export function QuotationDetail() {
   );
 }
 
-export default withAuthAccess(QuotationDetail);
+export default withAuthAccess(QuotationDetail,"MAKER");

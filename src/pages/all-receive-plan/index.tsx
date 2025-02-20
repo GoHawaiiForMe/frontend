@@ -196,4 +196,4 @@ export function AllReceivePlan() {
   );
 }
 
-export default withAuthAccess(AllReceivePlan);
+export default withAuthAccess(AllReceivePlan, "MAKER");
