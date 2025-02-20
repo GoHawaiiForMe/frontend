@@ -57,7 +57,7 @@ export default function SendQuotation({ data }: SendQuotationProps) {
             </div>
             <div className="mt-4 flex items-center justify-end gap-2">
               <p className="medium text-2lg">견적 코코넛</p>
-              <p className="text-2xl font-bold">{data.price.toLocaleString()}개</p>
+              <p className="text-2xl bold">{data.price.toLocaleString()}개</p>
             </div>
           </div>
         </Link>

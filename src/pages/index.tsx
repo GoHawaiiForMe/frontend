@@ -6,20 +6,55 @@ import Hero from "@/components/Landing/Hero";
 import Features from "@/components/Landing/Features";
 import MapMarker from "@/components/Landing/MapMarker";
 import beachBackground7 from "@public/assets/Landing-img/img_07.jpg";
+import userService from "@/services/userService";
+import useAuthStore from "@/stores/useAuthStore";
+
+const getUserInfo = async () => {
+  const userData = await userService.getUserInfo();
+  return userData;
+};
+
+const getProfileInfo = async () => {
+  const profileData = await userService.getProfileInfo();
+  return profileData;
+};
 
 export default function Home() {
   const router = useRouter();
   const [isHydrated, setIsHydrated] = useState(false);
+  const [isRefreshed, setIsRefreshed] = useState(false);
+  const { setLogin } = useAuthStore();
 
   useEffect(() => {
-    if (router.isReady) {
-      const aceessToken = router.query.auth as string;
-      if (aceessToken) {
-        setAccessToken(aceessToken);
-        router.push("/");
+    const fetchData = async () => {
+      try {
+        if (router.isReady) {
+          const accessToken = router.query.auth as string;
+          if (accessToken) {
+            setAccessToken(accessToken);
+
+            const userInfo = await getUserInfo();
+            const profileInfo = await getProfileInfo();
+
+            setLogin(
+              userInfo.nickName,
+              userInfo.role as "DREAMER" | "MAKER",
+              userInfo.coconut,
+              userInfo.email,
+              userInfo.phoneNumber,
+              profileInfo.image,
+            );
+            setIsRefreshed(true);
+            router.push("/");
+            window.location.reload();
+          }
+        }
+      } catch (error) {
+        console.error("사용자 정보 가져오기 실패:", error);
       }
-    }
-  }, [router.isReady, router.query.auth]);
+    };
+    fetchData();
+  }, [router.isReady, router.query.auth, setLogin, isRefreshed]);
 
   useEffect(() => {
     setIsHydrated(true);

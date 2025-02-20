@@ -5,4 +5,4 @@ export function FollowedMakerPage() {
   return <FollowedMaker />;
 }
 
-export default withAuthAccess(FollowedMakerPage);
+export default withAuthAccess(FollowedMakerPage, "DREAMER");

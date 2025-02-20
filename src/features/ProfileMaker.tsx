@@ -20,6 +20,7 @@ export default function ProfileMaker() {
   const [description, setDescription] = useState<string>("");
   const [detailDescription, setDetailDescription] = useState<string>("");
   const [snsAddress, setSnsAddress] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleImageSelect = (imageKey: string) => {
     setProfileImg(imageKey);
@@ -53,6 +54,9 @@ export default function ProfileMaker() {
   };
 
   const handleSubmit = async () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     const profileMakerData = {
       image: profileImg || undefined,
       serviceTypes: selectedServices,
@@ -75,6 +79,8 @@ export default function ProfileMaker() {
       router.push("/login");
     } catch (error: any) {
       alert(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -85,7 +91,8 @@ export default function ProfileMaker() {
     !userData ||
     !description ||
     !detailDescription ||
-    !snsAddress;
+    !snsAddress ||
+    isSubmitting;
 
   return (
     <div className="mb-20 flex w-full justify-center">
@@ -183,7 +190,7 @@ export default function ProfileMaker() {
           </div>
         </div>
         <Button
-          label="시작하기"
+          label={isSubmitting ? "처리중..." : "시작하기"}
           onClick={handleSubmit}
           disabled={isButtonDisabled}
           type="submit"

@@ -67,4 +67,4 @@ export function ManageQuo() {
   );
 }
 
-export default withAuthAccess(ManageQuo);
+export default withAuthAccess(ManageQuo, "MAKER");

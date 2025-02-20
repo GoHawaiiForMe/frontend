@@ -18,7 +18,7 @@ export default function FeatureCard({ imageUrl, title, description }: FeatureCar
           className="h-[250px] w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
       </div>
-      <h3 className="mt-6 text-2xl font-bold text-gray-800">{title}</h3>
+      <h3 className="mt-6 text-2xl bold text-gray-800">{title}</h3>
       <p className="mt-3 text-lg leading-relaxed text-gray-600">{description}</p>
     </div>
   );

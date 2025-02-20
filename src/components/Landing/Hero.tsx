@@ -12,7 +12,7 @@ export default function Hero() {
         className="mb-8 drop-shadow-2xl transition-transform duration-300 hover:scale-105"
       />
 
-      <h1 className="md:text-7xl text-center text-5xl font-bold tracking-tight text-black drop-shadow-lg">
+      <h1 className="md:text-7xl text-center text-5xl bold tracking-tight text-black drop-shadow-lg">
         시간이 없어도 괜찮아요
       </h1>
 

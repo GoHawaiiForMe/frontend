@@ -171,17 +171,18 @@ export default function RequestDetailDreamer() {
   }, [isPlaceholderData, currentPage, itemsPerPage, totalItems, makerId, queryClient]);
 
   const handleKakaoShare = () => {
+    if (typeof window === "undefined") return;
+
     const currentUrl = window.location.href;
-    if (typeof window !== "undefined" && window.Kakao) {
-      const Kakao = window.Kakao;
-      Kakao.Share.createDefaultButton({
-        container: "#kakaotalk-sharing-btn",
+    if (window.Kakao) {
+      window.Kakao.Share.sendDefault({
         objectType: "feed",
         content: {
-          title: makerProfileInfo?.nickName || "Maker님",
-          description: makerProfileInfo?.description || "여행 플랜 상세내용보기",
-          imageUrl:
-            "https://scontent-ssn1-1.cdninstagram.com/v/t51.29350-15/440535983_1166519591460822_7666710914928913519_n.jpg?stp=dst-jpg_e35_s1080x1080_tt6&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=106&_nc_ohc=CzF6FbL6gvEQ7kNvgHzHfiF&_nc_gid=947375cfb83d43c5abb8aeacb63ed59a&edm=ANTKIIoBAAAA&ccb=7-5&oh=00_AYDtqZ0h00aA8oATSGX48sg79D3ROGTLYUaZSjkcbYafCQ&oe=67A60D41&_nc_sid=d885a2",
+          title: makerProfileInfo?.nickName || "Maker님" + " Maker님",
+          description: makerProfileInfo?.description || "Maker의 설명",
+          imageUrl: "https://ifh.cc/g/wvkbqP.png",
+          imageWidth: 400,
+          imageHeight: 200,
           link: {
             mobileWebUrl: currentUrl,
             webUrl: currentUrl,
@@ -190,6 +191,7 @@ export default function RequestDetailDreamer() {
       });
     }
   };
+
   useEffect(() => {
     if (makerProfileInfo) {
       setIsFollowed(makerProfileInfo.isFollowed);
@@ -197,23 +199,7 @@ export default function RequestDetailDreamer() {
   }, [makerProfileInfo]);
 
   const handleFacebookShare = () => {
-    if (typeof window !== "undefined" && window.FB) {
-      const shareUrl = `https://fs2-4-team2-go-for-me.vercel.app/maker-detail/${makerId}`;
-
-      window.FB.ui(
-        {
-          method: "share",
-          href: shareUrl,
-        },
-        (response) => {
-          if (response) {
-            alert("공유를 성공했습니다!");
-          } else {
-            console.error("공유 실패 - URL:", shareUrl);
-          }
-        },
-      );
-    }
+    return window.open(`http://www.facebook.com/sharer/sharer.php?u=${location.href}`);
   };
 
   const sharePromptContent = (
@@ -231,10 +217,19 @@ export default function RequestDetailDreamer() {
 
   return (
     <>
-      <div className="relative mt-20 grid w-full grid-cols-7 gap-16 mobile-tablet:flex mobile-tablet:flex-col">
+      <style>
+        {`
+        @media (min-width: 744px) and (max-width: 2700px) {
+        .main-container {
+         padding: 0 24px;
+        }
+      }
+    `}
+      </style>
+      <div className="relative mt-20 grid w-full grid-cols-7 gap-10 mobile-tablet:flex mobile-tablet:flex-col">
         {/* 왼쪽 열 */}
         <div className="col-span-5 flex flex-col">
-          <div className="flex h-72 gap-4 rounded-2xl border border-color-line-100 bg-color-gray-50 px-6 py-7 mobile-tablet:h-[200px] mobile-tablet:px-3 mobile-tablet:py-4">
+          <div className="flex h-72 gap-4 rounded-2xl border border-color-line-100 bg-color-gray-50 px-6 py-7 mobile-tablet:h-[220px] mobile-tablet:px-3 mobile-tablet:py-4">
             <div className="flex-grow">
               <div className="mobile-tablet:mt-[6px]">
                 <div className="custom-scrollbar mb-3 flex max-w-full gap-2 overflow-x-auto">
@@ -305,12 +300,12 @@ export default function RequestDetailDreamer() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-10 mobile-tablet:gap-12">
-            <hr className="border-color-line-100 pc:hidden" />
+          <div className="flex flex-col gap-10 mobile-tablet:gap-10">
+            <hr className="mt-10 border-color-line-100" />
             <div>
               <div className="pc:hidden">{sharePromptContent}</div>
             </div>
-            <div className="mt-20 mobile-tablet:mt-0">
+            <div>
               <p className="bold mb-8 text-2xl text-color-black-400 mobile-tablet:text-lg">
                 상세설명
               </p>
@@ -338,60 +333,13 @@ export default function RequestDetailDreamer() {
               <p className="bold mb-8 text-2xl text-color-black-400 mobile-tablet:text-lg">
                 서비스 가능 지역
               </p>
+
               <Selector
                 category="locations"
                 selectedTypes={makerProfileInfo?.serviceArea ?? []}
                 data={filteredLocations}
-                className="flex gap-4"
+                className="flex w-full gap-4 mobile-tablet:w-full"
               />
-            </div>
-            <div>
-              <div>
-                <p className="mb-8 text-lg font-bold">리뷰({makerProfileInfo?.totalReviews})</p>
-                <div className="mb-10 flex items-center justify-center gap-10 mobile:flex-col">
-                  <div className="flex flex-col items-center justify-center gap-4">
-                    <div className="flex items-end gap-2">
-                      <p className="text-[64px] font-bold leading-[76.38px]">
-                        {makerProfileInfo?.averageRating}
-                      </p>
-                      <p className="text-[38px] leading-[45.38px] text-color-gray-100">/5</p>
-                    </div>
-                    <div className="flex justify-end">
-                      <StarRating
-                        initialRating={Number(makerProfileInfo?.averageRating)}
-                        readonly={true}
-                      />
-                    </div>
-                  </div>
-                  <div className="rounded-[16px] bg-color-background-200 px-[22px] py-4 shadow-md">
-                    <ReviewGraph reviewStats={reviewStats} />
-                  </div>
-                </div>
-              </div>
-
-              {findMakerReview?.list?.map((review, index) => (
-                <div key={index} className="border-b border-color-line-100 py-8">
-                  <div className="flex items-center gap-3">
-                    <p className="border-r border-color-line-200 pr-3 text-md">
-                      {review.writer.nickName}
-                    </p>
-                    <p className="text-md text-color-gray-300">
-                      {formatToSimpleDate(review.createdAt)}
-                    </p>
-                  </div>
-                  <div className="mb-4 mt-2">
-                    <StarRating type={true} initialRating={review.rating} readonly={true} />
-                  </div>
-                  <p className="text-2lg">{review.content}</p>
-                </div>
-              ))}
-              <div className="my-8">
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={handlePageChange}
-                />
-              </div>
             </div>
           </div>
         </div>
@@ -439,6 +387,57 @@ export default function RequestDetailDreamer() {
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        <div>
+          <p className="bold mb-8 text-lg pc:mt-12">리뷰({makerProfileInfo?.totalReviews})</p>
+          <div className="mb-10 flex items-center justify-center gap-10 mobile:flex-col">
+            <div className="flex flex-col items-center justify-center gap-4">
+              <div className="flex items-end gap-2">
+                <p className="bold text-[64px] leading-[76.38px]">
+                  {makerProfileInfo?.averageRating}
+                </p>
+                <p className="text-[38px] leading-[45.38px] text-color-gray-100">/5</p>
+              </div>
+              <div className="flex justify-end">
+                <StarRating
+                  initialRating={Number(makerProfileInfo?.averageRating)}
+                  readonly={true}
+                />
+              </div>
+            </div>
+            <div className="rounded-[16px] bg-color-background-200 px-[22px] py-4 shadow-md mobile-tablet:mb-[104px]">
+              <ReviewGraph reviewStats={reviewStats} />
+            </div>
+          </div>
+        </div>
+        {findMakerReview?.list && findMakerReview.list.length > 0 && (
+          <>
+            {findMakerReview?.list?.map((review, index) => (
+              <div key={index} className="border-b border-color-line-100 py-8">
+                <div className="flex items-center gap-3">
+                  <p className="border-r border-color-line-200 pr-3 text-md">
+                    {review.writer.nickName}
+                  </p>
+                  <p className="text-md text-color-gray-300">
+                    {formatToSimpleDate(review.createdAt)}
+                  </p>
+                </div>
+                <div className="mb-4 mt-2">
+                  <StarRating type={true} initialRating={review.rating} readonly={true} />
+                </div>
+                <p className="text-2lg">{review.content}</p>
+              </div>
+            ))}
+            <div className="my-8 mobile-tablet:mb-[104px]">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          </>
+        )}
       </div>
       {isLoginModalOpen && (
         <div>
