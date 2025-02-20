@@ -49,7 +49,7 @@ export function OngoingPlan() {
       <MyPlanNav />
       <Layout bodyClass="bg-gray">
         <MyPlanList
-          title="진행 중인"
+          title="🛫 진행 중인"
           status="ongoing"
           visiblePlans={planData}
           fetchNextPage={fetchNextPage}
@@ -69,4 +69,4 @@ export function OngoingPlan() {
   );
 }
 
-export default withAuthAccess(OngoingPlan);
+export default withAuthAccess(OngoingPlan, "DREAMER");

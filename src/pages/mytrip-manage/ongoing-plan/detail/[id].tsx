@@ -31,4 +31,4 @@ export function OngoingPlanDetail() {
   );
 }
 
-export default withAuthAccess(OngoingPlanDetail);
+export default withAuthAccess(OngoingPlanDetail, "DREAMER");

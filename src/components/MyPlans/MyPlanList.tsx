@@ -55,8 +55,8 @@ const MyPlanList = forwardRef<HTMLDivElement, MyPlanListProps>(
 
     return (
       <div className="my-12 flex flex-col rounded-2xl border-color-gray-300 bg-color-gray-50 shadow">
-        <div className="semibold px-8 pt-8 text-2xl">{`${title} 플랜 목록`}</div>
-        <div className="flex-col p-8">
+        <div className="semibold px-8 pt-8 text-2xl mobile-tablet:px-4 mobile-tablet:pt-4 mobile-tablet:text-xl">{`${title} 플랜 목록`}</div>
+        <div className="flex-col p-8 mobile-tablet:p-4">
           {isLoading ? (
             <div className="flex h-screen items-center justify-center">
               <Image src={loading} alt="로딩 중" />

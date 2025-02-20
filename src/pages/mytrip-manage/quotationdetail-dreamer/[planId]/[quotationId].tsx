@@ -329,4 +329,4 @@ export function QuotationDetailDreamer() {
   );
 }
 
-export default withAuthAccess(QuotationDetailDreamer);
+export default withAuthAccess(QuotationDetailDreamer, "DREAMER");
