@@ -23,7 +23,7 @@ export default function PlanCard({ planDetail }: PlanData) {
           <label className="w-[150px] text-color-gray-300" htmlFor="tripType">
             여행 유형
           </label>
-          <div className="text-color-black-400">
+          <div className="text-nowrap text-color-black-400">
             <Label labelType={planDetail?.tripType || "-"} customLabelContainerClass="rounded-lg" />
           </div>
         </div>

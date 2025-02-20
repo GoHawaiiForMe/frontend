@@ -66,24 +66,28 @@ const MyPlanList = forwardRef<HTMLDivElement, MyPlanListProps>(
               {visiblePlans.map((plan) => (
                 <div
                   key={plan.id}
-                  className="mb-3 flex justify-between rounded-2xl border-color-gray-300 bg-color-gray-50 p-2 shadow"
+                  className="mb-3 flex justify-between rounded-2xl border-color-gray-300 bg-color-gray-50 p-2 shadow mobile-tablet:flex-col"
                 >
                   <div>
                     <div className="semibold flex gap-2 px-2 pt-2 text-2lg">{plan.title}</div>
-                    <div className="regular flex px-2 pt-2 text-lg">
-                      {convertRegionToKorean(plan.serviceArea)}
-                      <p className="text-color-line-200">ㅣ</p>
-                      {formatToSimpleDate(plan.tripDate)}
-                      <p className="text-color-line-200">ㅣ</p>
-                      <Label
-                        labelType={plan.tripType}
-                        labelSize="sm"
-                        customLabelContainerClass="rounded-lg"
-                      />
+                    <div className="regular flex text-nowrap px-2 pt-2 text-lg mobile-tablet:flex-col mobile-tablet:text-md">
+                      <div className="flex mobile-tablet:mb-2">
+                        <p>{convertRegionToKorean(plan.serviceArea)}</p>
+                        <p className="text-color-line-200">ㅣ</p>
+                        <p>{formatToSimpleDate(plan.tripDate)}</p>
+                      </div>
+                      <p className="text-color-line-200 mobile-tablet:hidden">ㅣ</p>
+                      <div className="inline-block max-w-max text-nowrap mobile-tablet:mb-2">
+                        <Label
+                          labelType={plan.tripType}
+                          labelSize="sm"
+                          customLabelContainerClass="rounded-lg"
+                        />
+                      </div>
                     </div>
                   </div>
                   <button
-                    className="min-w-38 semibold text-nowrap rounded-lg border-[1px] border-solid border-color-blue-300 bg-color-gray-50 px-[32.5px] py-4 text-xl text-color-blue-300 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[6px]"
+                    className="semibold text-nowrap rounded-lg border-[1px] border-solid border-color-blue-300 bg-color-gray-50 px-5 py-4 text-lg text-color-blue-300 mobile-tablet:mt-1 mobile-tablet:px-4 mobile-tablet:py-1 mobile-tablet:text-md"
                     onClick={() => handleDetailClick(plan.id)}
                   >
                     플랜 상세
