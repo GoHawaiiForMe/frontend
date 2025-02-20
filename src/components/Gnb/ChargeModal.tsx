@@ -45,6 +45,7 @@ export default function ChargeModal({
     });
     if (paymentStatus.status === "PAID") {
       setIsChargeModalOpen(false);
+      window.location.reload();
     }
   };
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -116,7 +117,7 @@ export default function ChargeModal({
   };
 
   const isWaitingPayment = paymentStatus.status !== "IDLE";
-  console.log('상태메세지',paymentStatus);
+  console.log("상태메세지", paymentStatus);
   return (
     <>
       <ReceiveModalLayout label="코코넛 충전" closeModal={() => setIsChargeModalOpen(false)}>
@@ -125,7 +126,7 @@ export default function ChargeModal({
             <p className="semibold text-lg">현재 보유중인 코코넛</p>
             <div className="flex items-center gap-2">
               <Image src={coconut_icon} alt="코코넛" width={32} height={32} />
-              <p className="text-2xl bold">{coconut}개</p>
+              <p className="bold text-2xl">{coconut}개</p>
             </div>
           </div>
 
@@ -177,7 +178,7 @@ export default function ChargeModal({
             <p className="semibold text-lg">충전 갯수</p>
             <div className="flex items-center gap-2">
               <p className="semibold text-md">{amount ? amount.toLocaleString() : 0}개 /</p>
-              <p className="text-xl bold text-color-blue-300">
+              <p className="bold text-xl text-color-blue-300">
                 {amount ? (amount * 100).toLocaleString() : 0}원
               </p>
             </div>
@@ -195,7 +196,7 @@ export default function ChargeModal({
         {(paymentStatus.status === "FAILED" || paymentStatus.status === "PAID") && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="w-80 rounded-lg bg-white p-6 shadow-lg">
-              <h2 className="mb-4 text-xl bold">
+              <h2 className="bold mb-4 text-xl">
                 {paymentStatus.status === "FAILED" ? "결제 실패" : "결제 성공"}
               </h2>
               <p className="mb-6 text-gray-600">

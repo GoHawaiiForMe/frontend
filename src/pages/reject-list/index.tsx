@@ -67,4 +67,4 @@ export function RejectList() {
   );
 }
 
-export default withAuthAccess(RejectList);
+export default withAuthAccess(RejectList,"MAKER");

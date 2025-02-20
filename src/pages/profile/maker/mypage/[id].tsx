@@ -220,4 +220,4 @@ export function MyPage() {
   );
 }
 
-export default withAuthAccess(MyPage);
+export default withAuthAccess(MyPage, "MAKER");

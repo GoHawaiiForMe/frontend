@@ -9,4 +9,4 @@ export function ProfileEditMakerPage() {
   return <ProfileEditMaker makerId={id as string} />;
 }
 
-export default withAuthAccess(ProfileEditMakerPage);
+export default withAuthAccess(ProfileEditMakerPage, "MAKER");
