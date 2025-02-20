@@ -108,9 +108,11 @@ export default function MapMarker() {
   return (
     <>
       <div className="bold mb-7 mt-7 flex justify-center">
-        <h1 className="mb-10 mt-24 animate-bounce text-4xl">🛬 사용자 이용현황 🛬</h1>
+        <h1 className="mb-10 mt-24 animate-bounce text-4xl mobile-tablet:text-2xl">
+          🛬 사용자 이용현황 🛬
+        </h1>
       </div>
-      <div className="pc:-mr-16 pc:-ml-10 flex items-center rounded-xl bg-color-blue-400 bg-opacity-15 mobile-tablet:ml-0 mobile-tablet:flex-col">
+      <div className="flex items-center rounded-xl bg-color-blue-400 bg-opacity-15 pc:-ml-10 pc:-mr-16 mobile-tablet:ml-0 mobile-tablet:flex-col">
         {/* 지도 */}
         <div className="sw-full mobile-tablet:order-2">
           <ComposableMap
@@ -158,35 +160,37 @@ export default function MapMarker() {
         {/* 통계 */}
         <div className="flex h-[400px] w-1/3 flex-col items-center rounded-xl bg-color-gray-50 p-4 shadow-2xl hover:scale-[1.05] pc:-ml-5 mobile-tablet:order-1 mobile-tablet:mt-10 mobile-tablet:w-[400px]">
           {selectedRegion ? (
-             
             <>
-              <h2 className="text-lg bold">{regionNames[selectedRegion.name]} 통계</h2>
+              <h2 className="bold text-lg">{regionNames[selectedRegion.name]} 통계</h2>
               <p>총 서비스 수: {selectedRegion.totalCount}</p>
-              { selectedRegion.totalCount === 0 ? (
-              <div className="flex h-full w-full items-center justify-center">
-                 <p className="text-lg bold text-center">통계 자료가 없습니다!<br/>여러분의 꿈을 추가해 보세요! 🚀</p>
-              </div>
-            ) : (
-              <PieChart width={300} height={300}>
-                <Pie
-                  data={selectedRegion.details}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  label
-                >
-                  {selectedRegion.details.map((entry, index) => (
-                    <Cell key={`cell${index}`} fill={entry.fill} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            )}
+              {selectedRegion.totalCount === 0 ? (
+                <div className="flex h-full w-full items-center justify-center">
+                  <p className="bold text-center text-lg">
+                    통계 자료가 없습니다!
+                    <br />
+                    여러분의 꿈을 추가해 보세요! 🚀
+                  </p>
+                </div>
+              ) : (
+                <PieChart width={300} height={300}>
+                  <Pie
+                    data={selectedRegion.details}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    label
+                  >
+                    {selectedRegion.details.map((entry, index) => (
+                      <Cell key={`cell${index}`} fill={entry.fill} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              )}
               <p className="text-sm">마커를 클릭하면 해당 지역 통계를 볼 수 있습니다.</p>
             </>
-            
           ) : (
             <p>마커를 클릭하면 해당 지역 통계를 볼 수 있습니다.</p>
           )}

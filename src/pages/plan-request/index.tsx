@@ -24,4 +24,4 @@ export function PlanRequestPage() {
   );
 }
 
-export default withAuthAccess(PlanRequestPage);
+export default withAuthAccess(PlanRequestPage, "DREAMER");

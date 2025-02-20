@@ -57,8 +57,17 @@ const getNotification = () => {
 };
 
 const NavBar = () => {
-  const { isLoggedIn, nickName, role, coconut, email, phoneNumber, profileImage, setLogin } =
-    useAuthStore();
+  const {
+    isLoggedIn,
+    nickName,
+    role,
+    coconut,
+    setCoconut,
+    email,
+    phoneNumber,
+    profileImage,
+    setLogin,
+  } = useAuthStore();
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
   const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false);
   const [isOpenUserMenu, setIsOpenUserMenu] = useState<boolean>(false);
@@ -159,6 +168,9 @@ const NavBar = () => {
           const avatarImage = avatarImages.find((avatar) => avatar.key === profileImage);
           setUserImage(avatarImage ? avatarImage.src : user_img.src);
           setLogin(nickName, role, coconut, email, phoneNumber, profileImage);
+          if (userData.coconut !== coconut) {
+            handleCoconutChange(userData.coconut);
+          }
         } catch (error) {
           console.error(error);
         }
@@ -166,7 +178,7 @@ const NavBar = () => {
 
       fetchUserInfo();
     }
-  }, [setLogin]);
+  }, [setLogin, coconut]);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -201,13 +213,17 @@ const NavBar = () => {
     };
   }, [isOpenUserMenu, isOpenNotification, isOpenSidebar]);
 
+  const handleCoconutChange = (newCoconut: number) => {
+    setCoconut(newCoconut);
+  };
+
   const hasUnreadNotifications = notificationData.some((notification) => !notification.isRead);
   const hasNotifications = realTimeNotifications.length > 0;
 
   return (
     <div className="z-40 flex items-center justify-between border-b-2 border-color-line-100 bg-color-background-100 px-24 py-6 mobile:px-4 tablet:px-5 mobile-tablet:py-3">
       <div className="flex items-center">
-        <div className="mr-14 text-2xl bold mobile-tablet:mr-0">
+        <div className="bold mr-14 text-2xl mobile-tablet:mr-0">
           <Link href={NavigationPath.LANDING}>
             <Image src={logo} width={100} alt="니가가라하와이 로고" />
           </Link>
