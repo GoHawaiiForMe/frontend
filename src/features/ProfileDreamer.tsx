@@ -44,6 +44,7 @@ export default function ProfileDreamer() {
     },
     onSuccess: () => {
       removeOAuthToken();
+      alert("Dreamer님 가입을 축하드립니다!");
       router.push("/login");
     },
     onError: (error: any) => {
