@@ -103,15 +103,17 @@ const authService = {
       throw new Error("네이버 로그인에 실패했습니다.");
     }
   },
-  refreshToken: async (): Promise<string> => {
+  refreshToken: async () => {
     try {
       const response: RefreshTokenResponse = await api.post("/auth/refresh/token", true);
-      return response.accessToken;
+      const newAccessToken = response.accessToken;
+      setAccessToken(newAccessToken);
+      return newAccessToken;
     } catch (error: any) {
       if (error.response && error.response.status === UNAUTHORIZED) {
-        throw new Error("리프레시 토큰이 없거나 만료되었습니다.");
+        console.error("토큰 갱신 실패:", error);
+        throw new Error("로그인이 필요합니다.");
       }
-      throw new Error("토큰 발급 중 오류가 발생했습니다.");
     }
   },
 };

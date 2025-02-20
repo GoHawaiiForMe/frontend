@@ -29,14 +29,13 @@ apiClient.interceptors.response.use(
   async (error) => {
     if (error.response && error.response?.status === 401) {
       try {
-        const response = await authService.refreshToken();
-        const accessToken = response;
-        setAccessToken(accessToken);
-
-        error.config.headers["Authorization"] = `Bearer ${accessToken}`;
+        const newAccessToken = await authService.refreshToken();
+        alert("새 토큰 발급!");
+        error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
         return apiClient(error.config);
       } catch (error: any) {
-        alert(error.message);
+        console.error("토큰 갱신 실패", error);
+
         return Promise.reject(error);
       }
     }
