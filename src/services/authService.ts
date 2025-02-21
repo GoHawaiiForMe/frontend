@@ -111,7 +111,6 @@ const authService = {
       if (!newAccessToken) {
         throw new Error("서버에서 새로운 accessToken을 받지 못했습니다.");
       }
-      console.log(newAccessToken);
 
       return newAccessToken;
     } catch (error: any) {
