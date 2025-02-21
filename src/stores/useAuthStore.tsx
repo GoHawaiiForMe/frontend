@@ -10,12 +10,14 @@ interface AuthState {
   coconut: number;
   email?: string;
   phoneNumber?: string;
+  profileImage?: string;
   setLogin: (
     userName: string,
     role: Role,
     coconut: number,
     email?: string,
     phoneNumber?: string,
+    profileImage?: string,
   ) => void;
   setLogout: () => void;
   setCoconut: (newCoconut: number) => void;
@@ -37,7 +39,8 @@ const useAuthStore = create<AuthState>()(
         coconut: number,
         email?: string,
         phoneNumber?: string,
-      ) => set({ isLoggedIn: true, nickName, role, coconut, email, phoneNumber }),
+        profileImage?: string,
+      ) => set({ isLoggedIn: true, nickName, role, coconut, email, phoneNumber, profileImage }),
       setLogout: () =>
         set({
           isLoggedIn: false,
@@ -46,6 +49,7 @@ const useAuthStore = create<AuthState>()(
           coconut: 0,
           email: "",
           phoneNumber: "",
+          profileImage: "",
         }),
       setCoconut: (newCoconut: number) => set({ coconut: newCoconut }),
     }),
