@@ -458,7 +458,7 @@ export default function RequestDetailDreamer() {
           <ModalLayout label="지정 플랜 요청하기" closeModal={() => setIsListModalOpen(false)}>
             <div className="flex flex-col items-center gap-8">
               {pendingPlanTitles.length > 0 ? (
-                <div className="flex max-h-80 w-full flex-col gap-8 overflow-y-auto">
+                <div className="flex max-h-80 w-full flex-col gap-6 overflow-y-auto">
                   {pendingPlans.map((plan) => (
                     <>
                       <div
