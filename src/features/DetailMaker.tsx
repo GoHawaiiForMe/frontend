@@ -109,9 +109,7 @@ export default function RequestDetailDreamer() {
       setIsRequestSuccessModalOpen(true);
     },
     onError: (error: any) => {
-      if (error.message === "이미 지정 견적을 요청하셨습니다!") {
-        alert(error.message);
-      }
+      alert(error.message);
     },
   });
 

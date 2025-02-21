@@ -1,3 +1,4 @@
+import { BAD_REQUEST, CONFLICT } from "@/utils/errorStatus";
 import { api } from "./api";
 import { ServiceArea } from "@/utils/formatRegion";
 
@@ -128,8 +129,10 @@ const planService = {
       const response = await api.post(`/plans/${planId}/assign`, { assigneeId });
       return response;
     } catch (error: any) {
-      if (error.response && error.response.status === 409) {
+      if (error.response && error.response.status === CONFLICT) {
         throw new Error("이미 지정 견적을 요청하셨습니다!");
+      } else if (error.response && error.response.status === BAD_REQUEST) {
+        throw new Error("Maker가 서비스하는 지역이 아닙니다.");
       }
     }
   },
