@@ -76,4 +76,4 @@ export function ReviewedTrip() {
   );
 }
 
-export default withAuthAccess(ReviewedTrip);
+export default withAuthAccess(ReviewedTrip, "DREAMER");

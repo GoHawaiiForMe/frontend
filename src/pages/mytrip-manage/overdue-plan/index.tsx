@@ -47,7 +47,7 @@ export function OverduePlan() {
       <MyPlanNav />
       <Layout bodyClass="bg-gray">
         <MyPlanList
-          title="만료된"
+          title="🕑 만료된"
           status="overdue"
           visiblePlans={planData}
           fetchNextPage={fetchNextPage}
@@ -60,4 +60,4 @@ export function OverduePlan() {
   );
 }
 
-export default withAuthAccess(OverduePlan);
+export default withAuthAccess(OverduePlan, "DREAMER");

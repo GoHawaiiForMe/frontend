@@ -82,6 +82,7 @@ const planService = {
 
       params.push(`page=${page}`);
       params.push(`pageSize=${pageSize}`);
+      params.push(`orderBy=RECENT`);
 
       queryString = params.length > 0 ? `?${params.join("&")}` : "";
 
@@ -103,7 +104,11 @@ const planService = {
     try {
       const response = await api.get<Plan, {}>(`/plans/${planId}`);
       return response;
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response && error.response.status === 404) {
+        window.location.href = "/404";
+        return Promise.reject(new Error("해당 여행 플랜을 찾을 수 없습니다."));
+      }
       console.error("여행 데이터 요청 실패", error);
       throw error;
     }

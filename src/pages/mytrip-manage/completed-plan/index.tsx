@@ -47,7 +47,7 @@ export function CompletedPlan() {
       <MyPlanNav />
       <Layout bodyClass="bg-gray">
         <MyPlanList
-          title="종료된"
+          title="🛬 종료된"
           status="completed"
           visiblePlans={planData}
           fetchNextPage={fetchNextPage}
@@ -60,4 +60,4 @@ export function CompletedPlan() {
   );
 }
 
-export default withAuthAccess(CompletedPlan);
+export default withAuthAccess(CompletedPlan, "DREAMER");
