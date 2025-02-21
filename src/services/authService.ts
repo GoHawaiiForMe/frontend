@@ -105,15 +105,18 @@ const authService = {
   },
   refreshToken: async () => {
     try {
-      const response: RefreshTokenResponse = await api.post("/auth/refresh/token", true);
+      const response: RefreshTokenResponse = await api.post("/auth/refresh/token", true); //withCrediential
       const newAccessToken = response.accessToken;
-      setAccessToken(newAccessToken);
+
+      if (!newAccessToken) {
+        throw new Error("서버에서 새로운 accessToken을 받지 못했습니다.");
+      }
+      console.log(newAccessToken);
+
       return newAccessToken;
     } catch (error: any) {
-      if (error.response && error.response.status === UNAUTHORIZED) {
-        console.error("토큰 갱신 실패:", error);
-        throw new Error("로그인이 필요합니다.");
-      }
+      console.error("토큰 갱신 실패", error);
+      throw error;
     }
   },
 };

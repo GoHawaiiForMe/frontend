@@ -1,6 +1,8 @@
 import axios from "axios";
-import { getAccessToken, setAccessToken } from "@/utils/tokenUtils";
+import { getAccessToken } from "@/utils/tokenUtils";
 import authService from "./authService";
+import router from "next/router";
+import useAuthStore from "@/stores/useAuthStore";
 
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -27,6 +29,7 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
+    const { setLogout } = useAuthStore();
     if (error.response && error.response?.status === 401) {
       try {
         const newAccessToken = await authService.refreshToken();
@@ -35,7 +38,9 @@ apiClient.interceptors.response.use(
         return apiClient(error.config);
       } catch (error: any) {
         console.error("토큰 갱신 실패", error);
-
+        setLogout();
+        router.push("/login");
+        alert("새로 로그인해주세요!");
         return Promise.reject(error);
       }
     }

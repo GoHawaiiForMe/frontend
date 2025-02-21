@@ -221,7 +221,7 @@ export default function RequestDetailDreamer() {
         {`
         @media (min-width: 744px) and (max-width: 2700px) {
         .main-container {
-         padding: 0 24px;
+         padding: 0 60px;
         }
       }
     `}
