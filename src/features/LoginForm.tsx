@@ -41,6 +41,7 @@ export default function LoginForm() {
     onSuccess: async () => {
       try {
         const userInfo = await getUserInfo();
+        const profileInfo = await getProfileInfo();
 
         setLogin(
           userInfo.nickName,
@@ -48,6 +49,7 @@ export default function LoginForm() {
           userInfo.coconut,
           userInfo.email,
           userInfo.phoneNumber,
+          profileInfo.image,
         );
         router.replace("/");
         router.reload();

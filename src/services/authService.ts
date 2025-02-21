@@ -65,7 +65,7 @@ const authService = {
       return response;
     } catch (error: any) {
       if (error.response && error.response.status === BAD_REQUEST) {
-        throw new Error("유저 정보가 일치하지 않습니다.");
+        throw new Error("이메일과 비밀번호를 확인해주세요.");
       }
       throw new Error("로그인 중 오류가 발생했습니다.");
     }
