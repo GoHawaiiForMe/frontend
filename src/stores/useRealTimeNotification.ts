@@ -6,24 +6,30 @@ const useRealTimeNotification = () => {
   const [realTimeNotifications, setRealTimeNotifications] = useState<
     { id: string; content: string; timestamp: number }[]
   >([]);
+  const [eventSource, setEventSource] = useState<EventSourcePolyfill | null>(null);
 
-  useEffect(() => {
+  const connectToSSE = () => {
     const accessToken = getAccessToken();
-    const eventSource = new EventSourcePolyfill(
+    const newEventSource = new EventSourcePolyfill(
       `${process.env.NEXT_PUBLIC_API_URL}/notifications/stream`,
       {
         headers: { Authorization: `Bearer ${accessToken}` },
       },
     );
 
-    eventSource.onopen = () => console.log("SSE 연결 ON ✅");
+    newEventSource.onopen = () => console.log("SSE 연결 ON ✅");
 
-    eventSource.onerror = (err) => {
+    newEventSource.onerror = (err) => {
       console.error("SSE 연결 ERROR ❌", err);
-      eventSource.close();
+      newEventSource.close();
+
+      setTimeout(() => {
+        console.log("♻️ SSE 재연결 시도...");
+        connectToSSE();
+      }, 5000);
     };
 
-    eventSource.onmessage = (event) => {
+    newEventSource.onmessage = (event) => {
       const notification = event.data;
 
       const newNotificationObject = {
@@ -44,8 +50,14 @@ const useRealTimeNotification = () => {
       }, 5000);
     };
 
+    setEventSource(newEventSource);
+  };
+
+  useEffect(() => {
+    connectToSSE();
+
     return () => {
-      eventSource.close();
+      eventSource?.close();
     };
   }, []);
 

@@ -116,7 +116,7 @@ const planService = {
 
   getPendingPlan: async () => {
     try {
-      const response = await api.get<PlanResponse, {}>(`/plans/dreamer?status=PENDING`);
+      const response = await api.get<PlanResponse, {}>(`/plans/dreamer?status=PENDING&pageSize=99`);
       return response.list;
     } catch (error) {
       console.error("지정 플랜 조회 실패", error);
