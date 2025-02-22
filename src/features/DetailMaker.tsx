@@ -331,13 +331,16 @@ export default function RequestDetailDreamer() {
               <p className="bold mb-8 text-2xl text-color-black-400 mobile-tablet:text-lg">
                 서비스 가능 지역
               </p>
-
-              <Selector
-                category="locations"
-                selectedTypes={makerProfileInfo?.serviceArea ?? []}
-                data={filteredLocations}
-                className="flex w-full gap-4 mobile-tablet:w-full"
-              />
+              <div className="custom-scrollbar flex gap-4 overflow-x-auto">
+                <div className="mb-3 flex-shrink-0">
+                  <Selector
+                    category="locations"
+                    selectedTypes={makerProfileInfo?.serviceArea ?? []}
+                    data={filteredLocations}
+                    className="flex w-full gap-4 mobile-tablet:w-full"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
