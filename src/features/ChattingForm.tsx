@@ -371,12 +371,14 @@ export default function ChattingForm() {
             );
           });
 
-          setMessages((prevMessages) => {
-            if (!prevMessages.find((msg) => msg.id === newMessage.id)) {
-              return [newMessage, ...prevMessages];
-            }
-            return prevMessages;
-          });
+          if (newMessage.chatRoomId === selectedChatRoom?.id) {
+            setMessages((prevMessages) => {
+              if (!prevMessages.find((msg) => msg.id === newMessage.id)) {
+                return [newMessage, ...prevMessages];
+              }
+              return prevMessages;
+            });
+          }
         },
         handleError,
       );
