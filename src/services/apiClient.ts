@@ -27,7 +27,6 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
-// Only handle token refresh in response interceptor
 apiClient.interceptors.request.use(
   async (config) => {
     const token = getAccessToken();
@@ -44,11 +43,12 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // 기존 로직 유지
     if (error.response?.status === 401 && !originalRequest._retry) {
-      if (isRefreshing) {
+      if (isRefreshing) { // 동시 요청 들어올 시, 중복으로 refreshToken 요청 방지
         try {
           const token = await new Promise<string>((resolve, reject) => {
-            failedQueue.push({ resolve, reject });
+            failedQueue.push({ resolve, reject }); // 이때는 아직 토큰이 재발급 전이니 클라이언트 요청 대기열에 추가
           });
           originalRequest.headers["Authorization"] = `Bearer ${token}`;
           return apiClient(originalRequest);
@@ -63,12 +63,12 @@ apiClient.interceptors.response.use(
       try {
         const token = await authService.refreshToken();
         originalRequest.headers["Authorization"] = `Bearer ${token}`;
-        processQueue(null, token);
+        processQueue(null, token); // 실질적인 요청 처리
         return apiClient(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError, null);
         removeAccessToken();
-        router.push("/login");
+        router.push("/login"); // 토큰 재발급 실패 했을때 처리 필요함
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
