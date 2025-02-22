@@ -53,7 +53,7 @@ export default function ProfileMaker() {
   const validateSnsUrl = (url: string): boolean => {
     if (!url) return true;
     const snsUrlPattern =
-      /^@?(https?:\/\/)?(www\.)?(instagram\.com|facebook\.com|twitter\.com|x\.com|youtube\.com|tiktok\.com)\/[a-zA-Z0-9_.-]+\/?$/;
+      /^@?(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+\/[a-zA-Z0-9_.-]+\/?$/;
     return snsUrlPattern.test(url);
   };
 
