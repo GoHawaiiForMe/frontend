@@ -17,14 +17,12 @@ const useRealTimeNotification = () => {
       },
     );
 
-    newEventSource.onopen = () => console.log("SSE 연결 ON ✅");
+    newEventSource.onopen = () => {};
 
-    newEventSource.onerror = (err) => {
-      console.error("SSE 연결 ERROR ❌", err);
+    newEventSource.onerror = () => {
       newEventSource.close();
 
       setTimeout(() => {
-        console.log("♻️ SSE 재연결 시도...");
         connectToSSE();
       }, 5000);
     };
