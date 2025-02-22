@@ -1,4 +1,4 @@
-import { UNAUTHORIZED } from "@/utils/errorStatus";
+import { BAD_REQUEST } from "@/utils/errorStatus";
 import { api } from "./api";
 
 type Role = "DREAMER" | "MAKER";
@@ -135,7 +135,7 @@ const userService = {
     try {
       await api.patch("/users/update", payload);
     } catch (error: any) {
-      if (error.response && error.response.status === UNAUTHORIZED) {
+      if (error.response && error.response.status === BAD_REQUEST) {
         throw new Error("기존 비밀번호와 일치하지 않습니다.");
       }
     }

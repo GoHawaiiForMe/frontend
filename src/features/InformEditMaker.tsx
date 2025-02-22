@@ -197,7 +197,7 @@ export default function InformEditMaker() {
                 label="현재 비밀번호"
                 placeholder="현재 비밀번호를 입력해 주세요"
                 className="overflow-hidden text-ellipsis whitespace-nowrap border-0 bg-color-background-200 pr-10"
-                disabled={!isEmailExist}
+                disabled={!!errors.password}
                 {...register("password")}
               />
             </div>
@@ -210,9 +210,9 @@ export default function InformEditMaker() {
                 className="overflow-hidden text-ellipsis whitespace-nowrap border-0 bg-color-background-200 pr-10"
                 disabled={!isEmailExist}
                 {...register("newPassword")}
-                error={!!errors.password}
+                error={!!errors.newPassword}
               />
-              {errors.password && <ErrorMessage message={errors.password.message} />}
+              {errors.newPassword && <ErrorMessage message={errors.newPassword.message} />}
             </div>
             <div className="my-4 h-0.5 bg-color-line-100"></div>
             <div className="mb-16">
