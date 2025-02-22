@@ -51,7 +51,7 @@ apiClient.interceptors.response.use(
             failedQueue.push({ resolve, reject }); // 이때는 아직 토큰이 재발급 전이니 클라이언트 요청 대기열에 추가
           });
           originalRequest.headers["Authorization"] = `Bearer ${token}`;
-          return apiClient(originalRequest);
+          return apiClient(originalRequest); // 원래 본 요청 처리
         } catch (err) {
           return Promise.reject(err);
         }
@@ -63,8 +63,8 @@ apiClient.interceptors.response.use(
       try {
         const token = await authService.refreshToken();
         originalRequest.headers["Authorization"] = `Bearer ${token}`;
-        processQueue(null, token); // 실질적인 요청 처리
-        return apiClient(originalRequest);
+        processQueue(null, token); // 기존 대기열에 쌓여있던 요청들에게 토큰 전달
+        return apiClient(originalRequest); // 원래 본 요청 처리
       } catch (refreshError) {
         processQueue(refreshError, null);
         removeAccessToken();
