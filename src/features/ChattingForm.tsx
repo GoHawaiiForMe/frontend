@@ -1,7 +1,7 @@
 import Layout from "@/components/Common/Layout";
 import Bubble from "@/components/Common/Bubble";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { ChatRoom, Message } from "@/types/chatData";
 import { getAccessToken } from "@/utils/tokenUtils";
 import { formatToDetailedDate } from "@/utils/formatDate";
@@ -36,7 +36,6 @@ export default function ChattingForm() {
   const [isFirstMessage, setIsFirstMessage] = useState(false);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
-  const [isMessageLoading, setIsMessageLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -51,8 +50,6 @@ export default function ChattingForm() {
       return await chatService.getChatRooms(1, 10);
     },
   });
-
-  const queryClient = useQueryClient();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -86,12 +83,6 @@ export default function ChattingForm() {
         await handleFileUpload(selectedChatRoom.id, file, newMessage);
       } else {
         chatService.sendMessage(socket, selectedChatRoom.id, message.trim(), "TEXT");
-        queryClient.setQueryData(["chatRooms"], (oldData: ChatRoom[] | undefined) => {
-          if (!oldData) return [];
-          return oldData.map((room) =>
-            room.id === selectedChatRoom.id ? { ...room, lastChat: message.trim() } : room,
-          );
-        });
         setMessages((prevMessages) => [newMessage, ...prevMessages]);
       }
 
@@ -178,7 +169,6 @@ export default function ChattingForm() {
   }, [selectedChatRoom, handleScroll]);
 
   const fetchMessages = async (chatRoomId: string, currentPage: number, isOldMessages = false) => {
-    setIsMessageLoading(true);
     try {
       const data = await chatService.getMessages(chatRoomId, currentPage, 10);
       if (data.length === 0) {
@@ -209,8 +199,6 @@ export default function ChattingForm() {
       }
     } catch (error: any) {
       alert(error.message);
-    } finally {
-      setIsMessageLoading(false);
     }
   };
 
@@ -368,20 +356,12 @@ export default function ChattingForm() {
       const newSocket = chatService.connectWebSocket(
         accessToken,
         (newMessage: Message) => {
-          queryClient.setQueryData<ChatRoom[]>(["chatRooms"], (oldData = []) => {
-            return oldData.map((room) =>
-              room.id === newMessage.chatRoomId ? { ...room, lastChat: newMessage.content } : room,
-            );
+          setMessages((prevMessages) => {
+            if (!prevMessages.find((msg) => msg.id === newMessage.id)) {
+              return [newMessage, ...prevMessages];
+            }
+            return prevMessages;
           });
-
-          if (newMessage.chatRoomId === selectedChatRoom?.id) {
-            setMessages((prevMessages) => {
-              if (!prevMessages.find((msg) => msg.id === newMessage.id)) {
-                return [newMessage, ...prevMessages];
-              }
-              return prevMessages;
-            });
-          }
         },
         handleError,
       );
@@ -490,7 +470,7 @@ export default function ChattingForm() {
 
   return (
     <>
-      <div className="-mx-[260px] bg-color-gray-50 py-6 mobile-tablet:mb-5 card:mb-5">
+      <div className="bg-color-gray-50 py-6 pc:-mx-[260px] mobile-tablet:mb-5 card:mb-5">
         <p className="semibold pl-[260px] text-xl">메시지</p>
       </div>
 
@@ -585,7 +565,7 @@ export default function ChattingForm() {
                         <Image src={coconut} alt="코코넛" width={30} />
                       </div>
                       <p className="medium text-color-balck-400 text-xl mobile-tablet:text-2lg">
-                        {selectedChatRoom?.quotePrice} P
+                        {selectedChatRoom?.quotePrice} 개
                       </p>
                     </div>
                   </div>
@@ -594,11 +574,6 @@ export default function ChattingForm() {
                   className="h-[600px] overflow-y-auto mobile-tablet:h-[650px]"
                   ref={messagesContainerRef}
                 >
-                  {isMessageLoading && (
-                    <div className="flex h-screen items-center justify-center">
-                      <Image src={loading} alt="로딩중" />
-                    </div>
-                  )}
                   {renderMessages()}
                 </div>
                 <div className="flex flex-col gap-5" ref={messagesEndRef}>
@@ -634,6 +609,7 @@ export default function ChattingForm() {
                   {filePreview && <div className="mb-3 mt-3">{renderFilePreview()}</div>}
                 </div>
               </div>
+              <div>{selectedChatRoom === null ? <div className="-mb-[200px]"></div> : ""}</div>
             </div>
           </>
         )}
