@@ -77,12 +77,12 @@ export default function Home() {
         <title>니가가라하와이 - 당신의 특별한 여행 메이트</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-color-gray-50 via-color-blue-100 to-color-blue-200">
+      <main className="from-color-gray-50 via-color-blue-100 to-color-blue-200 relative min-h-screen overflow-hidden bg-gradient-to-b">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20"
           style={{ backgroundImage: `url(${beachBackground7.src})` }}
         />
-        <div className="container relative mx-auto px-4 py-12">
+        <div className="relative container mx-auto px-4 py-12">
           <Hero />
           <Features />
           <MapMarker />
