@@ -6,14 +6,16 @@ const Services = ({
   data,
   className,
   itemClassName,
+  useWide,
 }: {
   selectedTypes: string[];
   toggleSelection?: (type: string) => void;
   data?: Service[];
   className?: string;
   itemClassName?: string;
+  useWide?: boolean;
 }) => (
-  <div className={`${className ?? "grid grid-cols-3 gap-3"} w-[510px] mobile-tablet:w-[280px]`}>
+  <div className={`${className ?? "grid grid-cols-3 gap-3"} ${useWide ? "w-[510px]" : ""}`}>
     {(data || planData.services).map((service, index) => (
       <div
         key={index}
@@ -69,6 +71,7 @@ export default function Selector({
   data,
   className,
   itemClassName,
+  useWide,
 }: {
   category: string;
   selectedTypes: string[];
@@ -76,6 +79,7 @@ export default function Selector({
   data?: Service[] | Location[];
   className?: string;
   itemClassName?: string;
+  useWide?: boolean;
 }) {
   return (
     <>
@@ -86,6 +90,7 @@ export default function Selector({
           data={data as Service[]}
           className={className}
           itemClassName={itemClassName}
+          useWide={useWide}
         />
       )}
       {category === "locations" && (

@@ -284,7 +284,7 @@ export default function RequestDetailDreamer() {
                     <p className="mx-3 text-color-line-200 mobile-tablet:mx-1">ㅣ</p>
                     <div className="medium flex items-center gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                       <p className="text-color-gray-400">SNS</p>
-                      <Link href={makerProfileInfo?.gallery || "#"}>
+                      <Link href={makerProfileInfo?.gallery || ""}>
                         <Image src={icon_link} alt="링크 이미지" width={30} height={30} />
                       </Link>
                     </div>
