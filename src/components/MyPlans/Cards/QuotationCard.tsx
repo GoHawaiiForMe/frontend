@@ -155,13 +155,13 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
             견적 확정하기
           </button>
         )}
-        <button className="semibold w-full text-nowrap rounded-lg border-[1px] border-solid border-color-blue-300 px-[32.5px] py-4 text-xl text-color-blue-300 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]">
-          <Link
-            href={`/mytrip-manage/quotationdetail-dreamer/${planDetail.id}/${quotationDetail.id}`}
-          >
+        <Link
+          href={`/mytrip-manage/quotationdetail-dreamer/${planDetail.id}/${quotationDetail.id}`}
+        >
+          <button className="semibold w-full text-nowrap rounded-lg border-[1px] border-solid border-color-blue-300 px-[32.5px] py-4 text-xl text-color-blue-300 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]">
             상세보기
-          </Link>
-        </button>
+          </button>
+        </Link>
       </div>
     </div>
   );
