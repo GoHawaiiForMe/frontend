@@ -23,7 +23,7 @@ export default function MyCompletedTripList({ plans }: CompletedPlanListProps) {
 
   return (
     <>
-      <div className={`grid gap-4 ${isTablet ? "grid-cols-1" : "grid-cols-2"} pc:grid`}>
+      <div className={` ${isTablet ? "grid-cols-1" : "grid-cols-2 gap-4"} pc:grid`}>
         {plans.map((plan) => (
           <TripCard key={plan.id} planDetail={plan} />
         ))}

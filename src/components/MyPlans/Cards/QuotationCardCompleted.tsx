@@ -6,6 +6,7 @@ import link from "@public/assets/icon_link.svg";
 import Link from "next/link";
 import { Plan } from "@/services/planService";
 import { formatToDetailedDate } from "@/utils/formatDate";
+import { convertRegionToKorean } from "@/utils/formatRegion";
 
 interface MakerInfo {
   nickName: string;
@@ -41,7 +42,13 @@ export default function QuotationCardCompleted({
   return (
     <div className="mb-[32px] flex flex-col rounded-2xl bg-color-gray-50 px-6 py-7 shadow mobile-tablet:px-3 mobile-tablet:py-4">
       <div className="justify-left flex items-center gap-[12px] mobile-tablet:mt-[6px]">
+        {quotationDetail.isConfirmed !== false && (
+          <Label labelType="CONFIRMED" customLabelContainerClass="rounded-lg" />
+        )}
         <Label labelType={planDetail.tripType} customLabelContainerClass="rounded-lg" />
+        {quotationDetail.isAssigned !== false && (
+          <Label labelType="REQUEST" customLabelContainerClass="rounded-lg" />
+        )}
       </div>
       <div className="my-6 flex gap-6 rounded-md border-[1px] px-[18px] py-4 mobile-tablet:my-[14px] mobile-tablet:gap-3 mobile-tablet:px-[10px]">
         <div className="md:w-24 md:h-24 flex h-20 w-20 content-center items-center mobile:h-12 mobile:w-12">
@@ -58,7 +65,7 @@ export default function QuotationCardCompleted({
             <p className="semibold text-xl mobile-tablet:text-lg">
               {quotationDetail.maker.nickName}
             </p>
-            <div className="flex content-center items-center gap-4 mobile-tablet:gap-1">
+            <div className="flex content-center items-center gap-3 mobile-tablet:gap-1">
               <div className="medium flex flex-shrink-0 items-center gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                 <Image
                   src={icon_active_star}
@@ -77,7 +84,7 @@ export default function QuotationCardCompleted({
                   className="flex items-center"
                 >
                   <div className="flex mobile-tablet:h-[14px] mobile-tablet:w-[14px]">
-                    <Image src={link} alt="링크이미지" width={30} height={30} />
+                    <Image src={link} alt="링크이미지" width={25} height={25} />
                   </div>
                   <p className="content-center text-color-gray-400">SNS</p>
                 </Link>
@@ -119,17 +126,28 @@ export default function QuotationCardCompleted({
               여행지
             </p>
             <p className="whitespace-nowrap text-2lg font-medium leading-[26px] text-color-black-300 mobile-tablet:text-md">
-              {planDetail.serviceArea}
+              {convertRegionToKorean(planDetail.serviceArea)}
             </p>
           </div>
         </div>
         <div className="flex items-center justify-end gap-4 py-6">
-          <p className="medium text-2lg mobile-tablet:text-md">견적 금액</p>
+          <p className="medium text-2lg mobile-tablet:text-md">견적 코코넛</p>
           <p className="bold text-2xl mobile-tablet:text-2lg">
-            {quotationDetail.price.toLocaleString()}원
+            {quotationDetail.price.toLocaleString()}개
           </p>
         </div>
       </div>
+      <Link
+        href={{
+          pathname: `/mytrip-manage/quotationdetail-dreamer/${planDetail.id}`,
+          query: { quotationId: quotationDetail.id },
+        }}
+        className="semibold w-full rounded-lg border-[1px] border-solid border-color-blue-300 object-center px-[32.5px] py-4 mobile-tablet:px-[16px] mobile-tablet:py-[11px]"
+      >
+        <button className="w-full text-nowrap text-xl text-color-blue-300 mobile:text-md tablet:text-lg">
+          상세보기
+        </button>
+      </Link>
     </div>
   );
 }

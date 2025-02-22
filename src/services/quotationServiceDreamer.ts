@@ -80,17 +80,12 @@ export const QuotationServiceDreamer = {
     } catch (error: any) {
       if (error.response) {
         // 서버에서 응답이 왔을 때 (500, 404 등)
-        console.error("Server Error:", error.response.status, error.response.data);
-        throw new Error(
-          `API Error: ${error.response.status} - ${error.response.data.message || "Unknown error"}`,
-        );
+        throw error.response;
       } else if (error.request) {
         // 요청은 갔지만 응답이 없을 때 (네트워크 문제)
-        console.error("No Response:", error.request);
         throw new Error("No response from server. Please try again.");
       } else {
         // 요청 자체의 문제 (설정 오류 등)
-        console.error("Request Error:", error.message);
         throw new Error("Request setup error.");
       }
     }

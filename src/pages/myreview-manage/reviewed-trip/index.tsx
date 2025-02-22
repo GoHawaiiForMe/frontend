@@ -39,9 +39,11 @@ export function ReviewedTrip() {
   const reviewData = data?.list.flat() || [];
 
   if (isLoading) {
-    <div className="flex h-screen items-center justify-center">
-      <Image src={loading} alt="로딩 중" />
-    </div>;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Image src={loading} alt="로딩 중" />
+      </div>
+    );
   }
 
   return (

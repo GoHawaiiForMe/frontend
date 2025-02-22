@@ -349,7 +349,9 @@ export function QuotationDetailDreamer() {
               </button>
             </div>
           )}
-          <hr className="border-Line-100 my-10 mobile-tablet:hidden" />
+          {planDetail.status === "PENDING" && (
+            <hr className="border-Line-100 my-10 mobile-tablet:hidden" />
+          )}
           <div className={`flex flex-col gap-[22px] ${isTablet ? "hidden" : ""}`}>
             <p className="semibold text-black-400 flex text-xl">플랜 공유하기</p>
             <div className="flex gap-4">{sharePromptContent}</div>

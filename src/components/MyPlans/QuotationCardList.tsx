@@ -54,7 +54,6 @@ export default function QuotationCardList({ planDetail }: PlanData) {
           <br />
           <button className="border-1 rounded-lg bg-color-blue-200 p-2">
             <Link href="/finding-maker" className="text-gray-100">
-              {" "}
               Maker 찾기
             </Link>
           </button>
