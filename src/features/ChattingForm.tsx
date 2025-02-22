@@ -596,7 +596,7 @@ export default function ChattingForm() {
                 >
                   {isMessageLoading && (
                     <div className="flex h-screen items-center justify-center">
-                      <Image src={loading} alt="Loading..." />
+                      <Image src={loading} alt="로딩중" />
                     </div>
                   )}
                   {renderMessages()}
