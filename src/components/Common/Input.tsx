@@ -9,9 +9,10 @@ type InputProps = {
   label?: string;
   name?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   placeholder?: string;
   className?: string;
-  error?: boolean;
+  error?: string | boolean;
 } & Omit<React.ComponentPropsWithoutRef<"input">, "type"> &
   Omit<React.ComponentPropsWithoutRef<"textarea">, "type">;
 
@@ -23,6 +24,7 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
       name,
       value,
       onChange,
+      onBlur = () => {},
       placeholder = "",
       className = "",
       error = false,
@@ -80,6 +82,7 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
           name={name}
           value={value}
           onChange={onChange}
+          onBlur={onBlur}
           placeholder={placeholder}
           {...rest}
         />
@@ -93,6 +96,9 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
           </label>
         )}
         {inputType}
+        {typeof error === "string" && error && (
+          <p className="mb-4 mt-[-20px] text-sm text-color-red-200">{error}</p>
+        )}
       </div>
     );
   },
