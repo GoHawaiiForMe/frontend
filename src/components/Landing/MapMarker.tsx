@@ -5,6 +5,8 @@ import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps
 import { PieChart, Pie, Tooltip, Cell } from "recharts";
 import planService from "@/services/planService";
 import planData from "@/types/planData";
+import Image from "next/image";
+import refresh_icon from "@public/assets/icon_refresh.svg";
 
 const regionNames = planData.locations.reduce(
   (acc, { name, mapping }) => {
@@ -161,7 +163,17 @@ export default function MapMarker() {
         <div className="flex h-[400px] w-1/3 flex-col items-center rounded-xl bg-color-gray-50 p-4 shadow-2xl hover:scale-[1.05] pc:-ml-5 mobile-tablet:order-1 mobile-tablet:mt-10 mobile-tablet:w-[400px]">
           {selectedRegion ? (
             <>
-              <h2 className="bold text-lg">{regionNames[selectedRegion.name]} 통계</h2>
+              <div className="flex w-full justify-between gap-10">
+                <h2 className="bold flex-grow justify-center pl-14 text-center text-lg">
+                  {regionNames[selectedRegion.name]} 통계
+                </h2>
+                <div className="mb-4 flex items-center justify-end">
+                  <button onClick={() => getStatistics("")} className="flex items-center gap-2">
+                    <Image src={refresh_icon} alt="되돌리기" width={20} height={20} />
+                  </button>
+                </div>
+              </div>
+
               <p>총 서비스 수: {selectedRegion.totalCount}</p>
               {selectedRegion.totalCount === 0 ? (
                 <div className="flex h-full w-full items-center justify-center">
@@ -189,6 +201,7 @@ export default function MapMarker() {
                   <Tooltip />
                 </PieChart>
               )}
+
               <p className="text-sm">마커를 클릭하면 해당 지역 통계를 볼 수 있습니다.</p>
             </>
           ) : (
