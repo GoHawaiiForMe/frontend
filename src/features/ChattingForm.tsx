@@ -471,7 +471,7 @@ export default function ChattingForm() {
   return (
     <>
       <div className="bg-color-gray-50 py-6 mobile:-mx-[24px] tablet:-mx-[72px] pc:-mx-[260px] mobile-tablet:mb-5 card:mb-5">
-        <p className="semibold pl-[260px] text-xl">메시지</p>
+        <p className="semibold pl-[260px] text-xl mobile:pl-[24px] tablet:pl-[72px]">메시지</p>
       </div>
 
       <Layout bodyClass="bg-gray">
