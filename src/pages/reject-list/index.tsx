@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import withAuthAccess from "@/stores/withAuthAccess";
 import Image from "next/image";
 import loading from "@public/assets/icon_loading.gif";
+import request_empty from "@public/assets/icon_luggage_frown.svg";
 
 export function RejectList() {
   const { ref, inView } = useInView();
@@ -51,20 +52,29 @@ export function RejectList() {
           </Link>
         </div>
       </div>
-      <div className="mobiel-tablet:felx pt-10 pc:grid pc:grid-cols-2 pc:gap-2 mobile-tablet:grid-cols-none mobile-tablet:flex-col mobile-tablet:items-center mobile-tablet:justify-center">
-        {allItems.map((item) => (
-          <SendQuotation key={item.id} data={item} />
-        ))}
-      </div>
-      <div ref={ref} className="h-10">
-        {isFetchingNextPage && (
-          <div className="flex items-center justify-center py-4">
-            <span>더 불러오는 중...</span>
+      {allItems.length === 0 ? (
+        <div className="flex flex-col items-center justify-center pt-10">
+          <Image src={request_empty} alt="request_empty" width={300} height={300} />
+          <p className="semibold text-xl text-color-gray-300">아직 반려된 견적이 없어요!</p>
+        </div>
+      ) : (
+        <>
+          <div className="mobiel-tablet:felx pt-10 pc:grid pc:grid-cols-2 pc:gap-2 mobile-tablet:grid-cols-none mobile-tablet:flex-col mobile-tablet:items-center mobile-tablet:justify-center">
+            {allItems.map((item) => (
+              <SendQuotation key={item.id} data={item} />
+            ))}
           </div>
-        )}
-      </div>
+          <div ref={ref} className="h-10">
+            {isFetchingNextPage && (
+              <div className="flex items-center justify-center py-4">
+                <span>더 불러오는 중...</span>
+              </div>
+            )}
+          </div>
+        </>
+      )}
     </>
   );
 }
 
-export default withAuthAccess(RejectList,"MAKER");
+export default withAuthAccess(RejectList, "MAKER");

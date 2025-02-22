@@ -122,9 +122,9 @@ export function QuotationDetailDreamer() {
     try {
       if (quotationDetail)
         await QuotationServiceDreamer.confirmQuotation({ isConfirmed: true }, quotationDetail.id);
-      alert("플랜이 확정되었습니다.");
+      alert("견적확정 확정되었습니다.");
     } catch (error) {
-      alert(`플랜 확정에 실패했습니다. 다시 시도해주세요. ${error}`);
+      alert(`견적확정에 실패했습니다. 다시 시도해주세요. ${error}`);
     }
   }
 

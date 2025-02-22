@@ -109,9 +109,7 @@ export default function RequestDetailDreamer() {
       setIsRequestSuccessModalOpen(true);
     },
     onError: (error: any) => {
-      if (error.message === "이미 지정 견적을 요청하셨습니다!") {
-        alert(error.message);
-      }
+      alert(error.message);
     },
   });
 
@@ -221,7 +219,7 @@ export default function RequestDetailDreamer() {
         {`
         @media (min-width: 744px) and (max-width: 2700px) {
         .main-container {
-         padding: 0 24px;
+         padding: 0 60px;
         }
       }
     `}
@@ -458,7 +456,7 @@ export default function RequestDetailDreamer() {
           <ModalLayout label="지정 플랜 요청하기" closeModal={() => setIsListModalOpen(false)}>
             <div className="flex flex-col items-center gap-8">
               {pendingPlanTitles.length > 0 ? (
-                <div className="flex max-h-80 w-full flex-col gap-8 overflow-y-auto">
+                <div className="flex max-h-80 w-full flex-col gap-6 overflow-y-auto">
                   {pendingPlans.map((plan) => (
                     <>
                       <div

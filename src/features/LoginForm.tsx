@@ -53,19 +53,12 @@ export default function LoginForm() {
         );
         router.replace("/");
         router.reload();
-
       } catch (error) {
         console.error("유저 정보 가져오기 실패", error);
       }
     },
     onError: (error: any) => {
-      if (error.response) {
-        alert(error.message);
-      } else if (error.request) {
-        console.error(error.request);
-      } else {
-        console.error(error.message);
-      }
+      alert(error.message);
     },
   });
 

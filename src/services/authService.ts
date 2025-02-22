@@ -65,7 +65,7 @@ const authService = {
       return response;
     } catch (error: any) {
       if (error.response && error.response.status === BAD_REQUEST) {
-        throw new Error("유저 정보가 일치하지 않습니다.");
+        throw new Error("이메일과 비밀번호를 확인해주세요.");
       }
       throw new Error("로그인 중 오류가 발생했습니다.");
     }
@@ -103,15 +103,19 @@ const authService = {
       throw new Error("네이버 로그인에 실패했습니다.");
     }
   },
-  refreshToken: async (): Promise<string> => {
+  refreshToken: async () => {
     try {
-      const response: RefreshTokenResponse = await api.post("/auth/refresh/token", true);
-      return response.accessToken;
-    } catch (error: any) {
-      if (error.response && error.response.status === UNAUTHORIZED) {
-        throw new Error("리프레시 토큰이 없거나 만료되었습니다.");
+      const response: RefreshTokenResponse = await api.post("/auth/refresh/token", true); //withCrediential
+      const newAccessToken = response.accessToken;
+
+      if (!newAccessToken) {
+        throw new Error("서버에서 새로운 accessToken을 받지 못했습니다.");
       }
-      throw new Error("토큰 발급 중 오류가 발생했습니다.");
+
+      return newAccessToken;
+    } catch (error: any) {
+      console.error("토큰 갱신 실패", error);
+      throw error;
     }
   },
 };
