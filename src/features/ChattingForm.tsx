@@ -1,7 +1,7 @@
 import Layout from "@/components/Common/Layout";
 import Bubble from "@/components/Common/Bubble";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChatRoom, Message } from "@/types/chatData";
 import { getAccessToken } from "@/utils/tokenUtils";
 import { formatToDetailedDate } from "@/utils/formatDate";
@@ -38,6 +38,7 @@ export default function ChattingForm() {
   const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
+  const [chatRoomsState, setChatRoomsState] = useState<ChatRoom[]>([]);
 
   const { data: userId = "" } = useQuery({
     queryKey: ["userId"],
@@ -50,6 +51,8 @@ export default function ChattingForm() {
       return await chatService.getChatRooms(1, 10);
     },
   });
+
+  const queryClient = useQueryClient();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -83,6 +86,12 @@ export default function ChattingForm() {
         await handleFileUpload(selectedChatRoom.id, file, newMessage);
       } else {
         chatService.sendMessage(socket, selectedChatRoom.id, message.trim(), "TEXT");
+        queryClient.setQueryData(["chatRooms"], (oldData: ChatRoom[] | undefined) => {
+          if (!oldData) return [];
+          return oldData.map((room) =>
+            room.id === selectedChatRoom.id ? { ...room, lastChat: message.trim() } : room,
+          );
+        });
         setMessages((prevMessages) => [newMessage, ...prevMessages]);
       }
 
@@ -356,6 +365,12 @@ export default function ChattingForm() {
       const newSocket = chatService.connectWebSocket(
         accessToken,
         (newMessage: Message) => {
+          queryClient.setQueryData<ChatRoom[]>(["chatRooms"], (oldData = []) => {
+            return oldData.map((room) =>
+              room.id === newMessage.chatRoomId ? { ...room, lastChat: newMessage.content } : room,
+            );
+          });
+
           setMessages((prevMessages) => {
             if (!prevMessages.find((msg) => msg.id === newMessage.id)) {
               return [newMessage, ...prevMessages];
