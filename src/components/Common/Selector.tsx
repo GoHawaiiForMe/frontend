@@ -13,7 +13,7 @@ const Services = ({
   className?: string;
   itemClassName?: string;
 }) => (
-  <div className={`${className ?? "grid grid-cols-3 gap-3"} `}>
+  <div className={`${className ?? "grid grid-cols-3 gap-3"} w-[510px] mobile-tablet:w-[280px]`}>
     {(data || planData.services).map((service, index) => (
       <div
         key={index}
