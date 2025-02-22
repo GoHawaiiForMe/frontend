@@ -1,4 +1,4 @@
-import { BAD_REQUEST, CONFLICT } from "@/utils/errorStatus";
+import { BAD_REQUEST } from "@/utils/errorStatus";
 import { api } from "./api";
 
 type Role = "DREAMER" | "MAKER";
