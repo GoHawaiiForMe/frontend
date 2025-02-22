@@ -37,7 +37,7 @@ export function ReviewableTrip() {
 
   const totalPages = Math.ceil((data?.totalCount || 1) / pageSize);
   const planData = data?.list.flat() || [];
-  console.log(planData);
+
   return (
     <>
       <MyReviewNav />

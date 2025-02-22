@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Plan } from "@/services/planService";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import { QuotationServiceDreamer } from "@/services/quotationServiceDreamer";
+import { convertRegionToKorean } from "@/utils/formatRegion";
 
 interface MakerInfo {
   nickName: string;
@@ -47,7 +48,7 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
   }
 
   return (
-    <div className="mb-[32px] flex flex-col rounded-2xl bg-color-gray-50 px-6 py-7 shadow mobile-tablet:px-3 mobile-tablet:py-4">
+    <div className="mb-[32px] flex w-full flex-col rounded-2xl bg-color-gray-50 px-6 py-7 shadow mobile-tablet:px-3 mobile-tablet:py-4">
       <div className="justify-left flex items-center gap-[12px] mobile-tablet:mt-[6px]">
         {quotationDetail.isConfirmed !== false && (
           <Label labelType="CONFIRMED" customLabelContainerClass="rounded-lg" />
@@ -57,7 +58,7 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
           <Label labelType="REQUEST" customLabelContainerClass="rounded-lg" />
         )}
       </div>
-      <div className="border-color bg-body.bg-gray my-6 flex gap-6 rounded-md border-[1px] px-[18px] py-4 mobile-tablet:my-[14px] mobile-tablet:gap-3 mobile-tablet:px-[10px]">
+      <div className="border-color bg-body.bg-gray my-6 flex max-w-full gap-6 rounded-md border-[1px] px-[18px] py-4 mobile-tablet:my-[14px] mobile-tablet:gap-3 mobile-tablet:px-[10px]">
         <div className="flex h-20 w-20 flex-shrink-0 items-center mobile-tablet:h-[46px] mobile-tablet:w-[46px]">
           <Image
             src={`/assets/img_avatar${quotationDetail.maker.image.split("_")[1]}.svg`}
@@ -72,7 +73,7 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
             <p className="semibold text-xl mobile-tablet:text-lg">
               {quotationDetail.maker.nickName}
             </p>
-            <div className="flex content-center items-center gap-4 mobile-tablet:gap-1">
+            <div className="flex content-center items-center gap-3 mobile-tablet:gap-1">
               <div className="medium flex flex-shrink-0 items-center gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                 <Image
                   src={icon_active_star}
@@ -91,7 +92,7 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
                   className="flex items-center"
                 >
                   <div className="flex mobile-tablet:h-[14px] mobile-tablet:w-[14px]">
-                    <Image src={link} alt="링크이미지" width={30} height={30} />
+                    <Image src={link} alt="링크이미지" width={25} height={25} />
                   </div>
                   <p className="content-center text-color-gray-400">SNS</p>
                 </Link>
@@ -120,28 +121,28 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
       <div>
         <div className="flex items-center gap-[12px] mobile-tablet:grid mobile-tablet:grid-cols-3 mobile-tablet:gap-0">
           <div className="flex items-center gap-3 mobile-tablet:col-span-3 mobile-tablet:mb-3">
-            <p className="regular whitespace-nowrap rounded-[4px] bg-color-background-400 px-[6px] py-[4px] text-2lg text-color-gray-500 mobile-tablet:text-md">
+            <p className="medium whitespace-nowrap rounded-[4px] bg-color-background-400 px-[6px] py-[4px] text-2lg text-color-gray-500 mobile-tablet:text-md">
               여행일
             </p>
-            <p className="medium text-2lg text-color-black-300 mobile-tablet:text-md">
+            <p className="medium whitespace-nowrap text-2lg text-color-black-300 mobile-tablet:text-md">
               {formatToDetailedDate(planDetail.tripDate)}
             </p>
           </div>
           <p className="text-color-line-200 mobile-tablet:hidden">ㅣ</p>
           <div className="flex items-center gap-3">
-            <p className="whitespace-nowrap rounded-[4px] bg-color-background-400 px-[6px] py-[4px] text-2lg font-normal leading-[26px] text-color-gray-500 mobile-tablet:text-md">
+            <p className="medium whitespace-nowrap rounded-[4px] bg-color-background-400 px-[6px] py-[4px] text-2lg leading-[26px] text-color-gray-500 mobile-tablet:text-md">
               여행지
             </p>
-            <p className="whitespace-nowrap text-2lg font-medium leading-[26px] text-color-black-300 mobile-tablet:text-md">
-              {planDetail.serviceArea}
+            <p className="medium whitespace-nowrap text-2lg leading-[26px] text-color-black-300 mobile-tablet:text-md">
+              {convertRegionToKorean(planDetail.serviceArea)}
             </p>
           </div>
         </div>
         <div className="flex items-center justify-end gap-4 py-6">
-          <p className="medium text-2lg mobile-tablet:text-md">견적 금액</p>
+          <p className="medium text-2lg mobile-tablet:text-md">견적 코코넛</p>
           <p className="bold text-2xl mobile-tablet:text-2lg">
             {" "}
-            {quotationDetail.price.toLocaleString()}원
+            {quotationDetail.price.toLocaleString()} 개
           </p>
         </div>
       </div>
@@ -151,7 +152,7 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
             className="semibold w-full text-nowrap rounded-lg bg-color-blue-300 px-[32.5px] py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]"
             onClick={handleConfirmButton}
           >
-            플랜 확정하기
+            견적 확정하기
           </button>
         )}
         <button className="semibold w-full text-nowrap rounded-lg border-[1px] border-solid border-color-blue-300 px-[32.5px] py-4 text-xl text-color-blue-300 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]">
