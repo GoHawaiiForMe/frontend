@@ -93,7 +93,7 @@ export default function TripCard({ planDetail }: TripCardProps) {
       </div>
       {isCompleteModalOpen && (
         <ReceiveModalLayout label="여행 완료" closeModal={closeCompleteModal}>
-          <CompleteTrip />
+          <CompleteTrip planDetail={planDetail} closeModal={closeCompleteModal} />
         </ReceiveModalLayout>
       )}
       {isReviewModalOpen && (

@@ -40,10 +40,10 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
   async function handleConfirmButton() {
     try {
       await QuotationServiceDreamer.confirmQuotation({ isConfirmed: true }, quotationDetail.id);
-      alert("플랜이 확정되었습니다.");
+      alert("견적이 확정되었습니다.");
       window.location.reload();
     } catch (error) {
-      alert(`플랜 확정에 실패했습니다. 다시 시도해주세요. ${error}`);
+      alert(`견적 확정에 실패했습니다. 다시 시도해주세요. ${error}`);
     }
   }
 
@@ -157,8 +157,9 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
         )}
         <Link
           href={`/mytrip-manage/quotationdetail-dreamer/${planDetail.id}/${quotationDetail.id}`}
+          className="semibold w-full rounded-lg border-[1px] border-solid border-color-blue-300 object-center px-[32.5px] py-4 mobile-tablet:px-[16px] mobile-tablet:py-[11px]"
         >
-          <button className="semibold w-full text-nowrap rounded-lg border-[1px] border-solid border-color-blue-300 px-[32.5px] py-4 text-xl text-color-blue-300 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]">
+          <button className="w-full text-nowrap text-xl text-color-blue-300 mobile:text-md tablet:text-lg">
             상세보기
           </button>
         </Link>
