@@ -8,6 +8,7 @@ import { Plan } from "@/services/planService";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import { QuotationServiceDreamer } from "@/services/quotationServiceDreamer";
 import { convertRegionToKorean } from "@/utils/formatRegion";
+import { useRouter } from "next/router";
 
 interface MakerInfo {
   nickName: string;
@@ -37,11 +38,14 @@ interface QuotationCardProps {
 }
 
 export default function QuotationCard({ quotationDetail, planDetail }: QuotationCardProps) {
+  const router = useRouter();
+
   async function handleConfirmButton() {
     try {
       await QuotationServiceDreamer.confirmQuotation({ isConfirmed: true }, quotationDetail.id);
       alert("견적이 확정되었습니다.");
       window.location.reload();
+      router.push(`/mytrip-manage/ongoin-plan/detail/${planDetail.id}`);
     } catch (error) {
       alert(`견적 확정에 실패했습니다. 다시 시도해주세요. ${error}`);
     }
@@ -156,7 +160,10 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
           </button>
         )}
         <Link
-          href={`/mytrip-manage/quotationdetail-dreamer/${planDetail.id}/${quotationDetail.id}`}
+          href={{
+            pathname: `/mytrip-manage/quotationdetail-dreamer/${planDetail.id}`,
+            query: { quotationId: quotationDetail.id },
+          }}
           className="semibold w-full rounded-lg border-[1px] border-solid border-color-blue-300 object-center px-[32.5px] py-4 mobile-tablet:px-[16px] mobile-tablet:py-[11px]"
         >
           <button className="w-full text-nowrap text-xl text-color-blue-300 mobile:text-md tablet:text-lg">

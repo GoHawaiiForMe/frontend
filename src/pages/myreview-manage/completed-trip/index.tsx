@@ -50,7 +50,7 @@ export function CompletedTrip() {
       <MyReviewNav />
       <Layout bodyClass="bg-gray">
         <div className="my-10">
-          {planData.length === 0 && (
+          {!isLoading && planData.length === 0 && (
             <div className="flex h-screen flex-col items-center justify-center gap-8">
               <Image src={icon_luggage_frown} alt="비어있음" />
               <p className="regular text-2xl text-color-gray-400">
