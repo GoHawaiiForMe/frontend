@@ -36,9 +36,9 @@ export default function ChattingForm() {
   const [isFirstMessage, setIsFirstMessage] = useState(false);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
+  const [isMessageLoading, setIsMessageLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
-  const [chatRoomsState, setChatRoomsState] = useState<ChatRoom[]>([]);
 
   const { data: userId = "" } = useQuery({
     queryKey: ["userId"],
@@ -178,6 +178,7 @@ export default function ChattingForm() {
   }, [selectedChatRoom, handleScroll]);
 
   const fetchMessages = async (chatRoomId: string, currentPage: number, isOldMessages = false) => {
+    setIsMessageLoading(true);
     try {
       const data = await chatService.getMessages(chatRoomId, currentPage, 10);
       if (data.length === 0) {
@@ -208,6 +209,8 @@ export default function ChattingForm() {
       }
     } catch (error: any) {
       alert(error.message);
+    } finally {
+      setIsMessageLoading(false);
     }
   };
 
@@ -591,6 +594,11 @@ export default function ChattingForm() {
                   className="h-[600px] overflow-y-auto mobile-tablet:h-[650px]"
                   ref={messagesContainerRef}
                 >
+                  {isMessageLoading && (
+                    <div className="flex h-screen items-center justify-center">
+                      <Image src={loading} alt="Loading..." />
+                    </div>
+                  )}
                   {renderMessages()}
                 </div>
                 <div className="flex flex-col gap-5" ref={messagesEndRef}>
