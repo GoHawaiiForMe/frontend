@@ -105,12 +105,13 @@ export function QuotationDetailDreamer() {
   }, [planId, quotationId]);
 
   async function handleConfirmButton() {
+  
     try {
       if (quotationDetail)
         await QuotationServiceDreamer.confirmQuotation({ isConfirmed: true }, quotationDetail.id);
-      alert("플랜이 확정되었습니다.");
+      alert("견적확정 확정되었습니다.");
     } catch (error) {
-      alert(`플랜 확정에 실패했습니다. 다시 시도해주세요. ${error}`);
+      alert(`견적확정에 실패했습니다. 다시 시도해주세요. ${error}`);
     }
   }
 
@@ -238,7 +239,7 @@ export function QuotationDetailDreamer() {
                         />
                         <p>{quotationDetail.maker.averageRating}</p>
                         <p className="text-color-gray-400">
-                          (${quotationDetail.maker.totalReviews})
+                          ({quotationDetail.maker.totalReviews})
                         </p>
                       </div>
                       <p className="mx-4 text-color-line-200 mobile-tablet:mx-1">ㅣ</p>
@@ -281,9 +282,11 @@ export function QuotationDetailDreamer() {
           </div>
           <hr className="border-Line-100 my-10 mobile-tablet:my-6" />
           <div className="flex flex-col gap-8 mobile-tablet:gap-4">
-            <p className="semibold text-2xl text-color-black-400 mobile-tablet:text-lg">견적가</p>
+            <p className="semibold text-2xl text-color-black-400 mobile-tablet:text-lg">
+              받은 견적 코코넛
+            </p>
             <p className="bold text-3xl text-color-black-400 mobile-tablet:text-xl">
-              {quotationDetail.price} 원
+              {quotationDetail.price} 개
             </p>
           </div>
           <hr className="border-Line-100 my-10 mobile-tablet:my-6" />

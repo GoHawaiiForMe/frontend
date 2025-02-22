@@ -138,10 +138,10 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
           </div>
         </div>
         <div className="flex items-center justify-end gap-4 py-6">
-          <p className="medium text-2lg mobile-tablet:text-md">견적 금액</p>
+          <p className="medium text-2lg mobile-tablet:text-md">견적 코코넛</p>
           <p className="bold text-2xl mobile-tablet:text-2lg">
             {" "}
-            {quotationDetail.price.toLocaleString()}원
+            {quotationDetail.price.toLocaleString()}개
           </p>
         </div>
       </div>
@@ -151,7 +151,7 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
             className="semibold w-full text-nowrap rounded-lg bg-color-blue-300 px-[32.5px] py-4 text-xl text-gray-50 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]"
             onClick={handleConfirmButton}
           >
-            플랜 확정하기
+            견적 확정하기
           </button>
         )}
         <button className="semibold w-full text-nowrap rounded-lg border-[1px] border-solid border-color-blue-300 px-[32.5px] py-4 text-xl text-color-blue-300 mobile:text-md tablet:text-lg mobile-tablet:px-[16px] mobile-tablet:py-[11px]">
