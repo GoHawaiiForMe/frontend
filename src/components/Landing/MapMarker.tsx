@@ -201,7 +201,6 @@ export default function MapMarker() {
                   <Tooltip />
                 </PieChart>
               )}
-
               <p className="text-sm">마커를 클릭하면 해당 지역 통계를 볼 수 있습니다.</p>
             </>
           ) : (

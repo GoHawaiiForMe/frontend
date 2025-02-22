@@ -114,7 +114,12 @@ export default function ProfileEditDreamer() {
 
       alert("프로필이 성공적으로 수정되었습니다!");
       if (userInfo?.nickName !== data.nickName) {
-        setLogin(data.nickName, userInfo?.role || "guest", userInfo?.coconut || 0);
+        setLogin(
+          data.nickName,
+          userInfo?.role || "guest",
+          userInfo?.coconut || 0,
+          profileInfo.image,
+        );
       }
       router.reload();
     } catch (error: any) {
@@ -141,7 +146,7 @@ export default function ProfileEditDreamer() {
   })();
 
   const ErrorMessage = ({ message }: { message: string | undefined }) => (
-    <p className="text-color-red-200 mt-2">{message}</p>
+    <p className="mt-2 text-color-red-200">{message}</p>
   );
 
   useEffect(() => {
@@ -174,9 +179,9 @@ export default function ProfileEditDreamer() {
   return (
     <>
       <h1 className="semibold mt-16 text-3xl">프로필 수정</h1>
-      <div className="bg-color-line-100 my-8 h-0.5"></div>
+      <div className="my-8 h-0.5 bg-color-line-100"></div>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-        <div className="pc:grid-cols-2 mobile-tablet:flex mobile-tablet:flex-col grid w-full gap-16">
+        <div className="grid w-full gap-16 pc:grid-cols-2 mobile-tablet:flex mobile-tablet:flex-col">
           <div className="flex flex-col gap-4">
             <div className="relative">
               <Input
@@ -185,19 +190,19 @@ export default function ProfileEditDreamer() {
                 placeholder="닉네임을 입력해주세요"
                 {...register("nickName")}
                 error={!!errors.nickName}
-                className="bg-color-background-200 border-0"
+                className="border-0 bg-color-background-200"
               />
               <button
                 type="button"
                 onClick={checkNickName}
-                className="bold bg-color-blue-300 text-color-gray-50 mobile-tablet:top-[53px] absolute top-[60px] right-2 rounded-lg px-2 py-2 text-lg"
+                className="bold absolute right-2 top-[60px] rounded-lg bg-color-blue-300 px-2 py-2 text-lg text-color-gray-50 mobile-tablet:top-[53px]"
               >
                 닉네임 확인
               </button>
               {errors.nickName && <ErrorMessage message={errors.nickName.message} />}
               {nickNameMessage && <p className="text-color-blue-300">{nickNameMessage}</p>}
             </div>
-            <div className="bg-color-line-100 my-4 h-0.5"></div>
+            <div className="my-4 h-0.5 bg-color-line-100"></div>
             <div>
               <Input
                 type="text"
@@ -205,10 +210,10 @@ export default function ProfileEditDreamer() {
                 value={userInfo?.email}
                 disabled={true}
                 placeholder="[이메일과 비밀번호는 비활성화] 간편로그인 회원입니다."
-                className="bg-color-background-200 text-color-gray-300 border-0"
+                className="border-0 bg-color-background-200 text-color-gray-300"
               />
             </div>
-            <div className="bg-color-line-100 my-4 h-0.5"></div>
+            <div className="my-4 h-0.5 bg-color-line-100"></div>
             <div>
               <Input
                 type="text"
@@ -217,42 +222,42 @@ export default function ProfileEditDreamer() {
                 placeholder="숫자만 입력해주세요"
                 {...register("phoneNumber")}
                 error={!!errors.phoneNumber}
-                className="bg-color-background-200 border-0"
+                className="border-0 bg-color-background-200"
               />
               {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber.message} />}
             </div>
-            <div className="bg-color-line-100 my-4 h-0.5"></div>
+            <div className="my-4 h-0.5 bg-color-line-100"></div>
 
             <div>
               <Input
                 type="password"
                 label="현재 비밀번호"
                 placeholder="현재 비밀번호 입력해 주세요"
-                className="bg-color-background-200 overflow-hidden border-0 pr-10 text-ellipsis whitespace-nowrap"
+                className="overflow-hidden text-ellipsis whitespace-nowrap border-0 bg-color-background-200 pr-10"
                 disabled={!isEmailExist}
                 {...register("password")}
               />
             </div>
-            <div className="bg-color-line-100 my-4 h-0.5"></div>
+            <div className="my-4 h-0.5 bg-color-line-100"></div>
             <div>
               <Input
                 type="password"
                 label="새 비밀번호"
                 placeholder="비밀번호를 입력해 주세요"
-                className="bg-color-background-200 overflow-hidden border-0 pr-10 text-ellipsis whitespace-nowrap"
+                className="overflow-hidden text-ellipsis whitespace-nowrap border-0 bg-color-background-200 pr-10"
                 disabled={!isEmailExist}
                 {...register("newPassword")}
                 error={!!errors.newPassword}
               />
               {errors.newPassword && <ErrorMessage message={errors.newPassword.message} />}
             </div>
-            <div className="bg-color-line-100 my-4 h-0.5"></div>
+            <div className="my-4 h-0.5 bg-color-line-100"></div>
             <div>
               <Input
                 type="password"
                 label="새 비밀번호 확인"
                 placeholder="비밀번호를 다시 한번 입력해 주세요"
-                className="bg-color-background-200 overflow-hidden border-0 pr-10 text-ellipsis whitespace-nowrap"
+                className="overflow-hidden text-ellipsis whitespace-nowrap border-0 bg-color-background-200 pr-10"
                 disabled={!isEmailExist}
                 {...register("newConfirmPassword")}
                 error={!!errors.newConfirmPassword}
@@ -269,7 +274,7 @@ export default function ProfileEditDreamer() {
           <div>
             <div className="flex flex-col gap-8">
               <div>
-                <p className="semibold mobile-tablet:text-lg mb-3 text-xl">프로필 이미지</p>
+                <p className="semibold mb-3 text-xl mobile-tablet:text-lg">프로필 이미지</p>
                 <div onClick={() => setIsOpenImageModal(true)} className="w-[160px] cursor-pointer">
                   {profileImg ? (
                     <Image
@@ -292,10 +297,10 @@ export default function ProfileEditDreamer() {
                   onClose={() => setIsOpenImageModal(false)}
                 />
               )}
-              <div className="bg-color-line-100 my-2 h-0.5"></div>
+              <div className="my-2 h-0.5 bg-color-line-100"></div>
               <div>
-                <p className="semibold mobile-tablet:text-lg mb-3 text-xl">이용 서비스</p>
-                <p className="text-color-gray-400 mobile-tablet:text-xs mb-8 text-lg">
+                <p className="semibold mb-3 text-xl mobile-tablet:text-lg">이용 서비스</p>
+                <p className="mb-8 text-lg text-color-gray-400 mobile-tablet:text-xs">
                   * 플랜 요청 시 이용 서비스를 선택할 수 있어요.
                 </p>
                 <Selector
@@ -308,10 +313,10 @@ export default function ProfileEditDreamer() {
                   useWide={true}
                 />
               </div>
-              <div className="bg-color-line-100 my-2 h-0.5"></div>
+              <div className="my-2 h-0.5 bg-color-line-100"></div>
               <div className="mb-12">
-                <p className="semibold mobile-tablet:text-lg mb-3 text-xl">여행 하고 싶은 지역</p>
-                <p className="text-color-gray-400 mobile-tablet:text-xs mb-8 text-lg">
+                <p className="semibold mb-3 text-xl mobile-tablet:text-lg">여행 하고 싶은 지역</p>
+                <p className="mb-8 text-lg text-color-gray-400 mobile-tablet:text-xs">
                   * 플랜 요청 시 지역을 설정할 수 있어요.
                 </p>
                 <Selector
@@ -326,12 +331,12 @@ export default function ProfileEditDreamer() {
             </div>
           </div>
         </div>
-        <div className="pc:grid-cols-2 mobile-tablet:flex mobile-tablet:flex-col mobile-tablet:gap-4 grid gap-8 pb-16">
+        <div className="grid gap-8 pb-16 pc:grid-cols-2 mobile-tablet:flex mobile-tablet:flex-col mobile-tablet:gap-4">
           <Button
             type="button"
             label="취소"
             onClick={handleCancel}
-            className="bold border-color-gray-200 bg-color-gray-50 text-color-black-300 mobile-tablet:order-2 border"
+            className="bold border border-color-gray-200 bg-color-gray-50 text-color-black-300 mobile-tablet:order-2"
           />
           <Button
             type="submit"
