@@ -11,19 +11,22 @@ const SocialLogin = () => {
 
       switch (platform) {
         case "google":
-          redirectUrl = await authService.googleLogin();
+          // redirectUrl = await authService.googleLogin(); // 수정 필요
+          alert("현재 개발 중입니다!");
           break;
         case "kakao":
           redirectUrl = await authService.kakaoLogin();
+          window.location.href = redirectUrl;
+
           break;
         case "naver":
           redirectUrl = await authService.naverLogin();
+          window.location.href = redirectUrl;
+
           break;
         default:
           throw new Error("지원하지 않는 로그인 방식입니다.");
       }
-
-      window.location.href = redirectUrl;
     } catch (error) {
       console.error(`${platform} 로그인 중 오류 발생`, error);
       alert(`${platform} 로그인에 실패했습니다. 다시 시도해주세요.`);
