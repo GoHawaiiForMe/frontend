@@ -25,6 +25,7 @@ export default function ProfileEditorMaker({ makerId }: ProfileEditMakerProps) {
   const [description, setDescription] = useState<string>("");
   const [detailDescription, setDetailDescription] = useState<string>("");
   const [snsAddress, setSnsAddress] = useState<string>("");
+  const [snsAddressError, setSnsAddressError] = useState<string>("");
   const [userId, setUserId] = useState<string>((makerId as string) || ""); // makerId로 초기화
 
   useEffect(() => {
@@ -79,8 +80,29 @@ export default function ProfileEditorMaker({ makerId }: ProfileEditMakerProps) {
     setDetailDescription(e.target.value);
   };
 
+  const validateSnsUrl = (url: string): boolean => {
+    if (!url) return true;
+    const snsUrlPattern =
+      /^@?(https?:\/\/)?(www\.)?(instagram\.com|facebook\.com|twitter\.com|x\.com|youtube\.com|tiktok\.com)\/[a-zA-Z0-9_.-]+\/?$/;
+    return snsUrlPattern.test(url);
+  };
+
   const handleSnsAddressChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setSnsAddress(e.target.value);
+    const value = e.target.value;
+    setSnsAddress(value);
+    setSnsAddressError(""); // 입력 중에는 에러 메시지 제거
+  };
+
+  const handleSnsAddressBlur = () => {
+    if (!snsAddress) {
+      setSnsAddressError("SNS 주소를 입력해주세요.");
+    } else if (!validateSnsUrl(snsAddress)) {
+      setSnsAddressError(
+        "올바른 SNS 주소를 입력해주세요. (예: https://www.instagram.com/username)",
+      );
+    } else {
+      setSnsAddressError("");
+    }
   };
 
   const handleSubmit = async () => {
@@ -142,15 +164,17 @@ export default function ProfileEditorMaker({ makerId }: ProfileEditMakerProps) {
             <div>
               <Input
                 label="SNS 주소"
-                className="mb-8 border-none border-color-line-100 bg-color-background-200"
+                className="mb-8 overflow-hidden text-ellipsis border-none border-color-line-100 bg-color-background-200"
                 type="text"
-                placeholder="SNS 주소를 입력해주세요."
+                placeholder="예시:www.instagram.com/username"
                 value={snsAddress}
                 onChange={handleSnsAddressChange}
+                onBlur={handleSnsAddressBlur}
+                error={snsAddressError}
               />
               <Input
-                className="border-none bg-color-background-200"
-                label="한 줄 소개*"
+                className="overflow-hidden text-ellipsis border-none bg-color-background-200"
+                label="한 줄 소개"
                 type="text"
                 placeholder="한 줄 소개를 입력해주세요."
                 value={description}
@@ -169,7 +193,7 @@ export default function ProfileEditorMaker({ makerId }: ProfileEditMakerProps) {
               onChange={handleDetailDescriptionChange}
             />
             <div>
-              <p className="semibold mb-3 text-xl mobile-tablet:text-lg">제공 서비스*</p>
+              <p className="semibold mb-3 text-xl mobile-tablet:text-lg">제공 서비스</p>
               <p className="mb-4 text-lg text-color-gray-400 mobile-tablet:text-xs">
                 *제공 서비스는 중복 선택 가능하며, 언제든 수정 가능해요!
               </p>
