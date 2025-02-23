@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 import { getAccessToken, removeAccessToken } from "@/utils/tokenUtils";
 import authService from "./authService";
 import router from "next/router";
@@ -29,10 +29,12 @@ const processQueue = (error: any, token: string | null = null) => {
 
 // request
 apiClient.interceptors.request.use(
-  (config) => {
-    const accessToken = getAccessToken();
-    if (accessToken) {
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
+  (config: InternalAxiosRequestConfig<any> & { _retry?: boolean }) => {
+    if (config.url !== "/auth/refresh/token" && !config._retry) {
+      const accessToken = getAccessToken();
+      if (accessToken) {
+        config.headers["Authorization"] = `Bearer ${accessToken}`;
+      }
     }
     return config;
   },
