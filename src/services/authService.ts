@@ -1,6 +1,8 @@
-import { setAccessToken } from "@/utils/tokenUtils";
+import { removeAccessToken, setAccessToken } from "@/utils/tokenUtils";
 import { api } from "./api";
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR, UNAUTHORIZED } from "@/utils/errorStatus";
+import router from "next/router";
+import useAuthStore from "@/stores/useAuthStore";
 
 interface OAuthResponse {
   provider?: string;
@@ -59,6 +61,7 @@ const authService = {
       const response = await api.post<LoginResponse, { email: string; password: string }>(
         "/auth/login",
         data,
+        true,
       );
       setAccessToken(response.accessToken);
 
@@ -105,7 +108,7 @@ const authService = {
   },
   refreshToken: async () => {
     try {
-      const response: RefreshTokenResponse = await api.post("/auth/refresh/token", true); //withCrediential
+      const response: RefreshTokenResponse = await api.post("/auth/refresh/token", {}, true);
       const newAccessToken = response.accessToken;
 
       if (!newAccessToken) {
@@ -114,7 +117,12 @@ const authService = {
 
       return newAccessToken;
     } catch (error: any) {
-      console.error("토큰 갱신 실패", error);
+      if (error.response?.status === 400) {
+        alert("로그인 정보가 유실되었습니다. 다시 로그인해주세요!");
+        removeAccessToken();
+        useAuthStore.getState().setLogout();
+        router.push("/login");
+      }
       throw error;
     }
   },
