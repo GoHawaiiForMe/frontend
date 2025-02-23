@@ -393,7 +393,7 @@ export default function ChattingForm() {
         }
       };
     }
-  }, []);
+  }, [selectedChatRoom, queryClient]);
 
   useEffect(() => {
     if (selectedChatRoom) {
