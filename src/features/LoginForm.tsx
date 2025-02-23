@@ -52,7 +52,6 @@ export default function LoginForm() {
           profileInfo.image,
         );
         router.replace("/");
-        router.reload();
       } catch (error) {
         console.error("유저 정보 가져오기 실패", error);
       }

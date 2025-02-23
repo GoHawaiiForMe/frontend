@@ -121,7 +121,6 @@ const authService = {
         removeAccessToken();
         useAuthStore.getState().setLogout();
         router.push("/login");
-        window.location.reload();
       }
       throw error;
     }
