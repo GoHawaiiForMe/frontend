@@ -6,6 +6,7 @@ import { Plan } from "@/services/planService";
 import Link from "next/link";
 import Image from "next/image";
 import loading from "@public/assets/icon_loading.gif";
+import { useEffect, useState } from "react";
 
 interface PlanData {
   planDetail: Plan;
@@ -20,6 +21,20 @@ export default function QuotationCardList({ planDetail }: PlanData) {
     queryFn: () => QuotationServiceDreamer.getQuotations({ planId: id as string }),
     enabled: !!id,
   });
+
+  //1440px이하부터 타블렛 디자인으로 변경
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsTablet(window.innerWidth <= 1440);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   if (isLoading) {
     return (
@@ -39,7 +54,6 @@ export default function QuotationCardList({ planDetail }: PlanData) {
           <br />
           <button className="border-1 rounded-lg bg-color-blue-200 p-2">
             <Link href="/finding-maker" className="text-gray-100">
-              {" "}
               Maker 찾기
             </Link>
           </button>
@@ -50,7 +64,7 @@ export default function QuotationCardList({ planDetail }: PlanData) {
 
   return (
     <>
-      <div className="items-center justify-center gap-4 pc:grid pc:grid-cols-2 mobile-tablet:flex mobile-tablet:flex-col">
+      <div className={`grid gap-4 ${isTablet ? "grid-cols-1" : "grid-cols-2"} pc:grid`}>
         {quotations.list.map((quotation) => (
           <QuotationCard key={quotation.id} quotationDetail={quotation} planDetail={planDetail} />
         ))}

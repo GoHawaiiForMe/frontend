@@ -24,10 +24,12 @@ interface OwnerInfo {
 interface PlanInfo {
   tripType: any;
   tripDate: string;
-  quotes: {
-    price: number;
-    isAssigned: false;
-  };
+  quotes: quotesInfo[];
+}
+
+interface quotesInfo {
+  price: number;
+  isAssigned: boolean;
 }
 
 export interface CreateReview {

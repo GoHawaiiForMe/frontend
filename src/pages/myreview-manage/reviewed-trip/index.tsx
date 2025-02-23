@@ -38,12 +38,20 @@ export function ReviewedTrip() {
   const totalPages = Math.max(1, Math.ceil((data?.totalCount || 1) / pageSize));
   const reviewData = data?.list.flat() || [];
 
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Image src={loading} alt="로딩 중" />
+      </div>
+    );
+  }
+
   return (
     <>
       <MyReviewNav />
       <Layout bodyClass="bg-gray">
         <div className="my-10">
-          {reviewData.length === 0 && (
+          {!isLoading && reviewData.length === 0 && (
             <div className="flex h-screen flex-col items-center justify-center gap-8">
               <Image src={icon_luggage_frown} alt="비어있음" />
               <p className="regular text-2xl text-color-gray-400">아직 등록된 리뷰가 없어요!</p>
@@ -54,22 +62,16 @@ export function ReviewedTrip() {
               </Link>
             </div>
           )}
-          {isLoading ? (
-            <div className="flex h-screen items-center justify-center">
-              <Image src={loading} alt="로딩 중" />
-            </div>
-          ) : (
-            <>
-              <MyReviewList reviews={reviewData} />
-              {totalPages > 1 && (
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={handlePageChange}
-                />
-              )}
-            </>
-          )}
+          <>
+            <MyReviewList reviews={reviewData} />
+            {totalPages > 1 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            )}
+          </>
         </div>
       </Layout>
     </>
