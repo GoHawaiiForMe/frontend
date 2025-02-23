@@ -11,7 +11,6 @@ import { convertRegionToKorean } from "@/utils/formatRegion";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import ModalLayout from "@/components/Common/ModalLayout";
-import ChargeModal from "@/components/Gnb/ChargeModal";
 
 interface MakerInfo {
   nickName: string;
@@ -43,7 +42,6 @@ interface QuotationCardProps {
 export default function QuotationCard({ quotationDetail, planDetail }: QuotationCardProps) {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isChargeModalOpen, setIsChargeModalOpen] = useState(false);
   const [coconut, setCoconut] = useState(0);
 
   useEffect(() => {
@@ -63,7 +61,7 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
       await QuotationServiceDreamer.confirmQuotation({ isConfirmed: true }, quotationDetail.id);
       alert("견적이 확정되었습니다.");
       window.location.reload();
-      router.push(`/mytrip-manage/ongoin-plan/detail/${planDetail.id}`);
+      router.push(`/mytrip-manage/ongoing-plan/detail/${planDetail.id}`);
     } catch (error: any) {
       if (error.status === 400) {
         setIsModalOpen(true);
@@ -214,9 +212,6 @@ export default function QuotationCard({ quotationDetail, planDetail }: Quotation
           </Link>
         </div>
       </div>
-      {isChargeModalOpen && (
-        <ChargeModal coconut={coconut} setIsChargeModalOpen={setIsChargeModalOpen} />
-      )}
     </div>
   );
 }
