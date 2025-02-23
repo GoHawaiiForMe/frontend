@@ -136,7 +136,7 @@ const userService = {
       await api.patch("/users/update", payload);
     } catch (error: any) {
       if (error.response && error.response.status === BAD_REQUEST) {
-        throw new Error("기존 비밀번호와 일치하지 않습니다.");
+        throw new Error(error.response.data.message || "알 수 없는 오류가 발생했습니다.");
       }
     }
   },
