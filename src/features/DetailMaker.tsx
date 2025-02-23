@@ -284,7 +284,21 @@ export default function RequestDetailDreamer() {
                     <p className="mx-3 text-color-line-200 mobile-tablet:mx-1">ㅣ</p>
                     <div className="medium flex items-center gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                       <p className="text-color-gray-400">SNS</p>
-                      <Link href={makerProfileInfo?.gallery || "#"}>
+                      <Link
+                        href={
+                          makerProfileInfo?.gallery.startsWith("http")
+                            ? makerProfileInfo?.gallery
+                            : "#"
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => {
+                          if (!makerProfileInfo?.gallery.startsWith("http")) {
+                            e.preventDefault();
+                            alert("경력이 없습니다!");
+                          }
+                        }}
+                      >
                         <Image src={icon_link} alt="링크 이미지" width={30} height={30} />
                       </Link>
                     </div>
@@ -331,13 +345,16 @@ export default function RequestDetailDreamer() {
               <p className="bold mb-8 text-2xl text-color-black-400 mobile-tablet:text-lg">
                 서비스 가능 지역
               </p>
-
-              <Selector
-                category="locations"
-                selectedTypes={makerProfileInfo?.serviceArea ?? []}
-                data={filteredLocations}
-                className="flex w-full gap-4 mobile-tablet:w-full"
-              />
+              <div className="custom-scrollbar flex gap-4 overflow-x-auto">
+                <div className="mb-3 flex-shrink-0">
+                  <Selector
+                    category="locations"
+                    selectedTypes={makerProfileInfo?.serviceArea ?? []}
+                    data={filteredLocations}
+                    className="flex w-full gap-4 mobile-tablet:w-full"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
