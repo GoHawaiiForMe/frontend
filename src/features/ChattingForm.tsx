@@ -585,7 +585,7 @@ export default function ChattingForm() {
                         <Image src={coconut} alt="코코넛" width={30} />
                       </div>
                       <p className="medium text-color-balck-400 text-xl mobile-tablet:text-2lg">
-                        {selectedChatRoom?.quotePrice} P
+                        {selectedChatRoom?.quotePrice} 개
                       </p>
                     </div>
                   </div>
