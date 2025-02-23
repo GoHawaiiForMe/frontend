@@ -193,7 +193,6 @@ const planService = {
     } catch (error: any) {
       if (error.response) {
         // 서버에서 응답이 왔을 때 (500, 404 등)
-        console.error("Server Error:", error.response.status, error.response.data);
         throw new Error(
           `API Error: ${error.response.status} - ${error.response.data.message || "알 수 없는 오류입니다."}`,
         );
