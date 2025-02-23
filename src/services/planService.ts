@@ -195,16 +195,15 @@ const planService = {
         // 서버에서 응답이 왔을 때 (500, 404 등)
         console.error("Server Error:", error.response.status, error.response.data);
         throw new Error(
-          `API Error: ${error.response.status} - ${error.response.data.message || "Unknown error"}`,
+          `API Error: ${error.response.status} - ${error.response.data.message || "알 수 없는 오류입니다."}`,
         );
       } else if (error.request) {
         // 요청은 갔지만 응답이 없을 때 (네트워크 문제)
-        console.error("No Response:", error.request);
-        throw new Error("No response from server. Please try again.");
+        throw new Error("서버로부터 응답이 없습니다. 다시 시도해 주세요.");
       } else {
         // 요청 자체의 문제 (설정 오류 등)
         console.error("Request Error:", error.message);
-        throw new Error("Request setup error.");
+        throw new Error("요청 오류 입니다.");
       }
     }
   },

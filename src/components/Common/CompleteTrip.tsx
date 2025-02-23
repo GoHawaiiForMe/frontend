@@ -12,8 +12,8 @@ export default function CompleteTrip({ planDetail, closeModal }: CompleteTripPro
       alert("여행이 완료되었습니다!");
       window.location.reload();
       closeModal();
-    } catch (error) {
-      console.error(`여행 완료에 실패 하였습니다. ${error}`);
+    } catch (error: any) {
+      alert(error.message);
     }
   }
 
