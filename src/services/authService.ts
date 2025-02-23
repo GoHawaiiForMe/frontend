@@ -61,6 +61,7 @@ const authService = {
       const response = await api.post<LoginResponse, { email: string; password: string }>(
         "/auth/login",
         data,
+        true,
       );
       setAccessToken(response.accessToken);
 
@@ -107,7 +108,7 @@ const authService = {
   },
   refreshToken: async () => {
     try {
-      const response: RefreshTokenResponse = await api.post("/auth/refresh/token", null, true);
+      const response: RefreshTokenResponse = await api.post("/auth/refresh/token", {}, true);
       const newAccessToken = response.accessToken;
 
       if (!newAccessToken) {
