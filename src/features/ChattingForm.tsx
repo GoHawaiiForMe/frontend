@@ -580,12 +580,12 @@ export default function ChattingForm() {
                       </p>
                       <div className="flex flex-row">
                         <p className="regular text-xl text-color-gray-500 mobile-tablet:text-2lg">
-                          플랜가
+                          견적 코코넛
                         </p>
                         <Image src={coconut} alt="코코넛" width={30} />
                       </div>
                       <p className="medium text-color-balck-400 text-xl mobile-tablet:text-2lg">
-                        {selectedChatRoom?.quotePrice} P
+                        {selectedChatRoom?.quotePrice} 개
                       </p>
                     </div>
                   </div>
