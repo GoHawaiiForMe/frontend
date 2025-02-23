@@ -28,6 +28,8 @@ const useRealTimeNotification = () => {
     };
 
     newEventSource.onmessage = (event) => {
+      if (event.data === "ping") return;
+
       const notification = event.data;
 
       const newNotificationObject = {
