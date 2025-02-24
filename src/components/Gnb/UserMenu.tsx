@@ -66,7 +66,6 @@ export default function UserMenu({ userId, closeMenu, onChargeClick }: UserMenuP
 
   const handleLogout = () => {
     removeAccessToken();
-    router.reload();
     setLogout();
     router.push("/login");
   };
