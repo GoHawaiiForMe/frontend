@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BAD_REQUEST, CONFLICT, FORBIDDEN, NOT_FOUND } from "@/utils/errorStatus";
 import { api } from "./api";
 
@@ -116,7 +115,6 @@ const ReceiveRequest = async ({
 
     queryString = params.length > 0 ? `?${params.join("&")}` : "";
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     const response = await api.get<PlanResponse, {}>(`/plans/maker${queryString}`);
 
     if (!response) {

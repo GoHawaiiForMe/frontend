@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Label from "@/components/Common/Label";
+import Label from "@/components/Common/UI/Label";
 import icon_like_red from "@public/assets/icon_like_red.png";
 import icon_active_star from "@public/assets/icon_active_star.svg";
 import link from "@public/assets/icon_link.svg";
@@ -10,7 +10,7 @@ import { QuotationServiceDreamer } from "@/services/quotationServiceDreamer";
 import { convertRegionToKorean } from "@/utils/formatRegion";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import ModalLayout from "@/components/Common/ModalLayout";
+import ModalLayout from "@/components/Common/Layout/ModalLayout";
 import ChargeModal from "@/components/Gnb/ChargeModal";
 
 interface MakerInfo {

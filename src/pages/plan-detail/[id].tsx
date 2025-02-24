@@ -13,7 +13,7 @@ import writing from "@public/assets/icon_writing.png";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import { convertRegionToKorean } from "@/utils/formatRegion";
 import { formatTripType } from "@/utils/formatTripType";
-import ShareSNS from "@/components/Common/ShareSNS";
+import ShareSNS from "@/components/Common/UI/ShareSNS";
 import loading from "@public/assets/icon_loading.gif";
 
 export function PlanDetail() {
@@ -42,7 +42,6 @@ export function PlanDetail() {
       const kakaoApiKey = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
       if (kakaoApiKey) {
         window.Kakao?.init(kakaoApiKey);
-        console.log("카카오 초기화 성공");
       }
     }
   }, []); // 빈 배열로 설정하여 마운트 시 한 번만 실행
@@ -87,7 +86,7 @@ export function PlanDetail() {
 
   return (
     <>
-      <p className="mb-6 py-8 text-2xl semibold">플랜 상세</p>
+      <p className="semibold mb-6 py-8 text-2xl">플랜 상세</p>
       <div className="flex justify-between mobile-tablet:flex-col mobile-tablet:gap-6">
         <div className="mr-[117px] w-full">
           {planDetail && (
@@ -106,10 +105,10 @@ export function PlanDetail() {
             onClick={onSendQuotation}
             className="flex w-[270px] items-center justify-center gap-[10px] rounded-[16px] bg-color-blue-300 p-4 mobile-tablet:hidden"
           >
-            <p className="whitespace-nowrap text-xl semibold text-white">견적 보내기</p>
+            <p className="semibold whitespace-nowrap text-xl text-white">견적 보내기</p>
             <Image src={writing} alt="send" width={24} height={24} />
           </button>
-          <p className="whitespace-nowrap text-xl semibold mobile:text-md tablet:text-lg">
+          <p className="semibold whitespace-nowrap text-xl mobile:text-md tablet:text-lg">
             견적서 공유하기
           </p>
           <div className="flex items-center gap-4">
@@ -127,7 +126,7 @@ export function PlanDetail() {
           onClick={onSendQuotation}
           className="flex w-full items-center justify-center gap-[10px] rounded-[16px] bg-color-blue-300 p-3"
         >
-          <p className="whitespace-nowrap text-lg semibold text-white">견적 보내기</p>
+          <p className="semibold whitespace-nowrap text-lg text-white">견적 보내기</p>
           <Image src={writing} alt="send" width={20} height={20} />
         </button>
       </div>

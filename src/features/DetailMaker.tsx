@@ -9,21 +9,21 @@ import icon_link from "@public/assets/icon_link.svg";
 import { useRouter } from "next/router";
 import { useQuery, keepPreviousData, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import Label from "@/components/Common/Label";
+import Label from "@/components/Common/UI/Label";
 import planData, { Service, Location } from "@/types/planData";
-import Selector from "@/components/Common/Selector";
+import Selector from "@/components/Common/UI/Selector";
 import StarRating from "@/components/Receive/StarRating";
 import ReviewGraph from "@/components/Receive/ReviewGraph";
-import Pagination from "@/components/Common/Pagination";
+import Pagination from "@/components/Common/UI/Pagination";
 import userService from "@/services/userService";
 import followService from "@/services/followService";
 import planService from "@/services/planService";
 import avatarImages from "@/utils/formatImage";
 import { formatToSimpleDate } from "@/utils/formatDate";
 import { TripType } from "@/utils/formatTripType";
-import ModalLayout from "@/components/Common/ModalLayout";
+import ModalLayout from "@/components/Common/Layout/ModalLayout";
 import { getAccessToken } from "@/utils/tokenUtils";
-import ShareSNS from "@/components/Common/ShareSNS";
+import ShareSNS from "@/components/Common/UI/ShareSNS";
 const itemsPerPage = 5;
 
 export default function RequestDetailDreamer() {

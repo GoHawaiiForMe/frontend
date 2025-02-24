@@ -1,5 +1,5 @@
-import Layout from "@/components/Common/Layout";
-import Pagination from "@/components/Common/Pagination";
+import Layout from "@/components/Common/Layout/Layout";
+import Pagination from "@/components/Common/UI/Pagination";
 import MyCompletedTripList from "@/components/MyReviews/MyCompletedTripList";
 import MyReviewNav from "@/components/MyReviews/MyReviewNav";
 import { useEffect, useState } from "react";

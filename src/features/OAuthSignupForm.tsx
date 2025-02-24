@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "@/components/Common/Input";
+import Input from "@/components/Common/Form/Input";
 import { useEffect, useState } from "react";
 import { SignUpOAuthData, signUpOAuthSchema } from "@/utils/validate";
 import logo from "@public/assets/icon_logo_img.svg";
 import Image from "next/image";
-import Button from "@/components/Common/Button";
+import Button from "@/components/Common/UI/Button";
 import Link from "next/link";
 import { useSignUp } from "@/stores/SignUpContext";
 import { useRouter } from "next/router";

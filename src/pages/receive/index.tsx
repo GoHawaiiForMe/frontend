@@ -8,7 +8,7 @@ import { ChangeEvent, useState, useEffect } from "react";
 import Quotation from "@/components/Receive/Quotation";
 import ReceiveModalLayout from "@/components/Receive/ReceiveModalLayout";
 import Reject from "@/components/Receive/Reject";
-import SearchBar from "@/components/Common/SearchBar";
+import SearchBar from "@/components/Common/Form/SearchBar";
 import { useInfiniteQuery, keepPreviousData } from "@tanstack/react-query";
 import ReceiveRequest from "@/services/requestService";
 import { useInView } from "react-intersection-observer";
@@ -17,7 +17,6 @@ import Link from "next/link";
 import withAuthAccess from "@/stores/withAuthAccess";
 import { PlanItem } from "@/services/requestService";
 import loading from "@public/assets/icon_loading.gif";
-
 
 export function Receive() {
   const [filterIsOpen, setFilterIsOpen] = useState<boolean>(false);

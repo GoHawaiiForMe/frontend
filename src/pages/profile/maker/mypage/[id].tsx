@@ -4,7 +4,7 @@ import star_sm from "@public/assets/icon_star.svg";
 import StarRating from "@/components/Receive/StarRating";
 import ReviewGraph from "@/components/Receive/ReviewGraph";
 import { useEffect, useState } from "react";
-import Pagination from "@/components/Common/Pagination";
+import Pagination from "@/components/Common/UI/Pagination";
 import Link from "next/link";
 import withAuthAccess from "@/stores/withAuthAccess";
 import { useRouter } from "next/router";
@@ -179,13 +179,11 @@ export function MyPage() {
         </div>
       </div>
       <div>
-        <p className="mb-8 text-xl bold mobile-tablet:text-lg">리뷰({totalItems})</p>
+        <p className="bold mb-8 text-xl mobile-tablet:text-lg">리뷰({totalItems})</p>
         <div className="mb-10 flex items-center justify-center gap-10 mobile:flex-col">
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="flex items-end gap-2">
-              <p className="text-[64px] bold leading-[76.38px]">
-                {profileInfo?.averageRating}
-              </p>
+              <p className="bold text-[64px] leading-[76.38px]">{profileInfo?.averageRating}</p>
               <p className="text-[38px] leading-[45.38px] text-color-gray-100">/5</p>
             </div>
             <div className="flex justify-end">

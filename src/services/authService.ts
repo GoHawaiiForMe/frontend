@@ -1,6 +1,6 @@
 import { removeAccessToken, setAccessToken } from "@/utils/tokenUtils";
 import { api } from "./api";
-import { BAD_REQUEST, INTERNAL_SERVER_ERROR, UNAUTHORIZED } from "@/utils/errorStatus";
+import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from "@/utils/errorStatus";
 import router from "next/router";
 import useAuthStore from "@/stores/useAuthStore";
 

@@ -1,5 +1,5 @@
 import MyPlanNav from "@/components/MyPlans/MyPlanNav";
-import Layout from "@/components/Common/Layout";
+import Layout from "@/components/Common/Layout/Layout";
 import PlanCard from "@/components/MyPlans/Cards/PlanCard";
 import QuotationCardListCompleted from "@/components/MyPlans/QuotationCardListCompleted";
 import { Plan } from "@/services/planService";

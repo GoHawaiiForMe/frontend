@@ -188,7 +188,6 @@ const planService = {
   completePlan: async (planId: string) => {
     try {
       const response = await api.patch(`/plans/${planId}/complete`);
-      console.log("응답 데이터:", response);
       return response;
     } catch (error: any) {
       if (error.response) {

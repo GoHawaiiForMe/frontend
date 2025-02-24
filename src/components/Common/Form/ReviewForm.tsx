@@ -34,7 +34,7 @@ export default function ReviewForm({ planDetail, closeModal }: ReviewFormProps) 
       window.location.reload();
       closeModal();
     } catch (error) {
-      console.log(`리뷰 등록에 실패 하였습니다. ${error}`);
+      console.error(error);
     }
   }
 

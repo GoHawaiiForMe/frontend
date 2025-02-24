@@ -1,12 +1,12 @@
 import Image from "next/image";
 import loading from "@public/assets/icon_loading.gif";
-import Label from "@/components/Common/Label";
+import Label from "@/components/Common/UI/Label";
 import ReceiveModalLayout from "@/components/Receive/ReceiveModalLayout";
-import ReviewForm from "@/components/Common/ReviewForm";
+import ReviewForm from "@/components/Common/Form/ReviewForm";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import CompleteTrip from "@/components/Common/CompleteTrip";
+import CompleteTrip from "@/components/Common/Feature/CompleteTrip";
 import { Plan } from "@/services/planService";
 
 interface TripCardProps {

@@ -1,11 +1,11 @@
-import FollowedCard, { FollowedCardProps } from "@/components/Common/FollowedCard";
+import FollowedCard, { FollowedCardProps } from "@/components/Common/Feature/FollowedCard";
 import followService from "../services/followService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import loading from "@public/assets/icon_loading.gif";
 import Image from "next/image";
-import Layout from "@/components/Common/Layout";
+import Layout from "@/components/Common/Layout/Layout";
 import luggage from "@public/assets/icon_luggage.svg";
-import Button from "@/components/Common/Button";
+import Button from "@/components/Common/UI/Button";
 import { useRouter } from "next/router";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";

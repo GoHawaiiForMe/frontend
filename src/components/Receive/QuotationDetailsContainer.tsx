@@ -1,6 +1,6 @@
 import Image from "next/image";
 import writing from "@public/assets/icon_writing.png";
-import Label from "../Common/Label";
+import Label from "../Common/UI/Label";
 import { formatRelativeTime, formatToDetailedDate } from "@/utils/formatDate";
 import { convertRegionToKorean } from "@/utils/formatRegion";
 import Link from "next/link";
@@ -24,7 +24,6 @@ export default function QuotationDetailsContainer({
   const writeTime = formatRelativeTime(data.updatedAt);
   const tripDate = formatToDetailedDate(data.plan.tripDate);
   const region = convertRegionToKorean(data.plan.serviceArea);
-
 
   const specifyMaker = data.isAssigned ? <Label labelType="REQUEST" /> : "";
   const waitingQuotation = () => {
@@ -50,7 +49,7 @@ export default function QuotationDetailsContainer({
               <div className="">{writeTime}</div>
             </div>
             <div>
-              <p className="text-xl semibold">{data.plan.title}</p>
+              <p className="semibold text-xl">{data.plan.title}</p>
               <p className="mb-[18px] border-b border-color-line-200 pb-[18px] text-md font-medium">
                 {data.dreamer.nickName} 님
               </p>
@@ -81,12 +80,12 @@ export default function QuotationDetailsContainer({
                 twoButton ? "hidden" : ""
               }`}
             >
-              <p className="whitespace-nowrap text-xl semibold text-white">견적 보내기</p>
+              <p className="semibold whitespace-nowrap text-xl text-white">견적 보내기</p>
               <Image src={writing} alt="send" width={24} height={24} />
             </button>
             <button
               onClick={onReject}
-              className={`w-full items-center justify-center rounded-[16px] border border-color-blue-300 bg-white p-4 text-xl semibold text-color-blue-300 mobile:p-3 tablet:p-3 ${oneButton ? "hidden" : ""} `}
+              className={`semibold w-full items-center justify-center rounded-[16px] border border-color-blue-300 bg-white p-4 text-xl text-color-blue-300 mobile:p-3 tablet:p-3 ${oneButton ? "hidden" : ""} `}
             >
               반려
             </button>
