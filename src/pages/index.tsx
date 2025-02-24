@@ -46,7 +46,6 @@ export default function Home() {
             );
             setIsRefreshed(true);
             router.push("/");
-            window.location.reload();
           }
         }
       } catch (error) {
