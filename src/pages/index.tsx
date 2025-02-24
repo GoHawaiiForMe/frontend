@@ -51,6 +51,9 @@ export default function Home() {
       } catch (error) {
         console.error("사용자 정보 가져오기 실패:", error);
       }
+      finally{
+        window.location.reload();
+      }
     };
     fetchData();
   }, [router.isReady, router.query.auth, setLogin, isRefreshed]);
