@@ -1,4 +1,4 @@
-import { BAD_REQUEST, CONFLICT } from "@/utils/errorStatus";
+import { BAD_REQUEST, CONFLICT, NOT_FOUND, FORBIDDEN } from "@/utils/errorStatus";
 import { api } from "./api";
 import { ServiceArea } from "@/utils/formatRegion";
 
@@ -95,9 +95,8 @@ const planService = {
       }
 
       return response;
-    } catch (error) {
-      console.error("여행 조회 실패", error);
-      throw error;
+    } catch (error: any) {
+      throw error("플랜 목록을 불러오는데 실패했습니다.");
     }
   },
 
@@ -110,8 +109,7 @@ const planService = {
         window.location.href = "/404";
         return Promise.reject(new Error("해당 여행 플랜을 찾을 수 없습니다."));
       }
-      console.error("여행 데이터 요청 실패", error);
-      throw error;
+      throw error("여행 데이터를 불러오는데 실패했습니다.");
     }
   },
 
@@ -158,8 +156,8 @@ const planService = {
         `/plans/dreamer?readyToComplete=true${queryString}`,
       );
       return response;
-    } catch (error) {
-      console.error("완료 플랜 조회 실패", error);
+    } catch (error: any) {
+      throw error("완료 플랜을 불러오는데 실패했습니다.");
     }
   },
 
@@ -171,8 +169,8 @@ const planService = {
         `/plans/dreamer?reviewed=false${queryString}`,
       );
       return response;
-    } catch (error) {
-      console.error("리뷰 작성 가능 플랜 조회 실패", error);
+    } catch (error: any) {
+      throw error("리뷰 가능 플랜을 불러오는데 실패했습니다.");
     }
   },
 
@@ -180,8 +178,12 @@ const planService = {
     try {
       const response = await api.delete(`/plans/${planId}`);
       return response;
-    } catch (error) {
-      console.error("플랜 취소 실패", error);
+    } catch (error: any) {
+      if (error.response?.status === BAD_REQUEST) {
+        throw new Error("진행중인 플랜은 삭제할 수 없습니다.");
+      } else if (error.response?.status === FORBIDDEN) {
+        throw new Error("해당 플랜을 삭제할 권한이 없습니다.");
+      }
     }
   },
 
@@ -191,20 +193,17 @@ const planService = {
       console.log("응답 데이터:", response);
       return response;
     } catch (error: any) {
-      if (error.response) {
+      if (error.response?.status === BAD_REQUEST) {
         // 서버에서 응답이 왔을 때 (500, 404 등)
-        console.error("Server Error:", error.response.status, error.response.data);
-        throw new Error(
-          `API Error: ${error.response.status} - ${error.response.data.message || "Unknown error"}`,
-        );
+        throw new Error("플랜 완료 요청은 진행중(확정견적이 있는) 상태일 때만 가능합니다.");
+      } else if (error.response?.status === NOT_FOUND) {
+        throw new Error("해당 플랜을 찾을 수 없습니다.");
       } else if (error.request) {
         // 요청은 갔지만 응답이 없을 때 (네트워크 문제)
-        console.error("No Response:", error.request);
-        throw new Error("No response from server. Please try again.");
+        throw new Error("서버로부터 응답이 없습니다. 다시 시도해 주세요.");
       } else {
         // 요청 자체의 문제 (설정 오류 등)
-        console.error("Request Error:", error.message);
-        throw new Error("Request setup error.");
+        throw new Error("요청 오류 입니다.");
       }
     }
   },
