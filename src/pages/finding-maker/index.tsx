@@ -112,9 +112,19 @@ export default function FindingMaker() {
       }
     };
 
-    if (isLoggedIn) {
-      fetchFollowedItems();
-    }
+    const handleResize = () => {
+      const isComponentVisible = window.innerWidth > 746; 
+      if (isLoggedIn && isComponentVisible) {
+        fetchFollowedItems();
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); 
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [isLoggedIn]);
 
   return (
@@ -212,7 +222,7 @@ export default function FindingMaker() {
               </div>
             </div>
             <SearchBar 
-              placeholder="타이틀 검색 & maker검색"
+              placeholder="타이틀 검색 & maker 검색"
               className="w-full mobile-tablet:w-full" 
               value={searchValue}
               onChange={handleSearchChange}
