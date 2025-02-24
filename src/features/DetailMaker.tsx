@@ -335,7 +335,7 @@ export default function RequestDetailDreamer() {
                     category="services"
                     selectedTypes={makerProfileInfo?.serviceTypes ?? []}
                     data={filteredServices}
-                    className="mt-4 flex gap-4"
+                    className="mx-1 mt-4 flex gap-4"
                     itemClassName="!border-color-blue-300 bg-color-blue-50 text-color-blue-300"
                   />
                 </div>
@@ -351,7 +351,7 @@ export default function RequestDetailDreamer() {
                     category="locations"
                     selectedTypes={makerProfileInfo?.serviceArea ?? []}
                     data={filteredLocations}
-                    className="mt-4 flex w-full gap-4 mobile-tablet:w-full"
+                    className="mx-1 mt-4 flex w-full gap-4 mobile-tablet:w-full"
                   />
                 </div>
               </div>
