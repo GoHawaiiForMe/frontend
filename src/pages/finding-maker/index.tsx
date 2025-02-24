@@ -213,7 +213,7 @@ export default function FindingMaker() {
         <div className="w-3/4 flex flex-col gap-[32px] mobile-tablet:w-full mobile:mx-[auto] mobile:w-[327px] tablet:mx-[auto] tablet:w-[600px] tablet:px-[10px] tablet:py-[12px]">
           <div className="gap-6">
             <div className="pc:ml-auto pc:flex pc:justify-between mobile-tablet:flex mobile-tablet:justify-between ">
-              <div className="pc:hidden mobile-tablet:flex mobile-tablet:gap-4">
+              <div className="pc:hidden mobile-tablet:flex mobile-tablet:gap-4 mobile-tablet:my-4">
                 <DreamerFilter type="service" reset={resetFilters} onSelect={handleServiceTypeChange} />
                 <DreamerFilter type="location" reset={resetFilters} onSelect={handleServiceAreaChange} />
               </div>
