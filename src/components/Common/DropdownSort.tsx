@@ -60,7 +60,7 @@ const DropdownSort = ({ onSort }: DropdownSortProps) => {
         />
       </button>
       {isOpen && (
-        <div className="w-[114px] h-[120px] rounded-[8px] border border-color-line-100 absolute top-full z-50 shadow-sm overflow-y-scroll transition-all duration-300 ease-in-out bg-white
+        <div className="w-[114px] h-[120px] rounded-[8px] border border-color-line-100 absolute top-full z-50 shadow-sm  transition-all duration-300 ease-in-out bg-white
         mobile-tablet:w-[91px] mobile-tablet:h-[95px] 
         ">
           <div className="flex flex-col w-full">

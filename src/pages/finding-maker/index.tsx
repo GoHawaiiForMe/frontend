@@ -112,9 +112,19 @@ export default function FindingMaker() {
       }
     };
 
-    if (isLoggedIn) {
-      fetchFollowedItems();
-    }
+    const handleResize = () => {
+      const isComponentVisible = window.innerWidth > 746; 
+      if (isLoggedIn && isComponentVisible) {
+        fetchFollowedItems();
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); 
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [isLoggedIn]);
 
   return (
@@ -124,6 +134,14 @@ export default function FindingMaker() {
           @media (min-width: 1024px) and (max-width: 1800px) {
             .main-container {
               padding: 0 72px;
+            }
+          }
+          @media (max-width: 374px) {
+            .main-container {
+              padding: 0 5px;
+            }
+            .hide-on-374 {
+              display: none;
             }
           }
           .flash {
@@ -194,17 +212,17 @@ export default function FindingMaker() {
         </div>  
         <div className="w-3/4 flex flex-col gap-[32px] mobile-tablet:w-full mobile:mx-[auto] mobile:w-[327px] tablet:mx-[auto] tablet:w-[600px] tablet:px-[10px] tablet:py-[12px]">
           <div className="gap-6">
-            <div className="pc:ml-auto pc:flex pc:justify-between mobile-tablet:flex mobile-tablet:justify-between">
+            <div className="pc:ml-auto pc:flex pc:justify-between mobile-tablet:flex mobile-tablet:justify-between ">
               <div className="pc:hidden mobile-tablet:flex mobile-tablet:gap-4">
                 <DreamerFilter type="service" reset={resetFilters} onSelect={handleServiceTypeChange} />
                 <DreamerFilter type="location" reset={resetFilters} onSelect={handleServiceAreaChange} />
               </div>
-              <div className="pc:ml-auto">
+              <div className="pc:ml-auto hide-on-374">
                 <DropdownSort onSort={handleOrderByChange} />
               </div>
             </div>
             <SearchBar 
-              placeholder="텍스트를 입력해 주세요."
+              placeholder="타이틀 검색 & maker 검색"
               className="w-full mobile-tablet:w-full" 
               value={searchValue}
               onChange={handleSearchChange}

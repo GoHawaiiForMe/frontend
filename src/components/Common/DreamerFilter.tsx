@@ -3,18 +3,10 @@ import Image from "next/image";
 import downBlue from "@public/assets/dropdown_down_blue.svg";
 import downGray from "@public/assets/dropdown_down_gray.svg";
 
-const placeholder = "지역";
-const items = ["전체", "서울", "경기", "인천", "강원", "충북", "충남", "세종", "대전", "전북"];
-const placeholder2 = "서비스";
-const items2 = [
-  "전체",
-  "기념품/쇼핑형",
-  "맛집 탐방형",
-  "액티비티/탐험형",
-  "문화/역사탐방형",
-  "축제참여형",
-  "휴양형",
-];
+const placeholder = '지역';
+const items = ['전체', '서울', '부산', '인천', '대구', '대전', '광주', '울산', '세종', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주'];
+const placeholder2 = '서비스';
+const items2 = ['전체', '기념품/쇼핑형', '맛집 탐방형', '액티비티/탐험형', '문화/역사탐방형', '축제참여형', '휴양형'];
 
 const serviceTypeMapping: Record<string, string> = {
   전체: "",
@@ -27,16 +19,24 @@ const serviceTypeMapping: Record<string, string> = {
 };
 
 const areaMapping: Record<string, string> = {
-  전체: "",
-  서울: "SEOUL",
-  경기: "GYEONGGI",
-  인천: "INCHEON",
-  강원: "GANGWON",
-  충북: "CHUNGBUK",
-  충남: "CHUNGNAM",
-  세종: "SEJONG",
-  대전: "DAEJEON",
-  전북: "JEONBUK",
+  '전체': '',
+  '서울': 'SEOUL',
+  '부산': 'BUSAN',
+  '인천': 'INCHEON',
+  '대구': 'DAEGU',
+  '대전': 'DAEJEON',
+  '광주': 'GWANGJU',
+  '울산': 'ULSAN',
+  '세종': 'SEJONG',
+  '경기': 'GYEONGGI',
+  '강원': 'GANGWON',
+  '충북': 'CHUNGBUK',
+  '충남': 'CHUNGNAM',
+  '전북': 'JEONBUK',
+  '전남': 'JEONNAM',
+  '경북': 'GYEONGBUK',
+  '경남': 'GYEONGNAM',
+  '제주': 'JEJU',
 };
 
 interface DreamerFilterProps {

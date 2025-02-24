@@ -37,6 +37,19 @@ interface CardFindMakerProps {
   isFollowed?: boolean;
   serviceTypes: ServiceType[];
 }
+
+const serviceTypeOrder: ServiceType[] = [
+  "SHOPPING",
+  "FOOD_TOUR",
+  "ACTIVITY",
+  "CULTURE",
+  "FESTIVAL",
+  "RELAXATION",
+  "REQUEST",
+  "PENDING",
+  "CONFIRMED",
+];
+
 const CardFindMaker = ({
   labelSize,
   cardSize,
@@ -86,6 +99,11 @@ const CardFindMaker = ({
     };
   }, []);
 
+
+  const sortedServiceTypes = [...serviceTypes].sort(
+    (a, b) => serviceTypeOrder.indexOf(a) - serviceTypeOrder.indexOf(b)
+  );
+
   return (
     <div
       ref={cardRef}
@@ -94,24 +112,23 @@ const CardFindMaker = ({
       `}
     >
       <div className="flex mb-2 gap-4">
-        
-      {(serviceTypes || []).slice(0, cardWidth < 467 ? 2 : (cardWidth< 650 ? 3 : (cardWidth < 756 ? 4 : (cardWidth < 840 ? 5 : serviceTypes.length)))).map((type, index) => (
-        <Label 
-          key={`${type}-${index}`}
-          labelType={type}
-          labelSize={labelSize}
-          customLabelContainerClass={customLabelContainerClass}
-          customLabelTextClass={customLabelTextClass}
-        />
-      ))}
-      {serviceTypes.length > (cardWidth < 467 ? 2 : (cardWidth < 650 ? 3 : (cardWidth < 756 ? 4 : (cardWidth < 840 ? 5 : serviceTypes.length)))) && (
-        <Image
-          src={moreIcon}
-          alt="더 있음"
-          width={24}
-          height={24}
-        />
-      )}
+        {sortedServiceTypes.slice(0, cardWidth < 467 ? 2 : (cardWidth < 650 ? 3 : (cardWidth < 778 ? 4 : (cardWidth < 840 ? 5 : sortedServiceTypes.length)))).map((type, index) => (
+          <Label 
+            key={`${type}-${index}`}
+            labelType={type}
+            labelSize={labelSize}
+            customLabelContainerClass={customLabelContainerClass}
+            customLabelTextClass={customLabelTextClass}
+          />
+        ))}
+        {sortedServiceTypes.length > (cardWidth < 467 ? 2 : (cardWidth < 650 ? 3 : (cardWidth < 778 ? 4 : (cardWidth < 840 ? 5 : sortedServiceTypes.length)))) && (
+          <Image
+            src={moreIcon}
+            alt="더 있음"
+            width={24}
+            height={24}
+          />
+        )}
       </div>
 
       <h2 className={`mb-4 text-2xl semibold text-color-black-300 ${titleSize} ${cardSize === 'sm' ? 'text-md !mb-1' : ''} mobile-tablet:text-sm`}>
