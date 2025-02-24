@@ -212,7 +212,7 @@ export default function FindingMaker() {
               </div>
             </div>
             <SearchBar 
-              placeholder="텍스트를 입력해 주세요."
+              placeholder="타이틀 검색 & maker검색"
               className="w-full mobile-tablet:w-full" 
               value={searchValue}
               onChange={handleSearchChange}
