@@ -1,5 +1,36 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="3" y="10" width="4" height="4" rx="1" fill="#1B92FF" />
-  <rect x="17" y="10" width="4" height="4" rx="1" fill="#1B92FF" />
-  <rect x="7" y="11" width="10" height="2" fill="#1B92FF" />
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#1B92FF"
+  stroke-width="6">
+  <!-- Sun -->
+  <circle cx="30" cy="30" r="5" />
+  <line x1="30" y1="15" x2="30" y2="5" />
+  <line x1="30" y1="45" x2="30" y2="55" />
+  <line x1="15" y1="30" x2="5" y2="30" />
+  <line x1="45" y1="30" x2="55" y2="30" />
+  <line x1="20" y1="20" x2="10" y2="10" />
+  <line x1="40" y1="20" x2="50" y2="10" />
+  <line x1="20" y1="40" x2="10" y2="50" />
+  <line x1="40" y1="40" x2="50" y2="50" />
+
+  <!-- Mountains -->
+  <path d="M50 150 L100 50 L150 150 Z" />
+  <path d="M75 150 L125 75 L175 150 Z" />
+  <line x1="100" y1="50" x2="100" y2="30" />
+  <line x1="100" y1="30" x2="110" y2="40" />
+
+  <!-- Trees -->
+  <path d="M60 150 L65 140 L70 150 Z" />
+  <path d="M130 150 L135 140 L140 150 Z" />
+  <path d="M95 100 L100 90 L105 100 Z" />
+
+  <!-- River -->
+  <path d="M50 150 Q75 130 100 150 T150 150" />
+
+  <!-- Rocks -->
+  <ellipse cx="50" cy="160" rx="10" ry="5" />
+  <ellipse cx="70" cy="160" rx="10" ry="5" />
+  <ellipse cx="90" cy="160" rx="10" ry="5" />
+
+  <!-- Birds -->
+  <path d="M160 40 Q165 35 170 40" />
+  <path d="M170 40 Q175 35 180 40" />
 </svg>

@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import shoppingIcon from '@public/assets/label_shopping.svg';
 import foodTourIcon from '@public/assets/label_food_tour.svg';
-import activityIcon from '@public/assets/label_activity.svg';
+import activityIcon from '@public/assets/label_new_activity_2.svg';
 import cultureIcon from '@public/assets/label_culture.svg';
 import festivalIcon from '@public/assets/label_festival.svg';
 import relaxationIcon from '@public/assets/label_relaxation.svg';
