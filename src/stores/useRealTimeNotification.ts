@@ -10,6 +10,7 @@ const useRealTimeNotification = () => {
 
   const connectToSSE = () => {
     const accessToken = getAccessToken();
+    if (!accessToken) return;
     const newEventSource = new EventSourcePolyfill(
       `${process.env.NEXT_PUBLIC_API_URL}/notifications/stream`,
       {
