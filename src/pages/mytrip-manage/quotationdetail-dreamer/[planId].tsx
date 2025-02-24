@@ -17,12 +17,8 @@ import { QuotationServiceDreamer } from "@/services/quotationServiceDreamer";
 import { Plan } from "@/services/planService";
 import { useState } from "react";
 import withAuthAccess from "@/stores/withAuthAccess";
-<<<<<<< HEAD
 import ShareSNS from "@/components/Common/UI/ShareSNS";
-=======
-import ShareSNS from "@/components/Common/ShareSNS";
-import ModalLayout from "@/components/Common/ModalLayout";
->>>>>>> 40cc2b5aa4d8bb4c6eba7428ea26fdbe1580bf42
+import ModalLayout from "@/components/Common/Layout/ModalLayout";
 
 interface MakerInfo {
   nickName: string;
