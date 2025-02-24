@@ -37,12 +37,20 @@ export function CompletedTrip() {
   const totalPages = Math.ceil((data?.totalCount || 1) / pageSize);
   const planData = data?.list.flat() || [];
 
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Image src={loading} alt="로딩 중" />
+      </div>
+    );
+  }
+
   return (
     <>
       <MyReviewNav />
       <Layout bodyClass="bg-gray">
         <div className="my-10">
-          {planData.length === 0 && (
+          {!isLoading && planData.length === 0 && (
             <div className="flex h-screen flex-col items-center justify-center gap-8">
               <Image src={icon_luggage_frown} alt="비어있음" />
               <p className="regular text-2xl text-color-gray-400">
@@ -50,22 +58,16 @@ export function CompletedTrip() {
               </p>
             </div>
           )}
-          {isLoading ? (
-            <div className="flex h-screen items-center justify-center">
-              <Image src={loading} alt="로딩 중" />
-            </div>
-          ) : (
-            <>
-              <MyCompletedTripList plans={planData} />
-              {totalPages > 1 && (
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={handlePageChange}
-                />
-              )}
-            </>
-          )}
+          <>
+            <MyCompletedTripList plans={planData} />
+            {totalPages > 1 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            )}
+          </>
         </div>
       </Layout>
     </>

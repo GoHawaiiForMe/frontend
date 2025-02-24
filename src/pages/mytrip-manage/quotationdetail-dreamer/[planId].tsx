@@ -104,13 +104,27 @@ export function QuotationDetailDreamer() {
     }
   }, [planId, quotationId]);
 
+  //1440px이하부터 타블렛 디자인으로 변경
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsTablet(window.innerWidth <= 1440);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   async function handleConfirmButton() {
     try {
       if (quotationDetail)
         await QuotationServiceDreamer.confirmQuotation({ isConfirmed: true }, quotationDetail.id);
-      alert("플랜이 확정되었습니다.");
+      alert("견적확정 확정되었습니다.");
     } catch (error) {
-      alert(`플랜 확정에 실패했습니다. 다시 시도해주세요. ${error}`);
+      alert(`견적확정에 실패했습니다. 다시 시도해주세요. ${error}`);
     }
   }
 
@@ -203,7 +217,9 @@ export function QuotationDetailDreamer() {
     );
   }
   return (
-    <div className="relative flex w-full flex-col mobile:mb-20 tablet:mb-[72px]">
+    <div
+      className={`relative flex w-full flex-col mobile:mb-20 ${isTablet ? "mb-[72px]" : "mb-0"}`}
+    >
       <div className="semibold center flex py-8 text-2xl text-color-black-400 mobile-tablet:text-2lg">
         견적 상세
       </div>
@@ -212,7 +228,13 @@ export function QuotationDetailDreamer() {
           <div className="flex">
             <div className="flex w-full flex-col rounded-2xl bg-color-gray-50 px-6 py-7 shadow mobile-tablet:px-3 mobile-tablet:py-4">
               <div className="justify-left flex items-center gap-[12px] mobile-tablet:mt-[6px]">
+                {quotationDetail.isConfirmed !== false && (
+                  <Label labelType="CONFIRMED" customLabelContainerClass="rounded-lg" />
+                )}
                 <Label labelType={planDetail.tripType} customLabelContainerClass="rounded-lg" />
+                {quotationDetail.isAssigned !== false && (
+                  <Label labelType="REQUEST" customLabelContainerClass="rounded-lg" />
+                )}
               </div>
               <div className="border-color bg-body.bg-gray my-6 flex gap-6 rounded-md border-[1px] px-[18px] py-4 mobile-tablet:my-[14px] mobile-tablet:gap-3 mobile-tablet:px-[10px]">
                 <div className="flex h-20 w-20 items-center mobile-tablet:h-[46px] mobile-tablet:w-[46px]">
@@ -238,7 +260,7 @@ export function QuotationDetailDreamer() {
                         />
                         <p>{quotationDetail.maker.averageRating}</p>
                         <p className="text-color-gray-400">
-                          (${quotationDetail.maker.totalReviews})
+                          ({quotationDetail.maker.totalReviews})
                         </p>
                       </div>
                       <p className="mx-4 text-color-line-200 mobile-tablet:mx-1">ㅣ</p>
@@ -268,7 +290,7 @@ export function QuotationDetailDreamer() {
                       height={24}
                       className="color-red-200 h-[24px] w-[24px]"
                     />
-                    136
+                    <p>{quotationDetail.maker.totalFollows}</p>
                   </div>
                 </div>
               </div>
@@ -279,26 +301,28 @@ export function QuotationDetailDreamer() {
               </div>
             </div>
           </div>
-          <hr className="border-Line-100 my-10 mobile-tablet:my-6" />
+          <hr className={`border-Line-100 ${isTablet ? "my-6" : "my-10"}`} />
           <div className="flex flex-col gap-8 mobile-tablet:gap-4">
-            <p className="semibold text-2xl text-color-black-400 mobile-tablet:text-lg">견적가</p>
+            <p className="semibold text-2xl text-color-black-400 mobile-tablet:text-lg">
+              견적 코코넛
+            </p>
             <p className="bold text-3xl text-color-black-400 mobile-tablet:text-xl">
-              {quotationDetail.price} 원
+              {quotationDetail.price} 개
             </p>
           </div>
-          <hr className="border-Line-100 my-10 mobile-tablet:my-6" />
-          <div className="flex flex-col gap-[22px] pc:hidden">
+          <hr className={`border-Line-100 ${isTablet ? "my-6" : "my-10"}`} />
+          <div className={`${isTablet ? `flex flex-col gap-[22px]` : "hidden"}`}>
             <p className="semibold text-black-400 text-xl">플랜 공유하기</p>
             <div className="flex gap-4">{sharePromptContent}</div>
           </div>
-          <hr className="border-Line-100 my-6 pc:hidden" />
+          <hr className={`${isTablet ? "border-Line-100 my-6" : "hidden"}`} />
           <div>
             <p className="semibold mb-8 text-2xl text-color-black-400 mobile-tablet:text-lg">
               플랜 정보
             </p>
             <PlanCard planDetail={planDetail} />
             {planDetail.status === "PENDING" && (
-              <div className="mt-5 rounded-xl border-[1px] border-solid border-color-blue-300 bg-color-blue-100 mobile-tablet:mt-2">
+              <div className="mb-28 mt-5 rounded-xl border-[1px] border-solid border-color-blue-300 bg-color-blue-100 mobile-tablet:mt-2">
                 <div className="semibold flex gap-2 p-6 text-lg text-color-blue-300 mobile-tablet:p-3 mobile-tablet:text-sm">
                   <Image src={icon_blueinfo} alt="알림" /> 확정하지 않은 플랜이에요!
                 </div>
@@ -307,19 +331,28 @@ export function QuotationDetailDreamer() {
           </div>
         </div>
         <div className="flex flex-col flex-nowrap mobile-tablet:relative mobile-tablet:w-full mobile-tablet:flex-grow">
-          <div className="flex w-full mobile:px-6 tablet:px-[72px] mobile-tablet:fixed mobile-tablet:inset-x-0 mobile-tablet:bottom-0 mobile-tablet:flex-grow mobile-tablet:gap-2 mobile-tablet:bg-color-gray-50 mobile-tablet:py-[10px]">
-            <button className="bg-body.bg-gray flex rounded-2xl border-[1px] p-2 pc:hidden">
-              <Image src={icon_like_black} alt="좋아요" width={32} height={32} />
-            </button>
-            <button
-              className="semibold flex w-full items-center justify-center text-nowrap rounded-2xl bg-color-blue-300 px-28 py-4 text-xl text-gray-50 shadow mobile:text-md tablet:text-lg mobile-tablet:w-full mobile-tablet:max-w-full mobile-tablet:px-4 mobile-tablet:py-[11px]"
-              onClick={handleConfirmButton}
+          {planDetail.status === "PENDING" && (
+            <div
+              className={`${isTablet ? "fixed inset-x-0 bottom-0 flex-grow gap-2 bg-color-gray-50 px-40 py-[10px]" : "relative w-full"} flex mobile:px-6`}
             >
-              견적 확정하기
-            </button>
-          </div>
-          <hr className="border-Line-100 my-10 mobile-tablet:hidden" />
-          <div className="flex flex-col gap-[22px] mobile-tablet:hidden">
+              <button
+                className={`${isTablet ? "bg-body.bg-gray flex rounded-2xl border-[1px] p-2" : "hidden"}`}
+              >
+                <Image src={icon_like_black} alt="좋아요" width={32} height={32} />
+              </button>
+
+              <button
+                className="semibold flex w-full items-center justify-center text-nowrap rounded-2xl bg-color-blue-300 px-28 py-4 text-xl text-gray-50 shadow mobile:text-md tablet:text-lg mobile-tablet:w-full mobile-tablet:max-w-full mobile-tablet:px-4 mobile-tablet:py-[11px]"
+                onClick={handleConfirmButton}
+              >
+                견적 확정하기
+              </button>
+            </div>
+          )}
+          {planDetail.status === "PENDING" && (
+            <hr className="border-Line-100 my-10 mobile-tablet:hidden" />
+          )}
+          <div className={`flex flex-col gap-[22px] ${isTablet ? "hidden" : ""}`}>
             <p className="semibold text-black-400 flex text-xl">플랜 공유하기</p>
             <div className="flex gap-4">{sharePromptContent}</div>
           </div>

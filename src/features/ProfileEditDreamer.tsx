@@ -310,6 +310,7 @@ export default function ProfileEditDreamer() {
                       planData.services.find((ser) => ser.mapping === service)?.name || service,
                   )}
                   toggleSelection={handleServiceSelection}
+                  useWide={true}
                 />
               </div>
               <div className="my-2 h-0.5 bg-color-line-100"></div>

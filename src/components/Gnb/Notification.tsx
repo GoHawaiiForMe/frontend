@@ -146,25 +146,28 @@ export default function Notification({ closeModal }: { closeModal: () => void })
               className={`max-h-[300px] overflow-y-auto ${notificationData.length >= 4 ? "h-[300px]" : ""}`}
             >
               <ul>
-                {notificationData.map((notification, index) => (
-                  <div key={notification.id}>
-                    <li
-                      onClick={() => handleRead(notification.id)}
-                      className={`cursor-pointer pt-4 ${notification.isRead ? "bg-[#f1f1f1]" : "bg-color-gray-50"}`}
-                    >
-                      <p className="px-5 text-lg">
-                        {getNotificationMessage(notification.event, notification.payload)}
-                      </p>
-                      <p className="px-5 pb-4 text-md text-color-gray-300">
-                        {formatRelativeTime(notification.createdAt)}
-                      </p>
+                {notificationData
+                  .slice()
+                  .reverse()
+                  .map((notification, index) => (
+                    <div key={notification.id}>
+                      <li
+                        onClick={() => handleRead(notification.id)}
+                        className={`cursor-pointer pt-4 ${notification.isRead ? "bg-[#f1f1f1]" : "bg-color-gray-50"}`}
+                      >
+                        <p className="px-5 text-lg">
+                          {getNotificationMessage(notification.event, notification.payload)}
+                        </p>
+                        <p className="px-5 pb-4 text-md text-color-gray-300">
+                          {formatRelativeTime(notification.createdAt)}
+                        </p>
 
-                      {index < notificationData.length - 1 && (
-                        <div className="h-0.5 bg-color-line-100"></div>
-                      )}
-                    </li>
-                  </div>
-                ))}
+                        {index < notificationData.length - 1 && (
+                          <div className="h-0.5 bg-color-line-100"></div>
+                        )}
+                      </li>
+                    </div>
+                  ))}
               </ul>
             </div>
           )}

@@ -9,12 +9,13 @@ interface ReviewCardProps {
 }
 
 export default function ReviewCard({ reviewDetail }: ReviewCardProps) {
+  console.log(reviewDetail.plan.quotes[0]);
   return (
     <div className="mb-[32px] flex flex-col rounded-2xl bg-color-gray-50 px-6 py-7 mobile-tablet:px-3 mobile-tablet:py-4">
       <div className="flex justify-between">
         <div className="justify-left flex items-center gap-[12px] mobile-tablet:mt-[6px]">
           <Label labelType={reviewDetail.plan.tripType} customLabelContainerClass="rounded-lg" />
-          {reviewDetail.plan.quotes.isAssigned !== false && (
+          {reviewDetail.plan.quotes[0].isAssigned !== false && (
             <Label labelType="REQUEST" customLabelContainerClass="rounded-lg" />
           )}
         </div>
@@ -38,12 +39,14 @@ export default function ReviewCard({ reviewDetail }: ReviewCardProps) {
             <div className="flex items-center gap-4 mobile-tablet:gap-1">
               <div className="medium flex flex-shrink-0 gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                 <p>여행일</p>
-                <p className="text-color-gray-400">2024.07.01(월)</p>
+                <p className="text-color-gray-400">
+                  {formatToSimpleDate(reviewDetail.plan.tripDate)}
+                </p>
               </div>
               <p className="text-color-line-200">ㅣ</p>
               <div className="medium flex flex-shrink-0 gap-[6px] text-lg mobile-tablet:gap-[5px] mobile-tablet:text-sm">
                 <p>플랜가</p>
-                <p className="text-color-gray-400">210,000원</p>
+                <p className="text-color-gray-400">{reviewDetail.plan.quotes[0].price} 개</p>
               </div>
             </div>
             <div className="mobile-tablet:hidden">

@@ -199,6 +199,7 @@ export default function InformEditMaker() {
                 className="overflow-hidden text-ellipsis whitespace-nowrap border-0 bg-color-background-200 pr-10"
                 disabled={!isEmailExist}
                 {...register("password")}
+                error={!!errors.password}
               />
             </div>
             <div className="my-4 h-0.5 bg-color-line-100"></div>
@@ -210,9 +211,9 @@ export default function InformEditMaker() {
                 className="overflow-hidden text-ellipsis whitespace-nowrap border-0 bg-color-background-200 pr-10"
                 disabled={!isEmailExist}
                 {...register("newPassword")}
-                error={!!errors.password}
+                error={!!errors.newPassword}
               />
-              {errors.password && <ErrorMessage message={errors.password.message} />}
+              {errors.newPassword && <ErrorMessage message={errors.newPassword.message} />}
             </div>
             <div className="my-4 h-0.5 bg-color-line-100"></div>
             <div className="mb-16">

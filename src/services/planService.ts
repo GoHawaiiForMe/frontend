@@ -1,3 +1,4 @@
+import { BAD_REQUEST, CONFLICT } from "@/utils/errorStatus";
 import { api } from "./api";
 import { ServiceArea } from "@/utils/formatRegion";
 
@@ -116,7 +117,7 @@ const planService = {
 
   getPendingPlan: async () => {
     try {
-      const response = await api.get<PlanResponse, {}>(`/plans/dreamer?status=PENDING`);
+      const response = await api.get<PlanResponse, {}>(`/plans/dreamer?status=PENDING&pageSize=99`);
       return response.list;
     } catch (error) {
       console.error("지정 플랜 조회 실패", error);
@@ -128,8 +129,10 @@ const planService = {
       const response = await api.post(`/plans/${planId}/assign`, { assigneeId });
       return response;
     } catch (error: any) {
-      if (error.response && error.response.status === 409) {
+      if (error.response && error.response.status === CONFLICT) {
         throw new Error("이미 지정 견적을 요청하셨습니다!");
+      } else if (error.response && error.response.status === BAD_REQUEST) {
+        throw new Error("Maker가 서비스하는 지역이 아닙니다.");
       }
     }
   },
@@ -179,6 +182,30 @@ const planService = {
       return response;
     } catch (error) {
       console.error("플랜 취소 실패", error);
+    }
+  },
+
+  completePlan: async (planId: string) => {
+    try {
+      const response = await api.patch(`/plans/${planId}/complete`);
+      console.log("응답 데이터:", response);
+      return response;
+    } catch (error: any) {
+      if (error.response) {
+        // 서버에서 응답이 왔을 때 (500, 404 등)
+        console.error("Server Error:", error.response.status, error.response.data);
+        throw new Error(
+          `API Error: ${error.response.status} - ${error.response.data.message || "Unknown error"}`,
+        );
+      } else if (error.request) {
+        // 요청은 갔지만 응답이 없을 때 (네트워크 문제)
+        console.error("No Response:", error.request);
+        throw new Error("No response from server. Please try again.");
+      } else {
+        // 요청 자체의 문제 (설정 오류 등)
+        console.error("Request Error:", error.message);
+        throw new Error("Request setup error.");
+      }
     }
   },
 };

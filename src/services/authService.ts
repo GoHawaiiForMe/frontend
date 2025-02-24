@@ -1,6 +1,8 @@
-import { setAccessToken } from "@/utils/tokenUtils";
+import { removeAccessToken, setAccessToken } from "@/utils/tokenUtils";
 import { api } from "./api";
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR, UNAUTHORIZED } from "@/utils/errorStatus";
+import router from "next/router";
+import useAuthStore from "@/stores/useAuthStore";
 
 interface OAuthResponse {
   provider?: string;
@@ -59,13 +61,14 @@ const authService = {
       const response = await api.post<LoginResponse, { email: string; password: string }>(
         "/auth/login",
         data,
+        true,
       );
       setAccessToken(response.accessToken);
 
       return response;
     } catch (error: any) {
       if (error.response && error.response.status === BAD_REQUEST) {
-        throw new Error("유저 정보가 일치하지 않습니다.");
+        throw new Error("이메일과 비밀번호를 확인해주세요.");
       }
       throw new Error("로그인 중 오류가 발생했습니다.");
     }
@@ -103,15 +106,24 @@ const authService = {
       throw new Error("네이버 로그인에 실패했습니다.");
     }
   },
-  refreshToken: async (): Promise<string> => {
+  refreshToken: async () => {
     try {
-      const response: RefreshTokenResponse = await api.post("/auth/refresh/token", true);
-      return response.accessToken;
-    } catch (error: any) {
-      if (error.response && error.response.status === UNAUTHORIZED) {
-        throw new Error("리프레시 토큰이 없거나 만료되었습니다.");
+      const response: RefreshTokenResponse = await api.post("/auth/refresh/token", {}, true);
+      const newAccessToken = response.accessToken;
+
+      if (!newAccessToken) {
+        throw new Error("서버에서 새로운 accessToken을 받지 못했습니다.");
       }
-      throw new Error("토큰 발급 중 오류가 발생했습니다.");
+
+      return newAccessToken;
+    } catch (error: any) {
+      if (error.response?.status === 400) {
+        alert("로그인 정보가 유실되었습니다. 다시 로그인해주세요!");
+        removeAccessToken();
+        useAuthStore.getState().setLogout();
+        router.push("/login");
+      }
+      throw error;
     }
   },
 };

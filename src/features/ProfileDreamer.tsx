@@ -17,6 +17,7 @@ export default function ProfileDreamer() {
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [isOpenImageModal, setIsOpenImageModal] = useState(false);
   const [profileImg, setProfileImg] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const router = useRouter();
 
@@ -50,9 +51,15 @@ export default function ProfileDreamer() {
     onError: (error: any) => {
       alert(error.message);
     },
+    onSettled: () => {
+      setIsSubmitting(false);
+    },
   });
 
   const handleSubmit = async () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     const profileData = {
       image: profileImg || undefined,
       tripTypes: selectedServices,
@@ -68,7 +75,11 @@ export default function ProfileDreamer() {
   };
 
   const isButtonDisabled =
-    selectedServices.length === 0 || selectedLocations.length === 0 || !profileImg || !userData;
+    selectedServices.length === 0 ||
+    selectedLocations.length === 0 ||
+    !profileImg ||
+    !userData ||
+    isSubmitting;
 
   return (
     <div className="mb-20 flex justify-center">
@@ -136,7 +147,7 @@ export default function ProfileDreamer() {
           </div>
         </div>
         <Button
-          label="시작하기"
+          label={isSubmitting ? "처리중..." : "시작하기"}
           onClick={handleSubmit}
           disabled={isButtonDisabled}
           type="submit"

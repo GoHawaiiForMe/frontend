@@ -1,4 +1,4 @@
-import { UNAUTHORIZED } from "@/utils/errorStatus";
+import { BAD_REQUEST } from "@/utils/errorStatus";
 import { api } from "./api";
 
 type Role = "DREAMER" | "MAKER";
@@ -135,8 +135,8 @@ const userService = {
     try {
       await api.patch("/users/update", payload);
     } catch (error: any) {
-      if (error.response && error.response.status === UNAUTHORIZED) {
-        throw new Error("기존 비밀번호와 일치하지 않습니다.");
+      if (error.response && error.response.status === BAD_REQUEST) {
+        throw new Error(error.response.data.message || "알 수 없는 오류가 발생했습니다.");
       }
     }
   },
@@ -191,8 +191,10 @@ const userService = {
     try {
       const response = await api.get<MakerProfileResponse, {}>(`/users/profile/${makerId}`);
       return response;
-    } catch (error) {
-      console.error("메이커 프로필 조회 실패", error);
+    } catch (error: any) {
+      if (error.response && error.response.status === BAD_REQUEST) {
+        throw new Error("존재하지 않은 사이트입니다!");
+      }
     }
   },
 
