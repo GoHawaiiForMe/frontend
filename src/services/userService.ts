@@ -117,7 +117,7 @@ const userService = {
 
   getProfileInfo: async (makerId?: string): Promise<ProfileInfo> => {
     try {
-      const endpoint = makerId ? `/users/profile/${makerId}` : "/users/profile";
+      const endpoint = makerId ? `/users/maker/${makerId}` : "/profile";
       const response = await api.get<ProfileInfo, Record<string, unknown>>(endpoint);
       return response;
     } catch (error) {
@@ -147,7 +147,7 @@ const userService = {
     serviceArea?: string[];
   }) => {
     try {
-      const response = await api.patch("/users/update/profile", payload);
+      const response = await api.patch("/profile/update", payload);
       return response;
     } catch (error) {
       console.error("프로필 수정 실패", error);
@@ -164,7 +164,7 @@ const userService = {
     detailDescription?: string;
   }) => {
     try {
-      const response = await api.patch("/users/update/profile", payload);
+      const response = await api.patch("/profile/update", payload);
       return response;
     } catch (error) {
       console.error("메이커 프로필 수정 실패", error);
@@ -189,7 +189,7 @@ const userService = {
 
   getMakerProfile: async (makerId: string): Promise<MakerProfileResponse | undefined> => {
     try {
-      const response = await api.get<MakerProfileResponse, {}>(`/users/profile/${makerId}`);
+      const response = await api.get<MakerProfileResponse, {}>(`/users/maker/${makerId}`);
       return response;
     } catch (error: any) {
       if (error.response && error.response.status === BAD_REQUEST) {
