@@ -1,4 +1,4 @@
-import Label from "@/components/Common/Label";
+import Label from "@/components/Common/UI/Label";
 import { QuotationItem } from "@/services/quotationService";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import { convertRegionToKorean } from "@/utils/formatRegion";
@@ -35,7 +35,7 @@ export default function SendQuotation({ data }: SendQuotationProps) {
         </div>
         <Link href={`/quotation-detail/${data.id}`}>
           <div>
-            <p className="text-xl semibold">{data.plan.title}</p>
+            <p className="semibold text-xl">{data.plan.title}</p>
             <p className="mb-[18px] border-b border-color-line-200 pb-[18px] text-md font-medium">
               {data.dreamer.nickName} 고객님
             </p>
@@ -57,7 +57,7 @@ export default function SendQuotation({ data }: SendQuotationProps) {
             </div>
             <div className="mt-4 flex items-center justify-end gap-2">
               <p className="medium text-2lg">견적 코코넛</p>
-              <p className="text-2xl bold">{data.price.toLocaleString()}개</p>
+              <p className="bold text-2xl">{data.price.toLocaleString()}개</p>
             </div>
           </div>
         </Link>
@@ -72,7 +72,7 @@ export default function SendQuotation({ data }: SendQuotationProps) {
             <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-4 rounded-[16px] bg-color-black-400 bg-opacity-50 text-white">
               <p>여행 완료된 플랜입니다.</p>
               <Link href={`/quotation-detail/${data.id}`}>
-                <button className="z-40 rounded-[16px] border border-color-blue-200 bg-color-blue-100 px-[18px] py-[10px] text-lg semibold text-color-blue-300">
+                <button className="semibold z-40 rounded-[16px] border border-color-blue-200 bg-color-blue-100 px-[18px] py-[10px] text-lg text-color-blue-300">
                   견적 상세 보기
                 </button>
               </Link>

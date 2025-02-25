@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import Selector from "@/components/Common/Selector";
+import Selector from "@/components/Common/UI/Selector";
 import Image from "next/image";
 import profileImgDefault from "@public/assets/icon_default_profile.svg";
-import Button from "@/components/Common/Button";
-import ImageModal from "@/components/Common/ImageModal";
+import Button from "@/components/Common/UI/Button";
+import ImageModal from "@/components/Common/Feature/ImageModal";
 import userService from "@/services/userService";
 import planData from "@/types/planData";
-import Input from "@/components/Common/Input";
-import router from "next/router";
+import Input from "@/components/Common/Form/Input";
 import avatarImages from "@/utils/formatImage";
 import { getAccessToken } from "@/utils/tokenUtils";
 import { useRouter } from "next/router";

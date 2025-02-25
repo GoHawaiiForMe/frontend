@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import MyPlanNav from "@/components/MyPlans/MyPlanNav";
-import Layout from "@/components/Common/Layout";
+import Layout from "@/components/Common/Layout/Layout";
 import PlanCard from "@/components/MyPlans/Cards/PlanCard";
 import QuotationCardList from "@/components/MyPlans/QuotationCardList";
 import planService, { Plan } from "@/services/planService";

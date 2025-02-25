@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "@/components/Common/Input";
+import Input from "@/components/Common/Form/Input";
 import { editMakerSchema, EditMakerData } from "@/utils/validate";
-import Button from "@/components/Common/Button";
+import Button from "@/components/Common/UI/Button";
 import { useEffect, useState } from "react";
 import userService from "@/services/userService";
 import { useRouter } from "next/router";

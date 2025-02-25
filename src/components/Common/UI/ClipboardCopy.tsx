@@ -15,7 +15,6 @@ const ClipboardCopy: React.FC<ClipboardCopyProps> = ({ icon }) => {
       const url = window.location.href; // 현재 페이지 URL을 가져옵니다.
       await navigator.clipboard.writeText(url); // URL을 클립보드에 복사
 
-      console.log("URL이 복사되었습니다! 복사된 URL:", url);
       setTimeout(() => {
         setShowPopup(false); // 2초 후 팝업 숨기기
       }, 2000); // 2초 후 팝업을 숨김

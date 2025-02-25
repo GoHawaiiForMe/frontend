@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import icon_blueinfo from "@public/assets/icon_blueinfo.svg";
-import Label from "@/components/Common/Label";
+import Label from "@/components/Common/UI/Label";
 import icon_like_red from "@public/assets/icon_like_red.png";
 import icon_like_black from "@public/assets/icon_like_black.svg";
 import icon_active_star from "@public/assets/icon_active_star.svg";
@@ -17,8 +17,8 @@ import { QuotationServiceDreamer } from "@/services/quotationServiceDreamer";
 import { Plan } from "@/services/planService";
 import { useState } from "react";
 import withAuthAccess from "@/stores/withAuthAccess";
-import ShareSNS from "@/components/Common/ShareSNS";
-import ModalLayout from "@/components/Common/ModalLayout";
+import ShareSNS from "@/components/Common/UI/ShareSNS";
+import ModalLayout from "@/components/Common/Layout/ModalLayout";
 
 interface MakerInfo {
   nickName: string;
@@ -63,7 +63,6 @@ export function QuotationDetailDreamer() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    console.log("planId:", planId, "quotationId:", quotationId);
     if (planId && quotationId) {
       const fetchData = async () => {
         try {

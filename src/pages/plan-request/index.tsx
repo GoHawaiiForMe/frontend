@@ -1,6 +1,6 @@
 import PlanRequest from "@/features/PlanRequest";
-import Layout from "@/components/Common/Layout";
-import ConfirmedPlan from "@/components/Common/ConfirmedPlan";
+import Layout from "@/components/Common/Layout/Layout";
+import ConfirmedPlan from "@/components/Common/Feature/ConfirmedPlan";
 import { useState } from "react";
 import withAuthAccess from "@/stores/withAuthAccess";
 

@@ -1,5 +1,5 @@
 import MyPlanNav from "@/components/MyPlans/MyPlanNav";
-import Layout from "@/components/Common/Layout";
+import Layout from "@/components/Common/Layout/Layout";
 import MyPlanList from "@/components/MyPlans/MyPlanList";
 import planService from "@/services/planService";
 import { useInfiniteQuery, keepPreviousData } from "@tanstack/react-query";

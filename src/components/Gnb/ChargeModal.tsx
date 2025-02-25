@@ -117,7 +117,6 @@ export default function ChargeModal({
   };
 
   const isWaitingPayment = paymentStatus.status !== "IDLE";
-  console.log("상태메세지", paymentStatus);
   return (
     <>
       <ReceiveModalLayout label="코코넛 충전" closeModal={() => setIsChargeModalOpen(false)}>

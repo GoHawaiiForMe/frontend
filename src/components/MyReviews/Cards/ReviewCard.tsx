@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Label from "@/components/Common/Label";
+import Label from "@/components/Common/UI/Label";
 import StarRating from "@/components/Receive/StarRating";
 import { Review } from "@/services/reviewService";
 import { formatToSimpleDate } from "@/utils/formatDate";
@@ -9,7 +9,6 @@ interface ReviewCardProps {
 }
 
 export default function ReviewCard({ reviewDetail }: ReviewCardProps) {
-  console.log(reviewDetail.plan.quotes[0]);
   return (
     <div className="mb-[32px] flex flex-col rounded-2xl bg-color-gray-50 px-6 py-7 mobile-tablet:px-3 mobile-tablet:py-4">
       <div className="flex justify-between">

@@ -1,7 +1,7 @@
 import { Plan } from "@/services/planService";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import { convertRegionToKorean } from "@/utils/formatRegion";
-import Label from "@/components/Common/Label";
+import Label from "@/components/Common/UI/Label";
 
 interface PlanData {
   planDetail: Plan;

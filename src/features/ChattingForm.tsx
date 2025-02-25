@@ -1,5 +1,5 @@
-import Layout from "@/components/Common/Layout";
-import Bubble from "@/components/Common/Bubble";
+import Layout from "@/components/Common/Layout/Layout";
+import Bubble from "@/components/Common/UI/Bubble";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChatRoom, Message } from "@/types/chatData";

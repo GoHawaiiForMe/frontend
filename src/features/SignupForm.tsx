@@ -1,16 +1,16 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "@/components/Common/Input";
+import Input from "@/components/Common/Form/Input";
 import { useState } from "react";
 import { signUpSchema, SignUpFormData } from "@/utils/validate";
 import logo from "@public/assets/icon_logo_img.svg";
 import Image from "next/image";
-import Button from "@/components/Common/Button";
+import Button from "@/components/Common/UI/Button";
 import Link from "next/link";
 import { useSignUp } from "@/stores/SignUpContext";
 import { useRouter } from "next/router";
 import authService from "@/services/authService";
-import SocialLogin from "@/components/Common/SocialLogin";
+import SocialLogin from "@/components/Common/UI/SocialLogin";
 
 interface CheckResponse {
   data: boolean;

@@ -1,5 +1,5 @@
 import { PlanItem } from "@/services/requestService";
-import Label from "../Common/Label";
+import Label from "../Common/UI/Label";
 import { convertRegionToKorean } from "@/utils/formatRegion";
 import { formatToDetailedDate } from "@/utils/formatDate";
 import userService from "@/services/userService";
@@ -50,7 +50,7 @@ export default function Reject({ data, closeModal }: RejectProps) {
         {specifyMaker}
       </div>
       <div className="mb-[32px] mt-[24px] w-[560px] rounded-[8px] border border-color-line-200 py-[24px] mobile:mt-[24px] mobile:w-[327px] mobile:border-none mobile:py-[10px] tablet:mt-[24px] tablet:w-[327px] tablet:border-none tablet:py-[10px]">
-        <p className="mb-[8px] px-[18px] text-2xl semibold mobile:px-0 mobile:text-2lg tablet:pl-0 tablet:text-2lg">
+        <p className="semibold mb-[8px] px-[18px] text-2xl mobile:px-0 mobile:text-2lg tablet:pl-0 tablet:text-2lg">
           {data.title}
         </p>
         <p className="mb-[18px] border-b border-color-line-200 pb-[18px] pl-[18px] text-md font-medium text-color-gray-500 mobile:px-0 mobile:text-sm tablet:pl-0 tablet:text-sm">
@@ -76,7 +76,7 @@ export default function Reject({ data, closeModal }: RejectProps) {
         </div>
       </div>
       <button
-        className={`h-[64px] w-[560px] rounded-[16px] bg-color-blue-300 text-[20px] semibold leading-[32px] text-white mobile:h-[48px] mobile:w-[327px] mobile:text-lg tablet:h-[54px] tablet:w-[327px] tablet:text-lg`}
+        className={`semibold h-[64px] w-[560px] rounded-[16px] bg-color-blue-300 text-[20px] leading-[32px] text-white mobile:h-[48px] mobile:w-[327px] mobile:text-lg tablet:h-[54px] tablet:w-[327px] tablet:text-lg`}
         onClick={handleReject}
         disabled={rejectMutation.isPending}
       >

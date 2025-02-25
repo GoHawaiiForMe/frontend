@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Plan } from "@/services/planService";
 import { formatToSimpleDate } from "@/utils/formatDate";
 import { convertRegionToKorean } from "@/utils/formatRegion";
-import Label from "@/components/Common/Label";
+import Label from "@/components/Common/UI/Label";
 import Image from "next/image";
 import loading from "@public/assets/icon_loading.gif";
 

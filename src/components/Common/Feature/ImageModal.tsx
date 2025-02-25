@@ -1,4 +1,4 @@
-import ModalLayout from "./ModalLayout";
+import ModalLayout from "../Layout/ModalLayout";
 import Image from "next/image";
 import avatarImages from "@/utils/formatImage";
 

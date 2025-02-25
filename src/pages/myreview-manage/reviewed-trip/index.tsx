@@ -1,5 +1,5 @@
-import Layout from "@/components/Common/Layout";
-import Pagination from "@/components/Common/Pagination";
+import Layout from "@/components/Common/Layout/Layout";
+import Pagination from "@/components/Common/UI/Pagination";
 import MyReviewList from "@/components/MyReviews/MyReviewList";
 import MyReviewNav from "@/components/MyReviews/MyReviewNav";
 import reviewService from "@/services/reviewService";

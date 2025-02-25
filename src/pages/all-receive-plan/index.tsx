@@ -8,7 +8,7 @@ import { ChangeEvent, useState, useEffect } from "react";
 import Quotation from "@/components/Receive/Quotation";
 import ReceiveModalLayout from "@/components/Receive/ReceiveModalLayout";
 import Reject from "@/components/Receive/Reject";
-import SearchBar from "@/components/Common/SearchBar";
+import SearchBar from "@/components/Common/Form/SearchBar";
 import { useInfiniteQuery, keepPreviousData } from "@tanstack/react-query";
 import ReceiveRequest from "@/services/requestService";
 import { useInView } from "react-intersection-observer";
@@ -91,10 +91,10 @@ export function AllReceivePlan() {
       <div className="mx-[auto] w-full mobile:mx-[auto] tablet:mx-[auto]">
         <div className="mb-8 flex items-center gap-8 border-b border-color-line-200">
           <Link href="/receive">
-            <p className="text-4 cursor-pointer semibold">받은 견적 요청</p>
+            <p className="text-4 semibold cursor-pointer">받은 견적 요청</p>
           </Link>
           <Link href="/all-receive-plan">
-            <p className="text-4 cursor-pointer border-b-[3px] border-black py-6 semibold">
+            <p className="text-4 semibold cursor-pointer border-b-[3px] border-black py-6">
               전체 플랜
             </p>
           </Link>
@@ -127,9 +127,9 @@ export function AllReceivePlan() {
             </div>
           </div>
           {isLoading ? (
-           <div className="flex h-screen items-center justify-center">
-           <Image src={loading} alt="로딩 중" />
-         </div>
+            <div className="flex h-screen items-center justify-center">
+              <Image src={loading} alt="로딩 중" />
+            </div>
           ) : (
             <div
               className={`transition-opacity duration-300 ${isFetching ? "opacity-60" : "opacity-100"}`}
@@ -151,9 +151,7 @@ export function AllReceivePlan() {
               ) : (
                 <div className="flex flex-col items-center justify-center">
                   <Image src={request_empty} alt="request_empty" width={300} height={300} />
-                  <p className="text-xl semibold text-color-gray-300">
-                    아직 받은 요청이 없어요!
-                  </p>
+                  <p className="semibold text-xl text-color-gray-300">아직 받은 요청이 없어요!</p>
                 </div>
               )}
 

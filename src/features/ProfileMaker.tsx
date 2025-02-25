@@ -1,13 +1,13 @@
 import { useState } from "react";
-import Selector from "@/components/Common/Selector";
+import Selector from "@/components/Common/UI/Selector";
 import Image from "next/image";
 import profileImgDefault from "@public/assets/icon_default_profile.svg";
-import Button from "@/components/Common/Button";
-import ImageModal from "@/components/Common/ImageModal";
+import Button from "@/components/Common/UI/Button";
+import ImageModal from "@/components/Common/Feature/ImageModal";
 import { useSignUp } from "@/stores/SignUpContext";
 import authService from "@/services/authService";
 import planData from "@/types/planData";
-import Input from "@/components/Common/Input";
+import Input from "@/components/Common/Form/Input";
 import router from "next/router";
 import { removeOAuthToken } from "@/utils/tokenUtils";
 
