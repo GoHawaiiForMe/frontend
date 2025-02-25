@@ -3,7 +3,7 @@
 ![logo](https://i.imgur.com/bvVO9xc.png)
 
 > 2025.01.07 - 2025.02.26 </br>
-> 코드잇 스프린트 풀스택 2기 고급 프로젝트 2팀 (Backend)
+> 코드잇 스프린트 풀스택 2기 고급 프로젝트 2팀 (Frontend)
 > </br> > [Frontend Github 바로가기 🔗](https://github.com/GoHawaiiForMe/frontend)
 
 </br>
