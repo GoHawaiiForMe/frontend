@@ -25,19 +25,13 @@
 
 ## 💁 구성원
 
-|                              양가현                              |                           김은효                            |
-| :--------------------------------------------------------------: | :---------------------------------------------------------: |
-|            <image src = "https://avatars.githubusercontent.com/u/176450966?s=64&v=4" width = 150px>             |          <image src = "https://avatars.githubusercontent.com/u/176313108?s=64&v=4" width = 150px>          |
+|                              양가현                              |                           김은효                            |                              방신철                              |                           현준배                            |
+| :--------------------------------------------------------------: | :---------------------------------------------------------: | :--------------------------------------------------------------: | :---------------------------------------------------------: |
+|            <image src = "https://avatars.githubusercontent.com/u/176450966?s=64&v=4" width = 150px>             |          <image src = "https://avatars.githubusercontent.com/u/176313108?s=64&v=4" width = 150px>          |            <image src = "https://avatars.githubusercontent.com/u/176540649?s=64&v=4" width = 150px>             |          <image src = "https://avatars.githubusercontent.com/u/82556884?s=64&v=4" width = 150px>          |
 |                             **프론트엔드장**                     |                                                 |
-| 중간 발표 자료 제작, AWS 배포 및 관리, 발표 자료 정리 | 프론트엔드 GitHub 관리 |
-|        [Github 바로가기 🔗](https://github.com/gahyeon-yang)        |    [Github 바로가기 🔗](https://github.com/kirinkiri)    |
+| 중간 발표 자료 제작, AWS 배포 및 관리, 발표 자료 정리 |     프론트엔드 GitHub 관리     | AWS 배포 및 관리, 시연 영상 제작 | 회의록 관리, 노션 관리 |
+|        [Github 바로가기 🔗](https://github.com/gahyeon-yang)        |    [Github 바로가기 🔗](https://github.com/kirinkiri)    |        [Github 바로가기 🔗](https://github.com/bangsinchur)        |    [Github 바로가기 🔗](https://github.com/junbaehyun)    |
 
-|                              방신철                              |                           현준배                            |
-| :--------------------------------------------------------------: | :---------------------------------------------------------: |
-|            <image src = "https://avatars.githubusercontent.com/u/176540649?s=64&v=4" width = 150px>             |          <image src = "https://avatars.githubusercontent.com/u/82556884?s=64&v=4" width = 150px>          |
-|                                                  |                                                 |
-| AWS 배포 및 관리, 시연 영상 제작 | 회의록 관리, 노션 관리 |
-|        [Github 바로가기 🔗](https://github.com/bangsinchur)        |    [Github 바로가기 🔗](https://github.com/junbaehyun)    |
 
 </br>
 
