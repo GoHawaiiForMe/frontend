@@ -11,8 +11,7 @@ const SocialLogin = () => {
 
       switch (platform) {
         case "google":
-          // redirectUrl = await authService.googleLogin(); // 수정 필요
-          alert("현재 개발 중입니다!");
+          redirectUrl = await authService.googleLogin();
           break;
         case "kakao":
           redirectUrl = await authService.kakaoLogin();
