@@ -27,9 +27,9 @@
 
 |                              양가현                              |                           김은효                            |                              방신철                              |                           현준배                            |
 | :--------------------------------------------------------------: | :---------------------------------------------------------: | :--------------------------------------------------------------: | :---------------------------------------------------------: |
-|            <image src = "https://avatars.githubusercontent.com/u/176450966?s=64&v=4" width = 150px>             |          <image src = "https://avatars.githubusercontent.com/u/176313108?s=64&v=4" width = 150px>          |            <image src = "https://avatars.githubusercontent.com/u/176540649?s=64&v=4" width = 150px>             |          <image src = "https://avatars.githubusercontent.com/u/82556884?s=64&v=4" width = 150px>          |
+|            <img src="https://github.com/user-attachments/assets/6dd2f9e4-9fd9-4ae7-9691-8ebf59155b5e" width="150px">             |          <image src = "https://avatars.githubusercontent.com/u/176313108?s=64&v=4" width = 150px>          |            <image src = "https://avatars.githubusercontent.com/u/176540649?s=64&v=4" width = 150px>             |          <image src = "https://avatars.githubusercontent.com/u/82556884?s=64&v=4" width = 150px>          |
 |                             **프론트엔드장**                     |                                                 |
-| 중간 발표 자료 제작, AWS 배포 및 관리, 발표 자료 정리 |     프론트엔드 GitHub 관리     | AWS 배포 및 관리, 시연 영상 제작 | 회의록 관리, 노션 관리 |
+| 중간 발표 자료 제작, AWS 배포 및 관리, 발표 자료 정리, 발표 |     프론트엔드 GitHub 관리     | AWS 배포 및 관리, 시연 영상 제작 | 회의록 관리, 노션 관리 |
 |        [Github 바로가기 🔗](https://github.com/gahyeon-yang)        |    [Github 바로가기 🔗](https://github.com/kirinkiri)    |        [Github 바로가기 🔗](https://github.com/bangsinchur)        |    [Github 바로가기 🔗](https://github.com/junbaehyun)    |
 
 
@@ -119,7 +119,7 @@ Next.js와 Type script를 기반으로 한 프론트엔드는, 빠르고 안정�
     - **컴포넌트 기반 설계**: 재사용 가능한 컴포넌트 구조
     - **API 연동**: Axios를 통한 서버와의 통신
     - **CI/CD**: GitHub Actions를 통한 자동화된 배포 및 테스트
-    - **코드 품질 관리**: ESLint, Prettier를 통한 코드 스타일 및 품질 유지
+    - **코드 품질 관리**: Prettier를 통한 코드 스타일 및 품질 유지
     - **환경 설정**: Vercel을 통한 배포 및 환경 설정
     - **웹 접근성**: 모든 사용자가 접근할 수 있도록 웹 접근성 고려
 
@@ -128,7 +128,7 @@ Next.js와 Type script를 기반으로 한 프론트엔드는, 빠르고 안정�
 ## 🍰 프로젝트 회고
 
 - 프론트엔드 결과물: https://www.go-for-me.kro.kr
-- 발표 자료 및 시연 영상 :
+- 발표 자료 및 시연 영상 : https://drive.google.com/drive/folders/1UQssCDbmnRkehWDOo0fyqkM-jvmzNdUU
 
 </br>
 
