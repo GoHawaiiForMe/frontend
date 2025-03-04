@@ -1,15 +1,16 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "@/components/Common/Input";
+import Input from "@/components/Common/Form/Input";
 import { useEffect, useState } from "react";
 import { SignUpOAuthData, signUpOAuthSchema } from "@/utils/validate";
 import logo from "@public/assets/icon_logo_img.svg";
 import Image from "next/image";
-import Button from "@/components/Common/Button";
+import Button from "@/components/Common/UI/Button";
 import Link from "next/link";
 import { useSignUp } from "@/stores/SignUpContext";
 import { useRouter } from "next/router";
 import authService from "@/services/authService";
+import { setOAuthToken } from "@/utils/tokenUtils";
 
 interface CheckResponse {
   data: boolean;
@@ -69,18 +70,19 @@ export default function OAuthSignUpForm() {
         setError("nickName", { message: "닉네임이 중복되었습니다!" });
         setNickNameMessage("");
       }
-    } catch {
+    } catch (error: any) {
       setError("nickName", { message: "닉네임 체크 중 오류가 발생했습니다." });
       setIsNickNameValid(false);
+      alert(error.message);
     }
   };
 
   useEffect(() => {
     if (router.isReady) {
-      const codeFromQuery = router.query.auth as string;
-      if (codeFromQuery) {
-        setAuthCode(codeFromQuery);
-        localStorage.setItem("Token", codeFromQuery);
+      const Token = router.query.auth as string;
+      if (Token) {
+        setAuthCode(Token);
+        setOAuthToken(Token);
       }
     }
   }, [router.isReady, router.query.code]);

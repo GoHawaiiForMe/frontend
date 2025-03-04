@@ -1,7 +1,7 @@
 import useAuthStore from "@/stores/useAuthStore";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
+import { removeAccessToken } from "@/utils/tokenUtils";
 
 export interface UserMenuProps {
   userId: string;
@@ -15,6 +15,13 @@ interface MenuItem {
   onClick?: () => void;
 }
 
+enum NavigationPath {
+  DREAMER_PROFILE = "/profile/dreamer/edit/",
+  FOLLOW_MAKER = "/follow-maker",
+  COMPLETED_TRIP_REVIEWS = "/myreview-manage/completed-trip",
+  MAKER_PROFILE = "/profile/maker/mypage/",
+}
+
 export default function UserMenu({ userId, closeMenu, onChargeClick }: UserMenuProps) {
   const { nickName, role, setLogout } = useAuthStore();
   const router = useRouter();
@@ -23,16 +30,18 @@ export default function UserMenu({ userId, closeMenu, onChargeClick }: UserMenuP
 
   const menuItems: Record<string, MenuItem[]> = {
     DREAMER: [
-      { href: userId ? `/profile/dreamer/edit/${userId}` : "", label: "프로필 수정" },
-      { href: "/follow-maker", label: "찜한 Maker" },
-      { href: "/myreview-manage/completed-trip", label: "여행 리뷰" },
+      { href: userId ? `${NavigationPath.DREAMER_PROFILE}${userId}` : "", label: "프로필 수정" },
+      { href: NavigationPath.FOLLOW_MAKER, label: "찜한 Maker" },
+      { href: NavigationPath.COMPLETED_TRIP_REVIEWS, label: "여행 리뷰" },
       {
-        href: "#",
+        href: "",
         label: "코코넛 충전",
         onClick: onChargeClick,
       },
     ],
-    MAKER: [{ href: userId ? `/profile/maker/mypage/${userId}` : "", label: "마이페이지" }],
+    MAKER: [
+      { href: userId ? `${NavigationPath.MAKER_PROFILE}${userId}` : "", label: "마이페이지" },
+    ],
   };
 
   const renderMenus = () => {
@@ -56,9 +65,9 @@ export default function UserMenu({ userId, closeMenu, onChargeClick }: UserMenuP
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    router.reload();
+    removeAccessToken();
     setLogout();
+    router.push("/login");
   };
 
   return (

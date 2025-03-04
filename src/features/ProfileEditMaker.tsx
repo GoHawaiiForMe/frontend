@@ -1,16 +1,22 @@
 import { useState, useEffect } from "react";
-import Selector from "@/components/Common/Selector";
+import Selector from "@/components/Common/UI/Selector";
 import Image from "next/image";
 import profileImgDefault from "@public/assets/icon_default_profile.svg";
-import Button from "@/components/Common/Button";
-import ImageModal from "@/components/Common/ImageModal";
+import Button from "@/components/Common/UI/Button";
+import ImageModal from "@/components/Common/Feature/ImageModal";
 import userService from "@/services/userService";
 import planData from "@/types/planData";
-import Input from "@/components/Common/Input";
-import router from "next/router";
+import Input from "@/components/Common/Form/Input";
 import avatarImages from "@/utils/formatImage";
+import { getAccessToken } from "@/utils/tokenUtils";
+import { useRouter } from "next/router";
 
-export default function ProfileEditorMaker() {
+interface ProfileEditMakerProps {
+  makerId: string;
+}
+
+export default function ProfileEditorMaker({ makerId }: ProfileEditMakerProps) {
+  const router = useRouter();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [isOpenImageModal, setIsOpenImageModal] = useState(false);
@@ -18,18 +24,19 @@ export default function ProfileEditorMaker() {
   const [description, setDescription] = useState<string>("");
   const [detailDescription, setDetailDescription] = useState<string>("");
   const [snsAddress, setSnsAddress] = useState<string>("");
+  const [snsAddressError, setSnsAddressError] = useState<string>("");
+  const [userId, setUserId] = useState<string>((makerId as string) || ""); // makerId로 초기화
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-
+    const accessToken = getAccessToken();
     if (accessToken) {
       const fetchMakerProfile = async () => {
         try {
           const profileData = await userService.getProfileInfo();
-
           if (profileData.image) {
             setProfileImg(profileData.image);
           }
+          setUserId((makerId as string) || "메이커아이디를 찾을수 없습니다."); // profileData.id 대신 makerId 사용
           setSelectedServices(profileData.serviceTypes || []);
           setSelectedLocations(profileData.serviceArea || []);
           setSnsAddress(profileData.gallery || "");
@@ -41,10 +48,9 @@ export default function ProfileEditorMaker() {
           router.push("/profile");
         }
       };
-
       fetchMakerProfile();
     }
-  }, []);
+  }, [makerId]); // makerId를 의존성 배열에 추가
 
   const handleImageSelect = (imageKey: string) => {
     setProfileImg(imageKey);
@@ -73,8 +79,29 @@ export default function ProfileEditorMaker() {
     setDetailDescription(e.target.value);
   };
 
+  const validateSnsUrl = (url: string): boolean => {
+    if (!url) return true;
+    const snsUrlPattern =
+      /^@?(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+\/[a-zA-Z0-9_.-]+\/?$/;
+    return snsUrlPattern.test(url);
+  };
+
   const handleSnsAddressChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setSnsAddress(e.target.value);
+    const value = e.target.value;
+    setSnsAddress(value);
+    setSnsAddressError(""); // 입력 중에는 에러 메시지 제거
+  };
+
+  const handleSnsAddressBlur = () => {
+    if (!snsAddress) {
+      setSnsAddressError("SNS 주소를 입력해주세요.");
+    } else if (!validateSnsUrl(snsAddress)) {
+      setSnsAddressError(
+        "올바른 SNS 주소를 입력해주세요. (예: https://www.instagram.com/username)",
+      );
+    } else {
+      setSnsAddressError("");
+    }
   };
 
   const handleSubmit = async () => {
@@ -89,8 +116,9 @@ export default function ProfileEditorMaker() {
 
     try {
       await userService.patchProfileMaker(updatedProfileData); // API 호출 필요
+
       alert("프로필이 성공적으로 수정되었습니다!");
-      router.push("/profile/maker/mypage");
+      router.push(`/profile/maker/mypage/${userId}`);
     } catch (error) {
       console.error("프로필 수정 실패", error);
       alert("프로필 수정에 실패했습니다.");
@@ -135,15 +163,17 @@ export default function ProfileEditorMaker() {
             <div>
               <Input
                 label="SNS 주소"
-                className="mb-8 border-none border-color-line-100 bg-color-background-200"
+                className="mb-8 overflow-hidden text-ellipsis border-none border-color-line-100 bg-color-background-200"
                 type="text"
-                placeholder="SNS 주소를 입력해주세요."
+                placeholder="예시:www.instagram.com/username"
                 value={snsAddress}
                 onChange={handleSnsAddressChange}
+                onBlur={handleSnsAddressBlur}
+                error={snsAddressError}
               />
               <Input
-                className="border-none bg-color-background-200"
-                label="한 줄 소개*"
+                className="overflow-hidden text-ellipsis border-none bg-color-background-200"
+                label="한 줄 소개"
                 type="text"
                 placeholder="한 줄 소개를 입력해주세요."
                 value={description}
@@ -162,7 +192,7 @@ export default function ProfileEditorMaker() {
               onChange={handleDetailDescriptionChange}
             />
             <div>
-              <p className="semibold mb-3 text-xl mobile-tablet:text-lg">제공 서비스*</p>
+              <p className="semibold mb-3 text-xl mobile-tablet:text-lg">제공 서비스</p>
               <p className="mb-4 text-lg text-color-gray-400 mobile-tablet:text-xs">
                 *제공 서비스는 중복 선택 가능하며, 언제든 수정 가능해요!
               </p>

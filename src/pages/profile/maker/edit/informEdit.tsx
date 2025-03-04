@@ -5,4 +5,4 @@ export  function ProfileEditDreamerPage() {
   return <InformEditMaker />;
 }
 
-export default withAuthAccess(ProfileEditDreamerPage);
+export default withAuthAccess(ProfileEditDreamerPage, "MAKER");

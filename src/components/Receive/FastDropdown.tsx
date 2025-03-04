@@ -23,22 +23,22 @@ export default function FastDropdown({ onSort, currentSort }: FastDropdownProps)
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-[12px] rounded-lg px-4 py-2"
+        className="flex items-center gap-[12px] rounded-lg px-4 py-2 semibold"
       >
         {getSortText(currentSort)}
         <Image src={arrowDown} alt="dropdown" width={20} height={20} />
       </button>
 
       {isOpen && (
-        <ul className="absolute mt-2 w-full rounded-lg border border-gray-300 bg-white shadow">
+        <ul className="absolute z-10 mt-2 w-full rounded-lg border border-gray-300 bg-white shadow">
           <li
-            className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+            className="cursor-pointer semibold px-4 py-2 hover:bg-gray-100"
             onClick={() => handleSort("SCHEDULE_FIRST")}
           >
             일정 빠른순
           </li>
           <li
-            className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+            className="cursor-pointer semibold px-4 py-2 hover:bg-gray-100"
             onClick={() => handleSort("RECENT")}
           >
             최근 요청순

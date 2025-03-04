@@ -1,14 +1,15 @@
 import { useState } from "react";
-import Selector from "@/components/Common/Selector";
+import Selector from "@/components/Common/UI/Selector";
 import Image from "next/image";
 import profileImgDefault from "@public/assets/icon_default_profile.svg";
-import Button from "@/components/Common/Button";
-import ImageModal from "@/components/Common/ImageModal";
+import Button from "@/components/Common/UI/Button";
+import ImageModal from "@/components/Common/Feature/ImageModal";
 import { useSignUp } from "@/stores/SignUpContext";
 import authService from "@/services/authService";
 import planData from "@/types/planData";
-import Input from "@/components/Common/Input";
+import Input from "@/components/Common/Form/Input";
 import router from "next/router";
+import { removeOAuthToken } from "@/utils/tokenUtils";
 
 export default function ProfileMaker() {
   const { userData, setMakerProfileData, oAuthUserData } = useSignUp();
@@ -19,6 +20,8 @@ export default function ProfileMaker() {
   const [description, setDescription] = useState<string>("");
   const [detailDescription, setDetailDescription] = useState<string>("");
   const [snsAddress, setSnsAddress] = useState<string>("");
+  const [snsAddressError, setSnsAddressError] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleImageSelect = (imageKey: string) => {
     setProfileImg(imageKey);
@@ -47,11 +50,33 @@ export default function ProfileMaker() {
     setDetailDescription(e.target.value);
   };
 
+  const validateSnsUrl = (url: string): boolean => {
+    if (!url) return true;
+    const snsUrlPattern =
+      /^@?(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+\/[a-zA-Z0-9_.-]+\/?$/;
+    return snsUrlPattern.test(url);
+  };
+
   const handleSnsAddressChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setSnsAddress(e.target.value);
+    const value = e.target.value;
+    setSnsAddress(value);
+    setSnsAddressError("");
+  };
+
+  const handleSnsAddressBlur = () => {
+    if (!snsAddress) {
+      setSnsAddressError("SNS 주소를 입력해주세요.");
+    } else if (!validateSnsUrl(snsAddress)) {
+      setSnsAddressError("올바른 SNS 주소를 입력해주세요. (예: www.instagram.com/username)");
+    } else {
+      setSnsAddressError("");
+    }
   };
 
   const handleSubmit = async () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     const profileMakerData = {
       image: profileImg || undefined,
       serviceTypes: selectedServices,
@@ -70,10 +95,12 @@ export default function ProfileMaker() {
       };
       await authService.signUp(payload, oauthToken || undefined);
       alert("Maker님 가입을 축하드립니다!");
-      localStorage.removeItem("Token");
+      removeOAuthToken();
       router.push("/login");
-    } catch (error) {
-      console.error("회원가입 실패", error);
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -84,7 +111,9 @@ export default function ProfileMaker() {
     !userData ||
     !description ||
     !detailDescription ||
-    !snsAddress;
+    !snsAddress ||
+    !!snsAddressError ||
+    isSubmitting;
 
   return (
     <div className="mb-20 flex w-full justify-center">
@@ -121,15 +150,17 @@ export default function ProfileMaker() {
             <div>
               <Input
                 label="SNS 주소"
-                className="mb-8 border-none border-color-line-100 bg-color-background-200"
+                className="mb-8 overflow-hidden text-ellipsis border-none border-color-line-100 bg-color-background-200"
                 type="text"
-                placeholder="SNS 주소를 입력해주세요."
+                placeholder="예시:www.instagram.com/username"
                 value={snsAddress}
                 onChange={handleSnsAddressChange}
+                onBlur={handleSnsAddressBlur}
+                error={snsAddressError}
               />
               <Input
-                className="border-none bg-color-background-200"
-                label="한 줄 소개*"
+                className="overflow-hidden text-ellipsis border-none bg-color-background-200"
+                label="한 줄 소개"
                 type="text"
                 placeholder="한 줄 소개를 입력해주세요."
                 value={description}
@@ -148,7 +179,7 @@ export default function ProfileMaker() {
               onChange={handleDetailDescriptionChange}
             />
             <div>
-              <p className="semibold mb-3 text-xl mobile-tablet:text-lg">제공 서비스*</p>
+              <p className="semibold mb-3 text-xl mobile-tablet:text-lg">제공 서비스</p>
               <p className="mb-4 text-lg text-color-gray-400 mobile-tablet:text-xs">
                 *제공 서비스는 중복 선택 가능하며, 언제든 수정 가능해요!
               </p>
@@ -182,7 +213,7 @@ export default function ProfileMaker() {
           </div>
         </div>
         <Button
-          label="시작하기"
+          label={isSubmitting ? "처리중..." : "시작하기"}
           onClick={handleSubmit}
           disabled={isButtonDisabled}
           type="submit"

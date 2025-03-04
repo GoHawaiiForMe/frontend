@@ -1,5 +1,5 @@
 import Image from "next/image";
-import CheckFilter from "../../components/Receive/CheckFilter";
+import CheckFilter from "@/components/Receive/CheckFilter";
 import FastDropdown from "@/components/Receive/FastDropdown";
 import RequestDetails from "@/components/Receive/RequestDetails";
 import mobilefilter from "@public/assets/icon_filterbutton.png";
@@ -8,14 +8,15 @@ import { ChangeEvent, useState, useEffect } from "react";
 import Quotation from "@/components/Receive/Quotation";
 import ReceiveModalLayout from "@/components/Receive/ReceiveModalLayout";
 import Reject from "@/components/Receive/Reject";
-import SearchBar from "@/components/Common/SearchBar";
+import SearchBar from "@/components/Common/Form/SearchBar";
 import { useInfiniteQuery, keepPreviousData } from "@tanstack/react-query";
 import ReceiveRequest from "@/services/requestService";
 import { useInView } from "react-intersection-observer";
-import request_empty from "@public/assets/icon_request_empty.png";
+import request_empty from "@public/assets/icon_luggage_frown.svg";
 import Link from "next/link";
 import withAuthAccess from "@/stores/withAuthAccess";
 import { PlanItem } from "@/services/requestService";
+import loading from "@public/assets/icon_loading.gif";
 
 export function Receive() {
   const [filterIsOpen, setFilterIsOpen] = useState<boolean>(false);
@@ -58,11 +59,10 @@ export function Receive() {
     }
   }, [inView, fetchNextPage, hasNextPage]);
 
-  // 전체 아이템 수를 계산
-  const totalCount = data?.pages[0]?.totalCount || 0;
-
-  // 모든 페이지의 리스트를 하나로 합치기
   const allItems = data?.pages.flatMap((page) => page.list) || [];
+  const totalCount = data?.pages[0]?.totalCount || 0;
+  const hasItems = !isLoading && allItems.length > 0;
+  const isFiltering = isFetching && !isLoading;
 
   const handleSearch = (value: string) => {
     setSearchValue(value);
@@ -87,15 +87,15 @@ export function Receive() {
   };
   return (
     <div>
-      <div className="mx-[auto] w-full  mobile:mx-[auto] tablet:mx-[auto]">
+      <div className="mx-[auto] w-full mobile:mx-[auto] tablet:mx-[auto]">
         <div className="mb-8 flex items-center gap-8 border-b border-color-line-200">
           <Link href="/receive">
-            <p className="text-4 cursor-pointer border-b-[3px] border-black py-6 font-semibold">
+            <p className="text-4 semibold cursor-pointer border-b-[3px] border-black py-6">
               받은 견적 요청
             </p>
           </Link>
           <Link href="/all-receive-plan">
-            <p className="text-4 cursor-pointer font-semibold">전체 플랜</p>
+            <p className="text-4 semibold cursor-pointer">전체 플랜</p>
           </Link>
         </div>
       </div>
@@ -105,8 +105,8 @@ export function Receive() {
           <SearchBar value={searchValue} onChange={handleSearchChange} onSearch={handleSearch} />
           <div className="mb-8 mt-4 flex w-full items-center justify-between mobile:mx-[auto] tablet:mx-[auto]">
             <div className="flex items-center gap-2">
-              <p>전체 {totalCount} 건</p>
-              {isFetching && !isLoading && (
+              <p className="semibold">전체 {totalCount} 건</p>
+              {isFiltering && (
                 <div className="flex items-center gap-2 text-blue-500">
                   <div className="h-2 w-2 animate-pulse rounded-full bg-blue-500"></div>
                   <span className="text-sm">필터링 중...</span>
@@ -126,14 +126,14 @@ export function Receive() {
             </div>
           </div>
           {isLoading ? (
-            <div className="flex min-h-[200px] items-center justify-center">
-              <span>Loading...</span>
+            <div className="flex h-screen items-center justify-center">
+              <Image src={loading} alt="로딩 중" />
             </div>
           ) : (
             <div
               className={`transition-opacity duration-300 ${isFetching ? "opacity-60" : "opacity-100"}`}
             >
-              {allItems.length > 0 ? (
+              {hasItems ? (
                 allItems.map((item: PlanItem, index: number) => (
                   <div
                     key={`${item.id}-${index}`}
@@ -147,8 +147,9 @@ export function Receive() {
                   </div>
                 ))
               ) : (
-                <div className="my-[180px] flex items-center justify-center">
-                  <Image src={request_empty} alt="request_empty" width={180} height={180} />
+                <div className="flex flex-col items-center justify-center">
+                  <Image src={request_empty} alt="request_empty" width={300} height={300} />
+                  <p className="semibold text-xl text-color-gray-300">아직 받은 요청이 없어요!</p>
                 </div>
               )}
 
@@ -192,4 +193,4 @@ export function Receive() {
   );
 }
 
-export default withAuthAccess(Receive);
+export default withAuthAccess(Receive, "MAKER");

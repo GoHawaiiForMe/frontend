@@ -24,8 +24,8 @@ export const api = {
     const response = await apiClient.patch<T>(url, data);
     return response.data;
   },
-  delete: async <T>(url: string): Promise<T> => {
-    const response = await apiClient.delete<T>(url);
+  delete: async <T>(url: string, config?: AxiosRequestConfig): Promise<T> => {
+    const response = await apiClient.delete<T>(url, config);
     return response.data;
   },
 };

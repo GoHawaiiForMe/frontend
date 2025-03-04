@@ -3,16 +3,18 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "@/components/Common/Input";
-import Button from "@/components/Common/Button";
-import ImageModal from "@/components/Common/ImageModal";
+import Input from "@/components/Common/Form/Input";
+import Button from "@/components/Common/UI/Button";
+import ImageModal from "@/components/Common/Feature/ImageModal";
 import { editDreamerSchema, EditDreamerData } from "@/utils/validate";
-import Selector from "@/components/Common/Selector";
+import Selector from "@/components/Common/UI/Selector";
 import profileImgDefault from "@public/assets/icon_default_profile.svg";
 import planData from "@/types/planData";
 import userService from "@/services/userService";
 import useAuthStore from "@/stores/useAuthStore";
 import avatarImages from "@/utils/formatImage";
+import { getAccessToken } from "@/utils/tokenUtils";
+import authService from "@/services/authService";
 
 export default function ProfileEditDreamer() {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
@@ -21,11 +23,14 @@ export default function ProfileEditDreamer() {
   const [profileImg, setProfileImg] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<any>(null);
   const [profileInfo, setProfileInfo] = useState<any>(null);
+  const [isNickNameValid, setIsNickNameValid] = useState(false);
+  const [nickNameMessage, setNickNameMessage] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    setError,
     formState: { errors },
   } = useForm<EditDreamerData>({
     resolver: zodResolver(editDreamerSchema),
@@ -57,6 +62,29 @@ export default function ProfileEditDreamer() {
     router.push("/signup");
   };
 
+  const checkNickName = async () => {
+    const nickName = watchFields.nickName;
+    try {
+      const response = await authService.checkNickName({ nickName });
+      if (response) {
+        setIsNickNameValid(true);
+        setNickNameMessage("사용 가능한 닉네임입니다!");
+      } else {
+        setIsNickNameValid(false);
+        if (userInfo.nickName === nickName) {
+          setError("nickName", { message: "현재 닉네임과 동일합니다." });
+        } else {
+          setError("nickName", { message: "닉네임이 중복되었습니다!" });
+        }
+        setNickNameMessage("");
+      }
+    } catch (error: any) {
+      setError("nickName", { message: "닉네임 체크 중 오류가 발생했습니다." });
+      setIsNickNameValid(false);
+      alert(error.message);
+    }
+  };
+
   const onSubmit = async (data: EditDreamerData) => {
     const UpdateData = {
       nickName: userInfo?.nickName !== data.nickName ? data.nickName : userInfo?.nickName,
@@ -72,13 +100,11 @@ export default function ProfileEditDreamer() {
       serviceArea: selectedLocations.length > 0 ? selectedLocations : undefined,
     };
     try {
-      // 기본 정보 업데이트
       const basicInfoUpdatePromise =
         UpdateData.nickName || UpdateData.phoneNumber || UpdateData.password
           ? userService.patchBasicInfo(UpdateData)
           : Promise.resolve();
 
-      // 프로필 정보 업데이트
       const profileInfoUpdatePromise =
         profileUpdateData.image || profileUpdateData.tripTypes || profileUpdateData.serviceArea
           ? userService.patchProfileDreamer(profileUpdateData)
@@ -96,9 +122,8 @@ export default function ProfileEditDreamer() {
         );
       }
       router.reload();
-    } catch (error) {
-      console.error("프로필 수정 실패", error);
-      alert("수정 중 문제가 발생했습니다. 다시 시도해주세요.");
+    } catch (error: any) {
+      alert(error.message);
       router.reload();
     }
   };
@@ -110,17 +135,13 @@ export default function ProfileEditDreamer() {
     const isPasswordValid = password?.trim() !== "" || !newPassword;
     const isNewPasswordValid = newPassword?.trim() !== "" && newPassword === newConfirmPassword;
 
-    // 기본 정보 수정 여부
     const isBasicInfoModified =
       userInfo?.nickName !== nickName || userInfo?.phoneNumber !== phoneNumber;
-
-    // 프로필 정보 수정 여부
     const isProfileInfoModified =
       profileImg !== profileInfo?.profileImg ||
       selectedServices.join(",") !== profileInfo?.selectedServices?.join(",") ||
       selectedLocations.join(",") !== profileInfo?.selectedLocations?.join(",");
 
-    // 최종 검증
     return isPasswordValid && (isBasicInfoModified || isNewPasswordValid || isProfileInfoModified);
   })();
 
@@ -129,8 +150,7 @@ export default function ProfileEditDreamer() {
   );
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-
+    const accessToken = getAccessToken();
     if (accessToken) {
       const fetchUserInfo = async () => {
         try {
@@ -163,7 +183,7 @@ export default function ProfileEditDreamer() {
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <div className="grid w-full gap-16 pc:grid-cols-2 mobile-tablet:flex mobile-tablet:flex-col">
           <div className="flex flex-col gap-4">
-            <div>
+            <div className="relative">
               <Input
                 type="text"
                 label="닉네임"
@@ -172,7 +192,15 @@ export default function ProfileEditDreamer() {
                 error={!!errors.nickName}
                 className="border-0 bg-color-background-200"
               />
+              <button
+                type="button"
+                onClick={checkNickName}
+                className="bold absolute right-2 top-[60px] rounded-lg bg-color-blue-300 px-2 py-2 text-lg text-color-gray-50 mobile-tablet:top-[53px]"
+              >
+                닉네임 확인
+              </button>
               {errors.nickName && <ErrorMessage message={errors.nickName.message} />}
+              {nickNameMessage && <p className="text-color-blue-300">{nickNameMessage}</p>}
             </div>
             <div className="my-4 h-0.5 bg-color-line-100"></div>
             <div>
@@ -204,8 +232,8 @@ export default function ProfileEditDreamer() {
               <Input
                 type="password"
                 label="현재 비밀번호"
-                placeholder="현재 비밀번호를 입력해 주세요"
-                className="border-0 bg-color-background-200"
+                placeholder="현재 비밀번호 입력해 주세요"
+                className="overflow-hidden text-ellipsis whitespace-nowrap border-0 bg-color-background-200 pr-10"
                 disabled={!isEmailExist}
                 {...register("password")}
               />
@@ -216,7 +244,7 @@ export default function ProfileEditDreamer() {
                 type="password"
                 label="새 비밀번호"
                 placeholder="비밀번호를 입력해 주세요"
-                className="border-0 bg-color-background-200"
+                className="overflow-hidden text-ellipsis whitespace-nowrap border-0 bg-color-background-200 pr-10"
                 disabled={!isEmailExist}
                 {...register("newPassword")}
                 error={!!errors.newPassword}
@@ -229,7 +257,7 @@ export default function ProfileEditDreamer() {
                 type="password"
                 label="새 비밀번호 확인"
                 placeholder="비밀번호를 다시 한번 입력해 주세요"
-                className="border-0 bg-color-background-200"
+                className="overflow-hidden text-ellipsis whitespace-nowrap border-0 bg-color-background-200 pr-10"
                 disabled={!isEmailExist}
                 {...register("newConfirmPassword")}
                 error={!!errors.newConfirmPassword}
@@ -255,8 +283,8 @@ export default function ProfileEditDreamer() {
                         profileImgDefault
                       }
                       alt="프로필 이미지"
-                      width={160}
-                      height={160}
+                      width={130}
+                      height={130}
                     />
                   ) : (
                     <Image src={profileImgDefault} alt="프로필 이미지" width={150} height={150} />
@@ -282,6 +310,7 @@ export default function ProfileEditDreamer() {
                       planData.services.find((ser) => ser.mapping === service)?.name || service,
                   )}
                   toggleSelection={handleServiceSelection}
+                  useWide={true}
                 />
               </div>
               <div className="my-2 h-0.5 bg-color-line-100"></div>

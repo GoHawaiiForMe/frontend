@@ -1,11 +1,11 @@
-import Bubble from "@/components/Common/Bubble";
-import Selector from "@/components/Common/Selector";
-import Input from "@/components/Common/Input";
+import Bubble from "@/components/Common/UI/Bubble";
+import Selector from "@/components/Common/UI/Selector";
+import Input from "@/components/Common/Form/Input";
 import { useState, useEffect, useCallback } from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
-import ModalLayout from "@/components/Common/ModalLayout";
-import Button from "@/components/Common/Button";
-import Calendar from "@/components/Common/Calandar";
+import ModalLayout from "@/components/Common/Layout/ModalLayout";
+import Button from "@/components/Common/UI/Button";
+import Calendar from "@/components/Common/Feature/Calandar";
 import planData from "@/types/planData";
 import planService from "@/services/planService";
 import { useMutation } from "@tanstack/react-query";

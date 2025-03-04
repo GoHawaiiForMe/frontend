@@ -1,3 +1,4 @@
+import { FORBIDDEN } from "@/utils/errorStatus";
 import { api } from "./api";
 
 interface MakerInfo {
@@ -57,19 +58,34 @@ export const QuotationServiceDreamer = {
       }
 
       return response;
-    } catch (error) {
-      console.error("견적 목록 조회 실패", error);
-      throw error;
+    } catch (error: any) {
+      if (error.response && error.response?.status === FORBIDDEN) {
+        throw new Error("해당 견적서의 Dreamer만 조회할 수 있습니다.");
+      }
+      throw new Error("견적서를 불러 오는 중 오류가 발생했습니다.");
     }
   },
 
   getQuotationDetail: async (planId: string): Promise<QuotationDetail> => {
     try {
-      const response = await api.get<QuotationDetail, {}>(`/plans/${planId}/qoutes`);
+      const response = await api.get<QuotationDetail, {}>(`/plans/${planId}/quotes`);
       return response;
-    } catch (error) {
-      console.error("견적 상세 조회 실패", error);
-      throw error;
+    } catch (error: any) {
+      if (error.response && error.response?.status === FORBIDDEN) {
+        throw new Error("해당 견적서의 Maker와 Dreamer만 조회할 수 있습니다.");
+      }
+      throw new Error("견적서를 불러 오는 중 오류가 발생했습니다.");
+    }
+  },
+
+  confirmQuotation: async (payload: { isConfirmed: boolean }, quoteId: string) => {
+    try {
+      const response = await api.patch(`quotes/${quoteId}/confirm`, payload);
+      return response;
+    } catch (error: any) {
+      if (error.response && error.response?.status === FORBIDDEN) {
+        throw new Error("해당 견적서의 Dreamer만 확정할 수 있습니다.");
+      }
     }
   },
 };

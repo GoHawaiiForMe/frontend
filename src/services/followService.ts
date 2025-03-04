@@ -1,6 +1,7 @@
 import { api } from "./api";
+import { BAD_REQUEST } from "@/utils/errorStatus";
 
-interface FollowedCardProps {
+export interface FollowedCardProps {
   image: string;
   nickName: string;
   gallery: string;
@@ -9,6 +10,8 @@ interface FollowedCardProps {
   totalFollows: number;
   totalConfirms: number;
   serviceTypes: string[];
+  description: string;
+  makerId: string;
 }
 
 const followService = {
@@ -28,27 +31,32 @@ const followService = {
         totalConfirms: item.maker.totalConfirms,
         makerId: item.makerId,
         serviceTypes: item.maker.serviceTypes,
+        description: item.maker.description,
       }));
       return followedItems;
     } catch (error) {
-      console.error("찜한 메이커 get 실패", error);
+      console.error("찜한 메이커 get 실패하였습니다.", error);
       throw error;
     }
   },
   postFollow: async (makerId: string) => {
     try {
-      const response = await api.post("/follow", makerId);
+      const response = await api.post("/follow", { makerId });
       return response;
-    } catch (error) {
-      console.error("찜하기를 실패했습니다", error);
+    } catch (error: any) {
+      if (error.response && error.response.status === BAD_REQUEST) {
+        throw new Error("이미 찜한 메이커입니다.");
+      }
     }
   },
   deleteFollow: async (makerId: string) => {
     try {
-      const response = await api.delete<{ message: string }>("/follow");
+      const response = await api.delete("/follow", { data: { makerId } });
       return response;
-    } catch (error) {
-      console.error("찜하기 취소를 실패했습니다", error);
+    } catch (error: any) {
+      if (error.response && error.response.status === BAD_REQUEST) {
+        throw new Error("찜하지 않은 메이커입니다.");
+      }
     }
   },
 };

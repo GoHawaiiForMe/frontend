@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
-import Selector from "@/components/Common/Selector";
+import { useState } from "react";
+import Selector from "@/components/Common/UI/Selector";
 import Image from "next/image";
 import profileImgDefault from "@public/assets/icon_default_profile.svg";
-import Button from "@/components/Common/Button";
-import ImageModal from "@/components/Common/ImageModal";
+import Button from "@/components/Common/UI/Button";
+import ImageModal from "@/components/Common/Feature/ImageModal";
 import { useSignUp } from "@/stores/SignUpContext";
 import authService from "@/services/authService";
 import planData from "@/types/planData";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
+import { getOAuthToken, removeOAuthToken } from "@/utils/tokenUtils";
 
 export default function ProfileDreamer() {
   const { userData, setProfileData, oAuthUserData } = useSignUp();
@@ -16,6 +17,7 @@ export default function ProfileDreamer() {
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [isOpenImageModal, setIsOpenImageModal] = useState(false);
   const [profileImg, setProfileImg] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const router = useRouter();
 
@@ -38,20 +40,26 @@ export default function ProfileDreamer() {
 
   const profileDreamerMutation = useMutation({
     mutationFn: (data: any) => {
-      const oauthToken = localStorage.getItem("Token");
+      const oauthToken = getOAuthToken();
       return authService.signUp(data, oauthToken || undefined);
     },
     onSuccess: () => {
-      localStorage.removeItem("Token");
+      removeOAuthToken();
+      alert("Dreamer님 가입을 축하드립니다!");
       router.push("/login");
     },
     onError: (error: any) => {
-      console.error("회원가입 실패", error);
-      alert("회원가입에 실패하셨습니다.");
+      alert(error.message);
+    },
+    onSettled: () => {
+      setIsSubmitting(false);
     },
   });
 
   const handleSubmit = async () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     const profileData = {
       image: profileImg || undefined,
       tripTypes: selectedServices,
@@ -67,7 +75,11 @@ export default function ProfileDreamer() {
   };
 
   const isButtonDisabled =
-    selectedServices.length === 0 || selectedLocations.length === 0 || !profileImg || !userData;
+    selectedServices.length === 0 ||
+    selectedLocations.length === 0 ||
+    !profileImg ||
+    !userData ||
+    isSubmitting;
 
   return (
     <div className="mb-20 flex justify-center">
@@ -135,7 +147,7 @@ export default function ProfileDreamer() {
           </div>
         </div>
         <Button
-          label="시작하기"
+          label={isSubmitting ? "처리중..." : "시작하기"}
           onClick={handleSubmit}
           disabled={isButtonDisabled}
           type="submit"

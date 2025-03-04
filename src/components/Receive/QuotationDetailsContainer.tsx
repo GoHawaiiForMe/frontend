@@ -1,6 +1,6 @@
 import Image from "next/image";
 import writing from "@public/assets/icon_writing.png";
-import Label from "../Common/Label";
+import Label from "../Common/UI/Label";
 import { formatRelativeTime, formatToDetailedDate } from "@/utils/formatDate";
 import { convertRegionToKorean } from "@/utils/formatRegion";
 import Link from "next/link";
@@ -25,7 +25,6 @@ export default function QuotationDetailsContainer({
   const tripDate = formatToDetailedDate(data.plan.tripDate);
   const region = convertRegionToKorean(data.plan.serviceArea);
 
-
   const specifyMaker = data.isAssigned ? <Label labelType="REQUEST" /> : "";
   const waitingQuotation = () => {
     if (data.plan.status === "PENDING") {
@@ -40,7 +39,7 @@ export default function QuotationDetailsContainer({
     <>
       <div className="mb-12 mr-[117px] w-full rounded-[16px] border border-color-line-100 px-4 pb-[12px] pt-[20px] shadow-md mobile:mx-[auto] mobile:mb-6 mobile:px-[14px] mobile:py-[16px] tablet:mx-[auto] tablet:mb-8 mobile-tablet:mr-0">
         <div className="flex flex-col">
-          <Link href={`/planDetail/${data.id}`}>
+          <Link href={`/plan-detail/${data.id}`}>
             <div className="mb-4 flex items-center justify-between text-xs text-color-gray-500">
               <div className="flex items-center gap-2">
                 {waitingQuotation()}
@@ -50,7 +49,7 @@ export default function QuotationDetailsContainer({
               <div className="">{writeTime}</div>
             </div>
             <div>
-              <p className="text-xl font-semibold">{data.plan.title}</p>
+              <p className="semibold text-xl">{data.plan.title}</p>
               <p className="mb-[18px] border-b border-color-line-200 pb-[18px] text-md font-medium">
                 {data.dreamer.nickName} 님
               </p>
@@ -81,12 +80,12 @@ export default function QuotationDetailsContainer({
                 twoButton ? "hidden" : ""
               }`}
             >
-              <p className="whitespace-nowrap text-xl font-semibold text-white">견적 보내기</p>
+              <p className="semibold whitespace-nowrap text-xl text-white">견적 보내기</p>
               <Image src={writing} alt="send" width={24} height={24} />
             </button>
             <button
               onClick={onReject}
-              className={`w-full items-center justify-center rounded-[16px] border border-color-blue-300 bg-white p-4 text-xl font-semibold text-color-blue-300 mobile:p-3 tablet:p-3 ${oneButton ? "hidden" : ""} `}
+              className={`semibold w-full items-center justify-center rounded-[16px] border border-color-blue-300 bg-white p-4 text-xl text-color-blue-300 mobile:p-3 tablet:p-3 ${oneButton ? "hidden" : ""} `}
             >
               반려
             </button>

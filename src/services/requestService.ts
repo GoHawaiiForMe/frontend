@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { BAD_REQUEST, CONFLICT, FORBIDDEN, NOT_FOUND } from "@/utils/errorStatus";
 import { api } from "./api";
 
 // 사용자 기본 정보 타입
@@ -115,7 +115,6 @@ const ReceiveRequest = async ({
 
     queryString = params.length > 0 ? `?${params.join("&")}` : "";
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     const response = await api.get<PlanResponse, {}>(`/plans/maker${queryString}`);
 
     if (!response) {
@@ -125,6 +124,9 @@ const ReceiveRequest = async ({
 
     return response;
   } catch (error: any) {
+    if (error.response?.status === FORBIDDEN) {
+      throw new Error("해당 Maker의 아이디가 잘못되었습니다.");
+    }
     console.error("받은 요청 조회 실패", error);
     throw error;
   }
@@ -143,10 +145,9 @@ const submitQuote = async (
     await api.post<QuoteRequest, {}>(`/plans/${planId}/quotes`, quoteData);
     return { success: true, message: "견적이 성공적으로 보내졌습니다." };
   } catch (error: any) {
-
-    if (error.response?.status === 409) {
+    if (error.response?.status === CONFLICT) {
       return { success: false, message: "이미 제출한 견적입니다." };
-    } else if (error.response?.status === 404 || error.response?.status === 403) {
+    } else if (error.response?.status === NOT_FOUND || error.response?.status === FORBIDDEN) {
       return { success: false, message: "잘못된 접근입니다." };
     }
     return { success: false, message: "견적 보내기에 실패했습니다. 다시 시도해주세요." };
@@ -158,8 +159,7 @@ const rejectRequest = async (planId: string): Promise<{ success: boolean; messag
     await api.delete<{}>(`/plans/${planId}/assign`);
     return { success: true, message: "요청이 반려되었습니다." };
   } catch (error: any) {
-
-    if ([400, 403, 404].includes(error.response?.status)) {
+    if ([BAD_REQUEST, FORBIDDEN, NOT_FOUND].includes(error.response?.status)) {
       return { success: false, message: "잘못된 방식으로 접근하셨습니다." };
     }
     return { success: false, message: "요청 반려에 실패했습니다." };
@@ -175,8 +175,10 @@ export const getPlanDetail = async (planId: string): Promise<PlanItem> => {
     const response = await api.get<PlanItem, {}>(`/plans/${planId}`);
     return response;
   } catch (error: any) {
+    if (error.response?.status === NOT_FOUND) {
+      throw new Error("존재하지 않는 플랜입니다.");
+    }
     console.error("플랜 상세 조회 실패", error);
     throw error;
   }
-
 };
