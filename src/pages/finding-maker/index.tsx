@@ -223,7 +223,7 @@ export default function FindingMaker() {
               </div>
             </div>
             <SearchBar
-              placeholder="타이틀 검색 & maker 검색"
+              placeholder="어떤 maker를 찾고 계세요?"
               className="w-full mobile-tablet:w-full"
               value={searchValue}
               onChange={handleSearchChange}
